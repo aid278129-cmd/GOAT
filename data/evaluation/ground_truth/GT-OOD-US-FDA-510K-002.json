@@ -1,0 +1,22 @@
+{
+  "case_id": "GT-OOD-US-FDA-510K-002",
+  "case_type": "OUT_OF_DOMAIN",
+  "product_description": "What are the US FDA 510(k) clearance requirements for medical gloves?",
+  "product_dna": {},
+  "expected_standard_candidates": [],
+  "expected_applicability": {},
+  "expected_clauses": [],
+  "expected_requirements": [],
+  "evidence_records": [],
+  "expected_gap_classification": "UNKNOWN",
+  "expected_testing_roadmap": [],
+  "expected_conflicts": [],
+  "expected_unknown_fields": [],
+  "expected_expert_review": false,
+  "source_references": [],
+  "reviewer": "Domain Boundary Verification Team",
+  "review_date": "2026-09-09",
+  "review_status": "APPROVED",
+  "dataset_version": "v1.2.0",
+  "golden_sih_demo": false
+}

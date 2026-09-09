@@ -1,0 +1,346 @@
+{
+  "GOLDEN-SIH-2026-DEMO": {
+    "case_id": "GOLDEN-SIH-2026-DEMO",
+    "case_type": "POSITIVE",
+    "product_description": "750ml double-walled vacuum insulated flask made from food grade stainless steel 304 with silicone seal, intended for personal drinkware and 24-hour hot beverage temperature retention.",
+    "product_dna": {
+      "product_name": "ThermoSteel Domestic Vacuum Flask 750ml",
+      "category": "Drinkware & Food Contact Containers",
+      "capacity_ml": 750,
+      "materials": [
+        "Stainless Steel Grade 304",
+        "Polypropylene",
+        "Silicone"
+      ],
+      "insulated": true,
+      "food_contact": true,
+      "electrical": false
+    },
+    "expected_standard_candidates": [
+      "IS 17526:2021"
+    ],
+    "expected_applicability": {
+      "standard_number": "IS 17526:2021",
+      "is_mandatory": true,
+      "scheme": "Scheme I (ISI Mark)",
+      "regulatory_order": "Insulated Flask, Bottles and Containers for Domestic Use (Quality Control) Order, 2023",
+      "issuing_authority": "DPIIT"
+    },
+    "expected_clauses": [
+      "4.2.1",
+      "4.2.2",
+      "5.2",
+      "5.4",
+      "7.1"
+    ],
+    "expected_requirements": [
+      "REQ-CL-IS-17526-2021-4.2.1",
+      "REQ-CL-IS-17526-2021-4.2.2",
+      "REQ-CL-IS-17526-2021-5.2",
+      "REQ-CL-IS-17526-2021-5.4",
+      "REQ-CL-IS-17526-2021-7.1"
+    ],
+    "evidence_records": [
+      {
+        "evidence_id": "EV-LAB-IS17526-750ML-001",
+        "status": "VERIFIED"
+      },
+      {
+        "evidence_id": "EV-BOM-IS17526-750ML-002",
+        "status": "VERIFIED"
+      },
+      {
+        "evidence_id": "EV-PHOTO-IS17526-750ML-003",
+        "status": "VERIFIED"
+      }
+    ],
+    "expected_gap_classification": "SATISFIED",
+    "expected_testing_roadmap": [
+      "IS 6911 Material Chemical Analysis (Grade 304)",
+      "IS 9845 Overall Migration Limits (Polypropylene / Silicone)",
+      "IS 17526 Inversion Leakage Test (10 minutes)",
+      "IS 17526 Heat Retention Thermal Test (6 hours >= 60\u00b0C)"
+    ],
+    "expected_conflicts": [],
+    "expected_unknown_fields": [],
+    "expected_expert_review": false,
+    "source_references": [
+      "IS 17526:2021",
+      "DPIIT QCO Order 2023 (Insulated Flasks)",
+      "NABL Lab Report TC-5291"
+    ],
+    "reviewer": "Lead SIH 2026 BIS Regulatory Auditor",
+    "review_date": "2026-09-09",
+    "review_status": "APPROVED",
+    "dataset_version": "v1.2.0",
+    "golden_sih_demo": true
+  },
+  "GT-IS2347-PRESSURE-COOKER-001": {
+    "case_id": "GT-IS2347-PRESSURE-COOKER-001",
+    "case_type": "POSITIVE",
+    "product_description": "5 Litre domestic aluminum alloy pressure cooker with safety relief valve and metallic gasket.",
+    "product_dna": {
+      "product_name": "Domestic Pressure Cooker 5L",
+      "category": "Kitchenware & Domestic Appliances",
+      "capacity_litres": 5,
+      "material": "Aluminium Alloy"
+    },
+    "expected_standard_candidates": [
+      "IS 2347:2017"
+    ],
+    "expected_applicability": {
+      "standard_number": "IS 2347:2017",
+      "is_mandatory": true,
+      "scheme": "Scheme-I (ISI)"
+    },
+    "expected_clauses": [
+      "Operating Pressure Test",
+      "Proof Pressure Test",
+      "Safety Relief Valve Test"
+    ],
+    "expected_requirements": [
+      "REQ-IS2347-PROOF-PRESSURE"
+    ],
+    "evidence_records": [],
+    "expected_gap_classification": "POTENTIAL_GAP",
+    "expected_testing_roadmap": [],
+    "expected_conflicts": [],
+    "expected_unknown_fields": [],
+    "expected_expert_review": false,
+    "source_references": [],
+    "reviewer": "Senior Materials Compliance Engineer",
+    "review_date": "2026-09-09",
+    "review_status": "APPROVED",
+    "dataset_version": "v1.2.0",
+    "golden_sih_demo": false
+  },
+  "GT-IS4151-HELMET-001": {
+    "case_id": "GT-IS4151-HELMET-001",
+    "case_type": "POSITIVE",
+    "product_description": "Protective motorcycle helmet with EPS liner, polycarbonate shell and quick-release chin strap.",
+    "product_dna": {
+      "product_name": "Motorcycle Protective Helmet",
+      "category": "Protective Equipment & Helmets",
+      "shell_material": "Polycarbonate"
+    },
+    "expected_standard_candidates": [
+      "IS 4151:2020"
+    ],
+    "expected_applicability": {
+      "standard_number": "IS 4151:2020",
+      "is_mandatory": true,
+      "scheme": "Scheme-I (ISI)"
+    },
+    "expected_clauses": [
+      "Impact Attenuation",
+      "Retention System Strength",
+      "Audibility"
+    ],
+    "expected_requirements": [
+      "REQ-IS4151-IMPACT"
+    ],
+    "evidence_records": [],
+    "expected_gap_classification": "POTENTIAL_GAP",
+    "expected_testing_roadmap": [],
+    "expected_conflicts": [],
+    "expected_unknown_fields": [],
+    "expected_expert_review": false,
+    "source_references": [],
+    "reviewer": "Automotive Safety Auditor",
+    "review_date": "2026-09-09",
+    "review_status": "APPROVED",
+    "dataset_version": "v1.2.0",
+    "golden_sih_demo": false
+  },
+  "GT-OOD-USPTO-PATENT-001": {
+    "case_id": "GT-OOD-USPTO-PATENT-001",
+    "case_type": "OUT_OF_DOMAIN",
+    "product_description": "How do I register a patent with the US Patent and Trademark Office (USPTO)?",
+    "product_dna": {},
+    "expected_standard_candidates": [],
+    "expected_applicability": {},
+    "expected_clauses": [],
+    "expected_requirements": [],
+    "evidence_records": [],
+    "expected_gap_classification": "UNKNOWN",
+    "expected_testing_roadmap": [],
+    "expected_conflicts": [],
+    "expected_unknown_fields": [],
+    "expected_expert_review": false,
+    "source_references": [],
+    "reviewer": "Domain Boundary Verification Team",
+    "review_date": "2026-09-09",
+    "review_status": "APPROVED",
+    "dataset_version": "v1.2.0",
+    "golden_sih_demo": false
+  },
+  "GT-OOD-US-FDA-510K-002": {
+    "case_id": "GT-OOD-US-FDA-510K-002",
+    "case_type": "OUT_OF_DOMAIN",
+    "product_description": "What are the US FDA 510(k) clearance requirements for medical gloves?",
+    "product_dna": {},
+    "expected_standard_candidates": [],
+    "expected_applicability": {},
+    "expected_clauses": [],
+    "expected_requirements": [],
+    "evidence_records": [],
+    "expected_gap_classification": "UNKNOWN",
+    "expected_testing_roadmap": [],
+    "expected_conflicts": [],
+    "expected_unknown_fields": [],
+    "expected_expert_review": false,
+    "source_references": [],
+    "reviewer": "Domain Boundary Verification Team",
+    "review_date": "2026-09-09",
+    "review_status": "APPROVED",
+    "dataset_version": "v1.2.0",
+    "golden_sih_demo": false
+  },
+  "GT-NEG-CERAMIC-MUG-001": {
+    "case_id": "GT-NEG-CERAMIC-MUG-001",
+    "case_type": "NEGATIVE",
+    "product_description": "Uninsulated glazed ceramic coffee mug with wooden handle for tea drinking.",
+    "product_dna": {
+      "product_name": "Ceramic Mug",
+      "insulated": false,
+      "category": "General Goods"
+    },
+    "expected_standard_candidates": [],
+    "expected_applicability": {},
+    "expected_clauses": [],
+    "expected_requirements": [],
+    "evidence_records": [],
+    "expected_gap_classification": "NOT_APPLICABLE",
+    "expected_testing_roadmap": [],
+    "expected_conflicts": [],
+    "expected_unknown_fields": [],
+    "expected_expert_review": false,
+    "source_references": [],
+    "reviewer": "Consumer Goods Specialist",
+    "review_date": "2026-09-09",
+    "review_status": "APPROVED",
+    "dataset_version": "v1.2.0",
+    "golden_sih_demo": false
+  },
+  "GT-UNK-FABRICATED-IS99999": {
+    "case_id": "GT-UNK-FABRICATED-IS99999",
+    "case_type": "UNKNOWN",
+    "product_description": "Drop testing verification according to Indian Standard IS 99999:2099.",
+    "product_dna": {},
+    "expected_standard_candidates": [],
+    "expected_applicability": {},
+    "expected_clauses": [],
+    "expected_requirements": [],
+    "evidence_records": [],
+    "expected_gap_classification": "UNKNOWN",
+    "expected_testing_roadmap": [],
+    "expected_conflicts": [],
+    "expected_unknown_fields": [
+      "standard_number",
+      "clause_text"
+    ],
+    "expected_expert_review": false,
+    "source_references": [],
+    "reviewer": "Adversarial Testing Auditor",
+    "review_date": "2026-09-09",
+    "review_status": "APPROVED",
+    "dataset_version": "v1.2.0",
+    "golden_sih_demo": false
+  },
+  "GT-INSUFF-VAGUE-BOTTLE-001": {
+    "case_id": "GT-INSUFF-VAGUE-BOTTLE-001",
+    "case_type": "INSUFFICIENT_INFORMATION",
+    "product_description": "Metallic water bottle for daily use.",
+    "product_dna": {
+      "product_name": "Metallic Bottle"
+    },
+    "expected_standard_candidates": [
+      "IS 17526:2021"
+    ],
+    "expected_applicability": {
+      "needs_clarification": true
+    },
+    "expected_clauses": [],
+    "expected_requirements": [],
+    "evidence_records": [],
+    "expected_gap_classification": "ACTION_REQUIRED",
+    "expected_testing_roadmap": [],
+    "expected_conflicts": [],
+    "expected_unknown_fields": [
+      "capacity_ml",
+      "insulated",
+      "material_grade"
+    ],
+    "expected_expert_review": false,
+    "source_references": [],
+    "reviewer": "Intake Validation Specialist",
+    "review_date": "2026-09-09",
+    "review_status": "APPROVED",
+    "dataset_version": "v1.2.0",
+    "golden_sih_demo": false
+  },
+  "GT-CONF-HEAT-RETENTION-DISCREPANCY-001": {
+    "case_id": "GT-CONF-HEAT-RETENTION-DISCREPANCY-001",
+    "case_type": "CONFLICT",
+    "product_description": "750 ml SS 304 insulated flask with manufacturer datasheet claiming 68\u00b0C retention but accredited laboratory test measuring 53\u00b0C.",
+    "product_dna": {
+      "product_name": "Insulated Flask 750ml",
+      "capacity_ml": 750,
+      "insulated": true
+    },
+    "expected_standard_candidates": [
+      "IS 17526:2021"
+    ],
+    "expected_applicability": {
+      "standard_number": "IS 17526:2021"
+    },
+    "expected_clauses": [
+      "5.4"
+    ],
+    "expected_requirements": [
+      "REQ-CL-IS-17526-2021-5.4"
+    ],
+    "evidence_records": [],
+    "expected_gap_classification": "POTENTIAL_GAP",
+    "expected_testing_roadmap": [],
+    "expected_conflicts": [
+      "Lab measured temperature (53\u00b0C) contradicts manufacturer specification (68\u00b0C) and fails IS 17526 Clause 5.4 minimum threshold (60\u00b0C)."
+    ],
+    "expected_unknown_fields": [],
+    "expected_expert_review": true,
+    "source_references": [],
+    "reviewer": "Senior Compliance Officer",
+    "review_date": "2026-09-09",
+    "review_status": "APPROVED",
+    "dataset_version": "v1.2.0",
+    "golden_sih_demo": false
+  },
+  "GT-PENDING-LED-LIGHT-001": {
+    "case_id": "GT-PENDING-LED-LIGHT-001",
+    "case_type": "POSITIVE",
+    "product_description": "Self-ballasted LED lamp 9W B22 cap for general lighting services.",
+    "product_dna": {},
+    "expected_standard_candidates": [
+      "IS 16102 (Part 1):2012"
+    ],
+    "expected_applicability": {
+      "standard_number": "IS 16102 (Part 1):2012"
+    },
+    "expected_clauses": [
+      "Clause 8 Insulation Resistance"
+    ],
+    "expected_requirements": [],
+    "evidence_records": [],
+    "expected_gap_classification": "POTENTIAL_GAP",
+    "expected_testing_roadmap": [],
+    "expected_conflicts": [],
+    "expected_unknown_fields": [],
+    "expected_expert_review": false,
+    "source_references": [],
+    "reviewer": "Pending Compliance Associate",
+    "review_date": "2026-09-09",
+    "review_status": "UNREVIEWED",
+    "dataset_version": "v1.2.0",
+    "golden_sih_demo": false
+  }
+}

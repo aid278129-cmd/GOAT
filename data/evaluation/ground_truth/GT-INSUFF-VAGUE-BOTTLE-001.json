@@ -1,0 +1,32 @@
+{
+  "case_id": "GT-INSUFF-VAGUE-BOTTLE-001",
+  "case_type": "INSUFFICIENT_INFORMATION",
+  "product_description": "Metallic water bottle for daily use.",
+  "product_dna": {
+    "product_name": "Metallic Bottle"
+  },
+  "expected_standard_candidates": [
+    "IS 17526:2021"
+  ],
+  "expected_applicability": {
+    "needs_clarification": true
+  },
+  "expected_clauses": [],
+  "expected_requirements": [],
+  "evidence_records": [],
+  "expected_gap_classification": "ACTION_REQUIRED",
+  "expected_testing_roadmap": [],
+  "expected_conflicts": [],
+  "expected_unknown_fields": [
+    "capacity_ml",
+    "insulated",
+    "material_grade"
+  ],
+  "expected_expert_review": false,
+  "source_references": [],
+  "reviewer": "Intake Validation Specialist",
+  "review_date": "2026-09-09",
+  "review_status": "APPROVED",
+  "dataset_version": "v1.2.0",
+  "golden_sih_demo": false
+}

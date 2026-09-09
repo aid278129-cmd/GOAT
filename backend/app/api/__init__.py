@@ -10,6 +10,7 @@ from backend.app.api.rag import router as rag_router
 from backend.app.api.gap_analysis import router as gap_analysis_router
 from backend.app.api.citation_guard import citation_guard_router
 from backend.app.api.passport import passport_router
+from backend.app.api.dataset import router as dataset_router
 
 api_router = APIRouter()
 api_router.include_router(system_router)
@@ -22,6 +23,7 @@ api_router.include_router(rag_router)
 api_router.include_router(gap_analysis_router)
 api_router.include_router(citation_guard_router)
 api_router.include_router(passport_router)
+api_router.include_router(dataset_router)
 
 __all__ = [
     "api_router",

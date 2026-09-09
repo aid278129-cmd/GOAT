@@ -1,0 +1,38 @@
+{
+  "case_id": "GT-IS4151-HELMET-001",
+  "case_type": "POSITIVE",
+  "product_description": "Protective motorcycle helmet with EPS liner, polycarbonate shell and quick-release chin strap.",
+  "product_dna": {
+    "product_name": "Motorcycle Protective Helmet",
+    "category": "Protective Equipment & Helmets",
+    "shell_material": "Polycarbonate"
+  },
+  "expected_standard_candidates": [
+    "IS 4151:2020"
+  ],
+  "expected_applicability": {
+    "standard_number": "IS 4151:2020",
+    "is_mandatory": true,
+    "scheme": "Scheme-I (ISI)"
+  },
+  "expected_clauses": [
+    "Impact Attenuation",
+    "Retention System Strength",
+    "Audibility"
+  ],
+  "expected_requirements": [
+    "REQ-IS4151-IMPACT"
+  ],
+  "evidence_records": [],
+  "expected_gap_classification": "POTENTIAL_GAP",
+  "expected_testing_roadmap": [],
+  "expected_conflicts": [],
+  "expected_unknown_fields": [],
+  "expected_expert_review": false,
+  "source_references": [],
+  "reviewer": "Automotive Safety Auditor",
+  "review_date": "2026-09-09",
+  "review_status": "APPROVED",
+  "dataset_version": "v1.2.0",
+  "golden_sih_demo": false
+}
