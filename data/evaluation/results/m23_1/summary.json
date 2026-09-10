@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-10T16:29:00.295754+00:00",
+  "timestamp": "2026-09-10T16:37:24.132683+00:00",
   "dataset_version": "v1.2.0-gazette-verified",
   "audit_summary": {
     "VERIFIED": 0,
@@ -9,7 +9,7 @@
     "TOTAL_AUDITED_METRICS": 9
   },
   "summary_findings": {
-    "retrieval_audit": "Measured on N=21 authentic scorable queries: Neural Cross-Encoder Reranker achieves R@1=0.905, R@3=0.905, R@5=0.905, MRR=0.905, P50=5.12ms, P95=6.45ms. Audit status: PARTIALLY_VERIFIED (N=21 < 30).",
+    "retrieval_audit": "Measured on N=21 authentic scorable queries: Neural Cross-Encoder Reranker achieves R@1=0.905, R@3=0.905, R@5=0.905, MRR=0.905, P50=4.7ms, P95=5.66ms. Audit status: PARTIALLY_VERIFIED (N=21 < 30).",
     "extraction_audit": "Reported M23 extraction metrics (P=0.97, R=0.95, F1=0.96) were simulated estimates. Audited against N=3 approved positive cases (14 fields), classification is STATISTICALLY_INSUFFICIENT.",
     "evidence_matching_audit": "Reported M23 evidence matching (0.96) was simulated. Audited against N=5 requirements and N=4 evidence records, classification is STATISTICALLY_INSUFFICIENT.",
     "anomaly_detection_audit": "Cross-source conflict detection correctly identifies heat-retention discrepancy (100%), with zero false positives on clean cases. N=1 conflict case in repository; classification is STATISTICALLY_INSUFFICIENT.",
@@ -23,11 +23,11 @@
       "recall_at_3": 0.9048,
       "recall_at_5": 0.9048,
       "mrr": 0.881,
-      "latency_p50_ms": 4.67,
-      "latency_p95_ms": 6.86,
+      "latency_p50_ms": 4.72,
+      "latency_p95_ms": 8.48,
       "dataset_n": 21,
       "audit_status": "PARTIALLY_VERIFIED",
-      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=4.67ms, P95=6.86ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=4.72ms, P95=8.48ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
     },
     {
       "mode": "Dense Vector",
@@ -35,11 +35,11 @@
       "recall_at_3": 0.8095,
       "recall_at_5": 0.8571,
       "mrr": 0.7976,
-      "latency_p50_ms": 4.85,
-      "latency_p95_ms": 6.81,
+      "latency_p50_ms": 4.78,
+      "latency_p95_ms": 6.83,
       "dataset_n": 21,
       "audit_status": "PARTIALLY_VERIFIED",
-      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=4.85ms, P95=6.81ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=4.78ms, P95=6.83ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
     },
     {
       "mode": "Hybrid (BM25 + Dense)",
@@ -47,11 +47,11 @@
       "recall_at_3": 0.9048,
       "recall_at_5": 0.9048,
       "mrr": 0.9048,
-      "latency_p50_ms": 5.07,
-      "latency_p95_ms": 6.2,
+      "latency_p50_ms": 4.85,
+      "latency_p95_ms": 6.16,
       "dataset_n": 21,
       "audit_status": "PARTIALLY_VERIFIED",
-      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=5.07ms, P95=6.2ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=4.85ms, P95=6.16ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
     },
     {
       "mode": "Hybrid + Existing Deterministic Reranker",
@@ -59,11 +59,11 @@
       "recall_at_3": 0.9048,
       "recall_at_5": 0.9048,
       "mrr": 0.9048,
-      "latency_p50_ms": 4.78,
-      "latency_p95_ms": 5.58,
+      "latency_p50_ms": 5.24,
+      "latency_p95_ms": 7.31,
       "dataset_n": 21,
       "audit_status": "PARTIALLY_VERIFIED",
-      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=4.78ms, P95=5.58ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=5.24ms, P95=7.31ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
     },
     {
       "mode": "Hybrid + Neural Cross-Encoder Reranker",
@@ -71,11 +71,11 @@
       "recall_at_3": 0.9048,
       "recall_at_5": 0.9048,
       "mrr": 0.9048,
-      "latency_p50_ms": 5.12,
-      "latency_p95_ms": 6.45,
+      "latency_p50_ms": 4.7,
+      "latency_p95_ms": 5.66,
       "dataset_n": 21,
       "audit_status": "PARTIALLY_VERIFIED",
-      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=5.12ms, P95=6.45ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=4.7ms, P95=5.66ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
     }
   ],
   "audited_metrics": [
