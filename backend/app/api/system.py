@@ -72,3 +72,53 @@ async def get_ml_data_health():
         ],
     }
 
+
+@router.get("/ml-health", summary="Comprehensive M23 ML/DL Intelligence Health & Model Telemetry")
+async def get_ml_health():
+    """Returns runtime model health, availability, CPU readiness, fallback status, and inference telemetry."""
+    from backend.app.services.ml.health import get_ml_system_health
+
+    health = get_ml_system_health()
+    # Format models output to match exact specification while preserving extended metadata
+    formatted_models = []
+    for m in health["models"]:
+        formatted_models.append({
+            "name": m["model_name"],
+            "model_name": m["model_name"],
+            "task": m["task"],
+            "layer": m["layer"],
+            "available": m["available"],
+            "version": m["version"],
+            "device": m["device"],
+            "fallback": m["fallback"],
+            "source": m["source"],
+            "status": m["status"],
+            "training_status": m["training_status"],
+            "regulatory_authority": 0.0,
+            "loaded_at": m["loaded_at"],
+        })
+
+    return {
+        "ml_enabled": health["ml_enabled"],
+        "status": health["status"],
+        "inference_engine": health["inference_engine"],
+        "inference_available": any(m["available"] for m in formatted_models),
+        "models": formatted_models,
+        "models_count": len(formatted_models),
+        "training_status": health["training_status"],
+        "dataset_readiness": health["dataset_readiness"],
+        "fallback_status": any(m["fallback"] for m in formatted_models),
+        "regulatory_authority_gate": health["regulatory_authority_gate"],
+        "telemetry": health["telemetry"],
+        "timestamp": health["timestamp"],
+    }
+
+
+@router.get("/ml-benchmark", summary="Baseline vs ML/DL Enhanced Performance Benchmark Report")
+async def get_ml_benchmark():
+    """Returns full baseline vs ML/DL enhanced benchmark across retrieval, extraction, evidence matching, and anomaly detection."""
+    from backend.app.services.ml.evaluation.benchmark import ml_benchmark_runner
+
+    report = ml_benchmark_runner.run_full_benchmark()
+    return report.model_dump()
+

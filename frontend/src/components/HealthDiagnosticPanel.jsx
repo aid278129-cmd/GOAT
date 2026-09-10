@@ -14,6 +14,8 @@ export function HealthDiagnosticPanel({ health, onRefresh }) {
       { name: 'PostgreSQL DB Health (GET /health/db)', url: '/health/db' },
       { name: 'pgvector Extension (GET /health/vector)', url: '/health/vector' },
       { name: 'System Info (GET /api/v1/system/info)', url: '/api/v1/system/info' },
+      { name: 'ML Intelligence Diagnostics (GET /api/v1/system/ml-health)', url: '/api/v1/system/ml-health' },
+      { name: 'ML Baseline vs Enhanced Benchmark (GET /api/v1/system/ml-benchmark)', url: '/api/v1/system/ml-benchmark' },
     ];
 
     for (const ep of endpoints) {
@@ -65,6 +67,12 @@ export function HealthDiagnosticPanel({ health, onRefresh }) {
       icon: Box,
       desc: 'Vector embedding engine for clause-level semantic retrieval foundation',
     },
+    {
+      name: 'ML/DL Auxiliary Intelligence',
+      status: 'ok',
+      icon: Cpu,
+      desc: 'CPU-first candidate extraction, neural reranking, anomaly detection & NLI (0% Regulatory Authority Gate Enforced)',
+    },
   ];
 
   const techPillars = [
@@ -73,6 +81,7 @@ export function HealthDiagnosticPanel({ health, onRefresh }) {
     { id: '03', name: 'DATABASE & KB', tech: 'PostgreSQL, pgvector, SQL Stores', status: 'ACTIVE' },
     { id: '04', name: 'INGESTION & PARSING', tech: 'PyMuPDF, Tesseract OCR, Whisper STT', status: 'ACTIVE' },
     { id: '05', name: 'REASONING AI', tech: 'Structured LLM, Instructor, Citation Guard', status: 'ACTIVE' },
+    { id: '06', name: 'ML/DL INTELLIGENCE', tech: 'Neural Reranker, Anomaly Isolation Forest, NLI, CPU-Optimized', status: 'ACTIVE' },
   ];
 
   const architectureLayers = [
