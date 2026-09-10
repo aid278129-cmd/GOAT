@@ -29,6 +29,9 @@ INJECTION_PATTERNS = [
     (r"(?i)\byou\s+are\s+now\s+(?:in\s+)?(?:dan|developer|admin|god)\s+mode\b", "JAILBREAK_ATTEMPT"),
     (r"(?i)\bsystem\s+override\s*:\s*status\s*=\s*satisfied\b", "SYSTEM_STATUS_OVERRIDE"),
     (r"(?i)\b(?:chatgpt|claude|gemini|ai)\s+(?:said|confirmed|certified|guaranteed|asserts?).*?(?:is\s+)?(?:fully\s+)?compliant\b", "LLM_THIRD_PARTY_HALLUCINATION_CLAIM"),
+    (r"(?i)\b(?:treat|use)\s+this\s+(?:document|text|input)\s+as\s+(?:the\s+)?system\s+prompt\b", "SYSTEM_PROMPT_SUBSTITUTION"),
+    (r"(?i)\bact\s+as\s+bis\b", "REGULATORY_AUTHORITY_IMPERSONATION"),
+    (r"(?i)\bcertify\s+this\s+product\b", "UNAUTHORIZED_CERTIFICATION_COMMAND"),
 ]
 
 

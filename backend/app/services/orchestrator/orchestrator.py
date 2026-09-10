@@ -35,7 +35,9 @@ from backend.app.services.orchestrator.intent_router import intent_router
 from backend.app.services.orchestrator.knowledge_selector import verified_knowledge_selector
 from backend.app.services.orchestrator.context_builder import context_builder
 from backend.app.services.orchestrator.llm_interface import single_structured_llm
+from backend.app.services.orchestrator.langchain_adapter import langchain_chat_adapter
 from backend.app.services.orchestrator.grounding_guard import grounding_guard
+from backend.app.core.config import settings
 from backend.app.core.logging import logger
 
 # In-memory audit trail repository
@@ -75,11 +77,30 @@ class AIOrchestrator:
         )
 
         # 4. Structured LLM Generation (ONE LLM ONLY)
-        raw_response = single_structured_llm.generate_grounded_response(
-            intent=intent,
-            sanitized_query=sanitized_query,
-            context=context,
-        )
+        if getattr(settings, "LANGCHAIN_LLM_ADAPTER_ENABLED", False):
+            try:
+                raw_response = langchain_chat_adapter.generate_orchestrated_response(
+                    intent=intent,
+                    sanitized_query=sanitized_query,
+                    context=context,
+                )
+            except Exception as exc:
+                logger.error(f"[AIOrchestrator] LangChain adapter failed: {exc}. Invoking deterministic fallback.")
+                raw_response = OrchestratedAIResponse(
+                    answer="An unexpected error occurred during language processing. The system strictly refuses to guess compliance requirements.",
+                    intent=intent,
+                    grounding_status=GroundingStatus.UNKNOWN,
+                    confidence_score=0.0,
+                    citations=[],
+                    deterministic_fallback_used=True,
+                    regulatory_conclusion="NONE",
+                )
+        else:
+            raw_response = single_structured_llm.generate_grounded_response(
+                intent=intent,
+                sanitized_query=sanitized_query,
+                context=context,
+            )
 
         # 5. Schema Validation & Sanitization
         sanitized_answer, stripped_verdict = grounding_guard.sanitize_regulatory_assertions(raw_response.answer)

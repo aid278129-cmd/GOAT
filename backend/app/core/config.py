@@ -39,6 +39,9 @@ class Settings(BaseSettings):
     NLI_ENABLED: bool = True
     APPLICABILITY_CLASSIFIER_ENABLED: bool = False
 
+    # M24 LangChain Reasoning Graph Feature Flags
+    LANGCHAIN_LLM_ADAPTER_ENABLED: bool = False
+
     # Security & CORS
     SECRET_KEY: str = "zyntrix-development-secret-key-change-in-production"
     ALLOWED_CORS_ORIGINS: List[str] = [
