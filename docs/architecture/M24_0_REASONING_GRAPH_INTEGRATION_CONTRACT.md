@@ -315,11 +315,18 @@ When implementation begins, LangChain will serve strictly as a **standardized ab
 ```
 
 ### Exact LangChain Usage Rules:
-1. **Model Adapter**: Wrap `SingleStructuredLLM` using `langchain_core.language_models` abstractions.
-2. **Structured Output**: Use `.with_structured_output()` using existing Pydantic response schemas (`OrchestratedAIResponse`).
-3. **Prompt Templates**: Use `langchain_core.prompts.ChatPromptTemplate` with strict immutable system prompts.
-4. **Tool Abstraction**: Wrap deterministic helper functions (`search_standards`, `search_clauses`, `normalize_unit`) using `@tool` decorators.
-5. **No Hallucinated Multi-Model Setup**: Exactly one underlying model instance is shared across all tools.
+1. **Model Adapter**: Wrap `SingleStructuredLLM` using `langchain_core.language_models.chat_models.BaseChatModel`.
+2. **Structured Output**: Custom chat model must implement `.with_structured_output()` directly or pipe through a Pydantic v2 parser, because default `BaseChatModel.with_structured_output` raises `NotImplementedError` unless `bind_tools` is implemented.
+3. **Verified langchain-core 1.5.3 API Invariants (Python 3.14 Runtime)**:
+   - `ChatResult` and `ChatGeneration` are imported from `langchain_core.outputs` (NOT `langchain_core.messages`).
+   - `BaseChatModel._generate` signature is `(self, messages: list[BaseMessage], stop: list[str] | None = None, run_manager: CallbackManagerForLLMRun | None = None, **kwargs: Any) -> ChatResult`.
+   - **Pydantic v2 Enforcement**: Under Python 3.14, `pydantic.v1` emits incompatibility warnings. All schemas passed to LangChain adapters must strictly be Pydantic v2 (`from pydantic import BaseModel`).
+4. **Prompt Templates**: Use `langchain_core.prompts.ChatPromptTemplate` with strict immutable system prompts.
+5. **Tool Abstraction**: Wrap deterministic helper functions (`search_standards`, `search_clauses`, `normalize_unit`) using `@tool` decorators.
+6. **No Hallucinated Multi-Model Setup**: Exactly one underlying model instance is shared across all tools.
+
+> [!IMPORTANT]
+> **M24.1 Strict Boundary**: M24.1 is a surgical LangChain adapter milestone ONLY. LangGraph must NOT be installed or implemented in M24.1. LangGraph is deferred strictly to M24.2.
 
 ---
 
