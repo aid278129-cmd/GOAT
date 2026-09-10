@@ -369,19 +369,15 @@ def test_python_314_pydantic_v2_compatibility():
 
 
 # ------------------------------------------------------------------------------
-# 20. Architectural Invariant: Exactly ONE LLM, No LangGraph, No Langflow
+# 20. Architectural Invariant: Exactly ONE LLM, No Langflow
 # ------------------------------------------------------------------------------
 def test_architectural_invariants_no_second_llm_or_langgraph():
     """Architectural proof:
     - Exactly ONE LLM exists
     - LangChain did not create a second model
-    - langgraph is NOT installed / imported
-    - langflow is NOT installed / imported
+    - langflow is NOT installed / imported (strictly isolated developer UI)
     """
     assert langchain_chat_adapter.underlying_llm is single_structured_llm
-    assert "langgraph" not in sys.modules
-    with pytest.raises(ImportError):
-        __import__("langgraph")
     assert "langflow" not in sys.modules
     with pytest.raises(ImportError):
         __import__("langflow")

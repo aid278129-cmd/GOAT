@@ -41,6 +41,7 @@ class Settings(BaseSettings):
 
     # M24 LangChain Reasoning Graph Feature Flags
     LANGCHAIN_LLM_ADAPTER_ENABLED: bool = False
+    LANGGRAPH_ORCHESTRATOR_ENABLED: bool = False
 
     # Security & CORS
     SECRET_KEY: str = "zyntrix-development-secret-key-change-in-production"

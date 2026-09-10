@@ -36,6 +36,7 @@ from backend.app.services.orchestrator.knowledge_selector import verified_knowle
 from backend.app.services.orchestrator.context_builder import context_builder
 from backend.app.services.orchestrator.llm_interface import single_structured_llm
 from backend.app.services.orchestrator.langchain_adapter import langchain_chat_adapter
+from backend.app.services.orchestrator.graph.runner import run_compliance_graph
 from backend.app.services.orchestrator.grounding_guard import grounding_guard
 from backend.app.core.config import settings
 from backend.app.core.logging import logger
@@ -55,6 +56,26 @@ class AIOrchestrator:
         assessment_context: Optional[Dict[str, Any]] = None,
     ) -> OrchestratedAIResponse:
         """Execute the complete 11-step orchestration workflow."""
+        # Check LangGraph feature flag (M24.2)
+        if getattr(settings, "LANGGRAPH_ORCHESTRATOR_ENABLED", False):
+            try:
+                return run_compliance_graph(
+                    user_query=user_query,
+                    product_dna=product_dna,
+                    assessment_context=assessment_context,
+                )
+            except Exception as exc:
+                logger.error(f"[AIOrchestrator] LangGraph execution failed: {exc}. Enforcing deterministic fallback.")
+                return OrchestratedAIResponse(
+                    answer="An unexpected error occurred during reasoning graph execution. Safe deterministic fallback enforced.",
+                    intent=OrchestratorIntent.UNKNOWN_INTENT,
+                    grounding_status=GroundingStatus.UNKNOWN,
+                    confidence_score=0.0,
+                    citations=[],
+                    deterministic_fallback_used=True,
+                    regulatory_conclusion="NONE",
+                )
+
         audit_id = f"AUDIT-L3-{uuid.uuid4().hex[:8].upper()}"
 
         # 1. Intent Classification & Prompt Injection Defense
