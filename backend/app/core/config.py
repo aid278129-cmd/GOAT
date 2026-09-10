@@ -30,6 +30,15 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: Optional[str] = None
     GEMINI_API_KEY: Optional[str] = None
 
+    # M23 ML/DL Intelligence Layer Feature Flags
+    ML_ENABLED: bool = True
+    PRODUCT_EXTRACTION_ML_ENABLED: bool = True
+    RERANKER_ENABLED: bool = True
+    EVIDENCE_MATCHING_ML_ENABLED: bool = True
+    ANOMALY_DETECTION_ENABLED: bool = True
+    NLI_ENABLED: bool = True
+    APPLICABILITY_CLASSIFIER_ENABLED: bool = False
+
     # Security & CORS
     SECRET_KEY: str = "zyntrix-development-secret-key-change-in-production"
     ALLOWED_CORS_ORIGINS: List[str] = [
