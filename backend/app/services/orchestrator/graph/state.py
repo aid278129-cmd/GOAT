@@ -1,11 +1,11 @@
-"""LangGraph State Contract for Layer 3 AI Orchestrator (Milestone M24.2).
+"""LangGraph State Contract for Layer 3 AI Orchestrator (Milestones M24.2 & M24.3).
 
 Cardinal Principles Enforced:
 1. "The agents reason about the task. The deterministic engines reason about compliance."
 2. ONE LLM: Model execution delegates strictly to the single LLM singleton.
-3. ZERO COMPLIANCE AUTHORITY: LangGraph has 0.0% compliance authority.
+3. ZERO COMPLIANCE AUTHORITY: LangGraph and tools have 0.0% compliance authority.
 4. REUSE EXISTING MODELS: Reuses ProductDNACore, OrchestratedAIResponse, etc.
-5. OBSERVABILITY PREPARATION: Tracks node-level execution metadata ready for future tracing.
+5. OBSERVABILITY PREPARATION: Tracks node-level and tool-level execution metadata ready for future tracing.
 """
 
 from typing import TypedDict, List, Dict, Any, Optional
@@ -19,6 +19,18 @@ class NodeExecutionTrace(TypedDict, total=False):
     end_time: str
     duration_ms: float
     status: str  # SUCCESS | FAILED | SKIPPED
+    error: Optional[str]
+
+
+class ToolExecutionTrace(TypedDict, total=False):
+    """Execution metadata record for a controlled tool call (M24.3)."""
+    tool_name: str
+    tool_call_id: str
+    node_name: str
+    timestamp: str
+    duration_ms: float
+    input_summary: str
+    status: str  # SUCCESS | REJECTED | FAILED
     error: Optional[str]
 
 
@@ -81,5 +93,7 @@ class BISComplianceGraphState(TypedDict, total=False):
     # 11. Final Output Payload (OrchestratedAIResponse)
     final_response: Optional[Dict[str, Any]]
 
-    # 12. Observability & Tracing Metadata (Phase 14 preparation)
+    # 12. Observability & Tracing Metadata (Phase 14 & 19 preparation)
     execution_traces: List[NodeExecutionTrace]
+    tool_traces: List[ToolExecutionTrace]
+    tool_call_count: int

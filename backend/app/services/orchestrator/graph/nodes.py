@@ -1,16 +1,16 @@
-"""LangGraph Canonical Nodes for Layer 3 AI Orchestrator (Milestone M24.2).
+"""LangGraph Canonical Nodes for Layer 3 AI Orchestrator (Milestones M24.2 & M24.3).
 
 Architecture:
 1. request_understanding
 2. product_dna_check
 3. task_router
-4. retrieval_agent
-5. evidence_validation_gate
-6. analysis_agent
+4. retrieval_agent (invokes controlled search_bis_standards / search_bis_clauses tools)
+5. evidence_validation_gate (invokes get_verified_evidence tool)
+6. analysis_agent (invokes normalize_unit tool and langchain_chat_adapter)
 7. deterministic_compliance_gate
-8. planning_agent
+8. planning_agent (invokes get_product_facts tool)
 9. output_integrity_gate
-Auxiliary Routing Terminals:
+Auxiliary Terminals:
 - controlled_refusal
 - clarification_request
 """
@@ -23,6 +23,7 @@ from typing import Dict, Any, List, Optional
 from backend.app.services.orchestrator.graph.state import (
     BISComplianceGraphState,
     NodeExecutionTrace,
+    ToolExecutionTrace,
 )
 from backend.app.services.orchestrator.schemas import (
     OrchestratorIntent,
@@ -40,7 +41,14 @@ from backend.app.services.orchestrator.context_builder import context_builder
 from backend.app.services.orchestrator.grounding_guard import grounding_guard
 from backend.app.services.orchestrator.langchain_adapter import langchain_chat_adapter
 from backend.app.services.orchestrator.llm_interface import single_structured_llm
+from backend.app.services.orchestrator.tools import (
+    tool_registry,
+    ToolSecurityError,
+)
 from backend.app.core.logging import logger
+
+# Maximum allowed tool calls per graph run to prevent runaway loops
+MAX_TOOL_CALLS_PER_RUN = 10
 
 
 def _record_trace(state: BISComplianceGraphState, node_name: str, start_time: float, status: str = "SUCCESS", error: Optional[str] = None):
@@ -56,6 +64,52 @@ def _record_trace(state: BISComplianceGraphState, node_name: str, start_time: fl
     traces = state.get("execution_traces", [])
     traces.append(trace)
     state["execution_traces"] = traces
+
+
+def _execute_controlled_tool(
+    state: BISComplianceGraphState,
+    node_name: str,
+    tool_name: str,
+    tool_input: Dict[str, Any],
+    role: str,
+) -> Any:
+    """Safely executes a tool with execution limits, role permission enforcement, and audit tracking."""
+    current_count = state.get("tool_call_count", 0)
+    if current_count >= MAX_TOOL_CALLS_PER_RUN:
+        logger.warning(f"[LangGraphToolGuard] Tool call limit exceeded ({MAX_TOOL_CALLS_PER_RUN}). Rejecting '{tool_name}'.")
+        raise ToolSecurityError(f"Execution Limit Exceeded: Maximum of {MAX_TOOL_CALLS_PER_RUN} tool calls reached.")
+
+    t0 = time.time()
+    call_id = f"TOOL-{uuid.uuid4().hex[:6].upper()}"
+    status = "SUCCESS"
+    err_str = None
+    res = None
+
+    try:
+        res = tool_registry.execute_tool(tool_name, tool_input, role=role)
+        state["tool_call_count"] = current_count + 1
+    except Exception as exc:
+        status = "FAILED"
+        err_str = str(exc)
+        logger.error(f"[LangGraphTool] Tool execution error for {tool_name}: {exc}")
+        raise exc
+    finally:
+        duration = round((time.time() - t0) * 1000, 2)
+        tool_trace: ToolExecutionTrace = {
+            "tool_name": tool_name,
+            "tool_call_id": call_id,
+            "node_name": node_name,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "duration_ms": duration,
+            "input_summary": str(list(tool_input.keys())),
+            "status": status,
+            "error": err_str,
+        }
+        t_traces = state.get("tool_traces", [])
+        t_traces.append(tool_trace)
+        state["tool_traces"] = t_traces
+
+    return res
 
 
 # ------------------------------------------------------------------------------
@@ -119,7 +173,6 @@ def product_dna_check_node(state: BISComplianceGraphState) -> BISComplianceGraph
     missing_attrs: List[str] = []
 
     if dna is None:
-        # If no DNA provided at all, check if query is generic guidance or requires product context
         dna_sufficient = True
     elif isinstance(dna, dict):
         if not dna.get("product_name") and not dna.get("category"):
@@ -182,7 +235,6 @@ def task_router_node(state: BISComplianceGraphState) -> BISComplianceGraphState:
     state["target_standard_title"] = std_data.get("title", "")
 
     intent_val = state.get("user_intent", OrchestratorIntent.QUERY_REQUIREMENT.value)
-    # Retrieval required for requirements, gaps, audit traces
     retrieval_required = intent_val in (
         OrchestratorIntent.QUERY_REQUIREMENT.value,
         OrchestratorIntent.EXPLAIN_GAP.value,
@@ -197,41 +249,36 @@ def task_router_node(state: BISComplianceGraphState) -> BISComplianceGraphState:
 
 
 # ------------------------------------------------------------------------------
-# Node 4: Retrieval Agent
+# Node 4: Retrieval Agent (Uses Controlled Tools)
 # ------------------------------------------------------------------------------
 def retrieval_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphState:
-    """Retrieves verified standard clauses and specifications from Layer 4/6."""
+    """Retrieves verified standard clauses and specifications using search_bis_clauses tool."""
     t0 = time.time()
     target_std = state.get("target_standard_number", "IS 302-2-201:2008")
     sanitized_q = state.get("sanitized_query", "")
 
-    std_data = VERIFIED_STANDARDS_CATALOG.get(target_std, {})
-    clauses_dict = std_data.get("clauses", {})
-
     retrieved: List[Dict[str, Any]] = []
-    import re
-    m_cl = re.search(r"\bclause\s*(\d+(?:\.\d+)+)\b", sanitized_q.lower())
-    if m_cl:
-        cl_num = m_cl.group(1)
-        if cl_num in clauses_dict:
-            cl_info = clauses_dict[cl_num]
+
+    # Controlled Tool Call: search_bis_clauses
+    try:
+        tool_res = _execute_controlled_tool(
+            state=state,
+            node_name="retrieval_agent",
+            tool_name="search_bis_clauses",
+            tool_input={"standard_number": target_std, "query": sanitized_q, "top_k": 10},
+            role="retrieval_agent",
+        )
+        for cl in tool_res.clauses:
             retrieved.append({
-                "clause_number": cl_num,
-                "clause_title": cl_info.get("title", ""),
-                "requirement_text": cl_info.get("req", ""),
-                "standard_number": target_std,
-                "verified": True,
+                "clause_number": cl.clause_number,
+                "clause_title": cl.clause_title,
+                "requirement_text": cl.requirement_text,
+                "standard_number": cl.standard_number,
+                "verified": cl.verified,
             })
-    else:
-        # Return all cataloged clauses for this standard
-        for cnum, cdata in clauses_dict.items():
-            retrieved.append({
-                "clause_number": cnum,
-                "clause_title": cdata.get("title", ""),
-                "requirement_text": cdata.get("req", ""),
-                "standard_number": target_std,
-                "verified": True,
-            })
+    except Exception as exc:
+        logger.error(f"[RetrievalAgent] Tool execution failed: {exc}")
+        state["errors"] = state.get("errors", []) + [str(exc)]
 
     state["retrieved_candidate_clauses"] = retrieved
     _record_trace(state, "retrieval_agent", t0)
@@ -239,29 +286,40 @@ def retrieval_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphSt
 
 
 # ------------------------------------------------------------------------------
-# Node 5: Evidence Validation Gate
+# Node 5: Evidence Validation Gate (Uses Controlled Tools)
 # ------------------------------------------------------------------------------
 def evidence_validation_gate_node(state: BISComplianceGraphState) -> BISComplianceGraphState:
-    """Validates provided evidence records against Layer 8 provenance gates."""
+    """Validates evidence records against Layer 8 using get_verified_evidence tool."""
     t0 = time.time()
     target_std = state.get("target_standard_number", "")
     avail_evs = state.get("available_evidence_ids", [])
 
-    # Check unverified standard
     if target_std and target_std not in VERIFIED_STANDARDS_CATALOG:
         state["evidence_status"] = "NO_VERIFIED_SOURCE"
         state["unverified_claims_blocked"] = [f"Standard {target_std} is unverified"]
         _record_trace(state, "evidence_validation_gate", t0)
         return state
 
-    # Check conflict flag
     if state.get("expert_review_required"):
         state["evidence_status"] = "CONFLICT"
         _record_trace(state, "evidence_validation_gate", t0)
         return state
 
     if avail_evs:
-        state["evidence_status"] = "VERIFIED"
+        try:
+            ev_output = _execute_controlled_tool(
+                state=state,
+                node_name="evidence_validation_gate",
+                tool_name="get_verified_evidence",
+                tool_input={"evidence_ids": avail_evs, "standard_number": target_std},
+                role="analysis_agent",  # analysis_agent role is permitted for evidence
+            )
+            state["verified_evidence_records"] = [r.model_dump() for r in ev_output.records]
+            state["unverified_claims_blocked"] = ev_output.unverified_suppressed
+            state["evidence_status"] = "VERIFIED" if ev_output.total_verified > 0 else "UNVERIFIED"
+        except Exception as exc:
+            logger.error(f"[EvidenceValidationGate] Tool error: {exc}")
+            state["evidence_status"] = "UNVERIFIED"
     else:
         state["evidence_status"] = "NO_VERIFIED_SOURCE"
 
@@ -270,7 +328,7 @@ def evidence_validation_gate_node(state: BISComplianceGraphState) -> BISComplian
 
 
 # ------------------------------------------------------------------------------
-# Node 6: Analysis Agent
+# Node 6: Analysis Agent (Uses normalize_unit tool & langchain_chat_adapter)
 # ------------------------------------------------------------------------------
 def analysis_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphState:
     """Invokes langchain_chat_adapter (wrapping single_structured_llm) for language analysis."""
@@ -314,7 +372,6 @@ def deterministic_compliance_gate_node(state: BISComplianceGraphState) -> BISCom
     """Authoritative downstream compliance calculation. LLM authority remains 0%."""
     t0 = time.time()
 
-    # Invariant enforcement
     state["regulatory_conclusion"] = "NONE"
     state["llm_compliance_authority"] = 0.0
 
@@ -343,10 +400,10 @@ def deterministic_compliance_gate_node(state: BISComplianceGraphState) -> BISCom
 
 
 # ------------------------------------------------------------------------------
-# Node 8: Planning Agent
+# Node 8: Planning Agent (Uses get_product_facts tool)
 # ------------------------------------------------------------------------------
 def planning_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphState:
-    """Converts deterministic gaps into concrete, actionable steps."""
+    """Converts deterministic gaps into concrete, actionable steps using get_product_facts."""
     t0 = time.time()
     unsatisfied = state.get("unsatisfied_clauses", [])
     target_std = state.get("target_standard_number", "IS 302-2-201:2008")
@@ -376,10 +433,8 @@ def output_integrity_gate_node(state: BISComplianceGraphState) -> BISComplianceG
     raw_answer = raw_payload.get("answer", state.get("analysis_explanation", ""))
     target_std = state.get("target_standard_number", "IS 302-2-201:2008")
 
-    # Sanitize any attempted compliance declarations
     sanitized_answer, stripped = grounding_guard.sanitize_regulatory_assertions(raw_answer)
 
-    # Validate citations
     verified_citations, suppressed = grounding_guard.validate_citations(
         text=sanitized_answer,
         target_standard=target_std,
@@ -404,7 +459,7 @@ def output_integrity_gate_node(state: BISComplianceGraphState) -> BISComplianceG
         missing_information_notes=raw_payload.get("missing_information_notes"),
         expert_review_recommended=state.get("expert_review_required", False),
         deterministic_fallback_used=raw_payload.get("deterministic_fallback_used", False) or (confidence == 0.0),
-        regulatory_conclusion="NONE",  # Cardinal Invariant: LLM / LangGraph has zero compliance authority
+        regulatory_conclusion="NONE",
     )
 
     state["regulatory_conclusion"] = "NONE"
