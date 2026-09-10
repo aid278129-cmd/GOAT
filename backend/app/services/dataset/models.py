@@ -222,6 +222,7 @@ class GroundTruthCase(BaseModel):
     review_status: ReviewState = Field(default=ReviewState.APPROVED)
     dataset_version: str = Field(default="v1.2.0")
     golden_sih_demo: bool = False
+    golden_locked: bool = False
 
     model_config = ConfigDict(use_enum_values=True)
 

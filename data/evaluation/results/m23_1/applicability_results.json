@@ -1,0 +1,22 @@
+{
+  "applicability_evaluations": [
+    {
+      "product_name": "Domestic Vacuum Flask",
+      "category": "Drinkware",
+      "candidates": [],
+      "regulatory_authority": 0.0
+    },
+    {
+      "product_name": "Electric Kitchen Kettle",
+      "category": "Electrical & Domestic Appliances",
+      "candidates": [],
+      "regulatory_authority": 0.0
+    },
+    {
+      "product_name": "Motorcycle Safety Helmet",
+      "category": "Protective Equipment & Helmets",
+      "candidates": [],
+      "regulatory_authority": 0.0
+    }
+  ]
+}

@@ -27,7 +27,7 @@ from backend.app.services.ml.contracts import (
 )
 from backend.app.services.ml.registry import ml_model_registry
 from backend.app.services.ml.health import ml_telemetry
-from backend.app.services.gap_analysis.comparator import normalize_unit
+from backend.app.services.gap_analysis.units import normalize_unit
 
 MODEL_NAME = "zyntrix-anomaly-isolation-forest-v1"
 MODEL_VERSION = "1.0.0"

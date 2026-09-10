@@ -66,7 +66,10 @@ def get_ml_system_health() -> Dict[str, Any]:
     for m in models_metadata:
         status = ml_model_registry.get_model_status(m.model_name)
         models_report.append({
+            "model_id": getattr(m, "model_id", m.model_name),
             "model_name": m.model_name,
+            "display_name": getattr(m, "display_name", m.model_name),
+            "upstream_model": getattr(m, "upstream_model", "custom"),
             "task": m.task,
             "layer": m.layer,
             "version": m.version,
@@ -74,10 +77,13 @@ def get_ml_system_health() -> Dict[str, Any]:
             "status": status.value,
             "device": m.device,
             "fallback": m.fallback,
+            "fallback_available": getattr(m, "fallback_available", True),
             "source": m.source,
             "training_status": m.training_status,
             "regulatory_authority": 0.0,
             "loaded_at": m.loaded_at,
+            "checksum": getattr(m, "checksum", ""),
+            "library": getattr(m, "library", ""),
         })
 
     all_available = all(m["available"] for m in models_report if m["status"] != MLModelStatus.MODEL_UNAVAILABLE.value)

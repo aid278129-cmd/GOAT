@@ -84,7 +84,10 @@ async def get_ml_health():
     for m in health["models"]:
         formatted_models.append({
             "name": m["model_name"],
+            "model_id": m.get("model_id", m["model_name"]),
             "model_name": m["model_name"],
+            "display_name": m.get("display_name", m["model_name"]),
+            "upstream_model": m.get("upstream_model", "custom"),
             "task": m["task"],
             "layer": m["layer"],
             "available": m["available"],
@@ -96,6 +99,8 @@ async def get_ml_health():
             "training_status": m["training_status"],
             "regulatory_authority": 0.0,
             "loaded_at": m["loaded_at"],
+            "checksum": m.get("checksum", ""),
+            "library": m.get("library", ""),
         })
 
     return {

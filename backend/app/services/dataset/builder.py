@@ -519,6 +519,7 @@ class BISDatasetRepository:
             review_status=ReviewState.APPROVED,
             dataset_version="v1.2.0",
             golden_sih_demo=True,
+            golden_locked=True,
         )
         self.ground_truth_cases[golden_case.case_id] = golden_case
 

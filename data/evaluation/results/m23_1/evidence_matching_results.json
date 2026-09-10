@@ -1,0 +1,80 @@
+{
+  "metrics": [
+    {
+      "metric_name": "ML Semantic Evidence Matching Recall",
+      "layer": 7,
+      "component": "zyntrix-semantic-evidence-matcher-v1",
+      "reported_m23_value": 0.96,
+      "audit_status": "STATISTICALLY_INSUFFICIENT",
+      "ground_truth_dataset": "Approved Requirements Matrix",
+      "dataset_version": "v1.2.0-gazette-verified",
+      "split": "TEST",
+      "sample_count": 5,
+      "evaluated_model_id": "zyntrix-semantic-evidence-matcher-v1",
+      "evaluated_model_version": "1.0.0",
+      "evaluation_script_path": "backend/app/services/ml/evaluation/benchmark.py",
+      "calculation_formula": "matched_requirements (4) / total_requirements (5)",
+      "reproduced_value": 0.8,
+      "discrepancy_delta": -0.16,
+      "limitations": "N=5 requirements and N=4 evidence items is statistically insufficient for general recall validation.",
+      "audit_notes": "Reported M23 value (0.96) was a simulated estimate. True measurement yields 0.8 (4/5).",
+      "metric": "ML Semantic Evidence Matching Recall",
+      "value": 0.8,
+      "dataset": "Approved Requirements Matrix",
+      "num_approved_cases": 5,
+      "model_version": "1.0.0",
+      "evaluation_date": "2026-09-10",
+      "test_split": "TEST"
+    }
+  ],
+  "details": {
+    "requirements_evaluated": [
+      {
+        "requirement_id": "REQ-CL-IS-17526-2021-4.2.1",
+        "clause_id": "CL-IS-17526-2021-4.2.1",
+        "requirement_text": "All stainless steel components that come into direct contact with beverage shall be manufactured from Grade 304 stainless steel conforming to IS 6911. Carbon content shall not exceed 0.08 percent.",
+        "matched_evidence_ids": [
+          "EV-BOM-IS17526-750ML-002"
+        ],
+        "top_similarity": 0.4834
+      },
+      {
+        "requirement_id": "REQ-CL-IS-17526-2021-4.2.2",
+        "clause_id": "CL-IS-17526-2021-4.2.2",
+        "requirement_text": "Polymeric parts in contact with beverage shall comply with overall migration limits specified in IS 9845 and shall be BPA-free food grade material.",
+        "matched_evidence_ids": [
+          "EV-BOM-IS17526-750ML-002",
+          "EV-LAB-IS17526-750ML-001",
+          "EV-CLAIM-USER-UNVERIFIED-004"
+        ],
+        "top_similarity": 0.454
+      },
+      {
+        "requirement_id": "REQ-CL-IS-17526-2021-5.2",
+        "clause_id": "CL-IS-17526-2021-5.2",
+        "requirement_text": "The filled and stoppered flask shall be inverted and held inverted for a period of 10 minutes at ambient temperature. There shall be no leakage or seepage of liquid.",
+        "matched_evidence_ids": [
+          "EV-LAB-IS17526-750ML-001"
+        ],
+        "top_similarity": 0.4
+      },
+      {
+        "requirement_id": "REQ-CL-IS-17526-2021-5.4",
+        "clause_id": "CL-IS-17526-2021-5.4",
+        "requirement_text": "The flask filled with boiling water at 95\u00b0C and kept closed at 27\u00b12\u00b0C ambient for 6 hours shall retain water temperature of not less than 60\u00b0C for capacities above 500ml.",
+        "matched_evidence_ids": [],
+        "top_similarity": 0.0
+      },
+      {
+        "requirement_id": "REQ-CL-IS-17526-2021-7.1",
+        "clause_id": "CL-IS-17526-2021-7.1",
+        "requirement_text": "Each flask shall be legibly and indelibly marked with: manufacturer name or trademark, nominal capacity in ml, year of manufacture, and Standard Mark (ISI Mark) under valid BIS license.",
+        "matched_evidence_ids": [
+          "EV-BOM-IS17526-750ML-002"
+        ],
+        "top_similarity": 0.4428
+      }
+    ],
+    "recall": 0.8
+  }
+}

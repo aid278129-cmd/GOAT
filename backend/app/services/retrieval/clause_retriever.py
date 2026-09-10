@@ -11,7 +11,6 @@ from backend.app.models.source import Source
 from backend.app.services.ingestion.embedder import default_embedding_provider, cosine_similarity
 from backend.app.services.retrieval.bm25 import BM25LexicalIndex
 from backend.app.services.retrieval.reranker import default_reranker
-from backend.app.services.ml.retrieval.reranker import neural_reranker
 from backend.app.schemas.clause import ClauseSearchResult, RequirementSchema
 
 
@@ -239,6 +238,7 @@ async def search_clauses(
             })
 
     # 5. Reranking (Neural Cross-Encoder with deterministic fallback & cross-standard firewall)
+    from backend.app.services.ml.retrieval.reranker import neural_reranker
     reranked = neural_reranker.rerank(query, candidate_dicts, target_standard_number=standard_number)
     top_candidates = reranked[:top_k]
 

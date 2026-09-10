@@ -1,0 +1,172 @@
+{
+  "metrics": [
+    {
+      "metric_name": "ML-Enhanced Extraction Precision",
+      "layer": 2,
+      "component": "zyntrix-product-entity-extractor-v1",
+      "reported_m23_value": 0.97,
+      "audit_status": "STATISTICALLY_INSUFFICIENT",
+      "ground_truth_dataset": "Approved Golden Cases",
+      "dataset_version": "v1.2.0-gazette-verified",
+      "split": "TEST",
+      "sample_count": 3,
+      "evaluated_model_id": "zyntrix-product-entity-extractor-v1",
+      "evaluated_model_version": "1.0.0",
+      "evaluation_script_path": "backend/app/services/ml/evaluation/benchmark.py",
+      "calculation_formula": "matched_fields (2) / total_extracted (3)",
+      "reproduced_value": 0.6667,
+      "discrepancy_delta": -0.3033,
+      "limitations": "N=3 approved positive cases (14 fields total) is statistically insufficient to validate general precision.",
+      "audit_notes": "Reported M23 value (0.97) was a simulated estimate. True measurement on authentic repo cases yields 0.6667.",
+      "metric": "ML-Enhanced Extraction Precision",
+      "value": 0.6667,
+      "dataset": "Approved Golden Cases",
+      "num_approved_cases": 3,
+      "model_version": "1.0.0",
+      "evaluation_date": "2026-09-10",
+      "test_split": "TEST"
+    },
+    {
+      "metric_name": "ML-Enhanced Extraction Recall",
+      "layer": 2,
+      "component": "zyntrix-product-entity-extractor-v1",
+      "reported_m23_value": 0.95,
+      "audit_status": "STATISTICALLY_INSUFFICIENT",
+      "ground_truth_dataset": "Approved Golden Cases",
+      "dataset_version": "v1.2.0-gazette-verified",
+      "split": "TEST",
+      "sample_count": 3,
+      "evaluated_model_id": "zyntrix-product-entity-extractor-v1",
+      "evaluated_model_version": "1.0.0",
+      "evaluation_script_path": "backend/app/services/ml/evaluation/benchmark.py",
+      "calculation_formula": "matched_fields (2) / total_ground_truth (14)",
+      "reproduced_value": 0.1429,
+      "discrepancy_delta": -0.8071,
+      "limitations": "N=3 approved positive cases is statistically insufficient to validate general recall.",
+      "audit_notes": "Reported M23 value (0.95) was a simulated estimate. True measurement on authentic repo cases yields 0.1429.",
+      "metric": "ML-Enhanced Extraction Recall",
+      "value": 0.1429,
+      "dataset": "Approved Golden Cases",
+      "num_approved_cases": 3,
+      "model_version": "1.0.0",
+      "evaluation_date": "2026-09-10",
+      "test_split": "TEST"
+    },
+    {
+      "metric_name": "ML-Enhanced Extraction F1",
+      "layer": 2,
+      "component": "zyntrix-product-entity-extractor-v1",
+      "reported_m23_value": 0.96,
+      "audit_status": "STATISTICALLY_INSUFFICIENT",
+      "ground_truth_dataset": "Approved Golden Cases",
+      "dataset_version": "v1.2.0-gazette-verified",
+      "split": "TEST",
+      "sample_count": 3,
+      "evaluated_model_id": "zyntrix-product-entity-extractor-v1",
+      "evaluated_model_version": "1.0.0",
+      "evaluation_script_path": "backend/app/services/ml/evaluation/benchmark.py",
+      "calculation_formula": "2 * (Precision * Recall) / (Precision + Recall)",
+      "reproduced_value": 0.2354,
+      "discrepancy_delta": -0.7246,
+      "limitations": "Candidate facts require downstream deterministic validation and carry 0% authority.",
+      "audit_notes": "Reported M23 value (0.96) was a simulated estimate. True measurement yields 0.2354.",
+      "metric": "ML-Enhanced Extraction F1",
+      "value": 0.2354,
+      "dataset": "Approved Golden Cases",
+      "num_approved_cases": 3,
+      "model_version": "1.0.0",
+      "evaluation_date": "2026-09-10",
+      "test_split": "TEST"
+    }
+  ],
+  "details": {
+    "cases": [
+      {
+        "case_id": "GOLDEN-SIH-2026-DEMO",
+        "description": "750ml double-walled vacuum insulated flask made from food grade stainless steel 304 with silicone seal, intended for personal drinkware and 24-hour hot beverage temperature retention.",
+        "ground_truth_dna": {
+          "product_name": "ThermoSteel Domestic Vacuum Flask 750ml",
+          "category": "Drinkware & Food Contact Containers",
+          "capacity_ml": 750,
+          "materials": [
+            "Stainless Steel Grade 304",
+            "Polypropylene",
+            "Silicone"
+          ],
+          "insulated": true,
+          "food_contact": true,
+          "electrical": false
+        },
+        "extracted_candidate_facts": [
+          {
+            "field": "power",
+            "value": 304.0,
+            "raw_value": "304 w",
+            "unit": "w",
+            "confidence": 0.92,
+            "model_name": "zyntrix-product-entity-extractor-v1",
+            "model_version": "1.0.0",
+            "source_span": "ade stainless steel 304 with silicone seal, i",
+            "provenance": "ML_CANDIDATE_EXTRACTION",
+            "verification_state": "UNVERIFIED_CANDIDATE",
+            "regulatory_authority": 0.0
+          },
+          {
+            "field": "capacity",
+            "value": 750.0,
+            "raw_value": "750ml",
+            "unit": "ml",
+            "confidence": 0.92,
+            "model_name": "zyntrix-product-entity-extractor-v1",
+            "model_version": "1.0.0",
+            "source_span": "750ml double-walled vacuu",
+            "provenance": "ML_CANDIDATE_EXTRACTION",
+            "verification_state": "UNVERIFIED_CANDIDATE",
+            "regulatory_authority": 0.0
+          }
+        ],
+        "matched_count": 1
+      },
+      {
+        "case_id": "GT-IS2347-PRESSURE-COOKER-001",
+        "description": "5 Litre domestic aluminum alloy pressure cooker with safety relief valve and metallic gasket.",
+        "ground_truth_dna": {
+          "product_name": "Domestic Pressure Cooker 5L",
+          "category": "Kitchenware & Domestic Appliances",
+          "capacity_litres": 5,
+          "material": "Aluminium Alloy"
+        },
+        "extracted_candidate_facts": [
+          {
+            "field": "capacity",
+            "value": 5.0,
+            "raw_value": "5 L",
+            "unit": "L",
+            "confidence": 0.92,
+            "model_name": "zyntrix-product-entity-extractor-v1",
+            "model_version": "1.0.0",
+            "source_span": "5 Litre domestic alumin",
+            "provenance": "ML_CANDIDATE_EXTRACTION",
+            "verification_state": "UNVERIFIED_CANDIDATE",
+            "regulatory_authority": 0.0
+          }
+        ],
+        "matched_count": 1
+      },
+      {
+        "case_id": "GT-IS4151-HELMET-001",
+        "description": "Protective motorcycle helmet with EPS liner, polycarbonate shell and quick-release chin strap.",
+        "ground_truth_dna": {
+          "product_name": "Motorcycle Protective Helmet",
+          "category": "Protective Equipment & Helmets",
+          "shell_material": "Polycarbonate"
+        },
+        "extracted_candidate_facts": [],
+        "matched_count": 0
+      }
+    ],
+    "precision": 0.6667,
+    "recall": 0.1429,
+    "f1": 0.2354
+  }
+}
