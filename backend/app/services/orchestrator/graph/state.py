@@ -120,6 +120,10 @@ class PlanningAgentContract(BaseModel):
     action_plan_items_count: int
     action_plan_items: List[Dict[str, Any]] = Field(default_factory=list)
     provenance: str = "AI_DERIVED / CANDIDATE"
+    action_plan: Optional[Dict[str, Any]] = None
+    blockers_count: int = 0
+    critical_actions_count: int = 0
+    expert_review_required: bool = False
 
 
 class OutputIntegrityContract(BaseModel):
@@ -254,4 +258,8 @@ class BISComplianceGraphState(TypedDict, total=False):
     structured_analysis: Optional[Dict[str, Any]]
     comparison_candidates: Optional[List[Dict[str, Any]]]
     evidence_conflicts: Optional[List[Dict[str, Any]]]
+
+    # 17. M24.4.3D Planning Agent Intelligence Upgrades
+    structured_action_plan: Optional[Dict[str, Any]]
+    action_blockers: Optional[List[Dict[str, Any]]]
 

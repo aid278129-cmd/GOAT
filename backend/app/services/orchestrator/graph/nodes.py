@@ -55,6 +55,7 @@ from backend.app.services.orchestrator.intent_router import intent_router
 from backend.app.services.orchestrator.query_agent import query_agent
 from backend.app.services.orchestrator.retrieval_agent import retrieval_agent
 from backend.app.services.orchestrator.analysis_agent import analysis_agent
+from backend.app.services.orchestrator.planning_agent import planning_agent
 from backend.app.services.orchestrator.knowledge_selector import (
     verified_knowledge_selector,
     VERIFIED_STANDARDS_CATALOG,
@@ -808,23 +809,56 @@ def deterministic_compliance_gate_node(state: BISComplianceGraphState) -> BISCom
 
 
 # ------------------------------------------------------------------------------
-# Node 8: Planning Agent (Uses get_product_facts tool)
+# Node 8: Planning Agent (Advanced Remediation Planning - M24.4.3D)
 # ------------------------------------------------------------------------------
 def planning_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphState:
-    """Converts deterministic gaps into concrete, actionable steps using get_product_facts."""
+    """Converts deterministic gaps, analysis findings, and evidence status into a structured ActionPlan."""
     t0 = time.time()
     unsatisfied = state.get("unsatisfied_clauses", [])
     target_std = state.get("target_standard_number", "IS 302-2-201:2008")
+    gap_summary = state.get("gap_analysis_summary")
+    ev_status = state.get("evidence_status", "NO_VERIFIED_SOURCE")
+    struct_analysis = state.get("structured_analysis")
+    dna = state.get("product_dna")
+    user_q = state.get("sanitized_query", "")
 
-    plan_items = []
-    for item in unsatisfied:
-        cnum = item.get("clause_number", "")
-        plan_items.append({
-            "step": f"Acquire test certificate for Clause {cnum}",
-            "clause": cnum,
-            "required_evidence": "Accredited NABL Test Report",
-            "standard": target_std,
-        })
+    # Execute Advanced Planning Agent Pipeline
+    try:
+        plan_res = planning_agent.generate_action_plan(
+            target_standard=target_std,
+            unsatisfied_clauses=unsatisfied,
+            gap_summary=gap_summary,
+            evidence_status=ev_status,
+            structured_analysis=struct_analysis,
+            product_dna=dna,
+            user_prompt=user_q,
+        )
+        plan_dict = plan_res.model_dump()
+        state["structured_action_plan"] = plan_dict
+        state["action_blockers"] = [b.model_dump() for b in plan_res.blockers]
+
+        # Preserve legacy flat action_plan_items for backward compatibility
+        plan_items = [
+            {
+                "step": a.title,
+                "clause": ", ".join(a.clause_numbers),
+                "required_evidence": a.required_evidence or "Accredited Laboratory Certificate",
+                "standard": a.standard_number,
+                "priority": a.priority.name,
+                "action_type": a.action_type.value,
+            }
+            for a in plan_res.actions
+        ]
+        blockers_cnt = plan_res.blockers_count
+        expert_req = plan_res.expert_review_required
+        crit_cnt = sum(1 for a in plan_res.actions if a.priority.value == 1)
+    except Exception as exc:
+        logger.error(f"[LangGraph:PlanningAgent] Planning synthesis error: {exc}")
+        plan_items = []
+        plan_dict = None
+        blockers_cnt = 0
+        crit_cnt = 0
+        expert_req = False
 
     state["action_plan_items"] = plan_items
 
@@ -833,10 +867,18 @@ def planning_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphSta
         action_plan_items_count=len(plan_items),
         action_plan_items=plan_items,
         provenance="AI_DERIVED / CANDIDATE",
+        action_plan=plan_dict,
+        blockers_count=blockers_cnt,
+        critical_actions_count=crit_cnt,
+        expert_review_required=expert_req,
     )
     contracts = state.get("node_contracts", {})
     contracts["planning_agent"] = contract.model_dump()
     state["node_contracts"] = contracts
+
+    # Strictly enforce zero compliance authority
+    state["regulatory_conclusion"] = "NONE"
+    state["llm_compliance_authority"] = 0.0
 
     _record_trace(state, "planning_agent", t0)
     return state
