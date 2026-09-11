@@ -59,11 +59,21 @@ class TaskRouterContract(BaseModel):
 
 
 class RetrievalAgentContract(BaseModel):
-    """Strongly typed output contract for retrieval_agent node."""
+    """Strongly typed output contract for retrieval_agent node (M24.4.3B)."""
     standard_number: str
     retrieved_clauses_count: int
     candidate_clauses: List[Dict[str, Any]] = Field(default_factory=list)
     from_cache: bool = False
+    retrieval_strategy: Optional[str] = None
+    retrieval_quality_tier: Optional[str] = None
+    retrieval_plan: Optional[Dict[str, Any]] = None
+    retrieval_package: Optional[Dict[str, Any]] = None
+    cross_standard_violations: List[Dict[str, Any]] = Field(default_factory=list)
+    total_quarantined: int = 0
+    provenance: str = "AI_DERIVED / CANDIDATE"
+    authority: str = "AI_DERIVED"
+    llm_compliance_authority: float = 0.0
+    regulatory_conclusion: str = "NONE"
 
 
 class EvidenceGateContract(BaseModel):
@@ -229,4 +239,9 @@ class BISComplianceGraphState(TypedDict, total=False):
     decomposed_tasks: Optional[List[Dict[str, Any]]]
     retrieval_hints: Optional[List[Dict[str, Any]]]
     out_of_domain: Optional[bool]
+
+    # 15. M24.4.3B Retrieval Agent Intelligence Upgrades
+    retrieval_plan: Optional[Dict[str, Any]]
+    retrieval_package: Optional[Dict[str, Any]]
+    cross_standard_violations: Optional[List[Dict[str, Any]]]
 

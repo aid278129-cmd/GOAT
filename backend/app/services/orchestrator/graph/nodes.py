@@ -53,6 +53,7 @@ from backend.app.services.orchestrator.schemas import (
 )
 from backend.app.services.orchestrator.intent_router import intent_router
 from backend.app.services.orchestrator.query_agent import query_agent
+from backend.app.services.orchestrator.retrieval_agent import retrieval_agent
 from backend.app.services.orchestrator.knowledge_selector import (
     verified_knowledge_selector,
     VERIFIED_STANDARDS_CATALOG,
@@ -446,54 +447,44 @@ def task_router_node(state: BISComplianceGraphState) -> BISComplianceGraphState:
 
 
 # ------------------------------------------------------------------------------
-# Node 4: Retrieval Agent (Uses Controlled Tools)
+# Node 4: Retrieval Agent (Uses Controlled Tools & Advanced Intelligence M24.4.3B)
 # ------------------------------------------------------------------------------
 def retrieval_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphState:
-    """Retrieves verified standard clauses and specifications using search_bis_clauses tool."""
+    """Retrieves verified standard clauses with strategy selection, query expansion, and cross-standard isolation."""
     t0 = time.time()
     target_std = state.get("target_standard_number", "IS 302-2-201:2008")
-    sanitized_q = state.get("sanitized_query", "")
 
-    existing_clauses = state.get("retrieved_candidate_clauses", [])
-    retrieved: List[Dict[str, Any]] = []
-    from_cache = False
+    # Delegate execution to advanced RetrievalAgent engine
+    try:
+        state = retrieval_agent.execute_retrieval(
+            state=state,
+            tool_executor_fn=_execute_controlled_tool,
+        )
+    except Exception as exc:
+        logger.error(f"[RetrievalAgent] Advanced retrieval execution failed: {exc}")
+        state["errors"] = state.get("errors", []) + [str(exc)]
 
-    # Optimization: If clauses are already pre-populated for this target standard, reuse them
-    if existing_clauses and any(c.get("standard_number") == target_std for c in existing_clauses):
-        retrieved = existing_clauses
-        from_cache = True
-        state["duplicate_tool_calls_prevented"] = state.get("duplicate_tool_calls_prevented", 0) + 1
-    else:
-        # Controlled Tool Call: search_bis_clauses
-        try:
-            state["retrieval_call_count"] = state.get("retrieval_call_count", 0) + 1
-            tool_res = _execute_controlled_tool(
-                state=state,
-                node_name="retrieval_agent",
-                tool_name="search_bis_clauses",
-                tool_input={"standard_number": target_std, "query": sanitized_q, "top_k": 10},
-                role="retrieval_agent",
-            )
-            for cl in tool_res.clauses:
-                retrieved.append({
-                    "clause_number": cl.clause_number,
-                    "clause_title": cl.clause_title,
-                    "requirement_text": cl.requirement_text,
-                    "standard_number": cl.standard_number,
-                    "verified": cl.verified,
-                })
-        except Exception as exc:
-            logger.error(f"[RetrievalAgent] Tool execution failed: {exc}")
-            state["errors"] = state.get("errors", []) + [str(exc)]
+    retrieved = state.get("retrieved_candidate_clauses", [])
+    package_data = state.get("retrieval_package") or {}
+    plan_data = state.get("retrieval_plan") or {}
+    violations = state.get("cross_standard_violations") or []
 
-    state["retrieved_candidate_clauses"] = retrieved
-
-    # Typed contract
+    # Strongly typed contract
     contract = RetrievalAgentContract(
         standard_number=target_std,
         retrieved_clauses_count=len(retrieved),
         candidate_clauses=retrieved,
-        from_cache=from_cache,
+        from_cache=package_data.get("from_cache", False),
+        retrieval_strategy=package_data.get("strategy_used"),
+        retrieval_quality_tier=package_data.get("quality_tier"),
+        retrieval_plan=plan_data,
+        retrieval_package=package_data,
+        cross_standard_violations=violations,
+        total_quarantined=len(violations),
+        provenance="AI_DERIVED / CANDIDATE",
+        authority="AI_DERIVED",
+        llm_compliance_authority=0.0,
+        regulatory_conclusion="NONE",
     )
     contracts = state.get("node_contracts", {})
     contracts["retrieval_agent"] = contract.model_dump()
