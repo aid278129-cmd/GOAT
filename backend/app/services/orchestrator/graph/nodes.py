@@ -1,4 +1,4 @@
-"""LangGraph Canonical Nodes for Layer 3 AI Orchestrator (Milestones M24.2 & M24.3).
+"""LangGraph Canonical Nodes for Layer 3 AI Orchestrator (Milestones M24.2, M24.3 & M24.4.1).
 
 Architecture:
 1. request_understanding
@@ -6,15 +6,25 @@ Architecture:
 3. task_router
 4. retrieval_agent (invokes controlled search_bis_standards / search_bis_clauses tools)
 5. evidence_validation_gate (invokes get_verified_evidence tool)
-6. analysis_agent (invokes normalize_unit tool and langchain_chat_adapter)
+6. analysis_agent (invokes normalize_unit tool and langchain_chat_adapter, with deterministic short-circuiting)
 7. deterministic_compliance_gate
 8. planning_agent (invokes get_product_facts tool)
 9. output_integrity_gate
 Auxiliary Terminals:
 - controlled_refusal
 - clarification_request
+
+M24.4.1 Enhancements:
+- Strongly typed node contracts for every agent/gate.
+- Duplicate tool call prevention with caching and deduplication accounting.
+- Deterministic short-circuiting for unit conversion and pre-computed deterministic gaps.
+- Minimal context construction with query-focused clause pruning.
+- Explicit AI_DERIVED / CANDIDATE tagging for all AI reasoning outputs.
+- Comprehensive runtime efficiency metrics.
 """
 
+import json
+import re
 import time
 import uuid
 from datetime import datetime, timezone
@@ -24,6 +34,15 @@ from backend.app.services.orchestrator.graph.state import (
     BISComplianceGraphState,
     NodeExecutionTrace,
     ToolExecutionTrace,
+    RequestUnderstandingContract,
+    ProductDNAContract,
+    TaskRouterContract,
+    RetrievalAgentContract,
+    EvidenceGateContract,
+    AnalysisAgentContract,
+    DeterministicGateContract,
+    PlanningAgentContract,
+    OutputIntegrityContract,
 )
 from backend.app.services.orchestrator.schemas import (
     OrchestratorIntent,
@@ -82,7 +101,39 @@ def _execute_controlled_tool(
     tool_input: Dict[str, Any],
     role: str,
 ) -> Any:
-    """Safely executes a tool with execution limits, role permission enforcement, and audit tracking."""
+    """Safely executes a tool with deduplication, execution limits, role permission enforcement, and audit tracking."""
+    # Deduplication & Caching check
+    tool_cache = state.get("tool_cache")
+    if tool_cache is None:
+        tool_cache = {}
+        state["tool_cache"] = tool_cache
+
+    try:
+        cache_key = f"{tool_name}:{json.dumps(tool_input, sort_keys=True)}"
+    except Exception:
+        cache_key = f"{tool_name}:{str(tool_input)}"
+
+    if cache_key in tool_cache:
+        # Prevent duplicate execution
+        cached_result = tool_cache[cache_key]
+        state["duplicate_tool_calls_prevented"] = state.get("duplicate_tool_calls_prevented", 0) + 1
+        
+        tool_trace: ToolExecutionTrace = {
+            "tool_name": tool_name,
+            "tool_call_id": f"CACHED-{uuid.uuid4().hex[:6].upper()}",
+            "node_name": node_name,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "duration_ms": 0.0,
+            "input_summary": str(list(tool_input.keys())),
+            "status": "CACHED",
+            "error": None,
+            "cached": True,
+        }
+        t_traces = state.get("tool_traces", [])
+        t_traces.append(tool_trace)
+        state["tool_traces"] = t_traces
+        return cached_result
+
     current_count = state.get("tool_call_count", 0)
     if current_count >= MAX_TOOL_CALLS_PER_RUN:
         logger.warning(f"[LangGraphToolGuard] Tool call limit exceeded ({MAX_TOOL_CALLS_PER_RUN}). Rejecting '{tool_name}'.")
@@ -97,6 +148,8 @@ def _execute_controlled_tool(
     try:
         res = tool_registry.execute_tool(tool_name, tool_input, role=role)
         state["tool_call_count"] = current_count + 1
+        # Store in deduplication cache
+        tool_cache[cache_key] = res
     except Exception as exc:
         status = "FAILED"
         err_str = str(exc)
@@ -113,12 +166,33 @@ def _execute_controlled_tool(
             "input_summary": str(list(tool_input.keys())),
             "status": status,
             "error": err_str,
+            "cached": False,
         }
         t_traces = state.get("tool_traces", [])
         t_traces.append(tool_trace)
         state["tool_traces"] = t_traces
 
     return res
+
+
+def _detect_unit_conversion_query(query: str) -> Optional[Dict[str, Any]]:
+    """Detects if query asks for a deterministic engineering unit conversion."""
+    q = query.strip()
+    # Pattern: convert|normalize <num> <from_unit> to|in <to_unit>
+    m1 = re.search(r"(?:convert|normalize)\s+([0-9.]+)\s*([a-zA-Z°]+)\s+(?:to|in)\s*([a-zA-Z°]+)", q, re.IGNORECASE)
+    if m1:
+        try:
+            return {"value": float(m1.group(1)), "from_unit": m1.group(2).strip(), "to_unit": m1.group(3).strip()}
+        except ValueError:
+            pass
+    # Pattern: <num> <from_unit> to <to_unit> (e.g. 100 F to C)
+    m2 = re.search(r"\b([0-9.]+)\s*(fahrenheit|celsius|[fc]|w|kw|v|kv|a|ma)\s+(?:to|in)\s*([a-zA-Z°]+)\b", q, re.IGNORECASE)
+    if m2:
+        try:
+            return {"value": float(m2.group(1)), "from_unit": m2.group(2).strip(), "to_unit": m2.group(3).strip()}
+        except ValueError:
+            pass
+    return None
 
 
 # ------------------------------------------------------------------------------
@@ -137,6 +211,18 @@ def request_understanding_node(state: BISComplianceGraphState) -> BISComplianceG
     state["security_flag"] = security_flag
     state["security_reason"] = "Adversarial prompt injection / override attempt intercepted" if security_flag else None
     state["security_warnings"] = warnings
+
+    # Typed contract
+    contract = RequestUnderstandingContract(
+        sanitized_query=sanitized,
+        user_intent=intent.value,
+        security_flag=security_flag,
+        security_reason=state.get("security_reason"),
+        security_warnings=warnings,
+    )
+    contracts = state.get("node_contracts", {})
+    contracts["request_understanding"] = contract.model_dump()
+    state["node_contracts"] = contracts
 
     _record_trace(state, "request_understanding", t0)
     return state
@@ -165,6 +251,8 @@ def controlled_refusal_node(state: BISComplianceGraphState) -> BISComplianceGrap
     state["regulatory_conclusion"] = "NONE"
     state["llm_compliance_authority"] = 0.0
     state["final_response"] = refusal_response.model_dump()
+    state["short_circuited"] = True
+    state["short_circuit_reason"] = "SECURITY_REFUSAL"
 
     _record_trace(state, "controlled_refusal", t0)
     return state
@@ -180,20 +268,33 @@ def product_dna_check_node(state: BISComplianceGraphState) -> BISComplianceGraph
 
     dna_sufficient = True
     missing_attrs: List[str] = []
+    facts_count = 0
 
     if dna is None:
         dna_sufficient = True
     elif isinstance(dna, dict):
+        facts_count = len(dna.get("facts", []))
         if not dna.get("product_name") and not dna.get("category"):
             dna_sufficient = False
             missing_attrs = ["product_name", "category"]
     elif hasattr(dna, "product_name"):
+        facts_count = len(getattr(dna, "facts", []))
         if not dna.product_name and not getattr(dna, "category", None):
             dna_sufficient = False
             missing_attrs = ["product_name", "category"]
 
     state["dna_sufficient"] = dna_sufficient
     state["missing_attributes"] = missing_attrs
+
+    # Typed contract
+    contract = ProductDNAContract(
+        dna_sufficient=dna_sufficient,
+        missing_attributes=missing_attrs,
+        identified_facts_count=facts_count,
+    )
+    contracts = state.get("node_contracts", {})
+    contracts["product_dna_check"] = contract.model_dump()
+    state["node_contracts"] = contracts
 
     _record_trace(state, "product_dna_check", t0)
     return state
@@ -222,6 +323,8 @@ def clarification_request_node(state: BISComplianceGraphState) -> BISComplianceG
     state["regulatory_conclusion"] = "NONE"
     state["llm_compliance_authority"] = 0.0
     state["final_response"] = clarification_response.model_dump()
+    state["short_circuited"] = True
+    state["short_circuit_reason"] = "INSUFFICIENT_PRODUCT_DNA"
 
     _record_trace(state, "clarification_request", t0)
     return state
@@ -231,7 +334,7 @@ def clarification_request_node(state: BISComplianceGraphState) -> BISComplianceG
 # Node 3: Task Router
 # ------------------------------------------------------------------------------
 def task_router_node(state: BISComplianceGraphState) -> BISComplianceGraphState:
-    """Deterministically identifies target standard and whether retrieval is required."""
+    """Deterministically identifies target standard, checks for short-circuits, and routes."""
     t0 = time.time()
     sanitized_q = state.get("sanitized_query", "")
 
@@ -244,14 +347,48 @@ def task_router_node(state: BISComplianceGraphState) -> BISComplianceGraphState:
     state["target_standard_title"] = std_data.get("title", "")
 
     intent_val = state.get("user_intent", OrchestratorIntent.QUERY_REQUIREMENT.value)
-    retrieval_required = intent_val in (
-        OrchestratorIntent.QUERY_REQUIREMENT.value,
-        OrchestratorIntent.EXPLAIN_GAP.value,
-        OrchestratorIntent.AUDIT_TRACE.value,
-    ) or any(w in sanitized_q.lower() for w in ["clause", "is ", "standard", "test", "limit", "gap"])
+
+    # Optimization: Detect deterministic unit conversion query
+    unit_conv = _detect_unit_conversion_query(sanitized_q)
+    deterministic_short_circuit = False
+    short_circuit_handler = None
+
+    if unit_conv:
+        deterministic_short_circuit = True
+        short_circuit_handler = "DETERMINISTIC_UNIT_CONVERSION"
+        state["short_circuited"] = True
+        state["short_circuit_reason"] = "DETERMINISTIC_UNIT_CONVERSION"
+        retrieval_required = False
+    elif state.get("gap_analysis_summary") and len(state.get("retrieved_candidate_clauses", [])) > 0:
+        # Pre-computed gap already supplied
+        deterministic_short_circuit = True
+        short_circuit_handler = "PRECOMPUTED_DETERMINISTIC_GAP"
+        state["short_circuited"] = True
+        state["short_circuit_reason"] = "PRECOMPUTED_DETERMINISTIC_GAP"
+        retrieval_required = False
+    else:
+        q_tokens = set(re.findall(r"\b[a-z0-9-]+\b", sanitized_q.lower()))
+        retrieval_required = intent_val in (
+            OrchestratorIntent.QUERY_REQUIREMENT.value,
+            OrchestratorIntent.EXPLAIN_GAP.value,
+            OrchestratorIntent.AUDIT_TRACE.value,
+        ) or bool(q_tokens & {"clause", "is", "standard", "test", "limit", "gap"})
 
     state["retrieval_required"] = retrieval_required
     state["task_type"] = intent_val
+
+    # Typed contract
+    contract = TaskRouterContract(
+        target_standard_number=target_std,
+        target_standard_title=state["target_standard_title"],
+        retrieval_required=retrieval_required,
+        task_type=intent_val,
+        deterministic_short_circuit=deterministic_short_circuit,
+        short_circuit_handler=short_circuit_handler,
+    )
+    contracts = state.get("node_contracts", {})
+    contracts["task_router"] = contract.model_dump()
+    state["node_contracts"] = contracts
 
     _record_trace(state, "task_router", t0)
     return state
@@ -266,30 +403,51 @@ def retrieval_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphSt
     target_std = state.get("target_standard_number", "IS 302-2-201:2008")
     sanitized_q = state.get("sanitized_query", "")
 
+    existing_clauses = state.get("retrieved_candidate_clauses", [])
     retrieved: List[Dict[str, Any]] = []
+    from_cache = False
 
-    # Controlled Tool Call: search_bis_clauses
-    try:
-        tool_res = _execute_controlled_tool(
-            state=state,
-            node_name="retrieval_agent",
-            tool_name="search_bis_clauses",
-            tool_input={"standard_number": target_std, "query": sanitized_q, "top_k": 10},
-            role="retrieval_agent",
-        )
-        for cl in tool_res.clauses:
-            retrieved.append({
-                "clause_number": cl.clause_number,
-                "clause_title": cl.clause_title,
-                "requirement_text": cl.requirement_text,
-                "standard_number": cl.standard_number,
-                "verified": cl.verified,
-            })
-    except Exception as exc:
-        logger.error(f"[RetrievalAgent] Tool execution failed: {exc}")
-        state["errors"] = state.get("errors", []) + [str(exc)]
+    # Optimization: If clauses are already pre-populated for this target standard, reuse them
+    if existing_clauses and any(c.get("standard_number") == target_std for c in existing_clauses):
+        retrieved = existing_clauses
+        from_cache = True
+        state["duplicate_tool_calls_prevented"] = state.get("duplicate_tool_calls_prevented", 0) + 1
+    else:
+        # Controlled Tool Call: search_bis_clauses
+        try:
+            state["retrieval_call_count"] = state.get("retrieval_call_count", 0) + 1
+            tool_res = _execute_controlled_tool(
+                state=state,
+                node_name="retrieval_agent",
+                tool_name="search_bis_clauses",
+                tool_input={"standard_number": target_std, "query": sanitized_q, "top_k": 10},
+                role="retrieval_agent",
+            )
+            for cl in tool_res.clauses:
+                retrieved.append({
+                    "clause_number": cl.clause_number,
+                    "clause_title": cl.clause_title,
+                    "requirement_text": cl.requirement_text,
+                    "standard_number": cl.standard_number,
+                    "verified": cl.verified,
+                })
+        except Exception as exc:
+            logger.error(f"[RetrievalAgent] Tool execution failed: {exc}")
+            state["errors"] = state.get("errors", []) + [str(exc)]
 
     state["retrieved_candidate_clauses"] = retrieved
+
+    # Typed contract
+    contract = RetrievalAgentContract(
+        standard_number=target_std,
+        retrieved_clauses_count=len(retrieved),
+        candidate_clauses=retrieved,
+        from_cache=from_cache,
+    )
+    contracts = state.get("node_contracts", {})
+    contracts["retrieval_agent"] = contract.model_dump()
+    state["node_contracts"] = contracts
+
     _record_trace(state, "retrieval_agent", t0)
     return state
 
@@ -306,11 +464,29 @@ def evidence_validation_gate_node(state: BISComplianceGraphState) -> BISComplian
     if target_std and target_std not in VERIFIED_STANDARDS_CATALOG:
         state["evidence_status"] = "NO_VERIFIED_SOURCE"
         state["unverified_claims_blocked"] = [f"Standard {target_std} is unverified"]
+        
+        contract = EvidenceGateContract(
+            evidence_status="NO_VERIFIED_SOURCE",
+            verified_evidence_count=0,
+            unverified_claims_blocked=state["unverified_claims_blocked"],
+        )
+        contracts = state.get("node_contracts", {})
+        contracts["evidence_validation_gate"] = contract.model_dump()
+        state["node_contracts"] = contracts
+
         _record_trace(state, "evidence_validation_gate", t0)
         return state
 
     if state.get("expert_review_required"):
         state["evidence_status"] = "CONFLICT"
+        contract = EvidenceGateContract(
+            evidence_status="CONFLICT",
+            verified_evidence_count=0,
+            unverified_claims_blocked=[],
+        )
+        contracts = state.get("node_contracts", {})
+        contracts["evidence_validation_gate"] = contract.model_dump()
+        state["node_contracts"] = contracts
         _record_trace(state, "evidence_validation_gate", t0)
         return state
 
@@ -321,7 +497,7 @@ def evidence_validation_gate_node(state: BISComplianceGraphState) -> BISComplian
                 node_name="evidence_validation_gate",
                 tool_name="get_verified_evidence",
                 tool_input={"evidence_ids": avail_evs, "standard_number": target_std},
-                role="analysis_agent",  # analysis_agent role is permitted for evidence
+                role="analysis_agent",
             )
             state["verified_evidence_records"] = [r.model_dump() for r in ev_output.records]
             state["unverified_claims_blocked"] = ev_output.unverified_suppressed
@@ -332,15 +508,24 @@ def evidence_validation_gate_node(state: BISComplianceGraphState) -> BISComplian
     else:
         state["evidence_status"] = "NO_VERIFIED_SOURCE"
 
+    contract = EvidenceGateContract(
+        evidence_status=state["evidence_status"],
+        verified_evidence_count=len(state.get("verified_evidence_records", [])),
+        unverified_claims_blocked=state.get("unverified_claims_blocked", []),
+    )
+    contracts = state.get("node_contracts", {})
+    contracts["evidence_validation_gate"] = contract.model_dump()
+    state["node_contracts"] = contracts
+
     _record_trace(state, "evidence_validation_gate", t0)
     return state
 
 
 # ------------------------------------------------------------------------------
-# Node 6: Analysis Agent (Uses normalize_unit tool & langchain_chat_adapter)
+# Node 6: Analysis Agent (Specialized Reasoning with Deterministic Short-Circuit)
 # ------------------------------------------------------------------------------
 def analysis_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphState:
-    """Invokes langchain_chat_adapter (wrapping single_structured_llm) for language analysis."""
+    """Invokes langchain_chat_adapter for language analysis, or short-circuits deterministically."""
     t0 = time.time()
     # Snapshot deterministic fields to prevent AI mutation
     preserved_app = state.get("applicability_decision")
@@ -354,34 +539,129 @@ def analysis_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphSta
     sanitized_q = state.get("sanitized_query", "")
     target_std = state.get("target_standard_number", "IS 302-2-201:2008")
 
-    dna = state.get("product_dna")
-    context = context_builder.build_context(
-        product_dna=dna,
-        verified_standard=target_std,
-        retrieved_clauses=state.get("retrieved_candidate_clauses"),
-        available_evidence=state.get("verified_evidence_records"),
-    )
+    llm_called = False
+    context_size = 0
 
-    try:
-        response: OrchestratedAIResponse = langchain_chat_adapter.generate_orchestrated_response(
-            intent=intent,
-            sanitized_query=sanitized_q,
-            context=context,
-        )
-        # Sanitize any pseudo-regulatory assertions from AI output
-        clean_answer, stripped_claims = compliance_firewall.sanitize_untrusted_compliance_claims(response.answer)
-        if stripped_claims:
-            state["untrusted_ai_claims"] = state.get("untrusted_ai_claims", []) + stripped_claims
+    # Optimization 1: Deterministic Unit Conversion Short-Circuit
+    unit_conv = _detect_unit_conversion_query(sanitized_q)
+    if unit_conv or state.get("short_circuit_reason") == "DETERMINISTIC_UNIT_CONVERSION":
+        unit_info = unit_conv or {"value": 0.0, "from_unit": "", "to_unit": ""}
+        val = unit_info.get("value", 0.0)
+        from_u = unit_info.get("from_unit", "")
+        to_u = unit_info.get("to_unit", "")
+        try:
+            norm_res = _execute_controlled_tool(
+                state=state,
+                node_name="analysis_agent",
+                tool_name="normalize_unit",
+                tool_input={"value": val, "from_unit": from_u, "to_unit": to_u},
+                role="analysis_agent",
+            )
+            conv_val = norm_res.converted_value
+            f_unit = norm_res.to_unit
+            clean_answer = (
+                f"Deterministic Unit Conversion: {val} {from_u} = {conv_val} {f_unit}. "
+                f"Computed deterministically via gap analysis engineering unit engine."
+            )
+        except Exception as exc:
+            logger.error(f"[AnalysisAgent] Unit normalization failed: {exc}")
+            clean_answer = f"Unit conversion error: {exc}"
 
         state["analysis_explanation"] = clean_answer
-        state["grounding_status"] = response.grounding_status.value
-        state["final_response"] = response.model_dump()
-        state["final_response"]["answer"] = clean_answer
-    except Exception as exc:
-        logger.error(f"[LangGraph:AnalysisAgent] Generation error: {exc}")
-        state["errors"] = state.get("errors", []) + [str(exc)]
-        state["analysis_explanation"] = "An error occurred during analysis generation. Fallback enforced."
-        state["grounding_status"] = GroundingStatus.UNKNOWN.value
+        state["grounding_status"] = GroundingStatus.SUPPORTED.value
+        state["final_response"] = {
+            "answer": clean_answer,
+            "intent": intent_val,
+            "grounding_status": GroundingStatus.SUPPORTED.value,
+            "confidence_score": 1.0,
+            "citations": [],
+            "deterministic_fallback_used": True,
+            "regulatory_conclusion": "NONE",
+        }
+        state["short_circuited"] = True
+        state["short_circuit_reason"] = "DETERMINISTIC_UNIT_CONVERSION"
+
+    # Optimization 2: Pre-computed Deterministic Gap Short-Circuit
+    elif state.get("short_circuit_reason") == "PRECOMPUTED_DETERMINISTIC_GAP" and preserved_gap:
+        total_eval = preserved_gap.get("total_evaluated", 0)
+        unsat_cnt = preserved_gap.get("unsatisfied_count", 0)
+        clean_answer = (
+            f"Evaluated {total_eval} clauses against standard {target_std}. "
+            f"{unsat_cnt} clauses are unsatisfied due to missing verified laboratory test evidence. "
+            f"Compliance status is deterministically computed by Layer 7."
+        )
+        state["analysis_explanation"] = clean_answer
+        state["grounding_status"] = GroundingStatus.SUPPORTED.value
+        state["final_response"] = {
+            "answer": clean_answer,
+            "intent": intent_val,
+            "grounding_status": GroundingStatus.SUPPORTED.value,
+            "confidence_score": 1.0,
+            "citations": [CitationItem(standard_number=target_std, source_authority="Layer 7 Gap Engine").model_dump()],
+            "deterministic_fallback_used": True,
+            "regulatory_conclusion": "NONE",
+        }
+
+    # Standard Reasoning Path: Bounded minimal context + SingleStructuredLLM via LangChain adapter
+    else:
+        # Minimal Context Construction: Prune candidate clauses to the most relevant
+        all_clauses = state.get("retrieved_candidate_clauses", [])
+        pruned_clauses = all_clauses
+        # If query specifies a clause number (e.g. 19.1), only include that clause in context
+        c_nums = re.findall(r"\b\d+(?:\.\d+)*\b", sanitized_q)
+        if c_nums:
+            matched_clauses = [c for c in all_clauses if any(cn in c.get("clause_number", "") for cn in c_nums)]
+            if matched_clauses:
+                pruned_clauses = matched_clauses
+        elif len(all_clauses) > 3:
+            # Bound context to top 3 clauses
+            pruned_clauses = all_clauses[:3]
+
+        dna = state.get("product_dna")
+        context = context_builder.build_context(
+            product_dna=dna,
+            verified_standard=target_std,
+            retrieved_clauses=pruned_clauses,
+            available_evidence=state.get("verified_evidence_records"),
+        )
+        context_str = str(context)
+        context_size = len(context_str)
+        state["context_size_chars"] = context_size
+
+        try:
+            state["llm_call_count"] = state.get("llm_call_count", 0) + 1
+            llm_called = True
+            response: OrchestratedAIResponse = langchain_chat_adapter.generate_orchestrated_response(
+                intent=intent,
+                sanitized_query=sanitized_q,
+                context=context,
+            )
+            # Sanitize any pseudo-regulatory assertions from AI output
+            clean_answer, stripped_claims = compliance_firewall.sanitize_untrusted_compliance_claims(response.answer)
+            if stripped_claims:
+                state["untrusted_ai_claims"] = state.get("untrusted_ai_claims", []) + stripped_claims
+
+            state["analysis_explanation"] = clean_answer
+            state["grounding_status"] = response.grounding_status.value
+            state["final_response"] = response.model_dump()
+            state["final_response"]["answer"] = clean_answer
+        except Exception as exc:
+            logger.error(f"[LangGraph:AnalysisAgent] Generation error: {exc}")
+            state["errors"] = state.get("errors", []) + [str(exc)]
+            state["analysis_explanation"] = "An error occurred during analysis generation. Fallback enforced."
+            state["grounding_status"] = GroundingStatus.UNKNOWN.value
+
+    # Typed contract
+    contract = AnalysisAgentContract(
+        analysis_explanation=state.get("analysis_explanation", ""),
+        provenance="AI_DERIVED / CANDIDATE" if llm_called else "DETERMINISTIC_ENGINE",
+        llm_called=llm_called,
+        grounding_status=state.get("grounding_status", GroundingStatus.UNKNOWN.value),
+        context_size_chars=context_size,
+    )
+    contracts = state.get("node_contracts", {})
+    contracts["analysis_agent"] = contract.model_dump()
+    state["node_contracts"] = contracts
 
     # Re-enforce deterministic state immutability against AI node tampering
     state["applicability_decision"] = preserved_app
@@ -447,6 +727,18 @@ def deterministic_compliance_gate_node(state: BISComplianceGraphState) -> BISCom
     except Exception as exc:
         logger.error(f"[DeterministicComplianceGate] Authority firewall error: {exc}")
 
+    # Typed contract
+    contract = DeterministicGateContract(
+        total_evaluated=total_eval,
+        unsatisfied_count=unsatisfied_cnt,
+        authority_source="LAYER_7_COMPLIANCE_GAP_ENGINE",
+        deterministic=True,
+        llm_authority=0.0,
+    )
+    contracts = state.get("node_contracts", {})
+    contracts["deterministic_compliance_gate"] = contract.model_dump()
+    state["node_contracts"] = contracts
+
     _record_trace(state, "deterministic_compliance_gate", t0)
     return state
 
@@ -471,6 +763,17 @@ def planning_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphSta
         })
 
     state["action_plan_items"] = plan_items
+
+    # Typed contract
+    contract = PlanningAgentContract(
+        action_plan_items_count=len(plan_items),
+        action_plan_items=plan_items,
+        provenance="AI_DERIVED / CANDIDATE",
+    )
+    contracts = state.get("node_contracts", {})
+    contracts["planning_agent"] = contract.model_dump()
+    state["node_contracts"] = contracts
+
     _record_trace(state, "planning_agent", t0)
     return state
 
@@ -521,6 +824,17 @@ def output_integrity_gate_node(state: BISComplianceGraphState) -> BISComplianceG
     state["regulatory_conclusion"] = "NONE"
     state["llm_compliance_authority"] = 0.0
     state["final_response"] = final_resp.model_dump()
+
+    # Typed contract
+    contract = OutputIntegrityContract(
+        sanitized=stripped or bool(firewall_stripped),
+        citations_count=len(verified_citations),
+        regulatory_conclusion="NONE",
+        llm_compliance_authority=0.0,
+    )
+    contracts = state.get("node_contracts", {})
+    contracts["output_integrity_gate"] = contract.model_dump()
+    state["node_contracts"] = contracts
 
     _record_trace(state, "output_integrity_gate", t0)
     return state

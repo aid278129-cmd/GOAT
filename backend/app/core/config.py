@@ -43,6 +43,12 @@ class Settings(BaseSettings):
     LANGCHAIN_LLM_ADAPTER_ENABLED: bool = False
     LANGGRAPH_ORCHESTRATOR_ENABLED: bool = False
 
+    # LangSmith Observability Configuration (M24.5)
+    LANGSMITH_TRACING: bool = False
+    LANGSMITH_API_KEY: Optional[str] = None
+    LANGSMITH_PROJECT: str = "zyntrix-bis-compliance"
+    LANGSMITH_ENDPOINT: str = "https://api.smith.langchain.com"
+
     # Security & CORS
     SECRET_KEY: str = "zyntrix-development-secret-key-change-in-production"
     ALLOWED_CORS_ORIGINS: List[str] = [

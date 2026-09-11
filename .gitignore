@@ -43,6 +43,7 @@ backend/.env
 # Storage & Temporary artifacts
 storage/
 backend/storage/
+.langgraph_api/
 *.log
 *.sqlite3
 *.db

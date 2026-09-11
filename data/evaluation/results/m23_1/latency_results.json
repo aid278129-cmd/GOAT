@@ -2,28 +2,28 @@
   "retrieval_latencies": [
     {
       "mode": "BM25 Lexical",
-      "p50_ms": 4.72,
-      "p95_ms": 8.48
+      "p50_ms": 4.56,
+      "p95_ms": 7.11
     },
     {
       "mode": "Dense Vector",
-      "p50_ms": 4.78,
-      "p95_ms": 6.83
+      "p50_ms": 5.18,
+      "p95_ms": 6.75
     },
     {
       "mode": "Hybrid (BM25 + Dense)",
-      "p50_ms": 4.85,
-      "p95_ms": 6.16
+      "p50_ms": 4.97,
+      "p95_ms": 6.93
     },
     {
       "mode": "Hybrid + Existing Deterministic Reranker",
-      "p50_ms": 5.24,
-      "p95_ms": 7.31
+      "p50_ms": 5.25,
+      "p95_ms": 6.68
     },
     {
       "mode": "Hybrid + Neural Cross-Encoder Reranker",
-      "p50_ms": 4.7,
-      "p95_ms": 5.66
+      "p50_ms": 5.14,
+      "p95_ms": 6.66
     }
   ],
   "model_provenance_registry": [
@@ -47,7 +47,7 @@
       "device": "cpu",
       "fallback": false,
       "fallback_available": true,
-      "loaded_at": "2026-09-10T16:37:16.229057+00:00",
+      "loaded_at": "2026-09-11T02:05:44.716011+00:00",
       "regulatory_authority": 0.0,
       "training_status": "DATA_INSUFFICIENT_FOR_TRAINING"
     },
@@ -71,7 +71,7 @@
       "device": "cpu",
       "fallback": false,
       "fallback_available": true,
-      "loaded_at": "2026-09-10T16:37:16.229104+00:00",
+      "loaded_at": "2026-09-11T02:05:44.716067+00:00",
       "regulatory_authority": 0.0,
       "training_status": "DATA_INSUFFICIENT_FOR_TRAINING"
     },
@@ -95,7 +95,7 @@
       "device": "cpu",
       "fallback": false,
       "fallback_available": true,
-      "loaded_at": "2026-09-10T16:37:16.229127+00:00",
+      "loaded_at": "2026-09-11T02:05:44.716096+00:00",
       "regulatory_authority": 0.0,
       "training_status": "DATA_INSUFFICIENT_FOR_TRAINING"
     },
@@ -119,7 +119,7 @@
       "device": "cpu",
       "fallback": false,
       "fallback_available": true,
-      "loaded_at": "2026-09-10T16:37:16.229147+00:00",
+      "loaded_at": "2026-09-11T02:05:44.716120+00:00",
       "regulatory_authority": 0.0,
       "training_status": "DATA_INSUFFICIENT_FOR_TRAINING"
     },
@@ -143,7 +143,7 @@
       "device": "cpu",
       "fallback": false,
       "fallback_available": true,
-      "loaded_at": "2026-09-10T16:37:16.229171+00:00",
+      "loaded_at": "2026-09-11T02:05:44.716143+00:00",
       "regulatory_authority": 0.0,
       "training_status": "DATA_INSUFFICIENT_FOR_TRAINING"
     },
@@ -167,7 +167,7 @@
       "device": "cpu",
       "fallback": false,
       "fallback_available": true,
-      "loaded_at": "2026-09-10T16:37:16.229188+00:00",
+      "loaded_at": "2026-09-11T02:05:44.716170+00:00",
       "regulatory_authority": 0.0,
       "training_status": "DATA_INSUFFICIENT_FOR_TRAINING"
     }

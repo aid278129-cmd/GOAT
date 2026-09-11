@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 620" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090d16"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#131c2e"/>
+      <stop offset="100%" stop-color="#0b1120"/>
+    </linearGradient>
+
+    <linearGradient id="llmPill" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+
+    <linearGradient id="detPill" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+
+    <style>
+      .layer-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 13px; font-weight: 700; fill: #f8fafc; }
+      .layer-desc { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; fill: #94a3b8; }
+      .badge-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; font-size: 9px; font-weight: 700; }
+    </style>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="960" height="620" rx="16" fill="url(#bg)" stroke="#1e293b" stroke-width="1.5"/>
+
+  <!-- Title Header -->
+  <g transform="translate(40, 35)">
+    <rect x="0" y="0" width="4" height="24" rx="2" fill="#38bdf8"/>
+    <text x="14" y="17" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="800" fill="#f8fafc" letter-spacing="0.5">ZYNTRIX 9-LAYER MODULAR SYSTEM ARCHITECTURE</text>
+    <text x="14" y="32" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#64748b">Complete separation of generative language intelligence (0% authority) from deterministic compliance evaluation (100% authority)</text>
+  </g>
+
+  <!-- Column 1: Layers 1 to 5 (Left) -->
+  <!-- Layer 1 -->
+  <g transform="translate(40, 90)" filter="url(#shadow)">
+    <rect width="425" height="85" rx="10" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.2"/>
+    <rect x="15" y="15" width="26" height="20" rx="4" fill="#1e293b"/>
+    <text class="badge-text" x="22" y="29" fill="#38bdf8">L1</text>
+    <text class="layer-title" x="48" y="30">Guided Multi-Modal Input &amp; Preparation</text>
+    <text class="layer-desc" x="15" y="52">PDF Datasheets, High-Res Images (OCR), Audio STT, CSV/Excel BOMs</text>
+    <text class="layer-desc" x="15" y="68">Dynamic readiness checklists &amp; fillable templates for missing specs</text>
+    <rect x="330" y="15" width="80" height="18" rx="4" fill="#0f172a" stroke="#334155"/>
+    <text class="badge-text" x="337" y="27" fill="#94a3b8">UNTRUSTED</text>
+  </g>
+
+  <!-- Layer 2 -->
+  <g transform="translate(40, 190)" filter="url(#shadow)">
+    <rect width="425" height="85" rx="10" fill="url(#cardGrad)" stroke="#0284c7" stroke-width="1.2"/>
+    <rect x="15" y="15" width="26" height="20" rx="4" fill="#0369a1"/>
+    <text class="badge-text" x="22" y="29" fill="#ffffff">L2</text>
+    <text class="layer-title" x="48" y="30">Product DNA Engine &amp; Normalization</text>
+    <text class="layer-desc" x="15" y="52">Structured technical fact extraction, unit normalization (imperial to metric)</text>
+    <text class="layer-desc" x="15" y="68">Missing mandatory attribute detection with clarification loop</text>
+    <rect x="325" y="15" width="85" height="18" rx="4" fill="#0c4a6e" stroke="#0284c7"/>
+    <text class="badge-text" x="332" y="27" fill="#38bdf8">FACT EXTRACTED</text>
+  </g>
+
+  <!-- Layer 3 -->
+  <g transform="translate(40, 290)" filter="url(#shadow)">
+    <rect width="425" height="100" rx="10" fill="url(#cardGrad)" stroke="#8b5cf6" stroke-width="1.5"/>
+    <rect x="15" y="15" width="26" height="20" rx="4" fill="#6d28d9"/>
+    <text class="badge-text" x="22" y="29" fill="#ffffff">L3</text>
+    <text class="layer-title" x="48" y="30">AI Orchestrator &amp; LangGraph Pipeline</text>
+    <text class="layer-desc" x="15" y="52">Exactly ONE LLM model (SingleStructuredLLM) with 11-node state graph</text>
+    <text class="layer-desc" x="15" y="68">Controlled tool invocation, intent classification &amp; prompt guard</text>
+    <rect x="15" y="78" width="130" height="14" rx="3" fill="#1e1b4b"/>
+    <text class="badge-text" x="19" y="88" fill="#c084fc">0.0% COMPLIANCE AUTHORITY</text>
+    <rect x="330" y="15" width="80" height="18" rx="4" fill="#4c1d95" stroke="#8b5cf6"/>
+    <text class="badge-text" x="338" y="27" fill="#ddd6fe">REASONING</text>
+  </g>
+
+  <!-- Layer 4 -->
+  <g transform="translate(40, 405)" filter="url(#shadow)">
+    <rect width="425" height="85" rx="10" fill="url(#cardGrad)" stroke="#059669" stroke-width="1.2"/>
+    <rect x="15" y="15" width="26" height="20" rx="4" fill="#047857"/>
+    <text class="badge-text" x="22" y="29" fill="#ffffff">L4</text>
+    <text class="layer-title" x="48" y="30">Segmented BIS Knowledge Base</text>
+    <text class="layer-desc" x="15" y="52">Authentic gazette standard packages (Scope, QCOs, Requirements, STI)</text>
+    <text class="layer-desc" x="15" y="68">Dual lexical BM25 + pgvector semantic retrieval, SHA-256 clause hashes</text>
+    <rect x="315" y="15" width="95" height="18" rx="4" fill="#064e3b" stroke="#059669"/>
+    <text class="badge-text" x="322" y="27" fill="#34d399">VERIFIED KNOWLEDGE</text>
+  </g>
+
+  <!-- Layer 5 -->
+  <g transform="translate(40, 505)" filter="url(#shadow)">
+    <rect width="425" height="85" rx="10" fill="url(#cardGrad)" stroke="#d97706" stroke-width="1.2"/>
+    <rect x="15" y="15" width="26" height="20" rx="4" fill="#b45309"/>
+    <text class="badge-text" x="22" y="29" fill="#ffffff">L5</text>
+    <text class="layer-title" x="48" y="30">Deterministic Applicability Engine</text>
+    <text class="layer-desc" x="15" y="52">Statutory Quality Control Order (QCO) verification and scheme determination</text>
+    <text class="layer-desc" x="15" y="68">7 canonical applicability states (APPLICABLE, EXEMPT, GAPS, etc.)</text>
+    <rect x="330" y="15" width="80" height="18" rx="4" fill="#451a03" stroke="#d97706"/>
+    <text class="badge-text" x="339" y="27" fill="#fbbf24">STATUTORY</text>
+  </g>
+
+  <!-- Column 2: Layers 6 to 9 (Right) -->
+  <!-- Layer 6 -->
+  <g transform="translate(495, 90)" filter="url(#shadow)">
+    <rect width="425" height="110" rx="10" fill="url(#cardGrad)" stroke="#059669" stroke-width="1.2"/>
+    <rect x="15" y="15" width="26" height="20" rx="4" fill="#047857"/>
+    <text class="badge-text" x="22" y="29" fill="#ffffff">L6</text>
+    <text class="layer-title" x="48" y="30">Clause-Level RAG (Standard-Isolated)</text>
+    <text class="layer-desc" x="15" y="52">Standard isolation lock preventing cross-standard contamination</text>
+    <text class="layer-desc" x="15" y="68">Hybrid dense/sparse clause search with exact reranking</text>
+    <text class="layer-desc" x="15" y="84">Normative clause hierarchy tracking (parent-child clause trees)</text>
+    <rect x="315" y="15" width="95" height="18" rx="4" fill="#064e3b" stroke="#059669"/>
+    <text class="badge-text" x="322" y="27" fill="#34d399">STANDARD ISOLATION</text>
+  </g>
+
+  <!-- Layer 7 -->
+  <g transform="translate(495, 215)" filter="url(#shadow)">
+    <rect width="425" height="115" rx="10" fill="url(#cardGrad)" stroke="#10b981" stroke-width="1.5"/>
+    <rect x="15" y="15" width="26" height="20" rx="4" fill="#059669"/>
+    <text class="badge-text" x="22" y="29" fill="#ffffff">L7</text>
+    <text class="layer-title" x="48" y="30">Compliance Gap Analysis Engine</text>
+    <text class="layer-desc" x="15" y="52">100% deterministic mathematical evaluation: range, limit, tolerance checks</text>
+    <text class="layer-desc" x="15" y="68">8 canonical requirement statuses &amp; 4 recommended actions</text>
+    <text class="layer-desc" x="15" y="84">Prioritized gap register (CRITICAL to LOW) with 5-bucket testing roadmap</text>
+    <rect x="295" y="15" width="115" height="18" rx="4" fill="#064e3b" stroke="#10b981"/>
+    <text class="badge-text" x="303" y="27" fill="#34d399">100% DETERMINISTIC</text>
+  </g>
+
+  <!-- Layer 8 -->
+  <g transform="translate(495, 345)" filter="url(#shadow)">
+    <rect width="425" height="110" rx="10" fill="url(#cardGrad)" stroke="#6366f1" stroke-width="1.2"/>
+    <rect x="15" y="15" width="26" height="20" rx="4" fill="#4f46e5"/>
+    <text class="badge-text" x="22" y="29" fill="#ffffff">L8</text>
+    <text class="layer-title" x="48" y="30">Source Validation &amp; Evidence Firewall</text>
+    <text class="layer-desc" x="15" y="52">Enforces cardinal law: User claim alone NEVER satisfies a requirement</text>
+    <text class="layer-desc" x="15" y="68">NABL-accredited laboratory test report provenance validation</text>
+    <text class="layer-desc" x="15" y="84">Contradictory evidence detection &amp; mandatory expert review escalation</text>
+    <rect x="305" y="15" width="105" height="18" rx="4" fill="#1e1b4b" stroke="#6366f1"/>
+    <text class="badge-text" x="312" y="27" fill="#a5b4fc">EVIDENCE FIREWALL</text>
+  </g>
+
+  <!-- Layer 9 -->
+  <g transform="translate(495, 470)" filter="url(#shadow)">
+    <rect width="425" height="120" rx="10" fill="url(#cardGrad)" stroke="#ec4899" stroke-width="1.5"/>
+    <rect x="15" y="15" width="26" height="20" rx="4" fill="#be185d"/>
+    <text class="badge-text" x="22" y="29" fill="#ffffff">L9</text>
+    <text class="layer-title" x="48" y="30">Compliance Passport &amp; Integrity Guard</text>
+    <text class="layer-desc" x="15" y="52">Auditable executive compliance passport with cryptographic integrity seal</text>
+    <text class="layer-desc" x="15" y="68">Output integrity gate: suppresses hallucinated verdicts &amp; enforces honest counts</text>
+    <text class="layer-desc" x="15" y="84">MSME action center, downloadable compliance dossier &amp; lab recommendation</text>
+    <rect x="310" y="15" width="100" height="18" rx="4" fill="#500724" stroke="#ec4899"/>
+    <text class="badge-text" x="318" y="27" fill="#f472b6">PASSPORT INTEGRITY</text>
+  </g>
+</svg>

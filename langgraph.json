@@ -1,0 +1,7 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "compliance_graph": "./backend/app/services/orchestrator/graph/builder.py:compliance_graph_studio"
+  },
+  "env": ".env"
+}

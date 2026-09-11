@@ -107,3 +107,5 @@ def build_compliance_graph(checkpointer: bool = True):
 
 # Pre-compiled canonical instance
 compliance_graph = build_compliance_graph(checkpointer=True)
+# Instance for LangGraph Studio / LangGraph API (which manages its own persistence)
+compliance_graph_studio = build_compliance_graph(checkpointer=False)

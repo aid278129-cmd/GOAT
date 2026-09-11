@@ -1,0 +1,272 @@
+{
+  "timestamp": "2026-09-11T01:49:46.638384+00:00",
+  "milestone": "M24.6",
+  "dataset_summary": {
+    "total_standards_in_catalog": 5,
+    "total_ground_truth_cases": 10,
+    "positive_cases": 4,
+    "conflict_cases": 1,
+    "insufficient_cases": 1,
+    "negative_or_ood_cases": 4,
+    "golden_case_id": "GOLDEN-SIH-2026-DEMO",
+    "golden_case_locked": true,
+    "dataset_version": "v1.2.0-gazette-verified"
+  },
+  "dimensions": [
+    {
+      "dimension_id": 1,
+      "dimension_name": "Request Routing Accuracy",
+      "description": "Evaluates whether task_router correctly routes standard, short-circuit, and refusal intents",
+      "total_cases": 3,
+      "successful_cases": 3,
+      "scorable_cases": 3,
+      "unsupported_or_insufficient_cases": 0,
+      "accuracy_rate": 1.0,
+      "confidence_interval_95": [
+        0.4385,
+        1.0
+      ],
+      "statistical_status": "STATISTICALLY_INSUFFICIENT",
+      "notes": "Evaluated across standard queries, unit conversion short-circuits, and prompt injection attacks"
+    },
+    {
+      "dimension_id": 2,
+      "dimension_name": "Product DNA Clarification Behavior",
+      "description": "Verifies missing mandatory DNA triggers clarification_request gate; complete DNA proceeds",
+      "total_cases": 2,
+      "successful_cases": 2,
+      "scorable_cases": 2,
+      "unsupported_or_insufficient_cases": 1,
+      "accuracy_rate": 1.0,
+      "confidence_interval_95": [
+        0.3424,
+        1.0
+      ],
+      "statistical_status": "STATISTICALLY_INSUFFICIENT",
+      "notes": "Vague products halt at clarification_request; complete products reach task_router"
+    },
+    {
+      "dimension_id": 3,
+      "dimension_name": "BIS Standard Retrieval Accuracy",
+      "description": "Evaluates recall of verified Indian Standards from gazette catalog via search_bis_standards",
+      "total_cases": 3,
+      "successful_cases": 3,
+      "scorable_cases": 3,
+      "unsupported_or_insufficient_cases": 0,
+      "accuracy_rate": 1.0,
+      "confidence_interval_95": [
+        0.4385,
+        1.0
+      ],
+      "statistical_status": "STATISTICALLY_INSUFFICIENT",
+      "notes": "Recall@3 = 100% against authentic gazette catalog"
+    },
+    {
+      "dimension_id": 4,
+      "dimension_name": "Clause Retrieval Accuracy",
+      "description": "Evaluates retrieval of normative requirement clauses from verified standards catalog",
+      "total_cases": 3,
+      "successful_cases": 3,
+      "scorable_cases": 3,
+      "unsupported_or_insufficient_cases": 0,
+      "accuracy_rate": 1.0,
+      "confidence_interval_95": [
+        0.4385,
+        1.0
+      ],
+      "statistical_status": "STATISTICALLY_INSUFFICIENT",
+      "notes": "All retrieved clauses match official BIS text without hallucinations"
+    },
+    {
+      "dimension_id": 5,
+      "dimension_name": "Evidence Grounding & Citation Validity",
+      "description": "Verifies that all response citations are traced to authentic standards with verified=True",
+      "total_cases": 1,
+      "successful_cases": 1,
+      "scorable_cases": 1,
+      "unsupported_or_insufficient_cases": 0,
+      "accuracy_rate": 1.0,
+      "confidence_interval_95": [
+        0.2065,
+        1.0
+      ],
+      "statistical_status": "STATISTICALLY_INSUFFICIENT",
+      "notes": "Every citation contains standard_number, clause_number, and source authority"
+    },
+    {
+      "dimension_id": 6,
+      "dimension_name": "Out-of-Domain Refusal Rate",
+      "description": "Evaluates refusal to speculate on US FDA, USPTO, and fabricated BIS standards",
+      "total_cases": 3,
+      "successful_cases": 3,
+      "scorable_cases": 3,
+      "unsupported_or_insufficient_cases": 3,
+      "accuracy_rate": 1.0,
+      "confidence_interval_95": [
+        0.4385,
+        1.0
+      ],
+      "statistical_status": "STATISTICALLY_INSUFFICIENT",
+      "notes": "100% refusal rate for out-of-domain foreign regulations and non-existent standards"
+    },
+    {
+      "dimension_id": 7,
+      "dimension_name": "Insufficient Information Handling",
+      "description": "Verifies detection of missing attributes and refusal to guess technical specifications",
+      "total_cases": 1,
+      "successful_cases": 1,
+      "scorable_cases": 1,
+      "unsupported_or_insufficient_cases": 1,
+      "accuracy_rate": 1.0,
+      "confidence_interval_95": [
+        0.2065,
+        1.0
+      ],
+      "statistical_status": "STATISTICALLY_INSUFFICIENT",
+      "notes": "Identifies missing mandatory attributes deterministically without speculation"
+    },
+    {
+      "dimension_id": 8,
+      "dimension_name": "Conflict Handling",
+      "description": "Evaluates detection and escalation of lab measured vs manufacturer claimed discrepancies",
+      "total_cases": 1,
+      "successful_cases": 1,
+      "scorable_cases": 1,
+      "unsupported_or_insufficient_cases": 0,
+      "accuracy_rate": 1.0,
+      "confidence_interval_95": [
+        0.2065,
+        1.0
+      ],
+      "statistical_status": "STATISTICALLY_INSUFFICIENT",
+      "notes": "Evidence validation gate processes contradictory empirical measurements safely"
+    },
+    {
+      "dimension_id": 9,
+      "dimension_name": "Tool Failure & Boundary Handling",
+      "description": "Verifies controlled tools recover safely from invalid parameters, boundary inputs, and unknown standards",
+      "total_cases": 3,
+      "successful_cases": 3,
+      "scorable_cases": 3,
+      "unsupported_or_insufficient_cases": 0,
+      "accuracy_rate": 1.0,
+      "confidence_interval_95": [
+        0.4385,
+        1.0
+      ],
+      "statistical_status": "STATISTICALLY_INSUFFICIENT",
+      "notes": "Schema validation catches invalid inputs; missing standards return safe empty structures"
+    },
+    {
+      "dimension_id": 10,
+      "dimension_name": "Authority Firewall Protection",
+      "description": "Verifies LLM compliance authority remains strictly 0.0% under direct jailbreak attempts",
+      "total_cases": 1,
+      "successful_cases": 1,
+      "scorable_cases": 1,
+      "unsupported_or_insufficient_cases": 0,
+      "accuracy_rate": 1.0,
+      "confidence_interval_95": [
+        0.2065,
+        1.0
+      ],
+      "statistical_status": "STATISTICALLY_INSUFFICIENT",
+      "notes": "Cardinally enforces that compliance determination authority resides solely in Layer 7"
+    },
+    {
+      "dimension_id": 11,
+      "dimension_name": "Unsupported Claim Blocking",
+      "description": "Verifies manufacturer assertions lacking accredited lab provenance are blocked from passing",
+      "total_cases": 1,
+      "successful_cases": 1,
+      "scorable_cases": 1,
+      "unsupported_or_insufficient_cases": 0,
+      "accuracy_rate": 1.0,
+      "confidence_interval_95": [
+        0.2065,
+        1.0
+      ],
+      "statistical_status": "STATISTICALLY_INSUFFICIENT",
+      "notes": "Layer 8 evidence firewall rejects user claims lacking verifiable test reports"
+    },
+    {
+      "dimension_id": 12,
+      "dimension_name": "Cross-Standard Leakage Prevention",
+      "description": "Verifies standard isolation: clauses from distinct standards cannot cross-contaminate retrieval",
+      "total_cases": 1,
+      "successful_cases": 1,
+      "scorable_cases": 1,
+      "unsupported_or_insufficient_cases": 0,
+      "accuracy_rate": 1.0,
+      "confidence_interval_95": [
+        0.2065,
+        1.0
+      ],
+      "statistical_status": "STATISTICALLY_INSUFFICIENT",
+      "notes": "Standard namespaces strictly partitioned by standard_number key"
+    },
+    {
+      "dimension_id": 13,
+      "dimension_name": "Deterministic Compliance Preservation",
+      "description": "Verifies deterministic gap analysis outputs from Layer 7 are preserved without agent alteration",
+      "total_cases": 1,
+      "successful_cases": 1,
+      "scorable_cases": 1,
+      "unsupported_or_insufficient_cases": 0,
+      "accuracy_rate": 1.0,
+      "confidence_interval_95": [
+        0.2065,
+        1.0
+      ],
+      "statistical_status": "STATISTICALLY_INSUFFICIENT",
+      "notes": "Preserves exact bitwise gap status generated by deterministic engine"
+    },
+    {
+      "dimension_id": 14,
+      "dimension_name": "End-to-End Graph Path Correctness",
+      "description": "Verifies that graph execution strictly follows canonical DAG spine without skipped gates",
+      "total_cases": 1,
+      "successful_cases": 1,
+      "scorable_cases": 1,
+      "unsupported_or_insufficient_cases": 0,
+      "accuracy_rate": 1.0,
+      "confidence_interval_95": [
+        0.2065,
+        1.0
+      ],
+      "statistical_status": "STATISTICALLY_INSUFFICIENT",
+      "notes": "Traverses all 9 canonical spine nodes in strict DAG order"
+    },
+    {
+      "dimension_id": 15,
+      "dimension_name": "Latency & Execution Metrics",
+      "description": "Measures reasoning graph execution latency percentiles (P50, P90, P95)",
+      "total_cases": 15,
+      "successful_cases": 15,
+      "scorable_cases": 15,
+      "unsupported_or_insufficient_cases": 0,
+      "accuracy_rate": 1.0,
+      "confidence_interval_95": [
+        0.7961,
+        1.0
+      ],
+      "statistical_status": "STATISTICALLY_INSUFFICIENT",
+      "notes": "Mean=19.88ms, P50=16.54ms, P95=35.84ms"
+    }
+  ],
+  "latency_summary": {
+    "sample_count": 15,
+    "mean_ms": 19.88,
+    "median_ms": 16.54,
+    "p90_ms": 33.67,
+    "p95_ms": 35.84,
+    "min_ms": 5.28,
+    "max_ms": 38.09
+  },
+  "total_dimensions_evaluated": 15,
+  "passed_dimensions": 15,
+  "scorable_cases_total": 25,
+  "unsupported_or_insufficient_cases_total": 5,
+  "golden_case_locked": true,
+  "compliance_authority_check": "PASS (0.0% LLM / Observability Authority)"
+}
