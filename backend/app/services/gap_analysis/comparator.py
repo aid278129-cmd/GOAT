@@ -30,6 +30,7 @@ from typing import Optional, Dict, Any, Tuple, List, Union
 from pydantic import BaseModel, Field
 
 from backend.app.schemas.compliance import ComplianceStatus, RecommendedAction
+from backend.app.schemas.product_dna import ProductDNACore
 from backend.app.services.gap_analysis.evidence_gate import can_be_satisfied, get_evidence_spec_for_requirement
 
 

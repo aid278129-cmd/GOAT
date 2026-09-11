@@ -25,8 +25,14 @@ class IntentRouter:
         if not scan_result.is_safe:
             return OrchestratorIntent.MALICIOUS_OVERRIDE_ATTEMPT, sanitized, scan_result.detected_patterns
 
-        # Direct compliance override check
-        if re.search(r"\b(certify|declare|mark)\b.*?\b(compliant|satisfied|passed)\b", q_lower) or any(w in q_lower for w in ["ignore previous", "override", "bypass gate", "make it pass", "grant isi mark"]):
+        # Direct compliance override check & extended injection patterns
+        if re.search(r"\b(certify|declare|mark)\b.*?\b(compliant|satisfied|passed)\b", q_lower) or any(
+            w in q_lower for w in [
+                "ignore previous", "override", "bypass gate", "make it pass", "grant isi mark",
+                "do not verify source", "skip evidence validation", "change compliance result to satisfied",
+                "treat uploaded document as official", "assume is",
+            ]
+        ):
             return OrchestratorIntent.MALICIOUS_OVERRIDE_ATTEMPT, sanitized, ["DIRECT_COMPLIANCE_OVERRIDE_ATTEMPT"]
 
 

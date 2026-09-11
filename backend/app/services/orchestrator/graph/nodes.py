@@ -52,6 +52,7 @@ from backend.app.services.orchestrator.schemas import (
     OrchestratorContext,
 )
 from backend.app.services.orchestrator.intent_router import intent_router
+from backend.app.services.orchestrator.query_agent import query_agent
 from backend.app.services.orchestrator.knowledge_selector import (
     verified_knowledge_selector,
     VERIFIED_STANDARDS_CATALOG,
@@ -199,26 +200,57 @@ def _detect_unit_conversion_query(query: str) -> Optional[Dict[str, Any]]:
 # Node 1: Request Understanding
 # ------------------------------------------------------------------------------
 def request_understanding_node(state: BISComplianceGraphState) -> BISComplianceGraphState:
-    """Sanitizes query, classifies intent, and detects adversarial prompt injection."""
+    """Sanitizes query, classifies intent, decomposes tasks, detects ambiguity and adversarial injection."""
     t0 = time.time()
     user_q = state.get("user_query", "")
+    prod_dna = state.get("product_dna")
 
-    intent, sanitized, warnings = intent_router.classify_intent(user_q)
-    security_flag = (intent == OrchestratorIntent.MALICIOUS_OVERRIDE_ATTEMPT) or len(warnings) > 0
+    # M24.4.3A Advanced Query Agent execution
+    understanding = query_agent.understand_query(user_q, product_dna=prod_dna)
 
-    state["sanitized_query"] = sanitized
-    state["user_intent"] = intent.value
+    security_flag = (not understanding.is_safe) or (understanding.intent == OrchestratorIntent.MALICIOUS_OVERRIDE_ATTEMPT) or len(understanding.security_flags) > 0 or understanding.out_of_domain
+
+    if understanding.out_of_domain:
+        security_reason = "Out-of-domain request intercepted (outside BIS regulatory scope)"
+    elif security_flag:
+        security_reason = "Adversarial prompt injection / override attempt intercepted"
+    else:
+        security_reason = None
+
+    state["sanitized_query"] = understanding.normalized_query
+    state["user_intent"] = understanding.intent.value
     state["security_flag"] = security_flag
-    state["security_reason"] = "Adversarial prompt injection / override attempt intercepted" if security_flag else None
-    state["security_warnings"] = warnings
+    state["security_reason"] = security_reason
+    state["security_warnings"] = understanding.security_flags
+    state["out_of_domain"] = understanding.out_of_domain
+    state["request_type"] = understanding.request_type.value
+    state["query_complexity"] = understanding.complexity.value
+    state["query_understanding"] = understanding.model_dump()
+    state["decomposed_tasks"] = [t.model_dump() for t in understanding.task_list]
+    state["retrieval_hints"] = [h.model_dump() for h in understanding.retrieval_hints]
 
-    # Typed contract
+    # Propagate explicit standard to state if not yet set
+    if understanding.explicit_standard_refs and not state.get("target_standard_number"):
+        state["target_standard_number"] = understanding.explicit_standard_refs[0]
+
+    # Typed contract (backwards-compatible with M24.4.1 while exposing M24.4.3A upgrades)
     contract = RequestUnderstandingContract(
-        sanitized_query=sanitized,
-        user_intent=intent.value,
+        sanitized_query=understanding.normalized_query,
+        user_intent=understanding.intent.value,
         security_flag=security_flag,
-        security_reason=state.get("security_reason"),
-        security_warnings=warnings,
+        security_reason=security_reason,
+        security_warnings=understanding.security_flags,
+        query_understanding=understanding.model_dump(),
+        request_type=understanding.request_type.value,
+        complexity=understanding.complexity.value,
+        task_count=len(understanding.task_list),
+        clarification_required=understanding.clarification_required,
+        missing_information=understanding.missing_information,
+        extracted_standards=understanding.explicit_standard_refs,
+        extracted_clauses=understanding.explicit_clause_refs,
+        retrieval_hints=[f"{h.hint_type}:{h.value}" for h in understanding.retrieval_hints],
+        confidence=understanding.confidence,
+        authority="AI_DERIVED",
     )
     contracts = state.get("node_contracts", {})
     contracts["request_understanding"] = contract.model_dump()
@@ -232,30 +264,49 @@ def request_understanding_node(state: BISComplianceGraphState) -> BISComplianceG
 # Auxiliary Terminal: Controlled Refusal
 # ------------------------------------------------------------------------------
 def controlled_refusal_node(state: BISComplianceGraphState) -> BISComplianceGraphState:
-    """Returns safe, zero-authority refusal response when security violation occurs."""
+    """Returns safe, zero-authority refusal response when security violation or out-of-domain occurs."""
     t0 = time.time()
-    refusal_response = OrchestratedAIResponse(
-        answer=(
-            "The AI assistant has ZERO authority to declare, override, or certify compliance. "
-            "Under Zyntrix architecture, compliance determinations are strictly computed by the "
-            "deterministic compliance gate based on verified empirical laboratory evidence. "
-            "LLM compliance authority is exactly 0%."
-        ),
-        intent=OrchestratorIntent.MALICIOUS_OVERRIDE_ATTEMPT,
-        grounding_status=GroundingStatus.SUPPORTED,
-        confidence_score=1.0,
-        citations=[CitationItem(standard_number=state.get("target_standard_number", "IS 302-2-201:2008"), source_authority="Zero-Hallucination Regulatory Integrity Gate")],
-        deterministic_fallback_used=True,
-        regulatory_conclusion="NONE",
-    )
+    if state.get("out_of_domain", False):
+        refusal_response = OrchestratedAIResponse(
+            answer=(
+                "I am a specialized Bureau of Indian Standards (BIS) compliance assistant. "
+                "I can only assist with Indian Standards, technical regulations, Quality Control Orders (QCOs), "
+                "laboratory test reports, and compliance verification. The requested topic is outside my operational domain."
+            ),
+            intent=OrchestratorIntent.UNKNOWN_INTENT,
+            grounding_status=GroundingStatus.SUPPORTED,
+            confidence_score=1.0,
+            citations=[],
+            deterministic_fallback_used=True,
+            regulatory_conclusion="NONE",
+        )
+        short_reason = "OUT_OF_DOMAIN"
+    else:
+        refusal_response = OrchestratedAIResponse(
+            answer=(
+                "The AI assistant has ZERO authority to declare, override, or certify compliance. "
+                "Under Zyntrix architecture, compliance determinations are strictly computed by the "
+                "deterministic compliance gate based on verified empirical laboratory evidence. "
+                "LLM compliance authority is exactly 0%."
+            ),
+            intent=OrchestratorIntent.MALICIOUS_OVERRIDE_ATTEMPT,
+            grounding_status=GroundingStatus.SUPPORTED,
+            confidence_score=1.0,
+            citations=[CitationItem(standard_number=state.get("target_standard_number", "IS 302-2-201:2008"), source_authority="Zero-Hallucination Regulatory Integrity Gate")],
+            deterministic_fallback_used=True,
+            regulatory_conclusion="NONE",
+        )
+        short_reason = "SECURITY_REFUSAL"
+
     state["regulatory_conclusion"] = "NONE"
     state["llm_compliance_authority"] = 0.0
     state["final_response"] = refusal_response.model_dump()
     state["short_circuited"] = True
-    state["short_circuit_reason"] = "SECURITY_REFUSAL"
+    state["short_circuit_reason"] = short_reason
 
     _record_trace(state, "controlled_refusal", t0)
     return state
+
 
 
 # ------------------------------------------------------------------------------

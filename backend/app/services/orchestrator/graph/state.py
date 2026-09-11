@@ -20,12 +20,25 @@ from pydantic import BaseModel, Field
 # ------------------------------------------------------------------------------
 
 class RequestUnderstandingContract(BaseModel):
-    """Strongly typed output contract for request_understanding node."""
+    """Strongly typed output contract for request_understanding node (extended in M24.4.3A)."""
     sanitized_query: str
     user_intent: str
     security_flag: bool = False
     security_reason: Optional[str] = None
     security_warnings: List[str] = Field(default_factory=list)
+    # M24.4.3A Query Agent Intelligence Upgrades:
+    query_understanding: Optional[Dict[str, Any]] = None
+    request_type: Optional[str] = None
+    complexity: Optional[str] = None
+    task_count: int = 0
+    clarification_required: bool = False
+    missing_information: List[str] = Field(default_factory=list)
+    extracted_standards: List[str] = Field(default_factory=list)
+    extracted_clauses: List[str] = Field(default_factory=list)
+    retrieval_hints: List[str] = Field(default_factory=list)
+    confidence: float = 1.0
+    authority: str = "AI_DERIVED"
+
 
 
 class ProductDNAContract(BaseModel):
@@ -208,3 +221,12 @@ class BISComplianceGraphState(TypedDict, total=False):
     short_circuit_reason: Optional[str]
     tool_cache: Dict[str, Any]
     node_contracts: Dict[str, Dict[str, Any]]
+
+    # 14. M24.4.3A Query Agent Intelligence Upgrades
+    query_understanding: Optional[Dict[str, Any]]
+    request_type: Optional[str]
+    query_complexity: Optional[str]
+    decomposed_tasks: Optional[List[Dict[str, Any]]]
+    retrieval_hints: Optional[List[Dict[str, Any]]]
+    out_of_domain: Optional[bool]
+

@@ -51,7 +51,7 @@ class Settings(BaseSettings):
 
     # Security & CORS
     SECRET_KEY: str = "zyntrix-development-secret-key-change-in-production"
-    ALLOWED_CORS_ORIGINS: List[str] = [
+    ALLOWED_CORS_ORIGINS: Union[List[str], str] = [
         "http://localhost:5173",
         "http://localhost:3000",
         "http://127.0.0.1:5173",
