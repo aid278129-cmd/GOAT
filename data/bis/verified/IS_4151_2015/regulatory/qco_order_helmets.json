@@ -1,0 +1,18 @@
+{
+  "instrument_id": "REG-QCO-HELMETS-2020",
+  "standard_number": "IS 4151:2015",
+  "instrument_type": "QCO",
+  "order_title": "Helmet for riders of Two-Wheelers Motor Vehicles (Quality Control) Order, 2020",
+  "issuing_ministry": "Ministry of Road Transport and Highways (MoRTH)",
+  "issuing_department": "Transport Division",
+  "is_mandatory": true,
+  "standard_mark": "Standard Mark (ISI Mark) under Scheme-I of Schedule-II of BIS Regulations",
+  "scope_description": "Protective helmets for riders and passengers of two-wheeled motor vehicles in India.",
+  "official_urls": [
+    "https://morth.nic.in",
+    "https://egazette.gov.in"
+  ],
+  "verification_status": "VERIFIED",
+  "verified_by": "SYSTEM_RESEARCH",
+  "verified_at": "2026-09-03T05:00:00Z"
+}

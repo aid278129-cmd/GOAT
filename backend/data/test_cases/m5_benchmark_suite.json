@@ -1,0 +1,823 @@
+[
+  {
+    "case_id": "TC-M5-001-A-STRAIGHTFORWARD-750ML",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "EASY",
+    "product_description": "750 ml double-wall vacuum insulated flask manufactured with stainless steel 304 food contact liner.",
+    "expected_product_dna": {
+      "capacity_ml": 750,
+      "materials": [
+        "stainless_steel_grade_304"
+      ],
+      "insulated": true
+    },
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "4.2.1",
+      "5.2",
+      "5.4"
+    ],
+    "expected_statuses": [
+      "POTENTIALLY_SATISFIED"
+    ],
+    "expected_actions": [
+      "REQUIRES_TESTING"
+    ],
+    "expected_output_source": "DPIIT QCO 2023 / IS 17526:2021"
+  },
+  {
+    "case_id": "TC-M5-002-A-STRAIGHTFORWARD-1000ML",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "EASY",
+    "product_description": "1000 ml double wall vacuum insulated stainless steel 304 domestic flask with screw stopper.",
+    "expected_product_dna": {
+      "capacity_ml": 1000,
+      "materials": [
+        "stainless_steel_grade_304"
+      ],
+      "insulated": true
+    },
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "4.2.1",
+      "5.2",
+      "5.4",
+      "7.1"
+    ],
+    "expected_statuses": [
+      "POTENTIALLY_SATISFIED"
+    ],
+    "expected_actions": [
+      "REQUIRES_TESTING"
+    ],
+    "expected_output_source": "IS 17526:2021 Clause 4.2.1"
+  },
+  {
+    "case_id": "TC-M5-003-A-STRAIGHTFORWARD-500ML",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "EASY",
+    "product_description": "500 ml narrow mouth vacuum flask made with SS 304 body and food grade silicone seal.",
+    "expected_product_dna": {
+      "capacity_ml": 500,
+      "materials": [
+        "stainless_steel_grade_304"
+      ],
+      "insulated": true
+    },
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "4.2.1",
+      "5.2",
+      "5.4"
+    ],
+    "expected_statuses": [
+      "POTENTIALLY_SATISFIED"
+    ],
+    "expected_actions": [
+      "REQUIRES_TESTING"
+    ],
+    "expected_output_source": "IS 17526:2021"
+  },
+  {
+    "case_id": "TC-M5-004-B-SYNONYM-LITRE",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "MEDIUM",
+    "product_description": "Thermal vacuum bottle 0.75 litre made with Grade 304 SS for household beverage carrying.",
+    "expected_product_dna": {
+      "capacity_ml": 750,
+      "materials": [
+        "stainless_steel_grade_304"
+      ],
+      "insulated": true
+    },
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "4.2.1",
+      "5.4"
+    ],
+    "expected_statuses": [
+      "POTENTIALLY_SATISFIED"
+    ],
+    "expected_actions": [
+      "REQUIRES_TESTING"
+    ],
+    "expected_output_source": "IS 17526:2021"
+  },
+  {
+    "case_id": "TC-M5-005-B-SYNONYM-THERMOS",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "MEDIUM",
+    "product_description": "Insulated beverage thermos container 1L with 18/8 austenitic stainless steel construction.",
+    "expected_product_dna": {
+      "capacity_ml": 1000,
+      "materials": [
+        "stainless_steel_grade_304"
+      ],
+      "insulated": true
+    },
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "4.2.1",
+      "5.4"
+    ],
+    "expected_statuses": [
+      "POTENTIALLY_SATISFIED"
+    ],
+    "expected_actions": [
+      "REQUIRES_TESTING"
+    ],
+    "expected_output_source": "IS 17526:2021"
+  },
+  {
+    "case_id": "TC-M5-006-B-SYNONYM-HYDRO-FLASK",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "MEDIUM",
+    "product_description": "Double walled hot & cold hydro flask 350 ml with vacuum barrier and stainless liner.",
+    "expected_product_dna": {
+      "capacity_ml": 350,
+      "materials": [
+        "stainless_steel_grade_304"
+      ],
+      "insulated": true
+    },
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "4.2.1",
+      "5.4"
+    ],
+    "expected_statuses": [
+      "POTENTIALLY_SATISFIED"
+    ],
+    "expected_actions": [
+      "REQUIRES_TESTING"
+    ],
+    "expected_output_source": "IS 17526:2021"
+  },
+  {
+    "case_id": "TC-M5-007-C-MISSING-CAPACITY",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "MEDIUM",
+    "product_description": "Stainless steel double wall insulated bottle with food contact silicone gasket.",
+    "expected_product_dna": {
+      "materials": [
+        "stainless_steel_grade_304"
+      ],
+      "insulated": true
+    },
+    "expected_clarifications": [
+      "capacity_ml"
+    ],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "4.2.1"
+    ],
+    "expected_statuses": [
+      "MORE_INFORMATION_REQUIRED"
+    ],
+    "expected_actions": [
+      "PROVIDE_SPECIFICATION"
+    ],
+    "expected_output_source": "Clarification Engine Rule"
+  },
+  {
+    "case_id": "TC-M5-008-C-MISSING-MATERIAL",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "MEDIUM",
+    "product_description": "750 ml double wall insulated domestic vacuum bottle with leakproof lid.",
+    "expected_product_dna": {
+      "capacity_ml": 750,
+      "insulated": true
+    },
+    "expected_clarifications": [
+      "material_grade"
+    ],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "4.2.1"
+    ],
+    "expected_statuses": [
+      "MORE_INFORMATION_REQUIRED"
+    ],
+    "expected_actions": [
+      "PROVIDE_SPECIFICATION"
+    ],
+    "expected_output_source": "Clarification Engine Rule"
+  },
+  {
+    "case_id": "TC-M5-009-C-MISSING-INTENDED-USE",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "MEDIUM",
+    "product_description": "Vacuum flask 500 ml stainless steel 304 for general storage.",
+    "expected_product_dna": {
+      "capacity_ml": 500,
+      "materials": [
+        "stainless_steel_grade_304"
+      ],
+      "insulated": true
+    },
+    "expected_clarifications": [
+      "intended_use"
+    ],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "4.2.1"
+    ],
+    "expected_statuses": [
+      "MORE_INFORMATION_REQUIRED"
+    ],
+    "expected_actions": [
+      "PROVIDE_SPECIFICATION"
+    ],
+    "expected_output_source": "DPIIT QCO 2023 Scope"
+  },
+  {
+    "case_id": "TC-M5-010-D-AMBIGUOUS-METAL",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "HARD",
+    "product_description": "1000 ml metal vacuum flask made from general stainless steel for drinking use.",
+    "expected_product_dna": {
+      "capacity_ml": 1000,
+      "insulated": true
+    },
+    "expected_clarifications": [
+      "material_grade"
+    ],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "4.2.1"
+    ],
+    "expected_statuses": [
+      "MORE_INFORMATION_REQUIRED"
+    ],
+    "expected_actions": [
+      "PROVIDE_SPECIFICATION"
+    ],
+    "expected_output_source": "IS 17526:2021 Clause 4.2.1"
+  },
+  {
+    "case_id": "TC-M5-011-D-AMBIGUOUS-STEEL-SERIES",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "HARD",
+    "product_description": "750 ml double wall insulated container fabricated from 200-series stainless steel.",
+    "expected_product_dna": {
+      "capacity_ml": 750,
+      "materials": [
+        "stainless_steel_200_series"
+      ],
+      "insulated": true
+    },
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "4.2.1"
+    ],
+    "expected_statuses": [
+      "POTENTIAL_GAP"
+    ],
+    "expected_actions": [
+      "PROVIDE_SPECIFICATION"
+    ],
+    "expected_output_source": "IS 17526:2021 Clause 4.2.1 (Requires 304/superior)"
+  },
+  {
+    "case_id": "TC-M5-012-D-AMBIGUOUS-PLASTIC-LINER",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "HARD",
+    "product_description": "Vacuum flask with outer steel shell and internal plastic beverage contact chamber 600 ml.",
+    "expected_product_dna": {
+      "capacity_ml": 600,
+      "insulated": true
+    },
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "4.2.1"
+    ],
+    "expected_statuses": [
+      "POTENTIAL_GAP"
+    ],
+    "expected_actions": [
+      "PROVIDE_SPECIFICATION"
+    ],
+    "expected_output_source": "IS 17526:2021 (Requires all metallic food contact parts to be SS 304)"
+  },
+  {
+    "case_id": "TC-M5-013-E-ELECTRIC-KETTLE",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Electrical & Domestic Appliances",
+    "difficulty": "MEDIUM",
+    "product_description": "Electric corded heating water kettle 1500W, 230V AC with automatic boil-dry cut-off.",
+    "expected_product_dna": {
+      "electrical": true,
+      "category": "Electrical & Domestic Appliances"
+    },
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 302-2-15:2009"
+    ],
+    "expected_clauses": [],
+    "expected_statuses": [
+      "MORE_INFORMATION_REQUIRED"
+    ],
+    "expected_actions": [
+      "UPLOAD_EVIDENCE"
+    ],
+    "expected_output_source": "IS 302-2-15:2009 Rule APP_ELECTRICAL_001"
+  },
+  {
+    "case_id": "TC-M5-014-E-ELECTRIC-WATER-HEATER",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Electrical & Domestic Appliances",
+    "difficulty": "MEDIUM",
+    "product_description": "Storage type domestic electric water geyser heater 2000W 230V 15L capacity.",
+    "expected_product_dna": {
+      "electrical": true,
+      "category": "Electrical & Domestic Appliances"
+    },
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 302-2-15:2009"
+    ],
+    "expected_clauses": [],
+    "expected_statuses": [
+      "MORE_INFORMATION_REQUIRED"
+    ],
+    "expected_actions": [
+      "UPLOAD_EVIDENCE"
+    ],
+    "expected_output_source": "IS 302-2-15:2009"
+  },
+  {
+    "case_id": "TC-M5-015-E-PLASTIC-WATER-BOTTLE",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "HARD",
+    "product_description": "Polypropylene plastic water bottle 750 ml without vacuum insulation for gym use.",
+    "expected_product_dna": {
+      "capacity_ml": 750,
+      "materials": [
+        "polypropylene"
+      ],
+      "insulated": false
+    },
+    "expected_clarifications": [],
+    "expected_standards": [],
+    "expected_clauses": [],
+    "expected_statuses": [
+      "NOT_APPLICABLE"
+    ],
+    "expected_actions": [],
+    "expected_output_source": "Rule Engine (IS 17526 requires Stainless Steel Vacuum Flask)"
+  },
+  {
+    "case_id": "TC-M5-016-F-EXACT-CLAUSE-4-2-1",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "EASY",
+    "product_description": "Clause 4.2.1 stainless steel chemical composition IS 6911 requirement.",
+    "expected_product_dna": {},
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "4.2.1"
+    ],
+    "expected_statuses": [
+      "MORE_INFORMATION_REQUIRED"
+    ],
+    "expected_actions": [
+      "UPLOAD_EVIDENCE"
+    ],
+    "expected_output_source": "IS 17526:2021 Clause 4.2.1"
+  },
+  {
+    "case_id": "TC-M5-017-F-EXACT-CLAUSE-5-2",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "EASY",
+    "product_description": "Clause 5.2 leakage test container inverted for 10 minutes zero moisture seepage.",
+    "expected_product_dna": {},
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "5.2"
+    ],
+    "expected_statuses": [
+      "MORE_INFORMATION_REQUIRED"
+    ],
+    "expected_actions": [
+      "REQUIRES_TESTING"
+    ],
+    "expected_output_source": "IS 17526:2021 Clause 5.2"
+  },
+  {
+    "case_id": "TC-M5-018-F-EXACT-CLAUSE-5-4",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "EASY",
+    "product_description": "Clause 5.4 thermal performance heat retention test water temp after 6 hours.",
+    "expected_product_dna": {},
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "5.4"
+    ],
+    "expected_statuses": [
+      "MORE_INFORMATION_REQUIRED"
+    ],
+    "expected_actions": [
+      "REQUIRES_TESTING"
+    ],
+    "expected_output_source": "IS 17526:2021 Clause 5.4"
+  },
+  {
+    "case_id": "TC-M5-019-G-SEMANTIC-HEAT-LOSS",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "HARD",
+    "product_description": "Hot water cooling temperature test after leaving bottle undisturbed on bench for six hours.",
+    "expected_product_dna": {
+      "insulated": true
+    },
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "5.4"
+    ],
+    "expected_statuses": [
+      "POTENTIALLY_SATISFIED"
+    ],
+    "expected_actions": [
+      "REQUIRES_TESTING"
+    ],
+    "expected_output_source": "IS 17526:2021 Clause 5.4 Semantic Match"
+  },
+  {
+    "case_id": "TC-M5-020-G-SEMANTIC-INVERSION-SEAL",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "HARD",
+    "product_description": "Turning the flask upside down to check if beverage drips out of the cap seal gasket.",
+    "expected_product_dna": {},
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "5.2"
+    ],
+    "expected_statuses": [
+      "POTENTIALLY_SATISFIED"
+    ],
+    "expected_actions": [
+      "REQUIRES_TESTING"
+    ],
+    "expected_output_source": "IS 17526:2021 Clause 5.2 Semantic Match"
+  },
+  {
+    "case_id": "TC-M5-021-G-SEMANTIC-FOOD-GRADE-STEEL",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "HARD",
+    "product_description": "Non-toxic food safe metallic interior lining preventing corrosion and chromium leaching.",
+    "expected_product_dna": {},
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "4.2.1"
+    ],
+    "expected_statuses": [
+      "MORE_INFORMATION_REQUIRED"
+    ],
+    "expected_actions": [
+      "UPLOAD_EVIDENCE"
+    ],
+    "expected_output_source": "IS 17526:2021 Clause 4.2.1 Semantic Match"
+  },
+  {
+    "case_id": "TC-M5-022-H-MISSING-TEST-REPORT",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "MEDIUM",
+    "product_description": "750 ml SS 304 insulated flask with no laboratory test certificate submitted.",
+    "expected_product_dna": {
+      "capacity_ml": 750,
+      "materials": [
+        "stainless_steel_grade_304"
+      ],
+      "insulated": true
+    },
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "5.2",
+      "5.4"
+    ],
+    "expected_statuses": [
+      "POTENTIALLY_SATISFIED"
+    ],
+    "expected_actions": [
+      "REQUIRES_TESTING"
+    ],
+    "expected_output_source": "Gap Engine Comparator"
+  },
+  {
+    "case_id": "TC-M5-023-H-MISSING-MILL-CERTIFICATE",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "MEDIUM",
+    "product_description": "Declared SS 304 flask 1000ml without IS 6911 raw material mill test certificate.",
+    "expected_product_dna": {
+      "capacity_ml": 1000,
+      "materials": [
+        "stainless_steel_grade_304"
+      ]
+    },
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "4.2.1"
+    ],
+    "expected_statuses": [
+      "POTENTIALLY_SATISFIED"
+    ],
+    "expected_actions": [
+      "UPLOAD_EVIDENCE"
+    ],
+    "expected_output_source": "Gap Engine Comparator"
+  },
+  {
+    "case_id": "TC-M5-024-H-MISSING-MARKING-ARTWORK",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "MEDIUM",
+    "product_description": "Flask manufactured with SS 304 and tested for heat retention, but carton marking artwork not uploaded.",
+    "expected_product_dna": {
+      "materials": [
+        "stainless_steel_grade_304"
+      ]
+    },
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "7.1"
+    ],
+    "expected_statuses": [
+      "MISSING_EVIDENCE"
+    ],
+    "expected_actions": [
+      "UPLOAD_EVIDENCE"
+    ],
+    "expected_output_source": "IS 17526:2021 Clause 7.1 Marking"
+  },
+  {
+    "case_id": "TC-M5-025-I-CONFLICTING-TEMPERATURE",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "HARD",
+    "product_description": "750 ml flask with manufacturer datasheet claiming 65C after 6h but independent lab report finding 54C.",
+    "expected_product_dna": {
+      "capacity_ml": 750,
+      "insulated": true
+    },
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "5.4"
+    ],
+    "expected_statuses": [
+      "CONFLICTING_EVIDENCE"
+    ],
+    "expected_actions": [
+      "EXPERT_REVIEW"
+    ],
+    "expected_output_source": "Evidence Conflict Detector"
+  },
+  {
+    "case_id": "TC-M5-026-I-CONFLICTING-MATERIAL-DECLARATION",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "HARD",
+    "product_description": "Datasheet asserts Grade 304 SS while spectrometer test report reveals 201-series composition (chromium < 16%).",
+    "expected_product_dna": {
+      "materials": [
+        "stainless_steel_grade_304"
+      ]
+    },
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "4.2.1"
+    ],
+    "expected_statuses": [
+      "CONFLICTING_EVIDENCE"
+    ],
+    "expected_actions": [
+      "EXPERT_REVIEW"
+    ],
+    "expected_output_source": "Evidence Conflict Detector"
+  },
+  {
+    "case_id": "TC-M5-027-I-CONFLICTING-LEAKAGE-FINDINGS",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "Drinkware & Food Contact Containers",
+    "difficulty": "HARD",
+    "product_description": "Factory QC certificate claims zero leakage while BIS surveillance test report notes seal weeping at 8 minutes.",
+    "expected_product_dna": {},
+    "expected_clarifications": [],
+    "expected_standards": [
+      "IS 17526:2021"
+    ],
+    "expected_clauses": [
+      "5.2"
+    ],
+    "expected_statuses": [
+      "CONFLICTING_EVIDENCE"
+    ],
+    "expected_actions": [
+      "EXPERT_REVIEW"
+    ],
+    "expected_output_source": "Evidence Conflict Detector"
+  },
+  {
+    "case_id": "TC-M5-028-J-CERAMIC-CUP",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "General Goods",
+    "difficulty": "EASY",
+    "product_description": "Ceramic coffee mug with wooden handle and glazed finish.",
+    "expected_product_dna": {
+      "category": "General Goods",
+      "insulated": false
+    },
+    "expected_clarifications": [],
+    "expected_standards": [],
+    "expected_clauses": [],
+    "expected_statuses": [
+      "NOT_APPLICABLE"
+    ],
+    "expected_actions": [],
+    "expected_output_source": "Rule Engine"
+  },
+  {
+    "case_id": "TC-M5-029-J-GLASS-TUMBLER",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "General Goods",
+    "difficulty": "EASY",
+    "product_description": "Clear borosilicate glass water tumbler 300 ml without lid or vacuum.",
+    "expected_product_dna": {
+      "category": "General Goods",
+      "insulated": false
+    },
+    "expected_clarifications": [],
+    "expected_standards": [],
+    "expected_clauses": [],
+    "expected_statuses": [
+      "NOT_APPLICABLE"
+    ],
+    "expected_actions": [],
+    "expected_output_source": "Rule Engine"
+  },
+  {
+    "case_id": "TC-M5-030-J-COPPER-VESSEL",
+    "dataset_type": "CONTROLLED_DEVELOPMENT_CASE",
+    "source_type": "SYNTHETIC_SPECIFICATION",
+    "authoritative_status": "CONTROLLED_BENCHMARK",
+    "product_category": "General Goods",
+    "difficulty": "MEDIUM",
+    "product_description": "Traditional pure copper hammered water jug 1500 ml for table service.",
+    "expected_product_dna": {
+      "category": "General Goods",
+      "materials": [
+        "copper"
+      ],
+      "insulated": false
+    },
+    "expected_clarifications": [],
+    "expected_standards": [],
+    "expected_clauses": [],
+    "expected_statuses": [
+      "NOT_APPLICABLE"
+    ],
+    "expected_actions": [],
+    "expected_output_source": "Rule Engine (IS 17526 specifies SS Vacuum Flasks only)"
+  }
+]

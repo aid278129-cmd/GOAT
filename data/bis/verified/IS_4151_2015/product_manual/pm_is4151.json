@@ -1,0 +1,23 @@
+{
+  "manual_id": "PM-IS4151-1",
+  "document_code": "PM/IS 4151/1",
+  "standard_number": "IS 4151:2015",
+  "title": "Product Manual for Protective Helmets According to IS 4151:2015",
+  "publisher": "Bureau of Indian Standards",
+  "department": "Central Marks Department (CMD-I)",
+  "purpose": "Guidelines for certification of Two-Wheeler Protective Helmets under Scheme I (ISI Mark).",
+  "operational_guidelines": {
+    "sampling_guidelines": "Helmets drawn across shell sizes and visor variants for conditioning (ambient, heat, cold, and water immersion) and impact testing.",
+    "scheme_of_inspection_and_testing": "Routine quality tests must include impact absorption test, retention system dynamic test, and visor light transmittance.",
+    "primary_test_equipment_required": [
+      "Guided fall impact drop apparatus with modular headforms (sizes A, E, J, M, O)",
+      "Triaxial accelerometer measurement system (peak acceleration <= 300 g)",
+      "Retention test apparatus with 30 kg dynamic falling mass",
+      "Visor luminous transmittance and refractive power spectrophotometer"
+    ]
+  },
+  "source_url": "https://www.bis.gov.in",
+  "verification_status": "VERIFIED",
+  "verified_by": "SYSTEM_RESEARCH",
+  "verified_at": "2026-09-03T05:00:00Z"
+}

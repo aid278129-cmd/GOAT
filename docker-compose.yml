@@ -1,0 +1,64 @@
+services:
+  # PostgreSQL 16 with pgvector extension enabled
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: zyntrix_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgrespassword}
+      POSTGRES_DB: ${POSTGRES_DB:-bis_compliance_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-bis_compliance_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # FastAPI Backend Service
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    container_name: zyntrix_backend
+    restart: unless-stopped
+    environment:
+      ENVIRONMENT: development
+      DEBUG: "True"
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgrespassword}@postgres:5432/${POSTGRES_DB:-bis_compliance_db}
+      POSTGRES_SERVER: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgrespassword}
+      POSTGRES_DB: ${POSTGRES_DB:-bis_compliance_db}
+      ALLOWED_CORS_ORIGINS: "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173,http://frontend:80"
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app/backend
+      - ./data:/app/data
+      - storage_data:/app/storage
+
+  # React Frontend Service
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+    container_name: zyntrix_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    environment:
+      - VITE_BACKEND_URL=http://backend:8000
+
+volumes:
+  postgres_data:
+  storage_data:

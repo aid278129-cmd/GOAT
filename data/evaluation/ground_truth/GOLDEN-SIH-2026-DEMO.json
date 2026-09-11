@@ -1,0 +1,77 @@
+{
+  "case_id": "GOLDEN-SIH-2026-DEMO",
+  "case_type": "POSITIVE",
+  "product_description": "750ml double-walled vacuum insulated flask made from food grade stainless steel 304 with silicone seal, intended for personal drinkware and 24-hour hot beverage temperature retention.",
+  "product_dna": {
+    "product_name": "ThermoSteel Domestic Vacuum Flask 750ml",
+    "category": "Drinkware & Food Contact Containers",
+    "capacity_ml": 750,
+    "materials": [
+      "Stainless Steel Grade 304",
+      "Polypropylene",
+      "Silicone"
+    ],
+    "insulated": true,
+    "food_contact": true,
+    "electrical": false
+  },
+  "expected_standard_candidates": [
+    "IS 17526:2021"
+  ],
+  "expected_applicability": {
+    "standard_number": "IS 17526:2021",
+    "is_mandatory": true,
+    "scheme": "Scheme I (ISI Mark)",
+    "regulatory_order": "Insulated Flask, Bottles and Containers for Domestic Use (Quality Control) Order, 2023",
+    "issuing_authority": "DPIIT"
+  },
+  "expected_clauses": [
+    "4.2.1",
+    "4.2.2",
+    "5.2",
+    "5.4",
+    "7.1"
+  ],
+  "expected_requirements": [
+    "REQ-CL-IS-17526-2021-4.2.1",
+    "REQ-CL-IS-17526-2021-4.2.2",
+    "REQ-CL-IS-17526-2021-5.2",
+    "REQ-CL-IS-17526-2021-5.4",
+    "REQ-CL-IS-17526-2021-7.1"
+  ],
+  "evidence_records": [
+    {
+      "evidence_id": "EV-LAB-IS17526-750ML-001",
+      "status": "VERIFIED"
+    },
+    {
+      "evidence_id": "EV-BOM-IS17526-750ML-002",
+      "status": "VERIFIED"
+    },
+    {
+      "evidence_id": "EV-PHOTO-IS17526-750ML-003",
+      "status": "VERIFIED"
+    }
+  ],
+  "expected_gap_classification": "SATISFIED",
+  "expected_testing_roadmap": [
+    "IS 6911 Material Chemical Analysis (Grade 304)",
+    "IS 9845 Overall Migration Limits (Polypropylene / Silicone)",
+    "IS 17526 Inversion Leakage Test (10 minutes)",
+    "IS 17526 Heat Retention Thermal Test (6 hours >= 60°C)"
+  ],
+  "expected_conflicts": [],
+  "expected_unknown_fields": [],
+  "expected_expert_review": false,
+  "source_references": [
+    "IS 17526:2021",
+    "DPIIT QCO Order 2023 (Insulated Flasks)",
+    "NABL Lab Report TC-5291"
+  ],
+  "reviewer": "Lead SIH 2026 BIS Regulatory Auditor",
+  "review_date": "2026-09-09",
+  "review_status": "APPROVED",
+  "dataset_version": "v1.2.0",
+  "golden_sih_demo": true,
+  "golden_locked": true
+}

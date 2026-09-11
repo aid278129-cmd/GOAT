@@ -1,0 +1,40 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	request_understanding(request_understanding)
+	controlled_refusal(controlled_refusal)
+	product_dna_check(product_dna_check)
+	clarification_request(clarification_request)
+	task_router(task_router)
+	retrieval_agent(retrieval_agent)
+	evidence_validation_gate(evidence_validation_gate)
+	analysis_agent(analysis_agent)
+	deterministic_compliance_gate(deterministic_compliance_gate)
+	planning_agent(planning_agent)
+	output_integrity_gate(output_integrity_gate)
+	__end__([<p>__end__</p>]):::last
+
+	__start__ --> request_understanding;
+	request_understanding -.-> controlled_refusal;
+	request_understanding -.-> product_dna_check;
+	controlled_refusal --> __end__;
+	product_dna_check -.-> clarification_request;
+	product_dna_check -.-> task_router;
+	clarification_request --> __end__;
+	task_router -.-> retrieval_agent;
+	task_router -.-> analysis_agent;
+	retrieval_agent --> evidence_validation_gate;
+	evidence_validation_gate -.-> analysis_agent;
+	evidence_validation_gate -.-> output_integrity_gate;
+	analysis_agent --> deterministic_compliance_gate;
+	deterministic_compliance_gate --> planning_agent;
+	planning_agent --> output_integrity_gate;
+	output_integrity_gate --> __end__;
+
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc

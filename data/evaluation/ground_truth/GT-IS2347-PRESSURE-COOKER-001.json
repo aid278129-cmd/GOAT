@@ -1,0 +1,40 @@
+{
+  "case_id": "GT-IS2347-PRESSURE-COOKER-001",
+  "case_type": "POSITIVE",
+  "product_description": "5 Litre domestic aluminum alloy pressure cooker with safety relief valve and metallic gasket.",
+  "product_dna": {
+    "product_name": "Domestic Pressure Cooker 5L",
+    "category": "Kitchenware & Domestic Appliances",
+    "capacity_litres": 5,
+    "material": "Aluminium Alloy"
+  },
+  "expected_standard_candidates": [
+    "IS 2347:2017"
+  ],
+  "expected_applicability": {
+    "standard_number": "IS 2347:2017",
+    "is_mandatory": true,
+    "scheme": "Scheme-I (ISI)"
+  },
+  "expected_clauses": [
+    "Operating Pressure Test",
+    "Proof Pressure Test",
+    "Safety Relief Valve Test"
+  ],
+  "expected_requirements": [
+    "REQ-IS2347-PROOF-PRESSURE"
+  ],
+  "evidence_records": [],
+  "expected_gap_classification": "POTENTIAL_GAP",
+  "expected_testing_roadmap": [],
+  "expected_conflicts": [],
+  "expected_unknown_fields": [],
+  "expected_expert_review": false,
+  "source_references": [],
+  "reviewer": "Senior Materials Compliance Engineer",
+  "review_date": "2026-09-11",
+  "review_status": "APPROVED",
+  "dataset_version": "v1.2.0",
+  "golden_sih_demo": false,
+  "golden_locked": false
+}

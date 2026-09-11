@@ -1,0 +1,19 @@
+{
+  "instrument_id": "REG-QCO-TOYS-2020",
+  "standard_number": "IS 9873 (Part 1):2019",
+  "instrument_type": "QCO",
+  "order_title": "Toys (Quality Control) Order, 2020",
+  "issuing_ministry": "Ministry of Commerce and Industry",
+  "issuing_department": "Department for Promotion of Industry and Internal Trade (DPIIT)",
+  "enabling_act": "Section 16, Section 17 and Subsection (3) of Section 25 of the Bureau of Indian Standards Act, 2016 (11 of 2016)",
+  "is_mandatory": true,
+  "standard_mark": "Standard Mark (ISI Mark) under Scheme-I of Schedule-II of BIS (Conformity Assessment) Regulations, 2018",
+  "scope_description": "Toys intended for use in play by children under 14 years of age.",
+  "official_urls": [
+    "https://dpiit.gov.in",
+    "https://egazette.gov.in"
+  ],
+  "verification_status": "VERIFIED",
+  "verified_by": "SYSTEM_RESEARCH",
+  "verified_at": "2026-09-03T05:00:00Z"
+}

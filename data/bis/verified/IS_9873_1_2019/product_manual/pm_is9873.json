@@ -1,0 +1,23 @@
+{
+  "manual_id": "PM-IS9873-1",
+  "document_code": "PM/IS 9873 (Part 1)/1",
+  "standard_number": "IS 9873 (Part 1):2019",
+  "title": "Product Manual for Safety of Toys According to IS 9873 (Part 1):2019",
+  "publisher": "Bureau of Indian Standards",
+  "department": "Central Marks Department (CMD-I)",
+  "purpose": "Guidelines for certification of Toys under Scheme I (ISI Mark).",
+  "operational_guidelines": {
+    "sampling_guidelines": "Samples drawn based on representative models covering intended age groups (under 36 months vs 36+ months).",
+    "scheme_of_inspection_and_testing": "Routine quality tests must include small parts cylinder verification, sharp edge tester, sharp point tester, and impact drop test.",
+    "primary_test_equipment_required": [
+      "Small parts test cylinder (inner diameter 31.7 mm, depth 25.4-57.1 mm)",
+      "Sharp edge tester with PTFE tape mandrel",
+      "Sharp point tester with 4.5 N spring indicator",
+      "Drop test mechanism with steel impact plate"
+    ]
+  },
+  "source_url": "https://www.bis.gov.in",
+  "verification_status": "VERIFIED",
+  "verified_by": "SYSTEM_RESEARCH",
+  "verified_at": "2026-09-03T05:00:00Z"
+}

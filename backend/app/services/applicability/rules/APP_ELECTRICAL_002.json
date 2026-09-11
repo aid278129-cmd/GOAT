@@ -1,0 +1,61 @@
+{
+  "rule_id": "APP-ELECTRICAL-002",
+  "name": "Electric Immersion Water Heaters Safety Applicability",
+  "description": "Determines technical relevance of IS 302-2-201:2008 for portable domestic electric immersion water heaters.",
+  "priority": 12,
+  "verification_status": "VERIFIED",
+  "conditions": {
+    "all": [
+      {
+        "field": "category",
+        "operator": "equals",
+        "value": "Electrical & Domestic Appliances"
+      },
+      {
+        "field": "electrical",
+        "operator": "equals",
+        "value": true
+      },
+      {
+        "any": [
+          {
+            "field": "product_name",
+            "operator": "contains",
+            "value": "Immersion"
+          },
+          {
+            "field": "product_name",
+            "operator": "contains",
+            "value": "Immersion Heater"
+          },
+          {
+            "field": "product_name",
+            "operator": "contains",
+            "value": "Immersion Rod"
+          }
+        ]
+      }
+    ]
+  },
+  "result": {
+    "standard_number": "IS 302-2-201:2008",
+    "standard_title": "Safety of Household and Similar Electrical Appliances — Particular Requirements for Electric Immersion Water Heaters",
+    "technical_relevance": "DEFINITELY_APPLICABLE",
+    "regulatory_status": "VERIFIED_MANDATORY_QCO",
+    "qco_order": "Electrical Appliances (Quality Control) Order, 2003 (S.O. 189(E))",
+    "scheme": "Scheme I (ISI Mark)",
+    "mandatory_reason": "Central Quality Control Order mandates compulsory ISI Mark under Scheme-I for electric immersion water heaters."
+  },
+  "sources": [
+    {
+      "source_type": "BIS_OFFICIAL",
+      "publisher": "Bureau of Indian Standards",
+      "url": "https://www.services.bis.gov.in/php/BIS_2.0/bisconnect/knowyourstandards/indian_standards/isdetails/302_2_201"
+    },
+    {
+      "source_type": "GAZETTE_OFFICIAL",
+      "publisher": "Department for Promotion of Industry and Internal Trade (DPIIT)",
+      "url": "https://www.bis.gov.in/product-certification/products-under-compulsory-certification/"
+    }
+  ]
+}

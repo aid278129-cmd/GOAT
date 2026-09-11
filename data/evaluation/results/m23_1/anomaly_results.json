@@ -1,0 +1,90 @@
+{
+  "metrics": [
+    {
+      "metric_name": "Cross-Source Conflict Detection Rate",
+      "layer": 7,
+      "component": "zyntrix-anomaly-isolation-forest-v1",
+      "reported_m23_value": 0.98,
+      "audit_status": "STATISTICALLY_INSUFFICIENT",
+      "ground_truth_dataset": "Synthetic & Official Conflict Suite",
+      "dataset_version": "v1.2.0-gazette-verified",
+      "split": "CONFLICT",
+      "sample_count": 1,
+      "evaluated_model_id": "zyntrix-anomaly-isolation-forest-v1",
+      "evaluated_model_version": "1.0.0",
+      "evaluation_script_path": "backend/app/services/ml/evaluation/benchmark.py",
+      "calculation_formula": "detected_conflicts (1) / conflict_cases (1)",
+      "reproduced_value": 1.0,
+      "discrepancy_delta": 0.02,
+      "limitations": "N=1 conflict case in repository. Statistical power is insufficient to claim 0.98.",
+      "audit_notes": "Reported M23 value (0.98) was simulated. Authentic repo contains N=1 conflict case where discrepancy is correctly detected (100%).",
+      "metric": "Cross-Source Conflict Detection Rate",
+      "value": 1.0,
+      "dataset": "Synthetic & Official Conflict Suite",
+      "num_approved_cases": 1,
+      "model_version": "1.0.0",
+      "evaluation_date": "2026-09-11",
+      "test_split": "CONFLICT"
+    },
+    {
+      "metric_name": "False Positive Rate (Clean Matches)",
+      "layer": 7,
+      "component": "zyntrix-anomaly-isolation-forest-v1",
+      "reported_m23_value": 0.01,
+      "audit_status": "STATISTICALLY_INSUFFICIENT",
+      "ground_truth_dataset": "Approved Harmonized Cases",
+      "dataset_version": "v1.2.0-gazette-verified",
+      "split": "VALIDATION",
+      "sample_count": 5,
+      "evaluated_model_id": "zyntrix-anomaly-isolation-forest-v1",
+      "evaluated_model_version": "1.0.0",
+      "evaluation_script_path": "backend/app/services/ml/evaluation/benchmark.py",
+      "calculation_formula": "false_positives (0) / clean_cases (5)",
+      "reproduced_value": 0.0,
+      "discrepancy_delta": -0.01,
+      "limitations": "Evaluated on N=4 clean positive/negative cases.",
+      "audit_notes": "Reproduced 0.00 false positive rate with deterministic unit normalization.",
+      "metric": "False Positive Rate (Clean Matches)",
+      "value": 0.0,
+      "dataset": "Approved Harmonized Cases",
+      "num_approved_cases": 5,
+      "model_version": "1.0.0",
+      "evaluation_date": "2026-09-11",
+      "test_split": "VALIDATION"
+    }
+  ],
+  "details": {
+    "conflict_details": [
+      {
+        "case_id": "GT-CONF-HEAT-RETENTION-DISCREPANCY-001",
+        "has_conflict": true,
+        "action_required": "EXPERT_REVIEW_REQUIRED",
+        "explanation": "Conflicting numeric values detected for 'heat_retention_temperature' across sources (Range: 54.0 to 65.0 deg_c). Routed to Expert Review."
+      }
+    ],
+    "clean_details": [
+      {
+        "case_id": "GOLDEN-SIH-2026-DEMO",
+        "has_conflict": false
+      },
+      {
+        "case_id": "GT-IS2347-PRESSURE-COOKER-001",
+        "has_conflict": false
+      },
+      {
+        "case_id": "GT-IS4151-HELMET-001",
+        "has_conflict": false
+      },
+      {
+        "case_id": "GT-NEG-CERAMIC-MUG-001",
+        "has_conflict": false
+      },
+      {
+        "case_id": "GT-PENDING-LED-LIGHT-001",
+        "has_conflict": false
+      }
+    ],
+    "conflict_rate": 1.0,
+    "fpr": 0.0
+  }
+}

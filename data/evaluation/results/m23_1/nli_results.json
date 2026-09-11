@@ -1,0 +1,28 @@
+{
+  "nli_evaluations": [
+    {
+      "claim": "Thermal retention test passed with measured 66.5 C conforming to requirements.",
+      "evidence": "Laboratory report TR-2026-99 confirms 66.5 C after 6 hours.",
+      "expected": "ENTAILMENT",
+      "predicted": "UNKNOWN",
+      "confidence": 0.5,
+      "regulatory_authority": 0.0
+    },
+    {
+      "claim": "Product passes drop test without leakage",
+      "evidence": "Drop test failed: outer casing cracked and liquid leaked from bottom weld.",
+      "expected": "CONTRADICTION",
+      "predicted": "CONTRADICTION",
+      "confidence": 0.94,
+      "regulatory_authority": 0.0
+    },
+    {
+      "claim": "Product satisfies food migration limits",
+      "evidence": "Corrugated shipping carton dimensional measurements.",
+      "expected": "UNKNOWN",
+      "predicted": "UNKNOWN",
+      "confidence": 0.5,
+      "regulatory_authority": 0.0
+    }
+  ]
+}

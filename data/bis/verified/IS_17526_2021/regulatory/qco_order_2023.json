@@ -1,0 +1,20 @@
+{
+  "instrument_id": "REG-QCO-FLASK-2023",
+  "standard_number": "IS 17526:2021",
+  "instrument_type": "QCO",
+  "order_title": "Insulated Flask, Bottles and Containers for Domestic Use (Quality Control) Order, 2023",
+  "issuing_ministry": "Ministry of Commerce and Industry",
+  "issuing_department": "Department for Promotion of Industry and Internal Trade (DPIIT)",
+  "enabling_act": "Section 16, Section 17 and Subsection (3) of Section 25 of the Bureau of Indian Standards Act, 2016 (11 of 2016)",
+  "is_mandatory": true,
+  "standard_mark": "Standard Mark (ISI Mark) under Scheme-I of Schedule-II of BIS (Conformity Assessment) Regulations, 2018",
+  "scope_description": "Domestic stainless steel vacuum flasks, bottles, and insulated beverage containers intended for domestic use.",
+  "exemptions": "Goods or articles meant for export conforming to any specification required by the foreign buyer; micro and small enterprises registered under Udyam portal receive staggered compliance timelines.",
+  "official_urls": [
+    "https://dpiit.gov.in",
+    "https://egazette.gov.in"
+  ],
+  "verification_status": "VERIFIED",
+  "verified_by": "SYSTEM_RESEARCH",
+  "verified_at": "2026-09-02T20:55:00Z"
+}

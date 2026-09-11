@@ -1,0 +1,56 @@
+{
+  "rule_id": "APP-DRINKWARE-001",
+  "name": "Domestic Stainless Steel Vacuum Flasks / Bottles Applicability",
+  "description": "Determines technical relevance of IS 17526:2021 for domestic insulated vacuum beverage containers and checks DPIIT 2023 QCO mandate.",
+  "priority": 10,
+  "verification_status": "VERIFIED",
+  "conditions": {
+    "all": [
+      {
+        "field": "category",
+        "operator": "equals",
+        "value": "Drinkware & Food Contact Containers"
+      },
+      {
+        "any": [
+          {
+            "field": "insulated",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "sub_category",
+            "operator": "contains",
+            "value": "Vacuum"
+          }
+        ]
+      },
+      {
+        "field": "materials",
+        "operator": "contains",
+        "value": "stainless_steel"
+      }
+    ]
+  },
+  "result": {
+    "standard_number": "IS 17526:2021",
+    "standard_title": "Domestic Stainless Steel Vacuum Flask/Bottle",
+    "technical_relevance": "LIKELY_APPLICABLE",
+    "regulatory_status": "VERIFIED_MANDATORY_QCO",
+    "qco_order": "Insulated Flask, Bottles and Containers for Domestic Use (Quality Control) Order, 2023",
+    "scheme": "Scheme I (ISI Mark)",
+    "mandatory_reason": "DPIIT Quality Control Order 2023 mandates compulsory ISI marking for domestic vacuum flasks under Section 16 of the BIS Act, 2016."
+  },
+  "sources": [
+    {
+      "source_type": "BIS_OFFICIAL",
+      "publisher": "Bureau of Indian Standards",
+      "url": "https://www.manakonline.in"
+    },
+    {
+      "source_type": "GOVERNMENT_OFFICIAL",
+      "publisher": "DPIIT, Ministry of Commerce and Industry",
+      "url": "https://dpiit.gov.in"
+    }
+  ]
+}

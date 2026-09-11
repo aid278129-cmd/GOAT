@@ -1,0 +1,77 @@
+{
+  "case_id": "CASE-DRINKWARE-001-SYNTHETIC",
+  "category": "Drinkware & Food Contact Containers",
+  "product_name": "Double-Walled Stainless Steel Insulated Flask",
+  "product_description": "750ml stainless steel vacuum insulated water flask with BPA-free polypropylene stopper and food-grade silicone gasket, designed for 24-hour temperature retention.",
+  "benchmark_scope": "Unit pipeline verification benchmark against synthetic representative fixture (N=1). Strictly for mechanical extraction and retrieval logic validation.",
+  "provenance_note": "Expected values are verified against representative clause text from the synthetic fixture data/bis/fixtures/synthetic/IS_17526_2021_representative.pdf. This is a NON-AUTHORITATIVE test fixture and must never be used to certify regulatory compliance.",
+  "fixture_reference": "data/bis/fixtures/synthetic/IS_17526_2021_representative.pdf",
+  "expected_attributes": {
+    "product_name": "Double-Walled Stainless Steel Insulated Flask",
+    "category": "Drinkware & Food Contact Containers",
+    "materials": ["Stainless Steel 304", "Polypropylene", "Silicone"],
+    "capacity_ml": 750,
+    "insulated": true,
+    "electrical": false
+  },
+  "expected_standards": [
+    {
+      "standard_number": "IS 17526:2021",
+      "title": "Domestic Stainless Steel Vacuum Flask/Bottle",
+      "scheme": "Scheme I (ISI Mark)",
+      "is_mandatory_qco": true
+    }
+  ],
+  "expected_clauses": [
+    {
+      "clause_number": "4.2.1",
+      "title": "Stainless Steel Parts",
+      "section": "Section 4",
+      "page_number": 2,
+      "requirement_type": "MATERIAL",
+      "key_phrases": ["Grade 304", "IS 6911", "0.05 percent"]
+    },
+    {
+      "clause_number": "4.2.2",
+      "title": "Plastic and Polymeric Components",
+      "section": "Section 4",
+      "page_number": 2,
+      "requirement_type": "SAFETY",
+      "key_phrases": ["migration limits", "IS 9845", "BPA-free"]
+    },
+    {
+      "clause_number": "5.2",
+      "title": "Leakage Test",
+      "section": "Section 5",
+      "page_number": 3,
+      "requirement_type": "PERFORMANCE",
+      "key_phrases": ["inverted for a period of 10 minutes", "no evidence of leakage"]
+    },
+    {
+      "clause_number": "5.4",
+      "title": "Thermal Performance (Heat Retention) Test",
+      "section": "Section 5",
+      "page_number": 3,
+      "requirement_type": "PERFORMANCE",
+      "key_phrases": ["95 deg C", "not be less than 60 deg C", "6 hours"]
+    },
+    {
+      "clause_number": "7.1",
+      "title": "Marking Requirements",
+      "section": "Section 7",
+      "page_number": 4,
+      "requirement_type": "MARKING",
+      "key_phrases": ["Name or registered trademark", "Nominal capacity", "ISI Mark"]
+    }
+  ],
+  "expected_sources": [
+    {
+      "document_type": "standard",
+      "filename": "IS_17526_2021.pdf",
+      "standard_number": "IS 17526:2021",
+      "verification_status": "REQUIRES_REVIEW",
+      "fixture_type": "SYNTHETIC_TEST_FIXTURE",
+      "provenance_note": "Programmatically generated fixture preserved for pipeline tests."
+    }
+  ]
+}

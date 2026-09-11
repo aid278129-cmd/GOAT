@@ -1,0 +1,41 @@
+{
+  "dataset_name": "BIS Compliance Compiler Knowledge Dataset",
+  "version": "v1.2.0",
+  "created_at": "2026-09-11T06:56:06.615754+00:00",
+  "standards_count": 51,
+  "qco_count": 49,
+  "documents_count": 52,
+  "verified_documents_count": 1,
+  "clause_count": 5,
+  "requirement_count": 5,
+  "ground_truth_cases": 10,
+  "approved_cases": 9,
+  "acquisition_pending_count": 52,
+  "sha256": "86a14e17b5709d84d168228990d1176ac9e1fb1491aff8e07cdca85cbb97ddb0",
+  "sources": [
+    {
+      "name": "Bureau of Indian Standards Portal & Manakonline",
+      "authority": "Bureau of Indian Standards (BIS)",
+      "url": "https://www.services.bis.gov.in",
+      "type": "AUTHORITATIVE_CATALOG"
+    },
+    {
+      "name": "The Gazette of India / DPIIT QCO Orders",
+      "authority": "Ministry of Commerce and Industry",
+      "url": "https://egazette.gov.in",
+      "type": "AUTHORITATIVE_REGULATORY"
+    },
+    {
+      "name": "BIS-Standards-AI-Assistant Dataset",
+      "authority": "Curated Open Gazette Dataset",
+      "upstream_commit": "c7820efd165484bd82fdae3d5cd370d7a9ecf176",
+      "type": "INTEGRATED_OPEN_DATASET"
+    }
+  ],
+  "limitations": [
+    "Full BIS standard documents require authorized manual procurement from manakonline.in.",
+    "Scraping protected portal documents is strictly prohibited under project data governance.",
+    "ML/DL models possess 0% compliance decision authority; deterministic compliance engine is authoritative.",
+    "No guaranteed certification is implied by system output."
+  ]
+}

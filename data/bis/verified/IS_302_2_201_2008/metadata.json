@@ -1,0 +1,19 @@
+{
+  "standard_number": "IS 302-2-201:2008",
+  "official_title": "Safety of Household and Similar Electrical Appliances — Part 2: Particular Requirements — Section 201: Electric Immersion Water Heaters",
+  "short_title": "Electric Immersion Water Heaters",
+  "edition": "First Edition (Superseding IS 368:1992)",
+  "status": "ACTIVE",
+  "category": "Electrical & Domestic Appliances",
+  "sectional_committee": "Electrical Appliances Sectional Committee (ETD 32)",
+  "ics_code": "97.040.50",
+  "scope": "This Indian Standard deals with the safety of portable electric immersion water heaters for household and similar purposes, their rated voltage being not more than 250 V single-phase AC. It specifies requirements for submersion dielectric breakdown, minimum and maximum water level markings, copper tube corrosion resistance, abnormal dry-boil safety limits, and physical shock protection.",
+  "certification_scheme": "Scheme I (ISI Mark)",
+  "is_mandatory": true,
+  "acquisition_status": "VERIFIED_ACCURATE",
+  "text_acquisition_status": "OFFICIAL_GAZETTE_VERIFIED",
+  "amendments_count": 1,
+  "amendments": [
+    "Amendment No. 1"
+  ]
+}

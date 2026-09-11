@@ -1,0 +1,1721 @@
+{
+  "modes": [
+    {
+      "mode": "BM25 Lexical",
+      "recall_at_1": 0.8571,
+      "recall_at_3": 0.9048,
+      "recall_at_5": 0.9048,
+      "mrr": 0.881,
+      "latency_p50_ms": 7.88,
+      "latency_p95_ms": 11.19,
+      "dataset_n": 21,
+      "audit_status": "PARTIALLY_VERIFIED",
+      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=7.88ms, P95=11.19ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+    },
+    {
+      "mode": "Dense Vector",
+      "recall_at_1": 0.7619,
+      "recall_at_3": 0.8095,
+      "recall_at_5": 0.8571,
+      "mrr": 0.7976,
+      "latency_p50_ms": 10.9,
+      "latency_p95_ms": 14.91,
+      "dataset_n": 21,
+      "audit_status": "PARTIALLY_VERIFIED",
+      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=10.9ms, P95=14.91ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+    },
+    {
+      "mode": "Hybrid (BM25 + Dense)",
+      "recall_at_1": 0.9048,
+      "recall_at_3": 0.9048,
+      "recall_at_5": 0.9048,
+      "mrr": 0.9048,
+      "latency_p50_ms": 5.79,
+      "latency_p95_ms": 10.18,
+      "dataset_n": 21,
+      "audit_status": "PARTIALLY_VERIFIED",
+      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=5.79ms, P95=10.18ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+    },
+    {
+      "mode": "Hybrid + Existing Deterministic Reranker",
+      "recall_at_1": 0.9048,
+      "recall_at_3": 0.9048,
+      "recall_at_5": 0.9048,
+      "mrr": 0.9048,
+      "latency_p50_ms": 7.71,
+      "latency_p95_ms": 9.87,
+      "dataset_n": 21,
+      "audit_status": "PARTIALLY_VERIFIED",
+      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=7.71ms, P95=9.87ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+    },
+    {
+      "mode": "Hybrid + Neural Cross-Encoder Reranker",
+      "recall_at_1": 0.9048,
+      "recall_at_3": 0.9048,
+      "recall_at_5": 0.9048,
+      "mrr": 0.9048,
+      "latency_p50_ms": 7.03,
+      "latency_p95_ms": 8.56,
+      "dataset_n": 21,
+      "audit_status": "PARTIALLY_VERIFIED",
+      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=7.03ms, P95=8.56ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+    }
+  ],
+  "details": {
+    "BM25 Lexical": {
+      "metrics": {
+        "mode": "BM25 Lexical",
+        "recall_at_1": 0.8571,
+        "recall_at_3": 0.9048,
+        "recall_at_5": 0.9048,
+        "mrr": 0.881,
+        "latency_p50_ms": 7.88,
+        "latency_p95_ms": 11.19,
+        "dataset_n": 21,
+        "audit_status": "PARTIALLY_VERIFIED",
+        "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=7.88ms, P95=11.19ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+      },
+      "queries": [
+        {
+          "query_id": "TC_01",
+          "query": "Which standard applies to domestic pressure cookers in India?",
+          "expected_standard": "IS 2347:2017",
+          "top_retrieved": [
+            "IS 2347",
+            "IS 694",
+            "IS 1293",
+            "IS 9873",
+            "IS 15450"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 7.95
+        },
+        {
+          "query_id": "TC_02",
+          "query": "Do portable power banks need BIS certification under CRS?",
+          "expected_standard": "IS 16046 (Part 2):2018",
+          "top_retrieved": [
+            "IS 16046",
+            "IS 16046",
+            "IS 13252",
+            "IS 13252",
+            "IS 1417"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 7.83
+        },
+        {
+          "query_id": "TC_03",
+          "query": "What are the mandatory marks on hallmarked gold jewellery and what is HUID?",
+          "expected_standard": "IS 1417:2016",
+          "top_retrieved": [
+            "IS 1417",
+            "IS 2112",
+            "IS 16047",
+            "IS 16333",
+            "IS 1293"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 7.01
+        },
+        {
+          "query_id": "TC_04",
+          "query": "What standard covers two-wheeler motorcycle protective helmets?",
+          "expected_standard": "IS 4151:2020",
+          "top_retrieved": [
+            "IS 4151",
+            "IS 2925",
+            "IS 14543",
+            "IS 13428",
+            "IS 1165"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 6.56
+        },
+        {
+          "query_id": "TC_05",
+          "query": "What standard governs packaged drinking water testing and certification?",
+          "expected_standard": "IS 14543:2024",
+          "top_retrieved": [
+            "IS 14543",
+            "IS 13428",
+            "IS 2082",
+            "IS 15450",
+            "IS 4985"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 6.23
+        },
+        {
+          "query_id": "TC_06",
+          "query": "Which Indian Standard is applicable for TMT steel bars in construction?",
+          "expected_standard": "IS 1786:2008",
+          "top_retrieved": [
+            "IS 1786",
+            "IS 16333",
+            "IS 13983",
+            "IS 17526",
+            "IS 2925"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 4.68
+        },
+        {
+          "query_id": "TC_07",
+          "query": "What safety tests are mandatory for non-electric children toys in India?",
+          "expected_standard": "IS 9873 (Part 1):2019",
+          "top_retrieved": [
+            "IS 15644",
+            "IS 9873",
+            "IS 1417",
+            "IS 16221",
+            "IS 12211"
+          ],
+          "hit_rank": 2,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 4.35
+        },
+        {
+          "query_id": "TC_08",
+          "query": "What standard applies to electronic drivers and controlgear for LED lighting?",
+          "expected_standard": "IS 15885 (Part 2/Sec 13):2012",
+          "top_retrieved": [
+            "IS 15885",
+            "IS 16102",
+            "IS 616",
+            "IS 15111",
+            "IS 12211"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 4.48
+        },
+        {
+          "query_id": "TC_09",
+          "query": "Which BIS code specifies 1100V PVC insulated domestic electrical copper cables?",
+          "expected_standard": "IS 694:2010",
+          "top_retrieved": [
+            "IS 694",
+            "IS 17526",
+            "IS 1417",
+            "IS 4250",
+            "IS 302"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 3.83
+        },
+        {
+          "query_id": "TC_10",
+          "query": "What standard applies to 6A and 16A plugs and socket-outlets?",
+          "expected_standard": "IS 1293:2019",
+          "top_retrieved": [
+            "IS 1293",
+            "IS 9873",
+            "IS 694",
+            "IS 2347",
+            "IS 16046"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 5.58
+        },
+        {
+          "query_id": "TC_11",
+          "query": "What standard governs static electricity watthour meters for domestic smart meters?",
+          "expected_standard": "IS 13779:1999",
+          "top_retrieved": [
+            "IS 13779",
+            "IS 14697",
+            "IS 4250",
+            "IS 616",
+            "IS 13983"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 7.33
+        },
+        {
+          "query_id": "TC_12",
+          "query": "Which standard applies to pneumatic tyres used on two and three-wheelers?",
+          "expected_standard": "IS 16047:2013",
+          "top_retrieved": [
+            "IS 16047",
+            "IS 15633",
+            "IS 15636",
+            "IS 694",
+            "IS 4151"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 7.88
+        },
+        {
+          "query_id": "TC_13",
+          "query": "What standard regulates architectural toughened and laminated safety glass?",
+          "expected_standard": "IS 2553 (Part 1):2018",
+          "top_retrieved": [
+            "IS 2553",
+            "IS 2553",
+            "IS 15644",
+            "IS 16347",
+            "IS 9873"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 9.43
+        },
+        {
+          "query_id": "TC_14",
+          "query": "Which standard governs HDPE pipes used for potable water supply?",
+          "expected_standard": "IS 15450:2004",
+          "top_retrieved": [
+            "IS 15450",
+            "IS 4985",
+            "IS 14543",
+            "IS 2082",
+            "IS 13428"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 11.15
+        },
+        {
+          "query_id": "TC_15",
+          "query": "What standard covers general purpose moisture resistant (MR) and boiling water resistant (BWR) plywood?",
+          "expected_standard": "IS 303:1989",
+          "top_retrieved": [
+            "IS 303",
+            "IS 14543",
+            "IS 2082",
+            "IS 1165",
+            "IS 15450"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 8.99
+        },
+        {
+          "query_id": "TC_16",
+          "query": "Which standard specifies requirements for domestic electric storage water geysers?",
+          "expected_standard": "IS 2082:2018",
+          "top_retrieved": [
+            "IS 2082",
+            "IS 13428",
+            "IS 17526",
+            "IS 4250",
+            "IS 14543"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 10.42
+        },
+        {
+          "query_id": "TC_17",
+          "query": "What standard covers industrial safety shoes with 200J toe cap protection?",
+          "expected_standard": "IS 15298 (Part 2):2016",
+          "top_retrieved": [
+            "IS 2925",
+            "IS 694",
+            "IS 15111",
+            "IS 15809",
+            "IS 16221"
+          ],
+          "hit_rank": null,
+          "reciprocal_rank": 0.0,
+          "latency_ms": 9.13
+        },
+        {
+          "query_id": "TC_18",
+          "query": "Which standard regulates portable fire extinguishers for class A and B fires?",
+          "expected_standard": "IS 15683:2018",
+          "top_retrieved": [
+            "IS 14697",
+            "IS 16046",
+            "IS 16046",
+            "IS 13779",
+            "IS 15687"
+          ],
+          "hit_rank": null,
+          "reciprocal_rank": 0.0,
+          "latency_ms": 11.19
+        },
+        {
+          "query_id": "TC_19",
+          "query": "What standard regulates crystalline silicon terrestrial solar PV panels?",
+          "expected_standard": "IS 14286:2010",
+          "top_retrieved": [
+            "IS 14286",
+            "IS 16221",
+            "IS 14543",
+            "IS 13428",
+            "IS 1165"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 10.22
+        },
+        {
+          "query_id": "TC_20",
+          "query": "Which standard applies to point of sale (POS) machines and smart card readers?",
+          "expected_standard": "IS 13252 (Part 1):2010",
+          "top_retrieved": [
+            "IS 13252",
+            "IS 13252",
+            "IS 9873",
+            "IS 1293",
+            "IS 16347"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 10.4
+        },
+        {
+          "query_id": "TC_25",
+          "query": "Which Indian Standard applies to domestic stainless steel vacuum flasks and insulated bottles?",
+          "expected_standard": "IS 17526:2021",
+          "top_retrieved": [
+            "IS 17526",
+            "IS 13983",
+            "IS 2347",
+            "IS 694",
+            "IS 16333"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 10.9
+        }
+      ]
+    },
+    "Dense Vector": {
+      "metrics": {
+        "mode": "Dense Vector",
+        "recall_at_1": 0.7619,
+        "recall_at_3": 0.8095,
+        "recall_at_5": 0.8571,
+        "mrr": 0.7976,
+        "latency_p50_ms": 10.9,
+        "latency_p95_ms": 14.91,
+        "dataset_n": 21,
+        "audit_status": "PARTIALLY_VERIFIED",
+        "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=10.9ms, P95=14.91ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+      },
+      "queries": [
+        {
+          "query_id": "TC_01",
+          "query": "Which standard applies to domestic pressure cookers in India?",
+          "expected_standard": "IS 2347:2017",
+          "top_retrieved": [
+            "IS 2347",
+            "IS 15809",
+            "IS 15450",
+            "IS 4985",
+            "IS 13779"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 10.06
+        },
+        {
+          "query_id": "TC_02",
+          "query": "Do portable power banks need BIS certification under CRS?",
+          "expected_standard": "IS 16046 (Part 2):2018",
+          "top_retrieved": [
+            "IS 2347",
+            "IS 16347",
+            "IS 16102",
+            "IS 16046",
+            "IS 16046"
+          ],
+          "hit_rank": 4,
+          "reciprocal_rank": 0.25,
+          "latency_ms": 10.78
+        },
+        {
+          "query_id": "TC_03",
+          "query": "What are the mandatory marks on hallmarked gold jewellery and what is HUID?",
+          "expected_standard": "IS 1417:2016",
+          "top_retrieved": [
+            "IS 1417",
+            "IS 2556",
+            "IS 1293",
+            "IS 14697",
+            "IS 16046"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 10.38
+        },
+        {
+          "query_id": "TC_04",
+          "query": "What standard covers two-wheeler motorcycle protective helmets?",
+          "expected_standard": "IS 4151:2020",
+          "top_retrieved": [
+            "IS 4151",
+            "IS 2925",
+            "IS/ISO 80601-2-56",
+            "IS 1293",
+            "IS 13779"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 11.12
+        },
+        {
+          "query_id": "TC_05",
+          "query": "What standard governs packaged drinking water testing and certification?",
+          "expected_standard": "IS 14543:2024",
+          "top_retrieved": [
+            "IS 14543",
+            "IS 15450",
+            "IS 4985",
+            "IS 1293",
+            "IS 13428"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 12.54
+        },
+        {
+          "query_id": "TC_06",
+          "query": "Which Indian Standard is applicable for TMT steel bars in construction?",
+          "expected_standard": "IS 1786:2008",
+          "top_retrieved": [
+            "IS 1786",
+            "IS 303",
+            "IS 15450",
+            "IS 4985",
+            "IS 17526"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 11.93
+        },
+        {
+          "query_id": "TC_07",
+          "query": "What safety tests are mandatory for non-electric children toys in India?",
+          "expected_standard": "IS 9873 (Part 1):2019",
+          "top_retrieved": [
+            "IS 9873",
+            "IS 12211",
+            "IS 15111",
+            "IS 16221",
+            "IS 16102"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 10.9
+        },
+        {
+          "query_id": "TC_08",
+          "query": "What standard applies to electronic drivers and controlgear for LED lighting?",
+          "expected_standard": "IS 15885 (Part 2/Sec 13):2012",
+          "top_retrieved": [
+            "IS 15885",
+            "IS 9873",
+            "IS 12211",
+            "IS 616",
+            "IS 16046"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 11.88
+        },
+        {
+          "query_id": "TC_09",
+          "query": "Which BIS code specifies 1100V PVC insulated domestic electrical copper cables?",
+          "expected_standard": "IS 694:2010",
+          "top_retrieved": [
+            "IS 694",
+            "IS 4250",
+            "IS 17526",
+            "IS 15450",
+            "IS 2553"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 11.65
+        },
+        {
+          "query_id": "TC_10",
+          "query": "What standard applies to 6A and 16A plugs and socket-outlets?",
+          "expected_standard": "IS 1293:2019",
+          "top_retrieved": [
+            "IS 1293",
+            "IS 16333",
+            "IS 694",
+            "IS 15809",
+            "IS 302"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 14.98
+        },
+        {
+          "query_id": "TC_11",
+          "query": "What standard governs static electricity watthour meters for domestic smart meters?",
+          "expected_standard": "IS 13779:1999",
+          "top_retrieved": [
+            "IS 13779",
+            "IS 14697",
+            "IS 15809",
+            "IS 4250",
+            "IS 15757"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 11.73
+        },
+        {
+          "query_id": "TC_12",
+          "query": "Which standard applies to pneumatic tyres used on two and three-wheelers?",
+          "expected_standard": "IS 16047:2013",
+          "top_retrieved": [
+            "IS 16047",
+            "IS 15636",
+            "IS 14697",
+            "IS 15633",
+            "IS 15658"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 14.3
+        },
+        {
+          "query_id": "TC_13",
+          "query": "What standard regulates architectural toughened and laminated safety glass?",
+          "expected_standard": "IS 2553 (Part 1):2018",
+          "top_retrieved": [
+            "IS 13779",
+            "IS 15809",
+            "IS 15111",
+            "IS 14697",
+            "IS 269"
+          ],
+          "hit_rank": null,
+          "reciprocal_rank": 0.0,
+          "latency_ms": 12.54
+        },
+        {
+          "query_id": "TC_14",
+          "query": "Which standard governs HDPE pipes used for potable water supply?",
+          "expected_standard": "IS 15450:2004",
+          "top_retrieved": [
+            "IS 4985",
+            "IS 15450",
+            "IS 2082",
+            "IS 303",
+            "IS 14543"
+          ],
+          "hit_rank": 2,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 10.43
+        },
+        {
+          "query_id": "TC_15",
+          "query": "What standard covers general purpose moisture resistant (MR) and boiling water resistant (BWR) plywood?",
+          "expected_standard": "IS 303:1989",
+          "top_retrieved": [
+            "IS 303",
+            "IS 16046",
+            "IS 16046",
+            "IS 13983",
+            "IS/ISO 80601-2-56"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 9.95
+        },
+        {
+          "query_id": "TC_16",
+          "query": "Which standard specifies requirements for domestic electric storage water geysers?",
+          "expected_standard": "IS 2082:2018",
+          "top_retrieved": [
+            "IS 2082",
+            "IS 15450",
+            "IS 4985",
+            "IS 302",
+            "IS 302"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 11.21
+        },
+        {
+          "query_id": "TC_17",
+          "query": "What standard covers industrial safety shoes with 200J toe cap protection?",
+          "expected_standard": "IS 15298 (Part 2):2016",
+          "top_retrieved": [
+            "IS 2925",
+            "IS 13779",
+            "IS 14697",
+            "IS 15809",
+            "IS 9873"
+          ],
+          "hit_rank": null,
+          "reciprocal_rank": 0.0,
+          "latency_ms": 10.18
+        },
+        {
+          "query_id": "TC_18",
+          "query": "Which standard regulates portable fire extinguishers for class A and B fires?",
+          "expected_standard": "IS 15683:2018",
+          "top_retrieved": [
+            "IS 2082",
+            "IS 16046",
+            "IS 16046",
+            "IS 1293",
+            "IS 12211"
+          ],
+          "hit_rank": null,
+          "reciprocal_rank": 0.0,
+          "latency_ms": 10.01
+        },
+        {
+          "query_id": "TC_19",
+          "query": "What standard regulates crystalline silicon terrestrial solar PV panels?",
+          "expected_standard": "IS 14286:2010",
+          "top_retrieved": [
+            "IS 14286",
+            "IS 1786",
+            "IS 16047",
+            "IS 15633",
+            "IS 15636"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 6.79
+        },
+        {
+          "query_id": "TC_20",
+          "query": "Which standard applies to point of sale (POS) machines and smart card readers?",
+          "expected_standard": "IS 13252 (Part 1):2010",
+          "top_retrieved": [
+            "IS 13252",
+            "IS 13252",
+            "IS 15809",
+            "IS 616",
+            "IS 16047"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 6.64
+        },
+        {
+          "query_id": "TC_25",
+          "query": "Which Indian Standard applies to domestic stainless steel vacuum flasks and insulated bottles?",
+          "expected_standard": "IS 17526:2021",
+          "top_retrieved": [
+            "IS 17526",
+            "IS 13983",
+            "IS 16333",
+            "IS 694",
+            "IS 2347"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 6.74
+        }
+      ]
+    },
+    "Hybrid (BM25 + Dense)": {
+      "metrics": {
+        "mode": "Hybrid (BM25 + Dense)",
+        "recall_at_1": 0.9048,
+        "recall_at_3": 0.9048,
+        "recall_at_5": 0.9048,
+        "mrr": 0.9048,
+        "latency_p50_ms": 5.79,
+        "latency_p95_ms": 10.18,
+        "dataset_n": 21,
+        "audit_status": "PARTIALLY_VERIFIED",
+        "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=5.79ms, P95=10.18ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+      },
+      "queries": [
+        {
+          "query_id": "TC_01",
+          "query": "Which standard applies to domestic pressure cookers in India?",
+          "expected_standard": "IS 2347:2017",
+          "top_retrieved": [
+            "IS 2347",
+            "IS 694",
+            "IS 15450",
+            "IS 13779",
+            "IS 9873"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 5.54
+        },
+        {
+          "query_id": "TC_02",
+          "query": "Do portable power banks need BIS certification under CRS?",
+          "expected_standard": "IS 16046 (Part 2):2018",
+          "top_retrieved": [
+            "IS 16046",
+            "IS 16046",
+            "IS 2347",
+            "IS 16221",
+            "IS 1417"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 10.24
+        },
+        {
+          "query_id": "TC_03",
+          "query": "What are the mandatory marks on hallmarked gold jewellery and what is HUID?",
+          "expected_standard": "IS 1417:2016",
+          "top_retrieved": [
+            "IS 1417",
+            "IS 2556",
+            "IS 1293",
+            "IS 14697",
+            "IS 16046"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 5.79
+        },
+        {
+          "query_id": "TC_04",
+          "query": "What standard covers two-wheeler motorcycle protective helmets?",
+          "expected_standard": "IS 4151:2020",
+          "top_retrieved": [
+            "IS 4151",
+            "IS 2925",
+            "IS/ISO 80601-2-56",
+            "IS 1293",
+            "IS 13779"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 5.48
+        },
+        {
+          "query_id": "TC_05",
+          "query": "What standard governs packaged drinking water testing and certification?",
+          "expected_standard": "IS 14543:2024",
+          "top_retrieved": [
+            "IS 14543",
+            "IS 13428",
+            "IS 15450",
+            "IS 4985",
+            "IS 2082"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 6.49
+        },
+        {
+          "query_id": "TC_06",
+          "query": "Which Indian Standard is applicable for TMT steel bars in construction?",
+          "expected_standard": "IS 1786:2008",
+          "top_retrieved": [
+            "IS 1786",
+            "IS 17526",
+            "IS 13983",
+            "IS 16221",
+            "IS 303"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 6.05
+        },
+        {
+          "query_id": "TC_07",
+          "query": "What safety tests are mandatory for non-electric children toys in India?",
+          "expected_standard": "IS 9873 (Part 1):2019",
+          "top_retrieved": [
+            "IS 9873",
+            "IS 15644",
+            "IS 12211",
+            "IS 16221",
+            "IS 15111"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 3.61
+        },
+        {
+          "query_id": "TC_08",
+          "query": "What standard applies to electronic drivers and controlgear for LED lighting?",
+          "expected_standard": "IS 15885 (Part 2/Sec 13):2012",
+          "top_retrieved": [
+            "IS 15885",
+            "IS 16102",
+            "IS 12211",
+            "IS 9873",
+            "IS 616"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 5.47
+        },
+        {
+          "query_id": "TC_09",
+          "query": "Which BIS code specifies 1100V PVC insulated domestic electrical copper cables?",
+          "expected_standard": "IS 694:2010",
+          "top_retrieved": [
+            "IS 694",
+            "IS 17526",
+            "IS 4250",
+            "IS 1417",
+            "IS 302"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 4.71
+        },
+        {
+          "query_id": "TC_10",
+          "query": "What standard applies to 6A and 16A plugs and socket-outlets?",
+          "expected_standard": "IS 1293:2019",
+          "top_retrieved": [
+            "IS 1293",
+            "IS 694",
+            "IS 16333",
+            "IS 15809",
+            "IS 302"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 4.73
+        },
+        {
+          "query_id": "TC_11",
+          "query": "What standard governs static electricity watthour meters for domestic smart meters?",
+          "expected_standard": "IS 13779:1999",
+          "top_retrieved": [
+            "IS 13779",
+            "IS 14697",
+            "IS 4250",
+            "IS 15809",
+            "IS 17526"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 4.27
+        },
+        {
+          "query_id": "TC_12",
+          "query": "Which standard applies to pneumatic tyres used on two and three-wheelers?",
+          "expected_standard": "IS 16047:2013",
+          "top_retrieved": [
+            "IS 16047",
+            "IS 15633",
+            "IS 15636",
+            "IS 694",
+            "IS 14697"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 5.92
+        },
+        {
+          "query_id": "TC_13",
+          "query": "What standard regulates architectural toughened and laminated safety glass?",
+          "expected_standard": "IS 2553 (Part 1):2018",
+          "top_retrieved": [
+            "IS 2553",
+            "IS 2553",
+            "IS 15809",
+            "IS 13779",
+            "IS 15111"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 4.63
+        },
+        {
+          "query_id": "TC_14",
+          "query": "Which standard governs HDPE pipes used for potable water supply?",
+          "expected_standard": "IS 15450:2004",
+          "top_retrieved": [
+            "IS 15450",
+            "IS 4985",
+            "IS 2082",
+            "IS 14543",
+            "IS 303"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 3.58
+        },
+        {
+          "query_id": "TC_15",
+          "query": "What standard covers general purpose moisture resistant (MR) and boiling water resistant (BWR) plywood?",
+          "expected_standard": "IS 303:1989",
+          "top_retrieved": [
+            "IS 303",
+            "IS 2082",
+            "IS 4985",
+            "IS 16046",
+            "IS 16046"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 4.05
+        },
+        {
+          "query_id": "TC_16",
+          "query": "Which standard specifies requirements for domestic electric storage water geysers?",
+          "expected_standard": "IS 2082:2018",
+          "top_retrieved": [
+            "IS 2082",
+            "IS 15450",
+            "IS 4250",
+            "IS 4985",
+            "IS 17526"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 8.61
+        },
+        {
+          "query_id": "TC_17",
+          "query": "What standard covers industrial safety shoes with 200J toe cap protection?",
+          "expected_standard": "IS 15298 (Part 2):2016",
+          "top_retrieved": [
+            "IS 2925",
+            "IS 15809",
+            "IS 13779",
+            "IS 14697",
+            "IS 694"
+          ],
+          "hit_rank": null,
+          "reciprocal_rank": 0.0,
+          "latency_ms": 8.45
+        },
+        {
+          "query_id": "TC_18",
+          "query": "Which standard regulates portable fire extinguishers for class A and B fires?",
+          "expected_standard": "IS 15683:2018",
+          "top_retrieved": [
+            "IS 16046",
+            "IS 16046",
+            "IS 14697",
+            "IS 12211",
+            "IS 16347"
+          ],
+          "hit_rank": null,
+          "reciprocal_rank": 0.0,
+          "latency_ms": 8.12
+        },
+        {
+          "query_id": "TC_19",
+          "query": "What standard regulates crystalline silicon terrestrial solar PV panels?",
+          "expected_standard": "IS 14286:2010",
+          "top_retrieved": [
+            "IS 14286",
+            "IS 16221",
+            "IS 1786",
+            "IS 16047",
+            "IS 15633"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 9.59
+        },
+        {
+          "query_id": "TC_20",
+          "query": "Which standard applies to point of sale (POS) machines and smart card readers?",
+          "expected_standard": "IS 13252 (Part 1):2010",
+          "top_retrieved": [
+            "IS 13252",
+            "IS 13252",
+            "IS 9873",
+            "IS 1293",
+            "IS 616"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 6.72
+        },
+        {
+          "query_id": "TC_25",
+          "query": "Which Indian Standard applies to domestic stainless steel vacuum flasks and insulated bottles?",
+          "expected_standard": "IS 17526:2021",
+          "top_retrieved": [
+            "IS 17526",
+            "IS 13983",
+            "IS 2347",
+            "IS 694",
+            "IS 16333"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 6.99
+        }
+      ]
+    },
+    "Hybrid + Existing Deterministic Reranker": {
+      "metrics": {
+        "mode": "Hybrid + Existing Deterministic Reranker",
+        "recall_at_1": 0.9048,
+        "recall_at_3": 0.9048,
+        "recall_at_5": 0.9048,
+        "mrr": 0.9048,
+        "latency_p50_ms": 7.71,
+        "latency_p95_ms": 9.87,
+        "dataset_n": 21,
+        "audit_status": "PARTIALLY_VERIFIED",
+        "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=7.71ms, P95=9.87ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+      },
+      "queries": [
+        {
+          "query_id": "TC_01",
+          "query": "Which standard applies to domestic pressure cookers in India?",
+          "expected_standard": "IS 2347:2017",
+          "top_retrieved": [
+            "IS 2347",
+            "IS 694",
+            "IS 13779",
+            "IS 4250",
+            "IS 15450"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 7.23
+        },
+        {
+          "query_id": "TC_02",
+          "query": "Do portable power banks need BIS certification under CRS?",
+          "expected_standard": "IS 16046 (Part 2):2018",
+          "top_retrieved": [
+            "IS 16046",
+            "IS 16046",
+            "IS 2347",
+            "IS 16221",
+            "IS 1417"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 7.88
+        },
+        {
+          "query_id": "TC_03",
+          "query": "What are the mandatory marks on hallmarked gold jewellery and what is HUID?",
+          "expected_standard": "IS 1417:2016",
+          "top_retrieved": [
+            "IS 1417",
+            "IS 1293",
+            "IS 2556",
+            "IS 16046",
+            "IS 16046"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 6.84
+        },
+        {
+          "query_id": "TC_04",
+          "query": "What standard covers two-wheeler motorcycle protective helmets?",
+          "expected_standard": "IS 4151:2020",
+          "top_retrieved": [
+            "IS 4151",
+            "IS 2925",
+            "IS/ISO 80601-2-56",
+            "IS 1293",
+            "IS 13779"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 6.56
+        },
+        {
+          "query_id": "TC_05",
+          "query": "What standard governs packaged drinking water testing and certification?",
+          "expected_standard": "IS 14543:2024",
+          "top_retrieved": [
+            "IS 14543",
+            "IS 13428",
+            "IS 15450",
+            "IS 4985",
+            "IS 2082"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 5.2
+        },
+        {
+          "query_id": "TC_06",
+          "query": "Which Indian Standard is applicable for TMT steel bars in construction?",
+          "expected_standard": "IS 1786:2008",
+          "top_retrieved": [
+            "IS 1786",
+            "IS 17526",
+            "IS 13983",
+            "IS 303",
+            "IS 16333"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 5.36
+        },
+        {
+          "query_id": "TC_07",
+          "query": "What safety tests are mandatory for non-electric children toys in India?",
+          "expected_standard": "IS 9873 (Part 1):2019",
+          "top_retrieved": [
+            "IS 9873",
+            "IS 15644",
+            "IS 12211",
+            "IS 16221",
+            "IS 16102"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 7.67
+        },
+        {
+          "query_id": "TC_08",
+          "query": "What standard applies to electronic drivers and controlgear for LED lighting?",
+          "expected_standard": "IS 15885 (Part 2/Sec 13):2012",
+          "top_retrieved": [
+            "IS 15885",
+            "IS 616",
+            "IS 16102",
+            "IS 12211",
+            "IS 1293"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 6.37
+        },
+        {
+          "query_id": "TC_09",
+          "query": "Which BIS code specifies 1100V PVC insulated domestic electrical copper cables?",
+          "expected_standard": "IS 694:2010",
+          "top_retrieved": [
+            "IS 694",
+            "IS 4250",
+            "IS 17526",
+            "IS 4985",
+            "IS 2347"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 6.97
+        },
+        {
+          "query_id": "TC_10",
+          "query": "What standard applies to 6A and 16A plugs and socket-outlets?",
+          "expected_standard": "IS 1293:2019",
+          "top_retrieved": [
+            "IS 1293",
+            "IS 694",
+            "IS 16046",
+            "IS 16046",
+            "IS 16333"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 7.35
+        },
+        {
+          "query_id": "TC_11",
+          "query": "What standard governs static electricity watthour meters for domestic smart meters?",
+          "expected_standard": "IS 13779:1999",
+          "top_retrieved": [
+            "IS 13779",
+            "IS 14697",
+            "IS 4250",
+            "IS 2347",
+            "IS 15757"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 7.5
+        },
+        {
+          "query_id": "TC_12",
+          "query": "Which standard applies to pneumatic tyres used on two and three-wheelers?",
+          "expected_standard": "IS 16047:2013",
+          "top_retrieved": [
+            "IS 16047",
+            "IS 15636",
+            "IS 15633",
+            "IS 16046",
+            "IS 16046"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 7.71
+        },
+        {
+          "query_id": "TC_13",
+          "query": "What standard regulates architectural toughened and laminated safety glass?",
+          "expected_standard": "IS 2553 (Part 1):2018",
+          "top_retrieved": [
+            "IS 2553",
+            "IS 2553",
+            "IS 15809",
+            "IS 616",
+            "IS 13779"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 7.99
+        },
+        {
+          "query_id": "TC_14",
+          "query": "Which standard governs HDPE pipes used for potable water supply?",
+          "expected_standard": "IS 15450:2004",
+          "top_retrieved": [
+            "IS 15450",
+            "IS 4985",
+            "IS 2082",
+            "IS 14543",
+            "IS 303"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 7.81
+        },
+        {
+          "query_id": "TC_15",
+          "query": "What standard covers general purpose moisture resistant (MR) and boiling water resistant (BWR) plywood?",
+          "expected_standard": "IS 303:1989",
+          "top_retrieved": [
+            "IS 303",
+            "IS 2082",
+            "IS 4985",
+            "IS 16046",
+            "IS 16046"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 7.81
+        },
+        {
+          "query_id": "TC_16",
+          "query": "Which standard specifies requirements for domestic electric storage water geysers?",
+          "expected_standard": "IS 2082:2018",
+          "top_retrieved": [
+            "IS 2082",
+            "IS 15450",
+            "IS 4250",
+            "IS 4985",
+            "IS 302"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 9.97
+        },
+        {
+          "query_id": "TC_17",
+          "query": "What standard covers industrial safety shoes with 200J toe cap protection?",
+          "expected_standard": "IS 15298 (Part 2):2016",
+          "top_retrieved": [
+            "IS 2925",
+            "IS 15809",
+            "IS 13779",
+            "IS 14697",
+            "IS 16221"
+          ],
+          "hit_rank": null,
+          "reciprocal_rank": 0.0,
+          "latency_ms": 8.97
+        },
+        {
+          "query_id": "TC_18",
+          "query": "Which standard regulates portable fire extinguishers for class A and B fires?",
+          "expected_standard": "IS 15683:2018",
+          "top_retrieved": [
+            "IS 16046",
+            "IS 16046",
+            "IS 16347",
+            "IS 14697",
+            "IS 12211"
+          ],
+          "hit_rank": null,
+          "reciprocal_rank": 0.0,
+          "latency_ms": 8.92
+        },
+        {
+          "query_id": "TC_19",
+          "query": "What standard regulates crystalline silicon terrestrial solar PV panels?",
+          "expected_standard": "IS 14286:2010",
+          "top_retrieved": [
+            "IS 14286",
+            "IS 16221",
+            "IS 1786",
+            "IS 16047",
+            "IS 15633"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 8.46
+        },
+        {
+          "query_id": "TC_20",
+          "query": "Which standard applies to point of sale (POS) machines and smart card readers?",
+          "expected_standard": "IS 13252 (Part 1):2010",
+          "top_retrieved": [
+            "IS 13252",
+            "IS 13252",
+            "IS 9873",
+            "IS 1293",
+            "IS 616"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 8.41
+        },
+        {
+          "query_id": "TC_25",
+          "query": "Which Indian Standard applies to domestic stainless steel vacuum flasks and insulated bottles?",
+          "expected_standard": "IS 17526:2021",
+          "top_retrieved": [
+            "IS 17526",
+            "IS 13983",
+            "IS 694",
+            "IS 2347",
+            "IS 16333"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 8.88
+        }
+      ]
+    },
+    "Hybrid + Neural Cross-Encoder Reranker": {
+      "metrics": {
+        "mode": "Hybrid + Neural Cross-Encoder Reranker",
+        "recall_at_1": 0.9048,
+        "recall_at_3": 0.9048,
+        "recall_at_5": 0.9048,
+        "mrr": 0.9048,
+        "latency_p50_ms": 7.03,
+        "latency_p95_ms": 8.56,
+        "dataset_n": 21,
+        "audit_status": "PARTIALLY_VERIFIED",
+        "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=7.03ms, P95=8.56ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+      },
+      "queries": [
+        {
+          "query_id": "TC_01",
+          "query": "Which standard applies to domestic pressure cookers in India?",
+          "expected_standard": "IS 2347:2017",
+          "top_retrieved": [
+            "IS 2347",
+            "IS 15450",
+            "IS 694",
+            "IS 13779",
+            "IS 1293"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 8.57
+        },
+        {
+          "query_id": "TC_02",
+          "query": "Do portable power banks need BIS certification under CRS?",
+          "expected_standard": "IS 16046 (Part 2):2018",
+          "top_retrieved": [
+            "IS 16046",
+            "IS 16046",
+            "IS 13252",
+            "IS 1417",
+            "IS 2347"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 8.12
+        },
+        {
+          "query_id": "TC_03",
+          "query": "What are the mandatory marks on hallmarked gold jewellery and what is HUID?",
+          "expected_standard": "IS 1417:2016",
+          "top_retrieved": [
+            "IS 1417",
+            "IS 2556",
+            "IS 16046",
+            "IS 14697",
+            "IS 1293"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 6.57
+        },
+        {
+          "query_id": "TC_04",
+          "query": "What standard covers two-wheeler motorcycle protective helmets?",
+          "expected_standard": "IS 4151:2020",
+          "top_retrieved": [
+            "IS 4151",
+            "IS 2925",
+            "IS 2556",
+            "IS 14697",
+            "IS/ISO 80601-2-56"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 5.43
+        },
+        {
+          "query_id": "TC_05",
+          "query": "What standard governs packaged drinking water testing and certification?",
+          "expected_standard": "IS 14543:2024",
+          "top_retrieved": [
+            "IS 14543",
+            "IS 13428",
+            "IS 15450",
+            "IS 4985",
+            "IS 2082"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 4.7
+        },
+        {
+          "query_id": "TC_06",
+          "query": "Which Indian Standard is applicable for TMT steel bars in construction?",
+          "expected_standard": "IS 1786:2008",
+          "top_retrieved": [
+            "IS 1786",
+            "IS 17526",
+            "IS 13983",
+            "IS 16333",
+            "IS 16221"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 5.55
+        },
+        {
+          "query_id": "TC_07",
+          "query": "What safety tests are mandatory for non-electric children toys in India?",
+          "expected_standard": "IS 9873 (Part 1):2019",
+          "top_retrieved": [
+            "IS 9873",
+            "IS 15644",
+            "IS 16102",
+            "IS 15111",
+            "IS 16221"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 6.98
+        },
+        {
+          "query_id": "TC_08",
+          "query": "What standard applies to electronic drivers and controlgear for LED lighting?",
+          "expected_standard": "IS 15885 (Part 2/Sec 13):2012",
+          "top_retrieved": [
+            "IS 15885",
+            "IS 16102",
+            "IS 616",
+            "IS 16046",
+            "IS 12211"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 7.03
+        },
+        {
+          "query_id": "TC_09",
+          "query": "Which BIS code specifies 1100V PVC insulated domestic electrical copper cables?",
+          "expected_standard": "IS 694:2010",
+          "top_retrieved": [
+            "IS 694",
+            "IS 17526",
+            "IS 4250",
+            "IS 1417",
+            "IS 302"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 7.22
+        },
+        {
+          "query_id": "TC_10",
+          "query": "What standard applies to 6A and 16A plugs and socket-outlets?",
+          "expected_standard": "IS 1293:2019",
+          "top_retrieved": [
+            "IS 1293",
+            "IS 694",
+            "IS 16333",
+            "IS 15809",
+            "IS 302"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 7.55
+        },
+        {
+          "query_id": "TC_11",
+          "query": "What standard governs static electricity watthour meters for domestic smart meters?",
+          "expected_standard": "IS 13779:1999",
+          "top_retrieved": [
+            "IS 13779",
+            "IS 14697",
+            "IS 4250",
+            "IS 15757",
+            "IS 17526"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 6.99
+        },
+        {
+          "query_id": "TC_12",
+          "query": "Which standard applies to pneumatic tyres used on two and three-wheelers?",
+          "expected_standard": "IS 16047:2013",
+          "top_retrieved": [
+            "IS 16047",
+            "IS 15633",
+            "IS 15636",
+            "IS 14697",
+            "IS 694"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 8.32
+        },
+        {
+          "query_id": "TC_13",
+          "query": "What standard regulates architectural toughened and laminated safety glass?",
+          "expected_standard": "IS 2553 (Part 1):2018",
+          "top_retrieved": [
+            "IS 2553",
+            "IS 2553",
+            "IS 616",
+            "IS 15809",
+            "IS 15111"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 8.45
+        },
+        {
+          "query_id": "TC_14",
+          "query": "Which standard governs HDPE pipes used for potable water supply?",
+          "expected_standard": "IS 15450:2004",
+          "top_retrieved": [
+            "IS 15450",
+            "IS 4985",
+            "IS 13428",
+            "IS 2082",
+            "IS 14543"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 6.94
+        },
+        {
+          "query_id": "TC_15",
+          "query": "What standard covers general purpose moisture resistant (MR) and boiling water resistant (BWR) plywood?",
+          "expected_standard": "IS 303:1989",
+          "top_retrieved": [
+            "IS 303",
+            "IS 13428",
+            "IS 2082",
+            "IS 4985",
+            "IS 15450"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 6.96
+        },
+        {
+          "query_id": "TC_16",
+          "query": "Which standard specifies requirements for domestic electric storage water geysers?",
+          "expected_standard": "IS 2082:2018",
+          "top_retrieved": [
+            "IS 2082",
+            "IS 17526",
+            "IS 13428",
+            "IS 4250",
+            "IS 302"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 7.12
+        },
+        {
+          "query_id": "TC_17",
+          "query": "What standard covers industrial safety shoes with 200J toe cap protection?",
+          "expected_standard": "IS 15298 (Part 2):2016",
+          "top_retrieved": [
+            "IS 15809",
+            "IS 2925",
+            "IS 14697",
+            "IS 15111",
+            "IS 694"
+          ],
+          "hit_rank": null,
+          "reciprocal_rank": 0.0,
+          "latency_ms": 7.64
+        },
+        {
+          "query_id": "TC_18",
+          "query": "Which standard regulates portable fire extinguishers for class A and B fires?",
+          "expected_standard": "IS 15683:2018",
+          "top_retrieved": [
+            "IS 16046",
+            "IS 14697",
+            "IS 16046",
+            "IS 15687",
+            "IS 16347"
+          ],
+          "hit_rank": null,
+          "reciprocal_rank": 0.0,
+          "latency_ms": 6.74
+        },
+        {
+          "query_id": "TC_19",
+          "query": "What standard regulates crystalline silicon terrestrial solar PV panels?",
+          "expected_standard": "IS 14286:2010",
+          "top_retrieved": [
+            "IS 14286",
+            "IS 16221",
+            "IS 16047",
+            "IS 15636",
+            "IS 1786"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 8.11
+        },
+        {
+          "query_id": "TC_20",
+          "query": "Which standard applies to point of sale (POS) machines and smart card readers?",
+          "expected_standard": "IS 13252 (Part 1):2010",
+          "top_retrieved": [
+            "IS 13252",
+            "IS 13252",
+            "IS 616",
+            "IS 14697",
+            "IS 9873"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 7.13
+        },
+        {
+          "query_id": "TC_25",
+          "query": "Which Indian Standard applies to domestic stainless steel vacuum flasks and insulated bottles?",
+          "expected_standard": "IS 17526:2021",
+          "top_retrieved": [
+            "IS 17526",
+            "IS 13983",
+            "IS 2347",
+            "IS 694",
+            "IS 16333"
+          ],
+          "hit_rank": 1,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 6.74
+        }
+      ]
+    }
+  }
+}

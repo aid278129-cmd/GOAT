@@ -1,0 +1,36 @@
+{
+  "milestone": "M23.1",
+  "title": "Benchmark & Model Provenance Audit",
+  "timestamp": "2026-09-11T06:48:09.870226+00:00",
+  "dataset_version": "v1.2.0-gazette-verified",
+  "training_status": "DATA_INSUFFICIENT_FOR_TRAINING",
+  "git_commit": "2a4f288",
+  "python_version": "3.14.3",
+  "platform": "Windows",
+  "total_standards": 51,
+  "total_benchmark_queries": 25,
+  "scorable_queries": 21,
+  "out_of_scope_queries": 4,
+  "ground_truth_cases": 9,
+  "golden_case_id": "GOLDEN-SIH-2026-DEMO",
+  "golden_locked": true,
+  "audit_summary": {
+    "VERIFIED": 0,
+    "PARTIALLY_VERIFIED": 3,
+    "STATISTICALLY_INSUFFICIENT": 6,
+    "UNREPRODUCIBLE": 0,
+    "TOTAL_AUDITED_METRICS": 9
+  },
+  "artifacts_generated": [
+    "manifest.json",
+    "retrieval_results.json",
+    "extraction_results.json",
+    "evidence_matching_results.json",
+    "anomaly_results.json",
+    "nli_results.json",
+    "applicability_results.json",
+    "adversarial_results.json",
+    "latency_results.json",
+    "summary.json"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "case_id": "GT-CONF-HEAT-RETENTION-DISCREPANCY-001",
+  "case_type": "CONFLICT",
+  "product_description": "750 ml SS 304 insulated flask with manufacturer datasheet claiming 68°C retention but accredited laboratory test measuring 53°C.",
+  "product_dna": {
+    "product_name": "Insulated Flask 750ml",
+    "capacity_ml": 750,
+    "insulated": true
+  },
+  "expected_standard_candidates": [
+    "IS 17526:2021"
+  ],
+  "expected_applicability": {
+    "standard_number": "IS 17526:2021"
+  },
+  "expected_clauses": [
+    "5.4"
+  ],
+  "expected_requirements": [
+    "REQ-CL-IS-17526-2021-5.4"
+  ],
+  "evidence_records": [],
+  "expected_gap_classification": "POTENTIAL_GAP",
+  "expected_testing_roadmap": [],
+  "expected_conflicts": [
+    "Lab measured temperature (53°C) contradicts manufacturer specification (68°C) and fails IS 17526 Clause 5.4 minimum threshold (60°C)."
+  ],
+  "expected_unknown_fields": [],
+  "expected_expert_review": true,
+  "source_references": [],
+  "reviewer": "Senior Compliance Officer",
+  "review_date": "2026-09-11",
+  "review_status": "APPROVED",
+  "dataset_version": "v1.2.0",
+  "golden_sih_demo": false,
+  "golden_locked": false
+}

@@ -1,0 +1,27 @@
+{
+  "case_id": "GT-NEG-CERAMIC-MUG-001",
+  "case_type": "NEGATIVE",
+  "product_description": "Uninsulated glazed ceramic coffee mug with wooden handle for tea drinking.",
+  "product_dna": {
+    "product_name": "Ceramic Mug",
+    "insulated": false,
+    "category": "General Goods"
+  },
+  "expected_standard_candidates": [],
+  "expected_applicability": {},
+  "expected_clauses": [],
+  "expected_requirements": [],
+  "evidence_records": [],
+  "expected_gap_classification": "NOT_APPLICABLE",
+  "expected_testing_roadmap": [],
+  "expected_conflicts": [],
+  "expected_unknown_fields": [],
+  "expected_expert_review": false,
+  "source_references": [],
+  "reviewer": "Consumer Goods Specialist",
+  "review_date": "2026-09-11",
+  "review_status": "APPROVED",
+  "dataset_version": "v1.2.0",
+  "golden_sih_demo": false,
+  "golden_locked": false
+}

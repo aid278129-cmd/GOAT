@@ -1,0 +1,48 @@
+{
+  "dataset_name": "BIS Compliance Compiler Knowledge Dataset",
+  "version": "v1.2.0",
+  "created_at": "2026-09-09T14:21:56.466924+00:00",
+  "standards_count": 51,
+  "qco_count": 49,
+  "documents_count": 52,
+  "verified_documents_count": 1,
+  "clause_count": 5,
+  "requirement_count": 5,
+  "ground_truth_cases": 10,
+  "approved_cases": 9,
+  "acquisition_pending_count": 52,
+  "sha256": "86a14e17b5709d84d168228990d1176ac9e1fb1491aff8e07cdca85cbb97ddb0",
+  "sources": [
+    {
+      "name": "Bureau of Indian Standards Portal & Manakonline",
+      "authority": "Bureau of Indian Standards (BIS)",
+      "url": "https://www.services.bis.gov.in",
+      "type": "AUTHORITATIVE_CATALOG"
+    },
+    {
+      "name": "The Gazette of India / DPIIT QCO Orders",
+      "authority": "Ministry of Commerce and Industry",
+      "url": "https://egazette.gov.in",
+      "type": "AUTHORITATIVE_REGULATORY"
+    },
+    {
+      "name": "BIS-Standards-AI-Assistant Dataset",
+      "authority": "Curated Open Gazette Dataset",
+      "upstream_commit": "c7820efd165484bd82fdae3d5cd370d7a9ecf176",
+      "type": "INTEGRATED_OPEN_DATASET"
+    }
+  ],
+  "limitations": [
+    "Full BIS standard documents require authorized manual procurement from manakonline.in.",
+    "Scraping protected portal documents is strictly prohibited under project data governance.",
+    "ML/DL models possess 0% compliance decision authority; deterministic compliance engine is authoritative.",
+    "No guaranteed certification is implied by system output."
+  ],
+  "partition_hashes": {
+    "standards.json": "5b945f05c71b69bc2d24d48351c7a3f110625ebf08c0b33d97517bba7e87cf2a",
+    "qco.json": "42129d17dfbdd8a89b8e2c07e0120c4df34d2833e34f9372f89eef8f6ed32090",
+    "clauses.json": "aa814385af715471cc2b0730679226eb36182a9a6366c61a5ec6a694ed8842d0",
+    "ground_truth.json": "37cb832117451b7f03c704b093a0c0d59a7cebb07c3b2064a94aff190fed5c4f"
+  },
+  "snapshot_sha256": "03e9d3313f1ccede6c01e5474c3fc01bdae8a18a4edf03319b38f686b57428ec"
+}

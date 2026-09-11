@@ -1,0 +1,122 @@
+import os
+import json
+from typing import List, Dict, Any
+
+BENCHMARK_FILE = os.path.join(os.path.dirname(__file__), "../../../data/test_cases/m3_benchmark_suite.json")
+
+
+def load_m3_benchmark_cases() -> List[Dict[str, Any]]:
+    """Load expanded N=10 benchmark test cases covering diverse product, retrieval, and compliance scenarios."""
+    if os.path.exists(BENCHMARK_FILE):
+        with open(BENCHMARK_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+
+    # N=10 Comprehensive Ground Truth Suite
+    cases = [
+        {
+            "case_id": "TC-M3-001-STRAIGHTFORWARD",
+            "category": "Drinkware & Food Contact Containers",
+            "product_description": "750 ml double-wall vacuum insulated flask manufactured with stainless steel 304 food contact liner.",
+            "expected_standard": "IS 17526:2021",
+            "expected_clauses": ["4.2.1", "5.2", "5.4"],
+            "expected_status": "POTENTIALLY_SATISFIED",
+            "expected_action": "REQUIRES_TESTING",
+            "test_type": "Straightforward product match",
+        },
+        {
+            "case_id": "TC-M3-002-SYNONYM-WORDING",
+            "category": "Drinkware & Food Contact Containers",
+            "product_description": "Thermal vacuum bottle 0.75 litre made with Grade 304 SS for household beverage carrying.",
+            "expected_standard": "IS 17526:2021",
+            "expected_clauses": ["4.2.1", "5.4"],
+            "expected_status": "POTENTIALLY_SATISFIED",
+            "expected_action": "REQUIRES_TESTING",
+            "test_type": "Different wording for same product",
+        },
+        {
+            "case_id": "TC-M3-003-MISSING-CAPACITY",
+            "category": "Drinkware & Food Contact Containers",
+            "product_description": "Stainless steel double wall insulated bottle with silicone gasket.",
+            "expected_standard": "IS 17526:2021",
+            "expected_clauses": ["4.2.1"],
+            "expected_status": "MORE_INFORMATION_REQUIRED",
+            "expected_action": "PROVIDE_SPECIFICATION",
+            "test_type": "Missing critical attribute (capacity)",
+        },
+        {
+            "case_id": "TC-M3-004-AMBIGUOUS-GRADE",
+            "category": "Drinkware & Food Contact Containers",
+            "product_description": "1000 ml metal vacuum flask made from stainless steel for domestic drinking use.",
+            "expected_standard": "IS 17526:2021",
+            "expected_clauses": ["4.2.1"],
+            "expected_status": "MORE_INFORMATION_REQUIRED",
+            "expected_action": "PROVIDE_SPECIFICATION",
+            "test_type": "Ambiguous material grade",
+        },
+        {
+            "case_id": "TC-M3-005-ELECTRICAL-KETTLE",
+            "category": "Electrical & Domestic Appliances",
+            "product_description": "Electric corded heating water kettle 1500W, 230V AC with automatic boil-dry cut-off.",
+            "expected_standard": "IS 302-2-15:2009",
+            "expected_clauses": [],
+            "expected_status": "MORE_INFORMATION_REQUIRED",
+            "expected_action": "UPLOAD_EVIDENCE",
+            "test_type": "Different category candidate standard",
+        },
+        {
+            "case_id": "TC-M3-006-EXACT-TERMINOLOGY-QUERY",
+            "category": "Drinkware & Food Contact Containers",
+            "product_description": "Clause 4.2.1 stainless steel chemical composition IS 6911 requirement.",
+            "expected_standard": "IS 17526:2021",
+            "expected_clauses": ["4.2.1"],
+            "expected_status": "MORE_INFORMATION_REQUIRED",
+            "expected_action": "UPLOAD_EVIDENCE",
+            "test_type": "Exact terminology query",
+        },
+        {
+            "case_id": "TC-M3-007-SEMANTIC-RETRIEVAL",
+            "category": "Drinkware & Food Contact Containers",
+            "product_description": "Hot water cooling temperature test after leaving bottle undisturbed for six hours.",
+            "expected_standard": "IS 17526:2021",
+            "expected_clauses": ["5.4"],
+            "expected_status": "POTENTIALLY_SATISFIED",
+            "expected_action": "REQUIRES_TESTING",
+            "test_type": "Semantic conceptual query without standard keywords",
+        },
+        {
+            "case_id": "TC-M3-008-MISSING-TEST-EVIDENCE",
+            "category": "Drinkware & Food Contact Containers",
+            "product_description": "750 ml SS 304 insulated flask with no test certificate or lab report submitted.",
+            "expected_standard": "IS 17526:2021",
+            "expected_clauses": ["5.2", "5.4"],
+            "expected_status": "POTENTIALLY_SATISFIED",
+            "expected_action": "UPLOAD_EVIDENCE",
+            "test_type": "Requirement known but missing supporting evidence",
+        },
+        {
+            "case_id": "TC-M3-009-CONFLICTING-EVIDENCE",
+            "category": "Drinkware & Food Contact Containers",
+            "product_description": "750 ml insulated flask with datasheet claiming 65C heat retention but lab test reporting 54C.",
+            "expected_standard": "IS 17526:2021",
+            "expected_clauses": ["5.4"],
+            "expected_status": "POTENTIAL_GAP",
+            "expected_action": "PROVIDE_SPECIFICATION",
+            "test_type": "Conflicting evidence detection",
+        },
+        {
+            "case_id": "TC-M3-010-NON-APPLICABLE-PRODUCT",
+            "category": "General Goods",
+            "product_description": "Uninsulated ceramic coffee mug with wooden handle.",
+            "expected_standard": None,
+            "expected_clauses": [],
+            "expected_status": "NOT_APPLICABLE",
+            "expected_action": None,
+            "test_type": "Product outside regulated scope",
+        },
+    ]
+
+    os.makedirs(os.path.dirname(BENCHMARK_FILE), exist_ok=True)
+    with open(BENCHMARK_FILE, "w", encoding="utf-8") as f:
+        json.dump(cases, f, indent=2)
+
+    return cases

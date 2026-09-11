@@ -1,0 +1,23 @@
+{
+  "manual_id": "PM-IS302-2-15",
+  "document_code": "PM/IS 302-2-15/1",
+  "standard_number": "IS 302-2-15:2009",
+  "title": "Product Manual for Electric Kettles and Liquid Heating Appliances According to IS 302-2-15:2009",
+  "publisher": "Bureau of Indian Standards",
+  "department": "Central Marks Department (CMD-II)",
+  "purpose": "Guidelines for certification of Electric Kettles under Scheme I (ISI Mark).",
+  "operational_guidelines": {
+    "sampling_guidelines": "Samples selected across nominal voltage and wattage ratings for full electrical safety testing.",
+    "scheme_of_inspection_and_testing": "Routine quality tests must include earth continuity test, high voltage dielectric strength test, leakage current test, and abnormal operation (boil-dry cutoff).",
+    "primary_test_equipment_required": [
+      "High voltage dielectric test breakdown unit (1000V / 1250V AC)",
+      "Leakage current measuring apparatus (calibrated to 0.75 mA threshold)",
+      "Earth continuity tester (25A current source, resistance <= 0.1 ohm)",
+      "Power input and current measurement panel"
+    ]
+  },
+  "source_url": "https://www.bis.gov.in",
+  "verification_status": "VERIFIED",
+  "verified_by": "SYSTEM_RESEARCH",
+  "verified_at": "2026-09-03T05:00:00Z"
+}

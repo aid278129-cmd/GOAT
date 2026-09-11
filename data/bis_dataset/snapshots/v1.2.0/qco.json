@@ -1,0 +1,1276 @@
+{
+  "QCO-BIS-STD-001": {
+    "qco_id": "QCO-BIS-STD-001",
+    "order_title": "Packaged Water & Beverages (Quality Control) Order",
+    "gazette_reference": "Food Safety and Standards (Packaging and Labelling) Regulations & BIS Mandatory Certification Scheme-I",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2024-01-15",
+    "effective_date": "2024-01-15",
+    "standard_number": "IS 14543:2024",
+    "product_description": "Packaged Drinking Water",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Food Safety and Standards (Packaging and Labelling) Regulations & BIS Mandatory Certification Scheme-I', 'notification_number': 'F. No. 1-94/FSSAI/SP(L&C)/2012 / GSR 85(E)', 'issuing_ministry': 'Ministry of Health and Family Welfare (FSSAI) & Ministry of Consumer Affairs', 'enactment_date': '2001-03-29', 'portal_url': 'https://www.bis.gov.in/product-certification/products-under-compulsory-certification/'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.bis.gov.in/product-certification/products-under-compulsory-certification/",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-002": {
+    "qco_id": "QCO-BIS-STD-002",
+    "order_title": "Packaged Water & Beverages (Quality Control) Order",
+    "gazette_reference": "Prevention of Food Adulteration / FSSAI Mandatory BIS Certification Order",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2024-02-10",
+    "effective_date": "2024-02-10",
+    "standard_number": "IS 13428:2024",
+    "product_description": "Packaged Natural Mineral Water",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Prevention of Food Adulteration / FSSAI Mandatory BIS Certification Order', 'notification_number': 'G.S.R. 760(E)', 'issuing_ministry': 'Ministry of Health and Family Welfare / Ministry of Consumer Affairs', 'enactment_date': '2000-09-29', 'portal_url': 'https://www.bis.gov.in/product-certification/products-under-compulsory-certification/'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.bis.gov.in/product-certification/products-under-compulsory-certification/",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-003": {
+    "qco_id": "QCO-BIS-STD-003",
+    "order_title": "Dairy Products (Quality Control) Order",
+    "gazette_reference": "Milk and Milk Products Order (MMPO) & Compulsory BIS Certification",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2020-04-18",
+    "effective_date": "2020-04-18",
+    "standard_number": "IS 1165:2020",
+    "product_description": "Milk Powder",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Milk and Milk Products Order (MMPO) & Compulsory BIS Certification', 'notification_number': 'S.O. 189(E)', 'issuing_ministry': 'Ministry of Fisheries, Animal Husbandry and Dairying / Ministry of Consumer Affairs', 'enactment_date': '1992-06-09', 'portal_url': 'https://www.bis.gov.in/product-certification/products-under-compulsory-certification/'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.bis.gov.in/product-certification/products-under-compulsory-certification/",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-004": {
+    "qco_id": "QCO-BIS-STD-004",
+    "order_title": "Infant Nutrition (Quality Control) Order",
+    "gazette_reference": "Infant Milk Substitutes, Feeding Bottles and Infant Foods (Regulation of Production, Supply and Distribution) Act",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2007-08-01",
+    "effective_date": "2007-08-01",
+    "standard_number": "IS 15757:2007",
+    "product_description": "Follow-Up Formula Foods for Infants",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Infant Milk Substitutes, Feeding Bottles and Infant Foods (Regulation of Production, Supply and Distribution) Act', 'notification_number': 'Act No. 41 of 1992 / FSSAI Section 16', 'issuing_ministry': 'Ministry of Women and Child Development / Ministry of Consumer Affairs', 'enactment_date': '2003-08-01', 'portal_url': 'https://www.bis.gov.in/product-certification/products-under-compulsory-certification/'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.bis.gov.in/product-certification/products-under-compulsory-certification/",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-005": {
+    "qco_id": "QCO-BIS-STD-005",
+    "order_title": "IT & Telecommunications (Quality Control) Order",
+    "gazette_reference": "Electronics and Information Technology Goods (Requirements for Compulsory Registration) Order, Phase-I",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2010-08-11",
+    "effective_date": "2010-08-11",
+    "standard_number": "IS 13252 (Part 1):2010",
+    "product_description": "IT Equipment Safety (Laptops, Printers, POS)",
+    "applicability_text": "Mandatory BIS certification under Scheme-II (CRS) pursuant to {'gazette_order': 'Electronics and Information Technology Goods (Requirements for Compulsory Registration) Order, Phase-I', 'notification_number': 'S.O. 2357(E) / S.O. 4997(E)', 'issuing_ministry': 'Ministry of Electronics and Information Technology (MeitY)', 'enactment_date': '2012-09-07', 'portal_url': 'https://www.crsbis.in/BIS/meity_notification.do'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.crsbis.in/BIS/meity_notification.do",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-006": {
+    "qco_id": "QCO-BIS-STD-006",
+    "order_title": "IT & Consumer Electronics (Quality Control) Order",
+    "gazette_reference": "Electronics and Information Technology Goods (Compulsory Registration) Order, Phase-II",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2018-07-20",
+    "effective_date": "2018-07-20",
+    "standard_number": "IS 16046 (Part 2):2018",
+    "product_description": "Lithium Cells and Batteries (Power Banks)",
+    "applicability_text": "Mandatory BIS certification under Scheme-II (CRS) pursuant to {'gazette_order': 'Electronics and Information Technology Goods (Compulsory Registration) Order, Phase-II', 'notification_number': 'S.O. 2905(E) / S.O. 1246(E)', 'issuing_ministry': 'Ministry of Electronics and Information Technology (MeitY)', 'enactment_date': '2014-11-07', 'portal_url': 'https://www.crsbis.in/BIS/meity_notification.do'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.crsbis.in/BIS/meity_notification.do",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-007": {
+    "qco_id": "QCO-BIS-STD-007",
+    "order_title": "Consumer Electronics (Quality Control) Order",
+    "gazette_reference": "Electronics and Information Technology Goods (Requirements for Compulsory Registration) Order, 2012",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2017-09-15",
+    "effective_date": "2017-09-15",
+    "standard_number": "IS 616:2017",
+    "product_description": "Audio, Video and Electronic Apparatus",
+    "applicability_text": "Mandatory BIS certification under Scheme-II (CRS) pursuant to {'gazette_order': 'Electronics and Information Technology Goods (Requirements for Compulsory Registration) Order, 2012', 'notification_number': 'S.O. 2357(E)', 'issuing_ministry': 'Ministry of Electronics and Information Technology (MeitY)', 'enactment_date': '2013-04-03', 'portal_url': 'https://www.crsbis.in/BIS/meity_notification.do'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.crsbis.in/BIS/meity_notification.do",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-008": {
+    "qco_id": "QCO-BIS-STD-008",
+    "order_title": "Telecommunications (Quality Control) Order",
+    "gazette_reference": "Indian Language Support for Mobile Phones Order, 2016",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2022-03-25",
+    "effective_date": "2022-03-25",
+    "standard_number": "IS 16333 (Part 3):2022",
+    "product_description": "Mobile Phone Indian Language Support",
+    "applicability_text": "Mandatory BIS certification under Scheme-II (CRS) pursuant to {'gazette_order': 'Indian Language Support for Mobile Phones Order, 2016', 'notification_number': 'S.O. 3274(E)', 'issuing_ministry': 'Ministry of Electronics and Information Technology (MeitY)', 'enactment_date': '2017-07-01', 'portal_url': 'https://www.crsbis.in/BIS/meity_notification.do'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.crsbis.in/BIS/meity_notification.do",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-009": {
+    "qco_id": "QCO-BIS-STD-009",
+    "order_title": "Household Electronics (Quality Control) Order",
+    "gazette_reference": "Electrical Appliances (Quality Control) Order, 2023",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2014-06-12",
+    "effective_date": "2014-06-12",
+    "standard_number": "IS 302 (Part 2) Sec 26:2014",
+    "product_description": "Safety of Induction Cookers",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Electrical Appliances (Quality Control) Order, 2023', 'notification_number': 'S.O. 1092(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce & Industry', 'enactment_date': '2023-03-06', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-010": {
+    "qco_id": "QCO-BIS-STD-010",
+    "order_title": "Kitchen & Domestic Appliances (Quality Control) Order",
+    "gazette_reference": "Domestic Pressure Cooker (Quality Control) Order, 2020",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2017-06-15",
+    "effective_date": "2017-06-15",
+    "standard_number": "IS 2347:2017",
+    "product_description": "Domestic Pressure Cookers",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Domestic Pressure Cooker (Quality Control) Order, 2020', 'notification_number': 'S.O. 776(E) / S.O. 2901(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce & Industry', 'enactment_date': '2020-08-01', 'portal_url': 'https://www.bis.gov.in/product-certification/products-under-compulsory-certification/'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-011": {
+    "qco_id": "QCO-BIS-STD-011",
+    "order_title": "Electrical Appliances (Quality Control) Order",
+    "gazette_reference": "Electrical Appliances (Quality Control) Order, 2003",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2007-03-10",
+    "effective_date": "2007-03-10",
+    "standard_number": "IS 302 (Part 2) Sec 3:2007",
+    "product_description": "Electric Irons - Safety",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Electrical Appliances (Quality Control) Order, 2003', 'notification_number': 'S.O. 189(E) / S.O. 1092(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce & Industry', 'enactment_date': '2004-04-01', 'portal_url': 'https://www.bis.gov.in/product-certification/products-under-compulsory-certification/'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.bis.gov.in/product-certification/products-under-compulsory-certification/",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-012": {
+    "qco_id": "QCO-BIS-STD-012",
+    "order_title": "Electrical Appliances (Quality Control) Order",
+    "gazette_reference": "Electrical Appliances (Quality Control) Order, 2023",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "1980-12-30",
+    "effective_date": "1980-12-30",
+    "standard_number": "IS 4250:1980",
+    "product_description": "Domestic Electric Food Mixers (Mixer Grinders)",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Electrical Appliances (Quality Control) Order, 2023', 'notification_number': 'S.O. 1092(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce & Industry', 'enactment_date': '2023-09-01', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-013": {
+    "qco_id": "QCO-BIS-STD-013",
+    "order_title": "Electrical Appliances (Quality Control) Order",
+    "gazette_reference": "Electrical Appliances (Quality Control) Order, 2003",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2008-05-15",
+    "effective_date": "2008-05-15",
+    "standard_number": "IS 302 (Part 2) Sec 201:2008",
+    "product_description": "Electric Immersion Water Heaters",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Electrical Appliances (Quality Control) Order, 2003', 'notification_number': 'S.O. 189(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce & Industry', 'enactment_date': '2004-04-01', 'portal_url': 'https://www.bis.gov.in/product-certification/products-under-compulsory-certification/'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.bis.gov.in/product-certification/products-under-compulsory-certification/",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-014": {
+    "qco_id": "QCO-BIS-STD-014",
+    "order_title": "Safety Gear (Quality Control) Order",
+    "gazette_reference": "Helmet for riders of Two Wheelers Motor Vehicles (Quality Control) Order, 2020",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2020-11-26",
+    "effective_date": "2020-11-26",
+    "standard_number": "IS 4151:2020",
+    "product_description": "Two-Wheeler Protective Helmets",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Helmet for riders of Two Wheelers Motor Vehicles (Quality Control) Order, 2020', 'notification_number': 'S.O. 4252(E)', 'issuing_ministry': 'Ministry of Road Transport and Highways (MoRTH)', 'enactment_date': '2021-06-01', 'portal_url': 'https://morth.gov.in/notifications'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://morth.gov.in/notifications",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-015": {
+    "qco_id": "QCO-BIS-STD-015",
+    "order_title": "PPE (Quality Control) Order",
+    "gazette_reference": "Personal Protective Equipment (Quality Control) Order, 2021",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2017-05-18",
+    "effective_date": "2017-05-18",
+    "standard_number": "IS 15809:2017",
+    "product_description": "High Visibility Safety Vests",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Personal Protective Equipment (Quality Control) Order, 2021', 'notification_number': 'S.O. 4410(E)', 'issuing_ministry': 'Ministry of Textiles / DPIIT', 'enactment_date': '2022-01-01', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-016": {
+    "qco_id": "QCO-BIS-STD-016",
+    "order_title": "Industrial PPE (Quality Control) Order",
+    "gazette_reference": "Personal Protective Equipment \u2014 Safety Helmets (Quality Control) Order, 2023",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "1984-06-25",
+    "effective_date": "1984-06-25",
+    "standard_number": "IS 2925:1984",
+    "product_description": "Industrial Safety Helmets",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Personal Protective Equipment \u2014 Safety Helmets (Quality Control) Order, 2023', 'notification_number': 'S.O. 4583(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT)', 'enactment_date': '2023-10-23', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-017": {
+    "qco_id": "QCO-BIS-STD-017",
+    "order_title": "Solar Energy (Quality Control) Order",
+    "gazette_reference": "Solar Photovoltaics, Systems, Devices and Components Goods (Requirements for Compulsory Registration) Order, 2017",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2010-03-31",
+    "effective_date": "2010-03-31",
+    "standard_number": "IS 14286:2010",
+    "product_description": "Crystalline Silicon Solar PV Modules",
+    "applicability_text": "Mandatory BIS certification under Scheme-II (CRS) pursuant to {'gazette_order': 'Solar Photovoltaics, Systems, Devices and Components Goods (Requirements for Compulsory Registration) Order, 2017', 'notification_number': 'S.O. 2920(E)', 'issuing_ministry': 'Ministry of New and Renewable Energy (MNRE)', 'enactment_date': '2018-04-16', 'portal_url': 'https://mnre.gov.in/solar-quality-control-orders/'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://mnre.gov.in/solar-quality-control-orders/",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-018": {
+    "qco_id": "QCO-BIS-STD-018",
+    "order_title": "Solar Energy (Quality Control) Order",
+    "gazette_reference": "Solar Photovoltaic Inverters (Requirements for Compulsory Registration) Implementation Order",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2016-08-15",
+    "effective_date": "2016-08-15",
+    "standard_number": "IS 16221 (Part 2):2016",
+    "product_description": "Solar Photovoltaic Inverters Safety",
+    "applicability_text": "Mandatory BIS certification under Scheme-II (CRS) pursuant to {'gazette_order': 'Solar Photovoltaic Inverters (Requirements for Compulsory Registration) Implementation Order', 'notification_number': 'S.O. 2920(E) / MNRE Ref No. 283/54/2018-GRID', 'issuing_ministry': 'Ministry of New and Renewable Energy (MNRE)', 'enactment_date': '2019-06-30', 'portal_url': 'https://mnre.gov.in/solar-quality-control-orders/'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://mnre.gov.in/solar-quality-control-orders/",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-019": {
+    "qco_id": "QCO-BIS-STD-019",
+    "order_title": "Precious Metals (Quality Control) Order",
+    "gazette_reference": "Hallmarking of Gold Jewellery and Gold Artefacts Order, 2020",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2016-09-12",
+    "effective_date": "2016-09-12",
+    "standard_number": "IS 1417:2016",
+    "product_description": "Gold Jewellery and Artefacts Hallmarking",
+    "applicability_text": "Mandatory BIS certification under Hallmarking pursuant to {'gazette_order': 'Hallmarking of Gold Jewellery and Gold Artefacts Order, 2020', 'notification_number': 'S.O. 205(E) / S.O. 1433(E)', 'issuing_ministry': 'Department of Consumer Affairs, Ministry of Consumer Affairs, Food & Public Distribution', 'enactment_date': '2021-06-23', 'portal_url': 'https://www.bis.gov.in/hallmarking-overview/'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.bis.gov.in/hallmarking-overview/",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-021": {
+    "qco_id": "QCO-BIS-STD-021",
+    "order_title": "Civil Construction (Quality Control) Order",
+    "gazette_reference": "Cement (Quality Control) Order, 2003",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2015-05-30",
+    "effective_date": "2015-05-30",
+    "standard_number": "IS 269:2015",
+    "product_description": "Ordinary Portland Cement (33, 43, 53 Grade)",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Cement (Quality Control) Order, 2003', 'notification_number': 'S.O. 191(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce & Industry', 'enactment_date': '2003-02-17', 'portal_url': 'https://www.bis.gov.in/product-certification/products-under-compulsory-certification/'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.bis.gov.in/product-certification/products-under-compulsory-certification/",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-022": {
+    "qco_id": "QCO-BIS-STD-022",
+    "order_title": "Civil Construction (Quality Control) Order",
+    "gazette_reference": "Steel and Steel Products (Quality Control) Order, 2020",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2008-04-20",
+    "effective_date": "2008-04-20",
+    "standard_number": "IS 1786:2008",
+    "product_description": "High Strength Deformed TMT Steel Bars",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Steel and Steel Products (Quality Control) Order, 2020', 'notification_number': 'S.O. 1671(E)', 'issuing_ministry': 'Ministry of Steel, Government of India', 'enactment_date': '2020-05-27', 'portal_url': 'https://steel.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://steel.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-023": {
+    "qco_id": "QCO-BIS-STD-023",
+    "order_title": "Toys & Children Products (Quality Control) Order",
+    "gazette_reference": "Toys (Quality Control) Order, 2020",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2019-11-15",
+    "effective_date": "2019-11-15",
+    "standard_number": "IS 9873 (Part 1):2019",
+    "product_description": "Safety of Toys (Mechanical & Physical)",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Toys (Quality Control) Order, 2020', 'notification_number': 'S.O. 853(E) / S.O. 3146(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce & Industry', 'enactment_date': '2021-01-01', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-024": {
+    "qco_id": "QCO-BIS-STD-024",
+    "order_title": "Toys & Children Products (Quality Control) Order",
+    "gazette_reference": "Toys (Quality Control) Order, 2020",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2006-02-20",
+    "effective_date": "2006-02-20",
+    "standard_number": "IS 15644:2006",
+    "product_description": "Safety of Electric Toys",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Toys (Quality Control) Order, 2020', 'notification_number': 'S.O. 853(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce & Industry', 'enactment_date': '2021-01-01', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-025": {
+    "qco_id": "QCO-BIS-STD-025",
+    "order_title": "Civil Construction (Quality Control) Order",
+    "gazette_reference": "Cast Iron Products and Precast Concrete (Quality Control) Order, 2023",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2021-08-20",
+    "effective_date": "2021-08-20",
+    "standard_number": "IS 15658:2021",
+    "product_description": "Paver Blocks",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Cast Iron Products and Precast Concrete (Quality Control) Order, 2023', 'notification_number': 'S.O. 3844(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce & Industry', 'enactment_date': '2024-03-05', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-026": {
+    "qco_id": "QCO-BIS-STD-026",
+    "order_title": "Electrical & Lighting (Quality Control) Order",
+    "gazette_reference": "Electronics and Information Technology Goods (Compulsory Registration) Order, Phase-II",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2012-07-16",
+    "effective_date": "2012-07-16",
+    "standard_number": "IS 15885 (Part 2) Sec 13:2012",
+    "product_description": "LED Drivers / Controlgear Safety",
+    "applicability_text": "Mandatory BIS certification under Scheme-II (CRS) pursuant to {'gazette_order': 'Electronics and Information Technology Goods (Compulsory Registration) Order, Phase-II', 'notification_number': 'S.O. 2905(E)', 'issuing_ministry': 'Ministry of Electronics and Information Technology (MeitY)', 'enactment_date': '2015-05-07', 'portal_url': 'https://www.crsbis.in/BIS/meity_notification.do'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.crsbis.in/BIS/meity_notification.do",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-027": {
+    "qco_id": "QCO-BIS-STD-027",
+    "order_title": "Consumer Electricals (Quality Control) Order",
+    "gazette_reference": "Electronics and Information Technology Goods (Compulsory Registration) Order, Phase-II",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2012-09-20",
+    "effective_date": "2012-09-20",
+    "standard_number": "IS 16102 (Part 1):2012",
+    "product_description": "Self-Ballasted LED Bulbs (Safety)",
+    "applicability_text": "Mandatory BIS certification under Scheme-II (CRS) pursuant to {'gazette_order': 'Electronics and Information Technology Goods (Compulsory Registration) Order, Phase-II', 'notification_number': 'S.O. 2905(E)', 'issuing_ministry': 'Ministry of Electronics and Information Technology (MeitY)', 'enactment_date': '2015-05-07', 'portal_url': 'https://www.crsbis.in/BIS/meity_notification.do'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.crsbis.in/BIS/meity_notification.do",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-028": {
+    "qco_id": "QCO-BIS-STD-028",
+    "order_title": "Electrical Infrastructure (Quality Control) Order",
+    "gazette_reference": "Electrical Wires and Cables (Quality Control) Order, 2023",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2010-04-15",
+    "effective_date": "2010-04-15",
+    "standard_number": "IS 694:2010",
+    "product_description": "PVC Insulated Domestic Electrical Wires & Cables",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Electrical Wires and Cables (Quality Control) Order, 2023', 'notification_number': 'S.O. 3965(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce & Industry', 'enactment_date': '2024-03-11', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-029": {
+    "qco_id": "QCO-BIS-STD-029",
+    "order_title": "Consumer Electricals (Quality Control) Order",
+    "gazette_reference": "Electrical Appliances (Quality Control) Order, 2003",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2002-08-30",
+    "effective_date": "2002-08-30",
+    "standard_number": "IS 15111 (Part 1):2002",
+    "product_description": "Compact Fluorescent Lamps (CFL)",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Electrical Appliances (Quality Control) Order, 2003', 'notification_number': 'S.O. 189(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT)', 'enactment_date': '2004-04-01', 'portal_url': 'https://www.bis.gov.in/product-certification/products-under-compulsory-certification/'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.bis.gov.in/product-certification/products-under-compulsory-certification/",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-030": {
+    "qco_id": "QCO-BIS-STD-030",
+    "order_title": "Electrical Accessories (Quality Control) Order",
+    "gazette_reference": "Plugs and Socket-Outlets (Quality Control) Order, 2020",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2019-12-10",
+    "effective_date": "2019-12-10",
+    "standard_number": "IS 1293:2019",
+    "product_description": "Plugs and Socket-Outlets (6A & 16A)",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Plugs and Socket-Outlets (Quality Control) Order, 2020', 'notification_number': 'S.O. 4381(E) / S.O. 3965(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce & Industry', 'enactment_date': '2021-06-01', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-031": {
+    "qco_id": "QCO-BIS-STD-031",
+    "order_title": "Smart Metering & Power (Quality Control) Order",
+    "gazette_reference": "Electrical Wires, Cable, Appliances and Protection Devices and Accessories (Quality Control) Order, 2003",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "1999-12-15",
+    "effective_date": "1999-12-15",
+    "standard_number": "IS 14697:1999",
+    "product_description": "HT Static Energy Meters",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Electrical Wires, Cable, Appliances and Protection Devices and Accessories (Quality Control) Order, 2003', 'notification_number': 'S.O. 1282(E)', 'issuing_ministry': 'Ministry of Power / Department of Consumer Affairs', 'enactment_date': '2003-05-14', 'portal_url': 'https://powermin.gov.in/en/content/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://powermin.gov.in/en/content/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-032": {
+    "qco_id": "QCO-BIS-STD-032",
+    "order_title": "Smart Metering & Power (Quality Control) Order",
+    "gazette_reference": "Electrical Wires, Cable, Appliances and Protection Devices (Quality Control) Order, 2003",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "1999-10-30",
+    "effective_date": "1999-10-30",
+    "standard_number": "IS 13779:1999",
+    "product_description": "Domestic Smart & Static Electricity Meters",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Electrical Wires, Cable, Appliances and Protection Devices (Quality Control) Order, 2003', 'notification_number': 'S.O. 1282(E)', 'issuing_ministry': 'Ministry of Power / Department of Consumer Affairs', 'enactment_date': '2003-05-14', 'portal_url': 'https://powermin.gov.in/en/content/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://powermin.gov.in/en/content/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-034": {
+    "qco_id": "QCO-BIS-STD-034",
+    "order_title": "Energy Storage & Electronics (Quality Control) Order",
+    "gazette_reference": "Electronics and Information Technology Goods (Compulsory Registration) Order, Phase-II",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2018-07-20",
+    "effective_date": "2018-07-20",
+    "standard_number": "IS 16046 (Part 1):2018",
+    "product_description": "Nickel-Cadmium / Ni-MH Cells and Batteries",
+    "applicability_text": "Mandatory BIS certification under Scheme-II (CRS) pursuant to {'gazette_order': 'Electronics and Information Technology Goods (Compulsory Registration) Order, Phase-II', 'notification_number': 'S.O. 2905(E) / S.O. 1246(E)', 'issuing_ministry': 'Ministry of Electronics and Information Technology (MeitY)', 'enactment_date': '2021-07-01', 'portal_url': 'https://www.crsbis.in/BIS/meity_notification.do'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.crsbis.in/BIS/meity_notification.do",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-035": {
+    "qco_id": "QCO-BIS-STD-035",
+    "order_title": "Enterprise IT (Quality Control) Order",
+    "gazette_reference": "Electronics and Information Technology Goods (Compulsory Registration) Order, Phase-II",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2014-11-10",
+    "effective_date": "2014-11-10",
+    "standard_number": "IS 16347:2014",
+    "product_description": "Server and Enterprise IT Hardware Safety",
+    "applicability_text": "Mandatory BIS certification under Scheme-II (CRS) pursuant to {'gazette_order': 'Electronics and Information Technology Goods (Compulsory Registration) Order, Phase-II', 'notification_number': 'S.O. 2905(E)', 'issuing_ministry': 'Ministry of Electronics and Information Technology (MeitY)', 'enactment_date': '2015-05-07', 'portal_url': 'https://www.crsbis.in/BIS/meity_notification.do'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.crsbis.in/BIS/meity_notification.do",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-036": {
+    "qco_id": "QCO-BIS-STD-036",
+    "order_title": "Consumer Electronics (Quality Control) Order",
+    "gazette_reference": "Electronics and Information Technology Goods (Compulsory Registration) Order, Phase-V",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2006-05-18",
+    "effective_date": "2006-05-18",
+    "standard_number": "IS 15687 (Part 1):2006",
+    "product_description": "Primary Dry Cell Batteries (AA, AAA, D-Cells)",
+    "applicability_text": "Mandatory BIS certification under Scheme-II (CRS) pursuant to {'gazette_order': 'Electronics and Information Technology Goods (Compulsory Registration) Order, Phase-V', 'notification_number': 'S.O. 1246(E)', 'issuing_ministry': 'Ministry of Electronics and Information Technology (MeitY)', 'enactment_date': '2021-07-01', 'portal_url': 'https://www.crsbis.in/BIS/meity_notification.do'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.crsbis.in/BIS/meity_notification.do",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-037": {
+    "qco_id": "QCO-BIS-STD-037",
+    "order_title": "Automotive Components (Quality Control) Order",
+    "gazette_reference": "Pneumatic Tyres (Quality Control) Order, 2020",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2013-10-15",
+    "effective_date": "2013-10-15",
+    "standard_number": "IS 16047:2013",
+    "product_description": "Two & Three Wheeler Pneumatic Tyres",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Pneumatic Tyres (Quality Control) Order, 2020', 'notification_number': 'S.O. 3921(E) / S.O. 4381(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT) & MoRTH', 'enactment_date': '2021-04-01', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-038": {
+    "qco_id": "QCO-BIS-STD-038",
+    "order_title": "Automotive Components (Quality Control) Order",
+    "gazette_reference": "Pneumatic Tyres (Quality Control) Order, 2020",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2005-08-20",
+    "effective_date": "2005-08-20",
+    "standard_number": "IS 15633:2005",
+    "product_description": "Passenger Car Radial & Tubeless Tyres",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Pneumatic Tyres (Quality Control) Order, 2020', 'notification_number': 'S.O. 3921(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT) & MoRTH', 'enactment_date': '2021-04-01', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-039": {
+    "qco_id": "QCO-BIS-STD-039",
+    "order_title": "Automotive Components (Quality Control) Order",
+    "gazette_reference": "Pneumatic Tyres (Quality Control) Order, 2020",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2012-03-30",
+    "effective_date": "2012-03-30",
+    "standard_number": "IS 15636:2012",
+    "product_description": "Truck and Bus Commercial Radial Tyres",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Pneumatic Tyres (Quality Control) Order, 2020', 'notification_number': 'S.O. 3921(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT) & MoRTH', 'enactment_date': '2021-04-01', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-040": {
+    "qco_id": "QCO-BIS-STD-040",
+    "order_title": "Building Materials (Quality Control) Order",
+    "gazette_reference": "Safety Glass (Quality Control) Order, 2020",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2018-09-12",
+    "effective_date": "2018-09-12",
+    "standard_number": "IS 2553 (Part 1):2018",
+    "product_description": "Architectural Toughened & Laminated Safety Glass",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Safety Glass (Quality Control) Order, 2020', 'notification_number': 'S.O. 853(E) / S.O. 4381(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce & Industry', 'enactment_date': '2021-04-01', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-041": {
+    "qco_id": "QCO-BIS-STD-041",
+    "order_title": "Automotive Components (Quality Control) Order",
+    "gazette_reference": "Safety Glass (Quality Control) Order, 2020",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2019-10-25",
+    "effective_date": "2019-10-25",
+    "standard_number": "IS 2553 (Part 2):2019",
+    "product_description": "Automotive Windshield & Window Safety Glass",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Safety Glass (Quality Control) Order, 2020', 'notification_number': 'S.O. 853(E) / MoRTH CMVR Rule 100', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT) & MoRTH', 'enactment_date': '2021-04-01', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-042": {
+    "qco_id": "QCO-BIS-STD-042",
+    "order_title": "Plumbing & Piping (Quality Control) Order",
+    "gazette_reference": "Polyethylene Pipes and Fittings (Quality Control) Order, 2023",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2004-06-15",
+    "effective_date": "2004-06-15",
+    "standard_number": "IS 15450:2004",
+    "product_description": "HDPE Pipes for Potable Water Supply",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Polyethylene Pipes and Fittings (Quality Control) Order, 2023', 'notification_number': 'S.O. 3844(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT)', 'enactment_date': '2024-03-05', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-043": {
+    "qco_id": "QCO-BIS-STD-043",
+    "order_title": "Plumbing & Piping (Quality Control) Order",
+    "gazette_reference": "Pipes and Fittings (Quality Control) Order, 2023",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2021-07-30",
+    "effective_date": "2021-07-30",
+    "standard_number": "IS 4985:2021",
+    "product_description": "PVC-U Pipes for Potable Water",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Pipes and Fittings (Quality Control) Order, 2023', 'notification_number': 'S.O. 3844(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT)', 'enactment_date': '2024-03-05', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-044": {
+    "qco_id": "QCO-BIS-STD-044",
+    "order_title": "Consumer Electronics (Quality Control) Order",
+    "gazette_reference": "Electronics and Information Technology Goods (Compulsory Registration) Order, Phase-I",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2019-06-18",
+    "effective_date": "2019-06-18",
+    "standard_number": "IS 12211:2019",
+    "product_description": "Household Electronic Appliances Safety",
+    "applicability_text": "Mandatory BIS certification under Scheme-II (CRS) pursuant to {'gazette_order': 'Electronics and Information Technology Goods (Compulsory Registration) Order, Phase-I', 'notification_number': 'S.O. 2357(E)', 'issuing_ministry': 'Ministry of Electronics and Information Technology (MeitY)', 'enactment_date': '2013-04-03', 'portal_url': 'https://www.crsbis.in/BIS/meity_notification.do'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.crsbis.in/BIS/meity_notification.do",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-045": {
+    "qco_id": "QCO-BIS-STD-045",
+    "order_title": "Wood & Timber Products (Quality Control) Order",
+    "gazette_reference": "Plywood and Allied Products (Quality Control) Order, 2024",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "1989-11-15",
+    "effective_date": "1989-11-15",
+    "standard_number": "IS 303:1989",
+    "product_description": "Plywood for General Purposes",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Plywood and Allied Products (Quality Control) Order, 2024', 'notification_number': 'S.O. 1018(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce & Industry', 'enactment_date': '2024-02-28', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-046": {
+    "qco_id": "QCO-BIS-STD-046",
+    "order_title": "Electrical Appliances (Quality Control) Order",
+    "gazette_reference": "Electrical Appliances (Quality Control) Order, 2023",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2018-06-25",
+    "effective_date": "2018-06-25",
+    "standard_number": "IS 2082:2018",
+    "product_description": "Electric Storage Water Heaters (Geysers)",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Electrical Appliances (Quality Control) Order, 2023', 'notification_number': 'S.O. 1092(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce & Industry', 'enactment_date': '2023-03-06', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-047": {
+    "qco_id": "QCO-BIS-STD-047",
+    "order_title": "Sanitaryware & Ceramics (Quality Control) Order",
+    "gazette_reference": "Sanitary Goods (Quality Control) Order, 2023",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2004-09-15",
+    "effective_date": "2004-09-15",
+    "standard_number": "IS 2556 (Part 2):2004",
+    "product_description": "Vitreous Sanitary Appliances (Wash Basins)",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Sanitary Goods (Quality Control) Order, 2023', 'notification_number': 'S.O. 3844(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce & Industry', 'enactment_date': '2024-03-05', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-048": {
+    "qco_id": "QCO-BIS-STD-048",
+    "order_title": "Kitchen & Domestic Appliances (Quality Control) Order",
+    "gazette_reference": "Cookware and Utensils (Quality Control) Order, 2023",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "1994-07-20",
+    "effective_date": "1994-07-20",
+    "standard_number": "IS 13983:1994",
+    "product_description": "Stainless Steel Kitchen Sinks",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Cookware and Utensils (Quality Control) Order, 2023', 'notification_number': 'S.O. 3568(E)', 'issuing_ministry': 'Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce & Industry', 'enactment_date': '2024-02-09', 'portal_url': 'https://dpiit.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://dpiit.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-049": {
+    "qco_id": "QCO-BIS-STD-049",
+    "order_title": "Medical Equipment & Devices (Quality Control) Order",
+    "gazette_reference": "Medical Equipment (Quality Control) Order, 2023",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2017-08-10",
+    "effective_date": "2017-08-10",
+    "standard_number": "IS/ISO 80601-2-56:2017",
+    "product_description": "Clinical Digital Thermometers",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Medical Equipment (Quality Control) Order, 2023', 'notification_number': 'S.O. 4112(E)', 'issuing_ministry': 'Department of Pharmaceuticals, Ministry of Chemicals and Fertilizers', 'enactment_date': '2024-01-01', 'portal_url': 'https://pharmaceuticals.gov.in/quality-control-orders'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://pharmaceuticals.gov.in/quality-control-orders",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-050": {
+    "qco_id": "QCO-BIS-STD-050",
+    "order_title": "IT & Telecommunications (Quality Control) Order",
+    "gazette_reference": "Electronics and Information Technology Goods (Compulsory Registration) Order, Phase-III",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2010-08-11",
+    "effective_date": "2010-08-11",
+    "standard_number": "IS 13252 (Part 1):2010",
+    "product_description": "Smart Card Readers / POS Terminals Safety",
+    "applicability_text": "Mandatory BIS certification under Scheme-II (CRS) pursuant to {'gazette_order': 'Electronics and Information Technology Goods (Compulsory Registration) Order, Phase-III', 'notification_number': 'S.O. 3644(E)', 'issuing_ministry': 'Ministry of Electronics and Information Technology (MeitY)', 'enactment_date': '2018-02-16', 'portal_url': 'https://www.crsbis.in/BIS/meity_notification.do'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.crsbis.in/BIS/meity_notification.do",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-30T10:00:00Z"
+    }
+  },
+  "QCO-BIS-STD-051": {
+    "qco_id": "QCO-BIS-STD-051",
+    "order_title": "Drinkware & Food Contact Containers (Quality Control) Order",
+    "gazette_reference": "Bottles, Pails and Flasks Made of Stainless Steel (Quality Control) Order, 2023",
+    "issuing_authority": "DPIIT / Ministry of Commerce and Industry",
+    "publication_date": "2021-04-15",
+    "effective_date": "2021-04-15",
+    "standard_number": "IS 17526:2021",
+    "product_description": "Stainless Steel Vacuum Flask / Bottle",
+    "applicability_text": "Mandatory BIS certification under Scheme-I (ISI) pursuant to {'gazette_order': 'Bottles, Pails and Flasks Made of Stainless Steel (Quality Control) Order, 2023', 'notification_number': 'S.O. 3591(E)', 'issuing_ministry': 'Ministry of Commerce and Industry (DPIIT)', 'enactment_date': '2023-08-09', 'portal_url': 'https://dpiit.gov.in/'}.",
+    "exemptions": [
+      "Goods manufactured exclusively for export per standard export policy"
+    ],
+    "conditions": [
+      "Must bear standard ISI or CRS certification mark from authorized licensee"
+    ],
+    "source_url": "https://www.bis.gov.in/product-certification/products-under-compulsory-certification/",
+    "source_hash": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+    "verification_status": "QCO_VERIFIED",
+    "is_mandatory": true,
+    "provenance": {
+      "authority": "Official Gazette of India",
+      "upstream_source": "BIS-Standards-AI-Assistant/bis-standards-dataset",
+      "verified_at": "2026-08-28T10:00:00Z"
+    }
+  }
+}

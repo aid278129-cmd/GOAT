@@ -1,0 +1,19 @@
+{
+  "source_document": "IS 302 (Part 2/Sec 201) : 2008",
+  "gazette_order": "Electrical Appliances (Quality Control) Order, 2003",
+  "gazette_notification_id": "S.O. 189(E)",
+  "official_sources": [
+    {
+      "url": "https://www.services.bis.gov.in/php/BIS_2.0/bisconnect/knowyourstandards/indian_standards/isdetails/302_2_201",
+      "authority": "Bureau of Indian Standards",
+      "type": "Standard Portal"
+    },
+    {
+      "url": "https://www.bis.gov.in/product-certification/products-under-compulsory-certification/",
+      "authority": "DPIIT & BIS",
+      "type": "Compulsory Certification List"
+    }
+  ],
+  "verification_timestamp": "2026-09-03T05:00:00Z",
+  "verification_method": "OFFICIAL_BIS_MANDATE_EXTRACTION"
+}

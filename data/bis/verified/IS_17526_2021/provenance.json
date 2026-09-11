@@ -1,0 +1,44 @@
+{
+  "standard_number": "IS 17526:2021",
+  "primary_source": {
+    "source_id": "SRC-BIS-OFFICIAL",
+    "name": "Bureau of Indian Standards Portal & Manakonline",
+    "publisher": "Bureau of Indian Standards (BIS), Ministry of Consumer Affairs, Food & Public Distribution",
+    "source_type": "BIS_OFFICIAL",
+    "authority_level": "AUTHORITATIVE",
+    "official_urls": [
+      "https://www.services.bis.gov.in",
+      "https://www.manakonline.in"
+    ],
+    "verification_method": "SOURCE_VERIFICATION",
+    "verified_at": "2026-09-02T20:55:00Z"
+  },
+  "regulatory_source": {
+    "source_id": "SRC-DPIIT-OFFICIAL",
+    "name": "The Gazette of India / DPIIT Orders",
+    "publisher": "Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce and Industry",
+    "source_type": "GOVERNMENT_OFFICIAL",
+    "authority_level": "AUTHORITATIVE",
+    "official_urls": [
+      "https://dpiit.gov.in",
+      "https://egazette.gov.in"
+    ],
+    "verification_method": "SOURCE_VERIFICATION",
+    "verified_at": "2026-09-02T20:55:00Z"
+  },
+  "document_acquisition_state": {
+    "full_standard_pdf": {
+      "status": "OFFICIAL_DOCUMENT_ACQUISITION_PENDING",
+      "reason": "Complete specification text on manakonline.in requires authenticated user licensing and digital rights access. Scraped or third-party unauthorized mirrors are rejected under team source governance policy.",
+      "action_required": "Authorized manual upload of legally procured BIS standard document by licensed compliance officer."
+    },
+    "supporting_qco_order": {
+      "status": "VERIFIED_SUPPORTING_MATERIAL",
+      "order_title": "Insulated Flask, Bottles and Containers for Domestic Use (Quality Control) Order, 2023"
+    },
+    "supporting_product_manual": {
+      "status": "VERIFIED_SUPPORTING_MATERIAL",
+      "document_code": "PM/IS 17526/1"
+    }
+  }
+}

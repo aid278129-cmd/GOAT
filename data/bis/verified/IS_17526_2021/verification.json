@@ -1,0 +1,36 @@
+{
+  "standard_number": "IS 17526:2021",
+  "package_status": "OFFICIAL_METADATA_AND_SUPPORTING_MATERIAL_VERIFIED",
+  "full_standard_text_status": "OFFICIAL_DOCUMENT_ACQUISITION_PENDING",
+  "verification_records": [
+    {
+      "entity": "Standard Identity & Metadata",
+      "status": "VERIFIED",
+      "method": "SOURCE_VERIFICATION",
+      "source_authority": "BIS_OFFICIAL",
+      "evidence": "Verified against BIS Standards Catalog and Manakonline portal (IS 17526:2021 - Domestic Stainless Steel Vacuum Flask/Bottle)."
+    },
+    {
+      "entity": "Quality Control Order (QCO)",
+      "status": "VERIFIED",
+      "method": "SOURCE_VERIFICATION",
+      "source_authority": "GOVERNMENT_OFFICIAL",
+      "evidence": "Verified against DPIIT Gazette notification for Insulated Flask, Bottles and Containers for Domestic Use (Quality Control) Order, 2023."
+    },
+    {
+      "entity": "BIS Product Manual",
+      "status": "VERIFIED",
+      "method": "SOURCE_VERIFICATION",
+      "source_authority": "BIS_OFFICIAL",
+      "evidence": "Verified against BIS Central Marks Department Document PM/IS 17526/1."
+    },
+    {
+      "entity": "Full Standard Document (PDF)",
+      "status": "REQUIRES_REVIEW",
+      "method": "PENDING_AUTHORIZED_ACQUISITION",
+      "source_authority": "UNVERIFIED",
+      "evidence": "Full standard specification requires authenticated login or licensed procurement on manakonline.in. Awaiting legal procurement by authorized compliance officer. Synthetic representative test fixture preserved separately under data/bis/fixtures/synthetic/."
+    }
+  ],
+  "audit_timestamp": "2026-09-02T20:55:00Z"
+}

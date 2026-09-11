@@ -1,0 +1,51 @@
+{
+  "rule_id": "APP-ELECTRICAL-001",
+  "name": "Electric Kettles and Water Heaters Safety Applicability",
+  "description": "Determines technical relevance of IS 302-2-15:2009 for domestic electric kettles and water heating appliances.",
+  "priority": 10,
+  "verification_status": "VERIFIED",
+  "conditions": {
+    "all": [
+      {
+        "field": "category",
+        "operator": "equals",
+        "value": "Electrical & Domestic Appliances"
+      },
+      {
+        "field": "electrical",
+        "operator": "equals",
+        "value": true
+      },
+      {
+        "any": [
+          {
+            "field": "product_name",
+            "operator": "contains",
+            "value": "Kettle"
+          },
+          {
+            "field": "sub_category",
+            "operator": "contains",
+            "value": "Heating"
+          }
+        ]
+      }
+    ]
+  },
+  "result": {
+    "standard_number": "IS 302-2-15:2009",
+    "standard_title": "Safety of Household and Similar Electrical Appliances — Particular Requirements for Appliances for Heating Liquids",
+    "technical_relevance": "LIKELY_APPLICABLE",
+    "regulatory_status": "VERIFIED_MANDATORY_QCO",
+    "qco_order": "Electrical Appliances for Domestic Use (Quality Control) Order",
+    "scheme": "Scheme I (ISI Mark)",
+    "mandatory_reason": "Central Quality Control Order mandates compulsory ISI Mark for liquid heating household appliances."
+  },
+  "sources": [
+    {
+      "source_type": "BIS_OFFICIAL",
+      "publisher": "Bureau of Indian Standards",
+      "url": "https://www.bis.gov.in"
+    }
+  ]
+}

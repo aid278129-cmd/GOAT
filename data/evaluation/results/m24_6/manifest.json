@@ -1,0 +1,16 @@
+{
+  "milestone": "M24.6",
+  "title": "LangGraph Reasoning Pipeline Evaluation & Benchmark",
+  "timestamp": "2026-09-11T01:49:46.638384+00:00",
+  "dataset_version": "v1.2.0-gazette-verified",
+  "golden_case_id": "GOLDEN-SIH-2026-DEMO",
+  "golden_locked": true,
+  "dimensions_evaluated": 15,
+  "dimensions_passed": 15,
+  "scorable_cases_total": 25,
+  "unsupported_or_insufficient_cases_total": 5,
+  "artifacts_generated": [
+    "summary.json",
+    "manifest.json"
+  ]
+}

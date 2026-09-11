@@ -1,0 +1,220 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGraph" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090d16"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <linearGradient id="startGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+
+    <linearGradient id="refusalGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#b91c1c"/>
+    </linearGradient>
+
+    <linearGradient id="clarifyGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+
+    <linearGradient id="agentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+
+    <linearGradient id="gateGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+
+    <filter id="shadowG" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrowAmber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#f87171"/>
+    </marker>
+
+    <style>
+      .node-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; font-weight: 700; fill: #ffffff; text-anchor: middle; }
+      .sub-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 9px; fill: #94a3b8; text-anchor: middle; }
+      .edge-label { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; font-size: 8px; font-weight: 600; }
+    </style>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="960" height="480" rx="16" fill="url(#bgGraph)" stroke="#1e293b" stroke-width="1.5"/>
+
+  <!-- Section Title -->
+  <g transform="translate(30, 30)">
+    <rect x="0" y="0" width="4" height="20" rx="2" fill="#8b5cf6"/>
+    <text x="12" y="15" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="800" fill="#f8fafc">CANONICAL LANGGRAPH REASONING TOPOLOGY (11 NODES, 16 EDGES)</text>
+    <text x="560" y="15" font-family="monospace" font-size="10" fill="#64748b">STATEGRAPH • STRICT DIRECTED ACYCLIC GRAPH (0 CYCLES)</text>
+  </g>
+
+  <!-- Directed Edges Connecting Spine -->
+  <!-- Start to Node 1 -->
+  <path d="M 95 240 L 125 240" fill="none" stroke="#38bdf8" stroke-width="1.8" marker-end="url(#arrow)"/>
+
+  <!-- Node 1 to Red Refusal (Upper Branch) -->
+  <path d="M 195 210 L 195 125 L 235 125" fill="none" stroke="#f87171" stroke-width="1.8" marker-end="url(#arrowRed)"/>
+  <text class="edge-label" x="200" y="118" fill="#f87171">security_flag=True</text>
+
+  <!-- Node 1 to Node 2 (Spine) -->
+  <path d="M 235 240 L 265 240" fill="none" stroke="#38bdf8" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <text class="edge-label" x="238" y="232" fill="#38bdf8">safe</text>
+
+  <!-- Node 2 to Clarification Request (Lower Branch) -->
+  <path d="M 320 270 L 320 355 L 360 355" fill="none" stroke="#fbbf24" stroke-width="1.8" marker-end="url(#arrowAmber)"/>
+  <text class="edge-label" x="325" y="348" fill="#fbbf24">dna_sufficient=False</text>
+
+  <!-- Node 2 to Node 3 (Task Router) -->
+  <path d="M 375 240 L 405 240" fill="none" stroke="#38bdf8" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <text class="edge-label" x="378" y="232" fill="#38bdf8">complete</text>
+
+  <!-- Node 3 to Node 4 (Retrieval Agent) -->
+  <path d="M 505 230 L 535 190" fill="none" stroke="#38bdf8" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <text class="edge-label" x="502" y="195" fill="#38bdf8">retrieval=True</text>
+
+  <!-- Node 3 Short-Circuit Direct to Analysis Agent -->
+  <path d="M 505 250 L 595 285" fill="none" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+  <text class="edge-label" x="525" y="280" fill="#a78bfa">short_circuit (units)</text>
+
+  <!-- Node 4 to Evidence Validation Gate -->
+  <path d="M 645 180 L 675 180" fill="none" stroke="#38bdf8" stroke-width="1.8" marker-end="url(#arrow)"/>
+
+  <!-- Evidence Gate to Analysis Agent -->
+  <path d="M 725 210 L 725 285 L 675 300" fill="none" stroke="#38bdf8" stroke-width="1.8" marker-end="url(#arrow)"/>
+
+  <!-- Evidence Gate Direct to Output Gate (Severe Conflict) -->
+  <path d="M 785 180 L 825 180 L 825 295" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="3 3" marker-end="url(#arrowAmber)"/>
+  <text class="edge-label" x="788" y="172" fill="#fbbf24">unverified standard</text>
+
+  <!-- Analysis Agent to Deterministic Compliance Gate -->
+  <path d="M 645 340 L 645 405 L 705 405" fill="none" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Deterministic Gate to Planning Agent -->
+  <path d="M 805 405 L 835 405" fill="none" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Planning Agent to Output Integrity Gate -->
+  <path d="M 875 375 L 875 345" fill="none" stroke="#38bdf8" stroke-width="1.8" marker-end="url(#arrow)"/>
+
+  <!-- Output Integrity Gate to END -->
+  <path d="M 915 310 L 925 310" fill="none" stroke="#38bdf8" stroke-width="1.8"/>
+
+  <!-- Controlled Refusal to END -->
+  <path d="M 335 125 L 945 125 L 945 285" fill="none" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+  <!-- Clarification Request to END -->
+  <path d="M 460 355 L 490 355 L 490 450 L 945 450 L 945 325" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+  <!-- ==================== NODES ==================== -->
+  <!-- START -->
+  <g transform="translate(30, 220)">
+    <circle cx="30" cy="20" r="18" fill="url(#startGrad)" filter="url(#shadowG)"/>
+    <text class="node-text" x="30" y="24" font-size="9">START</text>
+  </g>
+
+  <!-- Node 1: Request Understanding -->
+  <g transform="translate(125, 210)" filter="url(#shadowG)">
+    <rect width="110" height="60" rx="8" fill="#131c2e" stroke="#38bdf8" stroke-width="1.5"/>
+    <text class="node-text" x="55" y="26">request</text>
+    <text class="node-text" x="55" y="38">understanding</text>
+    <text class="sub-text" x="55" y="52">Sanitize &amp; Guard</text>
+  </g>
+
+  <!-- Node 1A (Terminal): Controlled Refusal -->
+  <g transform="translate(235, 95)" filter="url(#shadowG)">
+    <rect width="100" height="60" rx="8" fill="#131c2e" stroke="#ef4444" stroke-width="1.5"/>
+    <text class="node-text" x="50" y="26" fill="#fca5a5">controlled</text>
+    <text class="node-text" x="50" y="38" fill="#fca5a5">refusal</text>
+    <text class="sub-text" x="50" y="52">0.0% Authority</text>
+  </g>
+
+  <!-- Node 2: Product DNA Check -->
+  <g transform="translate(265, 210)" filter="url(#shadowG)">
+    <rect width="110" height="60" rx="8" fill="#131c2e" stroke="#38bdf8" stroke-width="1.5"/>
+    <text class="node-text" x="55" y="26">product_dna</text>
+    <text class="node-text" x="55" y="38">check</text>
+    <text class="sub-text" x="55" y="52">Parameter Guard</text>
+  </g>
+
+  <!-- Node 2A (Terminal): Clarification Request -->
+  <g transform="translate(360, 325)" filter="url(#shadowG)">
+    <rect width="100" height="60" rx="8" fill="#131c2e" stroke="#f59e0b" stroke-width="1.5"/>
+    <text class="node-text" x="50" y="26" fill="#fde68a">clarification</text>
+    <text class="node-text" x="50" y="38" fill="#fde68a">request</text>
+    <text class="sub-text" x="50" y="52">Zero Guessing</text>
+  </g>
+
+  <!-- Node 3: Task Router -->
+  <g transform="translate(405, 210)" filter="url(#shadowG)">
+    <rect width="100" height="60" rx="8" fill="#131c2e" stroke="#06b6d4" stroke-width="1.5"/>
+    <text class="node-text" x="50" y="26">task</text>
+    <text class="node-text" x="50" y="38">router</text>
+    <text class="sub-text" x="50" y="52">Intent Pathing</text>
+  </g>
+
+  <!-- Node 4: Retrieval Agent -->
+  <g transform="translate(535, 150)" filter="url(#shadowG)">
+    <rect width="110" height="60" rx="8" fill="#131c2e" stroke="#8b5cf6" stroke-width="1.5"/>
+    <text class="node-text" x="55" y="26">retrieval</text>
+    <text class="node-text" x="55" y="38">agent</text>
+    <text class="sub-text" x="55" y="52">Controlled Tools</text>
+  </g>
+
+  <!-- Node 5: Evidence Validation Gate -->
+  <g transform="translate(675, 150)" filter="url(#shadowG)">
+    <rect width="110" height="60" rx="8" fill="#131c2e" stroke="#10b981" stroke-width="1.5"/>
+    <text class="node-text" x="55" y="26">evidence_valid.</text>
+    <text class="node-text" x="55" y="38">gate</text>
+    <text class="sub-text" x="55" y="52">Provenance Lock</text>
+  </g>
+
+  <!-- Node 6: Analysis Agent -->
+  <g transform="translate(565, 280)" filter="url(#shadowG)">
+    <rect width="110" height="60" rx="8" fill="#131c2e" stroke="#8b5cf6" stroke-width="1.5"/>
+    <text class="node-text" x="55" y="26">analysis</text>
+    <text class="node-text" x="55" y="38">agent</text>
+    <text class="sub-text" x="55" y="52">Single LLM (0% Auth)</text>
+  </g>
+
+  <!-- Node 7: Deterministic Compliance Gate -->
+  <g transform="translate(705, 375)" filter="url(#shadowG)">
+    <rect width="100" height="60" rx="8" fill="#064e3b" stroke="#10b981" stroke-width="2"/>
+    <text class="node-text" x="50" y="26" fill="#6ee7b7">deterministic</text>
+    <text class="node-text" x="50" y="38" fill="#6ee7b7">compliance_gate</text>
+    <text class="sub-text" x="50" y="52" fill="#a7f3d0">100% AUTHORITY</text>
+  </g>
+
+  <!-- Node 8: Planning Agent -->
+  <g transform="translate(835, 375)" filter="url(#shadowG)">
+    <rect width="85" height="60" rx="8" fill="#131c2e" stroke="#8b5cf6" stroke-width="1.5"/>
+    <text class="node-text" x="42" y="26">planning</text>
+    <text class="node-text" x="42" y="38">agent</text>
+    <text class="sub-text" x="42" y="52">Roadmap Plan</text>
+  </g>
+
+  <!-- Node 9: Output Integrity Gate -->
+  <g transform="translate(815, 280)" filter="url(#shadowG)">
+    <rect width="100" height="65" rx="8" fill="#131c2e" stroke="#ec4899" stroke-width="1.8"/>
+    <text class="node-text" x="50" y="26" fill="#f472b6">output_integrity</text>
+    <text class="node-text" x="50" y="38" fill="#f472b6">gate</text>
+    <text class="sub-text" x="50" y="54" fill="#fbcfe8">L9 Passport Seal</text>
+  </g>
+
+  <!-- END Terminal -->
+  <g transform="translate(930, 290)">
+    <circle cx="15" cy="15" r="14" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+    <text class="node-text" x="15" y="19" font-size="8" fill="#94a3b8">END</text>
+  </g>
+</svg>

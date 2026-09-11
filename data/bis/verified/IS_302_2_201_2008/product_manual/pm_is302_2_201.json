@@ -1,0 +1,31 @@
+{
+  "product_manual_id": "PM/IS 302 (Part 2/Sec 201)/1",
+  "standard_number": "IS 302-2-201:2008",
+  "edition": "September 2020",
+  "scope": "Guidelines for granting and operating BIS licenses for Electric Immersion Water Heaters according to IS 302-2-201:2008.",
+  "sampling_guidelines": "Samples drawn across wattage ratings (e.g. 1000W, 1500W, 2000W) for full type testing and factory quality inspection.",
+  "scheme_of_inspection_and_testing": {
+    "routine_tests": [
+      "Earth continuity test (< 0.10 ohm)",
+      "High-voltage flash electric strength (1500V AC, 1 sec)",
+      "Power consumption / wattage check at rated voltage (230V)"
+    ],
+    "acceptance_tests": [
+      "Insulation resistance measurement (> 2.0 Mohm)",
+      "Leakage current test (< 0.75 mA)",
+      "Cord anchorage and terminal inspection",
+      "Indelible minimum/maximum immersion level markings"
+    ],
+    "type_tests": [
+      "Full clause 7 to clause 32 qualification testing",
+      "Abnormal operation dry-boil safety cutout test",
+      "Water submersion dielectric breakdown",
+      "Mechanical drop and impact test (0.5 J)"
+    ]
+  },
+  "raw_material_controls": [
+    "Plugs must conform to IS 1293 (ISI marked)",
+    "Flexible supply cord must conform to IS 694 (ISI marked)",
+    "Heating tube sheath: Corrosion resistant nickel-plated copper or austenitic stainless steel"
+  ]
+}

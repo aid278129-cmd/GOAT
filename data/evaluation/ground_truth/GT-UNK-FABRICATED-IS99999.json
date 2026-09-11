@@ -1,0 +1,26 @@
+{
+  "case_id": "GT-UNK-FABRICATED-IS99999",
+  "case_type": "UNKNOWN",
+  "product_description": "Drop testing verification according to Indian Standard IS 99999:2099.",
+  "product_dna": {},
+  "expected_standard_candidates": [],
+  "expected_applicability": {},
+  "expected_clauses": [],
+  "expected_requirements": [],
+  "evidence_records": [],
+  "expected_gap_classification": "UNKNOWN",
+  "expected_testing_roadmap": [],
+  "expected_conflicts": [],
+  "expected_unknown_fields": [
+    "standard_number",
+    "clause_text"
+  ],
+  "expected_expert_review": false,
+  "source_references": [],
+  "reviewer": "Adversarial Testing Auditor",
+  "review_date": "2026-09-11",
+  "review_status": "APPROVED",
+  "dataset_version": "v1.2.0",
+  "golden_sih_demo": false,
+  "golden_locked": false
+}

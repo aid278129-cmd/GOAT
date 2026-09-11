@@ -1,0 +1,18 @@
+{
+  "instrument_id": "REG-QCO-ELEC-HEATING-2023",
+  "standard_number": "IS 302-2-15:2009",
+  "instrument_type": "QCO",
+  "order_title": "Electrical Appliances for Domestic Water Heating and Liquid Boiling (Quality Control) Order",
+  "issuing_ministry": "Ministry of Heavy Industries",
+  "issuing_department": "Department of Heavy Industry",
+  "is_mandatory": true,
+  "standard_mark": "Standard Mark (ISI Mark) under Scheme-I of Schedule-II of BIS Regulations",
+  "scope_description": "Household electrical liquid heating appliances including electric kettles, water boilers, and urns.",
+  "official_urls": [
+    "https://heavyindustries.gov.in",
+    "https://egazette.gov.in"
+  ],
+  "verification_status": "VERIFIED",
+  "verified_by": "SYSTEM_RESEARCH",
+  "verified_at": "2026-09-03T05:00:00Z"
+}

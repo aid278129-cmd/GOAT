@@ -1,0 +1,13 @@
+{
+  "fixture_id": "FIX-IS17526-2021-SYNTHETIC",
+  "filename": "IS_17526_2021_representative.pdf",
+  "fixture_type": "SYNTHETIC_TEST_FIXTURE",
+  "authoritative": false,
+  "source_type": "USER_PROVIDED",
+  "authority_level": "UNVERIFIED",
+  "verification_status": "REQUIRES_REVIEW",
+  "standard_number_represented": "IS 17526:2021",
+  "purpose": "Unit testing and pipeline structure validation for layout extraction, clause segmentation, and cosine similarity ranking.",
+  "legal_status": "Locally synthesized test fixture based on public representative text. Not an authentic publication of the Bureau of Indian Standards.",
+  "retrieval_policy": "STRICTLY_EXCLUDED_FROM_AUTHORITATIVE_RETRIEVAL"
+}

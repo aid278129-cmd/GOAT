@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 220" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgEv" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090d16"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <filter id="shadowEv" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+
+    <marker id="arrowCyan" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#38bdf8"/>
+    </marker>
+
+    <style>
+      .step-hdr { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; font-weight: 700; fill: #f8fafc; }
+      .step-sub { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 9px; fill: #94a3b8; }
+      .tag { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; font-size: 8px; font-weight: 700; }
+    </style>
+  </defs>
+
+  <rect width="960" height="220" rx="16" fill="url(#bgEv)" stroke="#1e293b" stroke-width="1.5"/>
+
+  <!-- Section Title -->
+  <g transform="translate(30, 25)">
+    <text font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="800" fill="#38bdf8" letter-spacing="0.5">EVIDENCE-FIRST HARD COMPLIANCE GATE PIPELINE</text>
+    <text x="500" y="0" font-family="monospace" font-size="10" fill="#64748b">CLAUSE RETRIEVED ≠ SATISFIED • USER CLAIM ≠ EVIDENCE</text>
+  </g>
+
+  <!-- Step 1: Product Fact -->
+  <g transform="translate(30, 60)" filter="url(#shadowEv)">
+    <rect width="120" height="120" rx="10" fill="#131c2e" stroke="#0284c7" stroke-width="1.2"/>
+    <text class="step-hdr" x="14" y="28">1. Product Fact</text>
+    <text class="step-sub" x="14" y="50">• Rated Wattage</text>
+    <text class="step-sub" x="14" y="66">• Sheath SS304</text>
+    <text class="step-sub" x="14" y="82">• Capacity 750ml</text>
+    <rect x="14" y="96" width="92" height="14" rx="3" fill="#0c4a6e"/>
+    <text class="tag" x="18" y="106" fill="#38bdf8">PRODUCT DNA</text>
+  </g>
+  <path d="M 155 120 L 175 120" fill="none" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowCyan)"/>
+
+  <!-- Step 2: Applicable Standard -->
+  <g transform="translate(180, 60)" filter="url(#shadowEv)">
+    <rect width="120" height="120" rx="10" fill="#131c2e" stroke="#d97706" stroke-width="1.2"/>
+    <text class="step-hdr" x="14" y="28">2. Statutory QCO</text>
+    <text class="step-sub" x="14" y="50">• DPIIT Order</text>
+    <text class="step-sub" x="14" y="66">• IS 17526:2021</text>
+    <text class="step-sub" x="14" y="82">• Scheme I (ISI)</text>
+    <rect x="14" y="96" width="92" height="14" rx="3" fill="#451a03"/>
+    <text class="tag" x="18" y="106" fill="#fbbf24">LAYER 5 ENGINE</text>
+  </g>
+  <path d="M 305 120 L 325 120" fill="none" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowCyan)"/>
+
+  <!-- Step 3: Normative Clause -->
+  <g transform="translate(330, 60)" filter="url(#shadowEv)">
+    <rect width="120" height="120" rx="10" fill="#131c2e" stroke="#059669" stroke-width="1.2"/>
+    <text class="step-hdr" x="14" y="28">3. BIS Clause</text>
+    <text class="step-sub" x="14" y="50">• Cl 5.4 Heat Ret.</text>
+    <text class="step-sub" x="14" y="66">• Threshold: ≥60°C</text>
+    <text class="step-sub" x="14" y="82">• Duration: 6h</text>
+    <rect x="14" y="96" width="92" height="14" rx="3" fill="#064e3b"/>
+    <text class="tag" x="18" y="106" fill="#34d399">LAYER 6 RAG</text>
+  </g>
+  <path d="M 455 120 L 475 120" fill="none" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowCyan)"/>
+
+  <!-- Step 4: Laboratory Evidence -->
+  <g transform="translate(480, 60)" filter="url(#shadowEv)">
+    <rect width="120" height="120" rx="10" fill="#131c2e" stroke="#6366f1" stroke-width="1.2"/>
+    <text class="step-hdr" x="14" y="28">4. Lab Evidence</text>
+    <text class="step-sub" x="14" y="50">• NABL Lab TC-5291</text>
+    <text class="step-sub" x="14" y="66">• Measured: 68.2°C</text>
+    <text class="step-sub" x="14" y="82">• SHA-256 Verified</text>
+    <rect x="14" y="96" width="92" height="14" rx="3" fill="#1e1b4b"/>
+    <text class="tag" x="18" y="106" fill="#a5b4fc">LAYER 8 TRUST</text>
+  </g>
+  <path d="M 605 120 L 625 120" fill="none" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowCyan)"/>
+
+  <!-- Step 5: Deterministic Gap Gate -->
+  <g transform="translate(630, 60)" filter="url(#shadowEv)">
+    <rect width="135" height="120" rx="10" fill="#064e3b" stroke="#10b981" stroke-width="1.8"/>
+    <text class="step-hdr" x="14" y="28" fill="#ecfdf5">5. Gap Gate</text>
+    <text class="step-sub" x="14" y="50" fill="#d1fae5">• 68.2°C &gt;= 60°C</text>
+    <text class="step-sub" x="14" y="66" fill="#d1fae5">• Unit Normalized</text>
+    <text class="step-sub" x="14" y="82" fill="#d1fae5">• No Discrepancy</text>
+    <rect x="14" y="96" width="107" height="14" rx="3" fill="#022c22"/>
+    <text class="tag" x="18" y="106" fill="#6ee7b7">DETERMINISTIC EVAL</text>
+  </g>
+  <path d="M 770 120 L 790 120" fill="none" stroke="#10b981" stroke-width="2" marker-end="url(#arrowCyan)"/>
+
+  <!-- Step 6: Verified Outcome -->
+  <g transform="translate(795, 60)" filter="url(#shadowEv)">
+    <rect width="135" height="120" rx="10" fill="#1e1b4b" stroke="#ec4899" stroke-width="1.5"/>
+    <circle cx="28" cy="28" r="12" fill="#831843"/>
+    <text x="24" y="32" font-family="sans-serif" font-size="12" fill="#fbcfe8">✓</text>
+    <text class="step-hdr" x="46" y="32" fill="#fdf2f8">PASSPORT</text>
+    <text class="step-sub" x="14" y="60" fill="#fbcfe8">• Verdict: SATISFIED</text>
+    <text class="step-sub" x="14" y="76" fill="#fbcfe8">• Citation: Cl 5.4</text>
+    <text class="step-sub" x="14" y="92" fill="#fbcfe8">• NABL Reference</text>
+    <rect x="14" y="98" width="107" height="14" rx="3" fill="#500724"/>
+    <text class="tag" x="18" y="108" fill="#f472b6">AUDITABLE RECORD</text>
+  </g>
+</svg>

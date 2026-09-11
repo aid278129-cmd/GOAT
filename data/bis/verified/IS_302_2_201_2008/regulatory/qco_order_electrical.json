@@ -1,0 +1,20 @@
+{
+  "instrument_id": "REG-QCO-ELEC-IMMERSION-2003",
+  "standard_number": "IS 302-2-201:2008",
+  "instrument_type": "QCO",
+  "order_title": "Electrical Appliances (Quality Control) Order, 2003",
+  "issuing_ministry": "Ministry of Commerce and Industry",
+  "issuing_department": "Department for Promotion of Industry and Internal Trade (DPIIT)",
+  "gazette_notification": "S.O. 189(E)",
+  "enactment_date": "2004-04-01",
+  "is_mandatory": true,
+  "standard_mark": "Standard Mark (ISI Mark) under Scheme-I of Schedule-II of BIS (Conformity Assessment) Regulations, 2018",
+  "scope_description": "Mandatory BIS certification for portable electric immersion water heaters intended for domestic use.",
+  "official_urls": [
+    "https://www.bis.gov.in/product-certification/products-under-compulsory-certification/",
+    "https://egazette.gov.in"
+  ],
+  "verification_status": "VERIFIED",
+  "verified_by": "SYSTEM_RESEARCH",
+  "verified_at": "2026-09-03T05:00:00Z"
+}

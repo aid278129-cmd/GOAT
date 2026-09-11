@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 300" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg3d" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090d16"/>
+      <stop offset="50%" stop-color="#0e1526"/>
+      <stop offset="100%" stop-color="#090d16"/>
+    </linearGradient>
+
+    <!-- Isometric Plate Gradients -->
+    <linearGradient id="top1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="side1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+
+    <linearGradient id="top2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+
+    <linearGradient id="top3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#6d28d9"/>
+    </linearGradient>
+
+    <linearGradient id="top4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d97706"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+
+    <linearGradient id="top5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+
+    <linearGradient id="top6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+
+    <filter id="shadow3d" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <style>
+      .iso-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 12px; font-weight: 800; fill: #ffffff; text-anchor: middle; }
+      .iso-sub { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 9px; fill: #cbd5e1; text-anchor: middle; }
+      .iso-tag { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; font-size: 8px; font-weight: 700; fill: #38bdf8; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect width="960" height="300" rx="16" fill="url(#bg3d)" stroke="#1e293b" stroke-width="1.5"/>
+
+  <!-- Title -->
+  <g transform="translate(35, 30)">
+    <text font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="800" fill="#f8fafc" letter-spacing="0.5">COMPLIANCE COMPILATION LIFECYCLE: FROM UNSTRUCTURED INPUT TO AUDITABLE PASSPORT</text>
+    <text y="20" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#64748b">Step-by-step state transformation across deterministic boundaries</text>
+  </g>
+
+  <!-- Bus Line with Perspective -->
+  <path d="M 90 190 L 240 190 L 390 190 L 540 190 L 690 190 L 840 190" fill="none" stroke="#1e293b" stroke-width="6"/>
+  <path d="M 90 190 L 840 190" fill="none" stroke="#38bdf8" stroke-width="2" stroke-dasharray="8 6"/>
+
+  <!-- 3D Isometric Card 1: INPUT -->
+  <g transform="translate(45, 95)">
+    <!-- Base Shadow -->
+    <polygon points="10,120 110,120 130,135 30,135" fill="#000000" opacity="0.4"/>
+    <!-- Box Left Face -->
+    <polygon points="15,65 15,110 50,128 50,83" fill="#0f172a"/>
+    <!-- Box Right Face -->
+    <polygon points="50,83 50,128 125,95 125,50" fill="#020617"/>
+    <!-- Box Top Face -->
+    <polygon points="15,65 50,83 125,50 90,32" fill="url(#top1)" stroke="#334155" stroke-width="1.2"/>
+    <text class="iso-title" x="70" y="65">1. INPUT</text>
+    <text class="iso-sub" x="70" y="78">PDF / Lab Data</text>
+    <text class="iso-tag" x="70" y="145">UNTRUSTED</text>
+  </g>
+
+  <!-- 3D Isometric Card 2: EXTRACT -->
+  <g transform="translate(195, 95)">
+    <polygon points="10,120 110,120 130,135 30,135" fill="#000000" opacity="0.4"/>
+    <polygon points="15,65 15,110 50,128 50,83" fill="#0369a1"/>
+    <polygon points="50,83 50,128 125,95 125,50" fill="#082f49"/>
+    <polygon points="15,65 50,83 125,50 90,32" fill="url(#top2)" stroke="#38bdf8" stroke-width="1.2"/>
+    <text class="iso-title" x="70" y="65">2. EXTRACT</text>
+    <text class="iso-sub" x="70" y="78">Product DNA</text>
+    <text class="iso-tag" x="70" y="145" fill="#38bdf8">NORMALIZED</text>
+  </g>
+
+  <!-- 3D Isometric Card 3: REASON -->
+  <g transform="translate(345, 95)">
+    <polygon points="10,120 110,120 130,135 30,135" fill="#000000" opacity="0.4"/>
+    <polygon points="15,65 15,110 50,128 50,83" fill="#6d28d9"/>
+    <polygon points="50,83 50,128 125,95 125,50" fill="#2e1065"/>
+    <polygon points="15,65 50,83 125,50 90,32" fill="url(#top3)" stroke="#a78bfa" stroke-width="1.2"/>
+    <text class="iso-title" x="70" y="65">3. REASON</text>
+    <text class="iso-sub" x="70" y="78">LangGraph DAG</text>
+    <text class="iso-tag" x="70" y="145" fill="#c084fc">0.0% AUTHORITY</text>
+  </g>
+
+  <!-- 3D Isometric Card 4: RETRIEVE -->
+  <g transform="translate(495, 95)">
+    <polygon points="10,120 110,120 130,135 30,135" fill="#000000" opacity="0.4"/>
+    <polygon points="15,65 15,110 50,128 50,83" fill="#b45309"/>
+    <polygon points="50,83 50,128 125,95 125,50" fill="#451a03"/>
+    <polygon points="15,65 50,83 125,50 90,32" fill="url(#top4)" stroke="#fbbf24" stroke-width="1.2"/>
+    <text class="iso-title" x="70" y="65">4. RETRIEVE</text>
+    <text class="iso-sub" x="70" y="78">Isolated Clauses</text>
+    <text class="iso-tag" x="70" y="145" fill="#fbbf24">QCO &amp; STI LOCK</text>
+  </g>
+
+  <!-- 3D Isometric Card 5: VERIFY -->
+  <g transform="translate(645, 95)">
+    <polygon points="10,120 110,120 130,135 30,135" fill="#000000" opacity="0.4"/>
+    <polygon points="15,65 15,110 50,128 50,83" fill="#047857"/>
+    <polygon points="50,83 50,128 125,95 125,50" fill="#022c22"/>
+    <polygon points="15,65 50,83 125,50 90,32" fill="url(#top5)" stroke="#34d399" stroke-width="1.2"/>
+    <text class="iso-title" x="70" y="65">5. VERIFY</text>
+    <text class="iso-sub" x="70" y="78">NABL Evidence</text>
+    <text class="iso-tag" x="70" y="145" fill="#34d399">EVIDENCE GATE</text>
+  </g>
+
+  <!-- 3D Isometric Card 6: COMPILE -->
+  <g transform="translate(795, 95)">
+    <polygon points="10,120 110,120 130,135 30,135" fill="#000000" opacity="0.4"/>
+    <polygon points="15,65 15,110 50,128 50,83" fill="#059669"/>
+    <polygon points="50,83 50,128 125,95 125,50" fill="#064e3b"/>
+    <polygon points="15,65 50,83 125,50 90,32" fill="url(#top6)" stroke="#6ee7b7" stroke-width="1.5"/>
+    <text class="iso-title" x="70" y="65">6. COMPILE</text>
+    <text class="iso-sub" x="70" y="78">Passport Output</text>
+    <text class="iso-tag" x="70" y="145" fill="#6ee7b7">PRE-CERT PASSPORT</text>
+  </g>
+
+  <!-- Bottom Metric Summary -->
+  <g transform="translate(45, 260)">
+    <text font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#94a3b8">
+      Pipeline SLA: <tspan fill="#38bdf8" font-weight="700">Sub-2-Second Deterministic Execution</tspan> (P50: 16.5ms, P95: 35.8ms) • Zero Halting Cycles • Strict DAG Guarantee
+    </text>
+  </g>
+</svg>

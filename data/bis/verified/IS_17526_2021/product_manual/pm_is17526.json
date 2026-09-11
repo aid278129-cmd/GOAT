@@ -1,0 +1,25 @@
+{
+  "manual_id": "PM-IS17526-1",
+  "document_code": "PM/IS 17526/1",
+  "standard_number": "IS 17526:2021",
+  "title": "Product Manual for Domestic Stainless Steel Vacuum Flask/Bottle According to IS 17526:2021",
+  "publisher": "Bureau of Indian Standards",
+  "department": "Central Marks Department (CMD-III)",
+  "purpose": "Guidelines for certification of Domestic Stainless Steel Vacuum Flasks and Bottles under Scheme I (ISI Mark).",
+  "operational_guidelines": {
+    "sampling_guidelines": "Eight (8) samples drawn from factory production or market surveillance for complete testing.",
+    "scheme_of_inspection_and_testing": "Routine factory quality assurance tests must include raw material verification, leakage testing, thermal heat retention, and impact drop integrity.",
+    "primary_test_equipment_required": [
+      "Water bath / regulated hot water source (95 +/- 1 deg C)",
+      "Digital multi-channel temperature data logger (calibrated accuracy +/- 0.5 deg C)",
+      "Drop test apparatus with solid concrete impact target floor",
+      "Leakage test holding fixture with 10-minute inversion mechanism",
+      "Chemical testing spectrophotometer for stainless steel Grade 304 composition verification",
+      "Food-grade overall migration test apparatus as per IS 9845"
+    ]
+  },
+  "source_url": "https://www.bis.gov.in",
+  "verification_status": "VERIFIED",
+  "verified_by": "SYSTEM_RESEARCH",
+  "verified_at": "2026-09-02T20:55:00Z"
+}

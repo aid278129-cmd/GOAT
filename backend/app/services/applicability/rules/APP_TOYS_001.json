@@ -1,0 +1,37 @@
+{
+  "rule_id": "APP-TOYS-001",
+  "name": "Safety of Toys Mechanical and Physical Properties Applicability",
+  "description": "Determines technical relevance of IS 9873 (Part 1):2019 for toys intended for play by children under 14 years under DPIIT Toys QCO 2020.",
+  "priority": 10,
+  "verification_status": "VERIFIED",
+  "conditions": {
+    "all": [
+      {
+        "field": "category",
+        "operator": "equals",
+        "value": "Toys & Children's Products"
+      }
+    ]
+  },
+  "result": {
+    "standard_number": "IS 9873 (Part 1):2019",
+    "standard_title": "Safety of Toys — Part 1: Safety Aspects Related to Mechanical and Physical Properties",
+    "technical_relevance": "LIKELY_APPLICABLE",
+    "regulatory_status": "VERIFIED_MANDATORY_QCO",
+    "qco_order": "Toys (Quality Control) Order, 2020",
+    "scheme": "Scheme I (ISI Mark)",
+    "mandatory_reason": "DPIIT Toys (Quality Control) Order 2020 mandates compulsory ISI Mark under Scheme-I for toys intended for children under 14 years."
+  },
+  "sources": [
+    {
+      "source_type": "BIS_OFFICIAL",
+      "publisher": "Bureau of Indian Standards",
+      "url": "https://www.services.bis.gov.in/php/BIS_2.0/bisconnect/knowyourstandards/indian_standards/isdetails/9873_1"
+    },
+    {
+      "source_type": "GAZETTE_OFFICIAL",
+      "publisher": "Department for Promotion of Industry and Internal Trade (DPIIT)",
+      "url": "https://dpiit.gov.in"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "dataset_name": "BIS-standards-dataset",
+  "dataset_version": "v1.2.0-gazette-verified",
+  "upstream_source": "https://github.com/BIS-Standards-AI-Assistant/BIS-standards-dataset",
+  "upstream_commit": "c7820efd165484bd82fdae3d5cd370d7a9ecf176",
+  "total_standards": 51,
+  "total_benchmarks": 25,
+  "sha256": "f40e13402f11f55393071daca322de4dda75d44ef7c9516f8dd99a9f481aa690",
+  "ingested_at": "2026-09-03T11:20:00Z",
+  "verification_authority": "Bureau of Indian Standards / Official Gazette of India"
+}

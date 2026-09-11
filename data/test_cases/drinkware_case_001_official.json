@@ -1,0 +1,28 @@
+{
+  "case_id": "CASE-DRINKWARE-001-OFFICIAL",
+  "category": "Drinkware & Food Contact Containers",
+  "product_name": "Double-Walled Stainless Steel Insulated Flask",
+  "benchmark_status": "OFFICIAL_DOCUMENT_ACQUISITION_PENDING",
+  "expected_standard": {
+    "standard_number": "IS 17526:2021",
+    "official_title": "Domestic Stainless Steel Vacuum Flask/Bottle",
+    "publisher": "Bureau of Indian Standards",
+    "source_type": "BIS_OFFICIAL",
+    "authority_level": "AUTHORITATIVE",
+    "official_portal_url": "https://www.manakonline.in"
+  },
+  "expected_regulatory_order": {
+    "order_title": "Insulated Flask, Bottles and Containers for Domestic Use (Quality Control) Order, 2023",
+    "issuing_ministry": "Ministry of Commerce and Industry (DPIIT)",
+    "is_mandatory": true,
+    "scheme": "Scheme I (ISI Mark)"
+  },
+  "benchmark_policy": "Evaluation of official clause text and retrieval recall will be executed once the authentic BIS standard document is lawfully procured and ingested through the controlled verification workflow.",
+  "expected_sources": [
+    {
+      "source_type": "BIS_OFFICIAL",
+      "authority_level": "AUTHORITATIVE",
+      "verification_status": "PENDING_ACQUISITION"
+    }
+  ]
+}

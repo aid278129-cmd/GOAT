@@ -1,0 +1,37 @@
+{
+  "rule_id": "APP-HELMET-001",
+  "name": "Protective Helmets for Two-Wheeler Riders Applicability",
+  "description": "Determines technical relevance of IS 4151:2015 for two-wheeler rider protective helmets under MoRTH QCO 2020.",
+  "priority": 10,
+  "verification_status": "VERIFIED",
+  "conditions": {
+    "all": [
+      {
+        "field": "category",
+        "operator": "equals",
+        "value": "Protective Equipment & Helmets"
+      }
+    ]
+  },
+  "result": {
+    "standard_number": "IS 4151:2015",
+    "standard_title": "Protective Helmets for Two-Wheeler Riders — Specification",
+    "technical_relevance": "LIKELY_APPLICABLE",
+    "regulatory_status": "VERIFIED_MANDATORY_QCO",
+    "qco_order": "Helmet for riders of Two-Wheelers Motor Vehicles (Quality Control) Order, 2020",
+    "scheme": "Scheme I (ISI Mark)",
+    "mandatory_reason": "Ministry of Road Transport and Highways (MoRTH) QCO mandates compulsory ISI certification under Scheme-I for all two-wheeler helmets."
+  },
+  "sources": [
+    {
+      "source_type": "BIS_OFFICIAL",
+      "publisher": "Bureau of Indian Standards",
+      "url": "https://www.services.bis.gov.in"
+    },
+    {
+      "source_type": "GAZETTE_OFFICIAL",
+      "publisher": "Ministry of Road Transport and Highways (MoRTH)",
+      "url": "https://morth.nic.in"
+    }
+  ]
+}

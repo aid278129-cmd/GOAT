@@ -1,0 +1,32 @@
+{
+  "standard_number": "IS 17526:2021",
+  "official_title": "Domestic Stainless Steel Vacuum Flask/Bottle",
+  "short_title": "Domestic Stainless Steel Vacuum Flask",
+  "edition": "First Edition",
+  "status": "ACTIVE",
+  "category": "Drinkware & Food Contact Containers",
+  "sectional_committee": "Mechanical Engineering Division (MED 33)",
+  "ics_code": "97.040.20",
+  "scope": "This Indian Standard specifies the requirements, methods of sampling, and test methods for domestic stainless steel vacuum flasks and bottles (wide mouth and narrow mouth) intended for domestic and personal beverage temperature retention.",
+  "certification_scheme": "Scheme I (ISI Mark)",
+  "is_mandatory": true,
+  "supersedes": null,
+  "superseded_by": null,
+  "amendments_count": 2,
+  "amendments": [
+    {
+      "amendment_number": "Amendment No. 1",
+      "year": 2022,
+      "status": "GAZETTED",
+      "verification_status": "REQUIRES_REVIEW",
+      "notes": "Corrigendum and test method parameter clarifications published by BIS sectional committee."
+    },
+    {
+      "amendment_number": "Amendment No. 2",
+      "year": 2024,
+      "status": "GAZETTED",
+      "verification_status": "REQUIRES_REVIEW",
+      "notes": "Updated reference standards and tolerance guidelines."
+    }
+  ]
+}
