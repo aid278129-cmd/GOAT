@@ -38,6 +38,10 @@ def normalize_unit(val: float, from_unit: Optional[str], to_unit: Optional[str])
     if u_from in ("a", "amp", "ampere") and u_to in ("ma", "milliampere", "milliamps"):
         return round(val * 1000.0, 2), to_unit
 
+    # Current: Milliamperes -> Amperes
+    if u_from in ("ma", "milliampere", "milliamps") and u_to in ("a", "amp", "ampere"):
+        return round(val / 1000.0, 4), to_unit
+
     # Time: Hours -> Minutes
     if u_from in ("h", "hr", "hrs", "hour", "hours") and u_to in ("min", "mins", "minute", "minutes"):
         return round(val * 60.0, 2), to_unit

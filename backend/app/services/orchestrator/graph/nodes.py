@@ -54,6 +54,7 @@ from backend.app.services.orchestrator.schemas import (
 from backend.app.services.orchestrator.intent_router import intent_router
 from backend.app.services.orchestrator.query_agent import query_agent
 from backend.app.services.orchestrator.retrieval_agent import retrieval_agent
+from backend.app.services.orchestrator.analysis_agent import analysis_agent
 from backend.app.services.orchestrator.knowledge_selector import (
     verified_knowledge_selector,
     VERIFIED_STANDARDS_CATALOG,
@@ -670,6 +671,22 @@ def analysis_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphSta
         context_size = len(context_str)
         state["context_size_chars"] = context_size
 
+        # Advanced Structured Analysis Pipeline (Milestone M24.4.3C)
+        try:
+            struct_analysis = analysis_agent.analyze(
+                target_standard=target_std,
+                query=sanitized_q,
+                retrieved_clauses=pruned_clauses,
+                available_evidence=state.get("verified_evidence_records", []),
+                product_dna=dna,
+            )
+            state["structured_analysis"] = struct_analysis.model_dump()
+            state["comparison_candidates"] = [c.model_dump() for c in struct_analysis.comparison_candidates]
+            state["evidence_conflicts"] = [conf.model_dump() for conf in struct_analysis.evidence_conflicts]
+        except Exception as exc:
+            logger.error(f"[LangGraph:AnalysisAgent] Structured analysis failed: {exc}")
+            struct_analysis = None
+
         try:
             state["llm_call_count"] = state.get("llm_call_count", 0) + 1
             llm_called = True
@@ -700,6 +717,11 @@ def analysis_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphSta
         llm_called=llm_called,
         grounding_status=state.get("grounding_status", GroundingStatus.UNKNOWN.value),
         context_size_chars=context_size,
+        structured_analysis=state.get("structured_analysis"),
+        candidate_assessment=state.get("structured_analysis", {}).get("candidate_assessment") if state.get("structured_analysis") else None,
+        evidence_sufficiency=state.get("structured_analysis", {}).get("evidence_sufficiency") if state.get("structured_analysis") else None,
+        conflicts_detected=len(state.get("evidence_conflicts", []) or []),
+        missing_evidence_count=len(state.get("structured_analysis", {}).get("missing_evidence", []) or []) if state.get("structured_analysis") else 0,
     )
     contracts = state.get("node_contracts", {})
     contracts["analysis_agent"] = contract.model_dump()

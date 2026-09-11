@@ -93,6 +93,11 @@ class AnalysisAgentContract(BaseModel):
     llm_called: bool = False
     grounding_status: str
     context_size_chars: int = 0
+    structured_analysis: Optional[Dict[str, Any]] = None
+    candidate_assessment: Optional[str] = None
+    evidence_sufficiency: Optional[str] = None
+    conflicts_detected: int = 0
+    missing_evidence_count: int = 0
 
 
 class DeterministicGateContract(BaseModel):
@@ -244,4 +249,9 @@ class BISComplianceGraphState(TypedDict, total=False):
     retrieval_plan: Optional[Dict[str, Any]]
     retrieval_package: Optional[Dict[str, Any]]
     cross_standard_violations: Optional[List[Dict[str, Any]]]
+
+    # 16. M24.4.3C Analysis Agent Intelligence Upgrades
+    structured_analysis: Optional[Dict[str, Any]]
+    comparison_candidates: Optional[List[Dict[str, Any]]]
+    evidence_conflicts: Optional[List[Dict[str, Any]]]
 
