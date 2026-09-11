@@ -15,7 +15,7 @@ LLM COMPLIANCE AUTHORITY = 0%
 from datetime import datetime
 from enum import Enum
 from typing import List, Optional, Dict, Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 class OrchestratorIntent(str, Enum):
@@ -79,6 +79,12 @@ class OrchestratedAIResponse(BaseModel):
         "All compliance determinations, satisfaction gates, and gap evaluations are computed "
         "strictly by deterministic downstream engines based on verified laboratory evidence."
     )
+
+    @field_validator("regulatory_conclusion")
+    @classmethod
+    def enforce_zero_regulatory_authority(cls, v: str) -> str:
+        # LLM has 0.0% compliance authority; force any non-NONE or pseudo-status to "NONE"
+        return "NONE"
 
 
 class AuditLogRecord(BaseModel):

@@ -16,6 +16,7 @@ from backend.app.services.orchestrator.tools.guards import (
     validate_tool_permission,
     sanitize_and_validate_argument,
     enforce_standard_isolation,
+    validate_tool_output_authority,
     ToolSecurityError,
     PROHIBITED_TOOL_ACTIONS,
 )
@@ -46,4 +47,5 @@ __all__ = [
     "ToolSecurityError",
     "validate_tool_permission",
     "enforce_standard_isolation",
+    "validate_tool_output_authority",
 ]

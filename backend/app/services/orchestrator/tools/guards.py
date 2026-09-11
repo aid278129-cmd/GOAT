@@ -73,3 +73,19 @@ def enforce_standard_isolation(target_standard: str, queried_standard: str) -> N
             f"Standard Isolation Violation: Cannot access clauses from '{queried_standard}' "
             f"while evaluating target standard '{target_standard}'."
         )
+
+
+def validate_tool_output_authority(output_obj: Any) -> None:
+    """Ensure tool output does not claim compliance authority or forge layer provenance."""
+    if isinstance(output_obj, dict):
+        src = str(output_obj.get("authority_source", ""))
+        if any(auth in src for auth in ["LAYER_5", "LAYER_7", "LAYER_9"]):
+            raise ToolSecurityError("Authority Escalation Denied: Tools cannot self-declare deterministic engine authority.")
+        status = str(output_obj.get("status", "")).upper()
+        if status in ("COMPLIANT", "SATISFIED", "CERTIFIED", "APPROVED"):
+            raise ToolSecurityError(f"Authority Escalation Denied: Tools cannot declare compliance status '{status}'.")
+    elif hasattr(output_obj, "authority_source"):
+        src = str(getattr(output_obj, "authority_source", ""))
+        if any(auth in src for auth in ["LAYER_5", "LAYER_7", "LAYER_9"]):
+            raise ToolSecurityError("Authority Escalation Denied: Tools cannot self-declare deterministic engine authority.")
+

@@ -45,6 +45,15 @@ from backend.app.services.orchestrator.tools import (
     tool_registry,
     ToolSecurityError,
 )
+from backend.app.services.compliance import (
+    AuthorityLevel,
+    AuthoritySource,
+    DecisionType,
+    AuthoritativeRecord,
+    AuthorityFirewallViolation,
+    compliance_firewall,
+    authority_audit_logger,
+)
 from backend.app.core.logging import logger
 
 # Maximum allowed tool calls per graph run to prevent runaway loops
@@ -333,6 +342,13 @@ def evidence_validation_gate_node(state: BISComplianceGraphState) -> BISComplian
 def analysis_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphState:
     """Invokes langchain_chat_adapter (wrapping single_structured_llm) for language analysis."""
     t0 = time.time()
+    # Snapshot deterministic fields to prevent AI mutation
+    preserved_app = state.get("applicability_decision")
+    preserved_gap = state.get("gap_analysis_summary")
+    preserved_unsat = state.get("unsatisfied_clauses")
+    preserved_ev = state.get("verified_evidence_records")
+    preserved_auth = state.get("authority_records", [])
+
     intent_val = state.get("user_intent", OrchestratorIntent.QUERY_REQUIREMENT.value)
     intent = OrchestratorIntent(intent_val) if intent_val in OrchestratorIntent._value2member_map_ else OrchestratorIntent.QUERY_REQUIREMENT
     sanitized_q = state.get("sanitized_query", "")
@@ -352,14 +368,29 @@ def analysis_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphSta
             sanitized_query=sanitized_q,
             context=context,
         )
-        state["analysis_explanation"] = response.answer
+        # Sanitize any pseudo-regulatory assertions from AI output
+        clean_answer, stripped_claims = compliance_firewall.sanitize_untrusted_compliance_claims(response.answer)
+        if stripped_claims:
+            state["untrusted_ai_claims"] = state.get("untrusted_ai_claims", []) + stripped_claims
+
+        state["analysis_explanation"] = clean_answer
         state["grounding_status"] = response.grounding_status.value
         state["final_response"] = response.model_dump()
+        state["final_response"]["answer"] = clean_answer
     except Exception as exc:
         logger.error(f"[LangGraph:AnalysisAgent] Generation error: {exc}")
         state["errors"] = state.get("errors", []) + [str(exc)]
         state["analysis_explanation"] = "An error occurred during analysis generation. Fallback enforced."
         state["grounding_status"] = GroundingStatus.UNKNOWN.value
+
+    # Re-enforce deterministic state immutability against AI node tampering
+    state["applicability_decision"] = preserved_app
+    state["gap_analysis_summary"] = preserved_gap
+    state["unsatisfied_clauses"] = preserved_unsat
+    state["verified_evidence_records"] = preserved_ev
+    state["authority_records"] = preserved_auth
+    state["regulatory_conclusion"] = "NONE"
+    state["llm_compliance_authority"] = 0.0
 
     _record_trace(state, "analysis_agent", t0)
     return state
@@ -389,11 +420,32 @@ def deterministic_compliance_gate_node(state: BISComplianceGraphState) -> BISCom
             })
 
     state["unsatisfied_clauses"] = unsatisfied
-    state["gap_analysis_summary"] = {
+    gap_summary = {
         "total_evaluated": len(retrieved),
         "unsatisfied_count": len(unsatisfied),
         "authority": "Deterministic Downstream Gate (Layers 5 & 7)",
     }
+    state["gap_analysis_summary"] = gap_summary
+
+    # Authoritative record generation through Compliance Authority Firewall
+    cid = state.get("correlation_id", f"RUN-{uuid.uuid4().hex[:8]}")
+    total_eval = len(retrieved)
+    unsatisfied_cnt = len(unsatisfied)
+    det_status = "SATISFIED" if (total_eval > 0 and unsatisfied_cnt == 0 and ev_status == "VERIFIED") else "UNSATISFIED"
+    try:
+        auth_record = compliance_firewall.validate_compliance_authority(
+            decision_type=DecisionType.GAP_EVALUATION,
+            decision_value=det_status,
+            source=AuthoritySource.LAYER_7_COMPLIANCE_GAP_ENGINE,
+            source_layer=7,
+            deterministic=True,
+            correlation_id=cid,
+            metadata={"total_evaluated": total_eval, "unsatisfied_count": unsatisfied_cnt},
+        )
+        authority_audit_logger.record_decision(auth_record)
+        state["authority_records"] = state.get("authority_records", []) + [auth_record.model_dump()]
+    except Exception as exc:
+        logger.error(f"[DeterministicComplianceGate] Authority firewall error: {exc}")
 
     _record_trace(state, "deterministic_compliance_gate", t0)
     return state
@@ -434,6 +486,10 @@ def output_integrity_gate_node(state: BISComplianceGraphState) -> BISComplianceG
     target_std = state.get("target_standard_number", "IS 302-2-201:2008")
 
     sanitized_answer, stripped = grounding_guard.sanitize_regulatory_assertions(raw_answer)
+    sanitized_answer, firewall_stripped = compliance_firewall.sanitize_untrusted_compliance_claims(sanitized_answer)
+    if firewall_stripped:
+        stripped = True
+        state["untrusted_ai_claims"] = state.get("untrusted_ai_claims", []) + firewall_stripped
 
     verified_citations, suppressed = grounding_guard.validate_citations(
         text=sanitized_answer,

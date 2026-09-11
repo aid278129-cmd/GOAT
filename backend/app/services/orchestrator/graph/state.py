@@ -89,6 +89,8 @@ class BISComplianceGraphState(TypedDict, total=False):
     # 10. Authority (Hard invariants: Always 0.0% LLM authority, regulatory_conclusion="NONE")
     regulatory_conclusion: str  # "NONE"
     llm_compliance_authority: float  # 0.0
+    authority_records: List[Dict[str, Any]]  # AuthoritativeRecord serializations
+    untrusted_ai_claims: List[str]  # Detected and suppressed pseudo-compliance assertions
 
     # 11. Final Output Payload (OrchestratedAIResponse)
     final_response: Optional[Dict[str, Any]]

@@ -94,8 +94,15 @@ class Layer9PassportCompiler:
             if "AUTHORITATIVE_CLAUSE_PENDING" in code and ("guaranteed compliant" in desc.lower() or "passed" in desc.lower()):
                 blocked_reasons.append("Unauthorized text reconstruction detected on pending standard specification.")
 
+            # Invariant: Unauthorized non-deterministic sources cannot declare SATISFIED
+            auth_src = str(req.get("authority_source", "")).upper()
+            if status == "SATISFIED" and auth_src in ("LLM", "LANGCHAIN", "LANGGRAPH_AI_NODE", "CONTROLLED_TOOL", "USER_INPUT", "DOCUMENT_OCR", "CLIENT_API", "AI_DERIVED"):
+                blocked_reasons.append(
+                    f"Requirement Cl {clause_num} [{code}] claims SATISFIED from unauthorized source '{auth_src}'."
+                )
+
             # Invariant: LLM compliance assertion check
-            for prob in ["certified by ai", "llm certif", "compliance granted by assistant"]:
+            for prob in ["certified by ai", "llm certif", "compliance granted by assistant", "declared compliant", "hereby certified"]:
                 if prob in desc.lower() or prob in req.get("explanation", "").lower():
                     blocked_reasons.append(f"Prohibited LLM compliance assertion detected in Requirement {code}.")
 
