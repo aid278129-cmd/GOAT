@@ -56,6 +56,14 @@ from backend.app.services.orchestrator.query_agent import query_agent
 from backend.app.services.orchestrator.retrieval_agent import retrieval_agent
 from backend.app.services.orchestrator.analysis_agent import analysis_agent
 from backend.app.services.orchestrator.planning_agent import planning_agent
+from backend.app.services.orchestrator.coordination import (
+    agent_coordinator,
+    HandoffStage,
+    HandoffValidator,
+    AgentReadinessGate,
+    SnapshotManager,
+    BudgetEnforcer,
+)
 from backend.app.services.orchestrator.knowledge_selector import (
     verified_knowledge_selector,
     VERIFIED_STANDARDS_CATALOG,
@@ -121,6 +129,8 @@ def _execute_controlled_tool(
         # Prevent duplicate execution
         cached_result = tool_cache[cache_key]
         state["duplicate_tool_calls_prevented"] = state.get("duplicate_tool_calls_prevented", 0) + 1
+        state["duplicate_work_prevented"] = state.get("duplicate_work_prevented", 0) + 1
+        agent_coordinator.metrics["duplicate_work_prevented"] = agent_coordinator.metrics.get("duplicate_work_prevented", 0) + 1
         
         tool_trace: ToolExecutionTrace = {
             "tool_name": tool_name,
@@ -139,7 +149,7 @@ def _execute_controlled_tool(
         return cached_result
 
     current_count = state.get("tool_call_count", 0)
-    if current_count >= MAX_TOOL_CALLS_PER_RUN:
+    if not BudgetEnforcer.check_and_increment_tool(state, agent_coordinator.budget):
         logger.warning(f"[LangGraphToolGuard] Tool call limit exceeded ({MAX_TOOL_CALLS_PER_RUN}). Rejecting '{tool_name}'.")
         raise ToolSecurityError(f"Execution Limit Exceeded: Maximum of {MAX_TOOL_CALLS_PER_RUN} tool calls reached.")
 
@@ -151,7 +161,6 @@ def _execute_controlled_tool(
 
     try:
         res = tool_registry.execute_tool(tool_name, tool_input, role=role)
-        state["tool_call_count"] = current_count + 1
         # Store in deduplication cache
         tool_cache[cache_key] = res
     except Exception as exc:
@@ -208,6 +217,15 @@ def request_understanding_node(state: BISComplianceGraphState) -> BISComplianceG
     user_q = state.get("user_query", "")
     prod_dna = state.get("product_dna")
 
+    # M24.4.3E State Snapshot
+    snap = SnapshotManager.capture_snapshot("request_understanding", {
+        "user_query": user_q,
+        "product_dna": str(prod_dna),
+    })
+    snapshots = state.get("state_snapshots") or []
+    snapshots.append(snap.model_dump())
+    state["state_snapshots"] = snapshots
+
     # M24.4.3A Advanced Query Agent execution
     understanding = query_agent.understand_query(user_q, product_dna=prod_dna)
 
@@ -236,6 +254,12 @@ def request_understanding_node(state: BISComplianceGraphState) -> BISComplianceG
     if understanding.explicit_standard_refs and not state.get("target_standard_number"):
         state["target_standard_number"] = understanding.explicit_standard_refs[0]
 
+    # M24.4.3E Handoff Contract
+    handoff = HandoffValidator.validate_handoff(HandoffStage.QUERY_TO_RETRIEVAL, state)
+    handoffs = state.get("handoff_traces") or []
+    handoffs.append(handoff.model_dump())
+    state["handoff_traces"] = handoffs
+
     # Typed contract (backwards-compatible with M24.4.1 while exposing M24.4.3A upgrades)
     contract = RequestUnderstandingContract(
         sanitized_query=understanding.normalized_query,
@@ -258,6 +282,14 @@ def request_understanding_node(state: BISComplianceGraphState) -> BISComplianceG
     contracts = state.get("node_contracts", {})
     contracts["request_understanding"] = contract.model_dump()
     state["node_contracts"] = contracts
+
+    agent_coordinator.record_stage_execution(
+        state=state,
+        stage_name="request_understanding",
+        duration_ms=round((time.time() - t0) * 1000, 2),
+        status="SUCCESS" if not security_flag else "INTERCEPTED",
+        warnings=understanding.security_flags,
+    )
 
     _record_trace(state, "request_understanding", t0)
     return state
@@ -456,6 +488,20 @@ def retrieval_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphSt
     t0 = time.time()
     target_std = state.get("target_standard_number", "IS 302-2-201:2008")
 
+    # M24.4.3E Agent Readiness Gate
+    ready, blocker = AgentReadinessGate.check_readiness(HandoffStage.QUERY_TO_RETRIEVAL, state)
+    if not ready:
+        logger.warning(f"[RetrievalAgent] Blocked by readiness gate: {blocker}")
+
+    # M24.4.3E State Snapshot
+    snap = SnapshotManager.capture_snapshot("retrieval_agent", {
+        "target_standard_number": target_std,
+        "query": state.get("sanitized_query", ""),
+    })
+    snapshots = state.get("state_snapshots") or []
+    snapshots.append(snap.model_dump())
+    state["state_snapshots"] = snapshots
+
     # Delegate execution to advanced RetrievalAgent engine
     try:
         state = retrieval_agent.execute_retrieval(
@@ -470,6 +516,12 @@ def retrieval_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphSt
     package_data = state.get("retrieval_package") or {}
     plan_data = state.get("retrieval_plan") or {}
     violations = state.get("cross_standard_violations") or []
+
+    # M24.4.3E Handoff Contract
+    handoff = HandoffValidator.validate_handoff(HandoffStage.RETRIEVAL_TO_ANALYSIS, state)
+    handoffs = state.get("handoff_traces") or []
+    handoffs.append(handoff.model_dump())
+    state["handoff_traces"] = handoffs
 
     # Strongly typed contract
     contract = RetrievalAgentContract(
@@ -491,6 +543,16 @@ def retrieval_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphSt
     contracts = state.get("node_contracts", {})
     contracts["retrieval_agent"] = contract.model_dump()
     state["node_contracts"] = contracts
+
+    agent_coordinator.record_stage_execution(
+        state=state,
+        stage_name="retrieval_agent",
+        duration_ms=round((time.time() - t0) * 1000, 2),
+        status="SUCCESS" if not state.get("errors") else "FAILED",
+        errors=state.get("errors", []),
+        tool_calls=state.get("retrieval_call_count", 0),
+        cache_hits=1 if package_data.get("from_cache") else 0,
+    )
 
     _record_trace(state, "retrieval_agent", t0)
     return state
@@ -582,6 +644,21 @@ def analysis_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphSta
     intent = OrchestratorIntent(intent_val) if intent_val in OrchestratorIntent._value2member_map_ else OrchestratorIntent.QUERY_REQUIREMENT
     sanitized_q = state.get("sanitized_query", "")
     target_std = state.get("target_standard_number", "IS 302-2-201:2008")
+
+    # M24.4.3E Agent Readiness Gate
+    ready, blocker = AgentReadinessGate.check_readiness(HandoffStage.RETRIEVAL_TO_ANALYSIS, state)
+    if not ready:
+        logger.warning(f"[AnalysisAgent] Blocked by readiness gate: {blocker}")
+
+    # M24.4.3E State Snapshot
+    snap = SnapshotManager.capture_snapshot("analysis_agent", {
+        "target_standard_number": target_std,
+        "clauses_count": len(state.get("retrieved_candidate_clauses", [])),
+        "evidence_records_count": len(state.get("verified_evidence_records", []) or []),
+    })
+    snapshots = state.get("state_snapshots") or []
+    snapshots.append(snap.model_dump())
+    state["state_snapshots"] = snapshots
 
     llm_called = False
     context_size = 0
@@ -688,28 +765,46 @@ def analysis_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphSta
             logger.error(f"[LangGraph:AnalysisAgent] Structured analysis failed: {exc}")
             struct_analysis = None
 
-        try:
-            state["llm_call_count"] = state.get("llm_call_count", 0) + 1
-            llm_called = True
-            response: OrchestratedAIResponse = langchain_chat_adapter.generate_orchestrated_response(
-                intent=intent,
-                sanitized_query=sanitized_q,
-                context=context,
+        # M24.4.3E Execution Budget Enforcement
+        if not BudgetEnforcer.check_and_increment_llm(state, agent_coordinator.budget):
+            logger.warning("[AnalysisAgent] LLM execution budget exceeded; using deterministic fallback.")
+            clean_answer = (
+                f"Evaluation for standard {target_std}. Analysis execution budget limit reached. "
+                "Compliance determination remains strictly computed by Layer 7 deterministic engine."
             )
-            # Sanitize any pseudo-regulatory assertions from AI output
-            clean_answer, stripped_claims = compliance_firewall.sanitize_untrusted_compliance_claims(response.answer)
-            if stripped_claims:
-                state["untrusted_ai_claims"] = state.get("untrusted_ai_claims", []) + stripped_claims
-
             state["analysis_explanation"] = clean_answer
-            state["grounding_status"] = response.grounding_status.value
-            state["final_response"] = response.model_dump()
-            state["final_response"]["answer"] = clean_answer
-        except Exception as exc:
-            logger.error(f"[LangGraph:AnalysisAgent] Generation error: {exc}")
-            state["errors"] = state.get("errors", []) + [str(exc)]
-            state["analysis_explanation"] = "An error occurred during analysis generation. Fallback enforced."
-            state["grounding_status"] = GroundingStatus.UNKNOWN.value
+            state["grounding_status"] = GroundingStatus.SUPPORTED.value
+            state["final_response"] = {
+                "answer": clean_answer,
+                "intent": intent_val,
+                "grounding_status": GroundingStatus.SUPPORTED.value,
+                "confidence_score": 0.5,
+                "citations": [CitationItem(standard_number=target_std, source_authority="Deterministic Gate").model_dump()],
+                "deterministic_fallback_used": True,
+                "regulatory_conclusion": "NONE",
+            }
+        else:
+            try:
+                llm_called = True
+                response: OrchestratedAIResponse = langchain_chat_adapter.generate_orchestrated_response(
+                    intent=intent,
+                    sanitized_query=sanitized_q,
+                    context=context,
+                )
+                # Sanitize any pseudo-regulatory assertions from AI output
+                clean_answer, stripped_claims = compliance_firewall.sanitize_untrusted_compliance_claims(response.answer)
+                if stripped_claims:
+                    state["untrusted_ai_claims"] = state.get("untrusted_ai_claims", []) + stripped_claims
+
+                state["analysis_explanation"] = clean_answer
+                state["grounding_status"] = response.grounding_status.value
+                state["final_response"] = response.model_dump()
+                state["final_response"]["answer"] = clean_answer
+            except Exception as exc:
+                logger.error(f"[LangGraph:AnalysisAgent] Generation error: {exc}")
+                state["errors"] = state.get("errors", []) + [str(exc)]
+                state["analysis_explanation"] = "An error occurred during analysis generation. Fallback enforced."
+                state["grounding_status"] = GroundingStatus.UNKNOWN.value
 
     # Typed contract
     contract = AnalysisAgentContract(
@@ -736,6 +831,21 @@ def analysis_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphSta
     state["authority_records"] = preserved_auth
     state["regulatory_conclusion"] = "NONE"
     state["llm_compliance_authority"] = 0.0
+
+    # M24.4.3E Handoff Contract
+    handoff = HandoffValidator.validate_handoff(HandoffStage.ANALYSIS_TO_LAYER7, state)
+    handoffs = state.get("handoff_traces") or []
+    handoffs.append(handoff.model_dump())
+    state["handoff_traces"] = handoffs
+
+    agent_coordinator.record_stage_execution(
+        state=state,
+        stage_name="analysis_agent",
+        duration_ms=round((time.time() - t0) * 1000, 2),
+        status="SUCCESS" if not state.get("errors") else "FAILED",
+        errors=state.get("errors", []),
+        llm_calls=1 if llm_called else 0,
+    )
 
     _record_trace(state, "analysis_agent", t0)
     return state
@@ -814,13 +924,28 @@ def deterministic_compliance_gate_node(state: BISComplianceGraphState) -> BISCom
 def planning_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphState:
     """Converts deterministic gaps, analysis findings, and evidence status into a structured ActionPlan."""
     t0 = time.time()
-    unsatisfied = state.get("unsatisfied_clauses", [])
+    unsatisfied = state.get("unsatisfied_clauses") or []
     target_std = state.get("target_standard_number", "IS 302-2-201:2008")
     gap_summary = state.get("gap_analysis_summary")
     ev_status = state.get("evidence_status", "NO_VERIFIED_SOURCE")
     struct_analysis = state.get("structured_analysis")
     dna = state.get("product_dna")
     user_q = state.get("sanitized_query", "")
+
+    # M24.4.3E Agent Readiness Gate
+    ready, blocker = AgentReadinessGate.check_readiness(HandoffStage.LAYER7_TO_PLANNING, state)
+    if not ready:
+        logger.warning(f"[PlanningAgent] Blocked by readiness gate: {blocker}")
+
+    # M24.4.3E State Snapshot
+    snap = SnapshotManager.capture_snapshot("planning_agent", {
+        "target_standard_number": target_std,
+        "unsatisfied_clauses_count": len(unsatisfied),
+        "gap_summary": gap_summary,
+    })
+    snapshots = state.get("state_snapshots") or []
+    snapshots.append(snap.model_dump())
+    state["state_snapshots"] = snapshots
 
     # Execute Advanced Planning Agent Pipeline
     try:
@@ -879,6 +1004,20 @@ def planning_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphSta
     # Strictly enforce zero compliance authority
     state["regulatory_conclusion"] = "NONE"
     state["llm_compliance_authority"] = 0.0
+
+    # M24.4.3E Handoff Contract
+    handoff = HandoffValidator.validate_handoff(HandoffStage.PLANNING_TO_OUTPUT, state)
+    handoffs = state.get("handoff_traces") or []
+    handoffs.append(handoff.model_dump())
+    state["handoff_traces"] = handoffs
+
+    agent_coordinator.record_stage_execution(
+        state=state,
+        stage_name="planning_agent",
+        duration_ms=round((time.time() - t0) * 1000, 2),
+        status="SUCCESS" if not state.get("errors") else "FAILED",
+        errors=state.get("errors", []),
+    )
 
     _record_trace(state, "planning_agent", t0)
     return state

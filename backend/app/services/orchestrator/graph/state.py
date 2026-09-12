@@ -263,3 +263,10 @@ class BISComplianceGraphState(TypedDict, total=False):
     structured_action_plan: Optional[Dict[str, Any]]
     action_blockers: Optional[List[Dict[str, Any]]]
 
+    # 18. M24.4.3E Controlled Agent Coordination Upgrades
+    handoff_traces: Optional[List[Dict[str, Any]]]
+    state_snapshots: Optional[List[Dict[str, Any]]]
+    agent_traces: Optional[List[Dict[str, Any]]]
+    budget_exceeded: Optional[bool]
+    duplicate_work_prevented: Optional[int]
+
