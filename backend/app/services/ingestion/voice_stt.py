@@ -188,21 +188,6 @@ class VoiceTranscriptionService:
             or (audio_bytes.startswith(b"RIFF") and len(audio_bytes) <= 4096 and b"WAVE" not in audio_bytes[:16])
         )
 
-        # 2. Production Real Mode: Unconfigured State
-        if not settings.DEMO_MODE and not self.is_cloud_configured() and not self.is_offline_model_available():
-            return {
-                "success": False,
-                "text": "",
-                "error": (
-                    "VOICE_CLOUD_NOT_CONFIGURED: Whisper Speech-to-Text requires OPENAI_API_KEY in .env "
-                    "or a local offline Whisper engine. Audio was validated successfully, but no STT model is active."
-                ),
-                "duration_seconds": approx_duration,
-                "language": language or "en",
-                "provider": "none",
-                "status": "VOICE_CLOUD_NOT_CONFIGURED",
-                "detected_format": detected_fmt,
-            }
 
         # 3. Live Sarvam AI Speech-to-Text Transcription (Primary Engine)
         sarvam_key = self._get_sarvam_api_key()
