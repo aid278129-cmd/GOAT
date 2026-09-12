@@ -143,6 +143,7 @@ class ProductDNACore(BaseModel):
     electrical: bool = False
     insulated: bool = False
     attributes: List[DNAAttribute] = Field(default_factory=list)
+    standards_claimed: List[str] = Field(default_factory=list)
     pending_clarifications: List[ClarificationRequirement] = Field(default_factory=list)
     version: str = "v1.0"
     facts: List[ProductFact] = Field(default_factory=list)

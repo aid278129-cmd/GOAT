@@ -66,6 +66,101 @@ class QCOStatus(str, Enum):
     QCO_UNCERTAIN = "QCO_UNCERTAIN"
 
 
+class StandardStatus(str, Enum):
+    """Lifecycle and gazette publication status of an Indian Standard."""
+    ACTIVE = "ACTIVE"
+    SUPERSEDED = "SUPERSEDED"
+    WITHDRAWN = "WITHDRAWN"
+    REVISION_PENDING = "REVISION_PENDING"
+    CATALOG_ONLY = "CATALOG_ONLY"
+    ACQUISITION_PENDING = "ACQUISITION_PENDING"
+    UNKNOWN = "UNKNOWN"
+
+
+class ProductConditionStatus(str, Enum):
+    """Status of conditional requirement evaluation for the product."""
+    CONDITIONS_SATISFIED = "CONDITIONS_SATISFIED"
+    CONDITIONS_UNMET = "CONDITIONS_UNMET"
+    CONDITIONS_PENDING_INFO = "CONDITIONS_PENDING_INFO"
+    NOT_CONDITIONAL = "NOT_CONDITIONAL"
+
+
+class NormativeDependencyStatus(str, Enum):
+    """Status of normative / allied standard references."""
+    PRIMARY_ONLY = "PRIMARY_ONLY"
+    HAS_NORMATIVE_DEPENDENCIES = "HAS_NORMATIVE_DEPENDENCIES"
+    DEPENDENCY_UNMET = "DEPENDENCY_UNMET"
+    NORMATIVE_REFERENCE_CANDIDATE = "NORMATIVE_REFERENCE_CANDIDATE"
+
+
+class EvidenceAvailabilityStatus(str, Enum):
+    """Status of clause-level textual evidence in verified repository."""
+    FULL_TEXT_VERIFIED = "FULL_TEXT_VERIFIED"
+    METADATA_ONLY = "METADATA_ONLY"
+    ACQUISITION_PENDING = "ACQUISITION_PENDING"
+    COVERAGE_GAP = "COVERAGE_GAP"
+
+
+class NormativeRelationType(str, Enum):
+    """Relationship category between Indian Standards."""
+    PRIMARY_STANDARD = "PRIMARY_STANDARD"
+    NORMATIVE_REFERENCE = "NORMATIVE_REFERENCE"
+    RELATED_STANDARD = "RELATED_STANDARD"
+    SUPERSEDES = "SUPERSEDES"
+    SUPERSEDED_BY = "SUPERSEDED_BY"
+    AMENDMENT_OF = "AMENDMENT_OF"
+    APPLICABILITY_DEPENDENCY = "APPLICABILITY_DEPENDENCY"
+
+
+class NormativeStandardReference(BaseModel):
+    """Deterministic reference to an allied or normative standard."""
+    standard_number: str
+    title: Optional[str] = None
+    relationship_type: NormativeRelationType = NormativeRelationType.NORMATIVE_REFERENCE
+    clause_reference: Optional[str] = None
+    description: Optional[str] = None
+    is_mandatory_dependency: bool = False
+    dependency_condition: Optional[str] = None
+    standard_status: StandardStatus = StandardStatus.ACTIVE
+
+
+class TypedCondition(BaseModel):
+    """Declarative typed condition for deterministic conditional applicability."""
+    condition_id: str
+    description: str
+    field: str
+    operator: str  # "equals", "contains", "in", "greater_than", "less_than", "exists", "between", "not_equals"
+    expected_value: Any
+    unit: Optional[str] = None
+    is_mandatory_discriminator: bool = False
+
+
+class ConditionalRequirementEvaluation(BaseModel):
+    """Result of evaluating a typed condition against Product DNA."""
+    condition_id: str
+    condition_description: str
+    attribute_evaluated: str
+    actual_value: Any = None
+    expected_value: Any = None
+    status: str = "SATISFIED"  # "SATISFIED", "UNMET", "MISSING_ATTRIBUTE", "UNKNOWN"
+    explanation: str = ""
+
+
+class StandardRevisionInfo(BaseModel):
+    """Authoritative standard revision and gazette status metadata."""
+    standard_number: str
+    standard_title: str
+    revision_edition: str
+    status: StandardStatus = StandardStatus.ACTIVE
+    publication_year: Optional[int] = None
+    effective_date: Optional[str] = None
+    superseded_by: Optional[str] = None
+    supersedes: Optional[str] = None
+    amendments: List[str] = Field(default_factory=list)
+    gazette_order_ref: Optional[str] = None
+    provenance: str = "Bureau of Indian Standards"
+
+
 class ApplicabilityAction(str, Enum):
     """Next operational action triggered by applicability state."""
     CONTINUE_TO_REQUIREMENTS = "CONTINUE_TO_REQUIREMENTS"
@@ -147,3 +242,23 @@ class ApplicabilityDecision(BaseModel):
     knowledge_version: str = "v1.2.0-gazette-verified"
     amendment_info: Optional[str] = None
     superseded_by: Optional[str] = None
+
+    # M25.0 Formal Applicability Intelligence Fields
+    product_id: Optional[str] = None
+    standard_revision: Optional[str] = None
+    standard_status: StandardStatus = StandardStatus.ACTIVE
+    scope_match: ScopeStatus = ScopeStatus.IN_SCOPE
+    product_discriminators: Dict[str, Any] = Field(default_factory=dict)
+    required_discriminators: List[str] = Field(default_factory=list)
+    qco_conditions: List[str] = Field(default_factory=list)
+    conditional_conditions: List[ConditionalRequirementEvaluation] = Field(default_factory=list)
+    normative_references: List[NormativeStandardReference] = Field(default_factory=list)
+    product_condition_status: ProductConditionStatus = ProductConditionStatus.NOT_CONDITIONAL
+    normative_dependency_status: NormativeDependencyStatus = NormativeDependencyStatus.PRIMARY_ONLY
+    evidence_availability_status: EvidenceAvailabilityStatus = EvidenceAvailabilityStatus.FULL_TEXT_VERIFIED
+    decision_reasons: List[str] = Field(default_factory=list)
+    supporting_evidence: List[SupportingFact] = Field(default_factory=list)
+    provenance: Optional[str] = "Bureau of Indian Standards (Official Gazette)"
+    confidence_metadata: Dict[str, Any] = Field(default_factory=dict)
+    expert_review_required: bool = False
+    evaluation_order_trace: List[str] = Field(default_factory=list)
