@@ -5,7 +5,7 @@
 
 **Turn product information into traceable, source-backed BIS compliance intelligence.**
 
-[![Backend Tests](https://img.shields.io/badge/Backend%20Tests-584%20Passed%20(100%25)-10b981?style=for-the-badge&logo=pytest&logoColor=white)](backend/tests/)
+[![Backend Tests](https://img.shields.io/badge/Backend%20Tests-905%20Passed%20(100%25)-10b981?style=for-the-badge&logo=pytest&logoColor=white)](backend/tests/)
 [![Python Version](https://img.shields.io/badge/Python-3.14%20%7C%203.11+-3776ab?style=for-the-badge&logo=python&logoColor=white)](requirements.txt)
 [![Frontend Build](https://img.shields.io/badge/Frontend-Vite%206%20%2B%20React%2018-61dafb?style=for-the-badge&logo=react&logoColor=black)](frontend/)
 [![AI Authority](https://img.shields.io/badge/LLM%20Compliance%20Authority-0.0%25%20(Deterministic)-ef4444?style=for-the-badge&logo=shield&logoColor=white)](docs/architecture/M24_4_COMPLIANCE_AUTHORITY_FIREWALL.md)
@@ -100,7 +100,7 @@ Every statistic below is audited directly from the live codebase, Git commit his
 
 | Metric Category | Verified Repository Value | Audit Proof |
 |:---|:---|:---|
-| **Automated Test Suite** | **584 / 584 Passed** (100% Pass Rate) | `py -3.14 -m pytest backend/tests -q` (12.32s) |
+| **Automated Test Suite** | **905 / 905 Passed** (100% Pass Rate) | `py -3.14 -m pytest backend/tests -q` (15.09s) |
 | **Frontend Production Build** | **Built Cleanly** (1,758 modules, 0 errors) | `npm run build` in `frontend/` (Vite v6.4.3) |
 | **Architecture Stack** | **9 Modular Layers** (L1 through L9) | `backend/app/services/` |
 | **Reasoning Graph Topology** | **11 Canonical Nodes, 16 Directed Edges** | `backend/app/services/orchestrator/graph/` |
@@ -130,13 +130,13 @@ Zyntrix is structured into 9 isolated, independently auditable layers:
 1. **Layer 1 — Guided Multi-Modal Input & Preparation**:
    Ingests manufacturer test documentation across PDF datasheets, high-resolution rating plate images (OCR via Tesseract), voice memos (STT), Excel/CSV Bills of Materials (BOM), and manual inputs. Generates dynamic document readiness checklists.
 2. **Layer 2 — Product DNA Engine & Normalization**:
-   Extracts structured technical parameters (`rated_wattage`, `capacity_ml`, `sheath_material`). Executes deterministic unit conversion (°F $ightarrow$ °C, inches $ightarrow$ mm) without loss of precision. Features an automated clarification queue when mandatory attributes are absent.
+   Extracts structured technical parameters (`rated_wattage`, `capacity_ml`, `sheath_material`). Executes deterministic unit conversion (°F &rarr; °C, inches &rarr; mm) without loss of precision. Features an automated clarification queue when mandatory attributes are absent.
 3. **Layer 3 — AI Orchestrator & Reasoning Graph**:
    Wraps the single underlying LLM via `ZyntrixLangChainChatAdapter`. Operates a 11-node compiled LangGraph state graph. Governs intent classification, conversational explanations, and controlled tool dispatches. **LLM Compliance Authority = 0.0%**.
 4. **Layer 4 — Segmented BIS Knowledge Base**:
    Dual lexical BM25 and vector embeddings index verified Indian Standards, Quality Control Orders (QCOs), and Schemes of Inspection and Testing (STI). Enforces cryptographic SHA-256 clause fingerprinting.
-5. **Layer 5 — Deterministic Applicability Engine**:
-   Evaluates statutory product applicability against Gazette Quality Control Orders (DPIIT, MeitY, MoS). Renders 7 declarative applicability states (`APPLICABLE`, `POTENTIALLY_APPLICABLE`, `EXEMPT`, etc.).
+5. **Layer 5 — Deterministic BIS Applicability Engine**:
+   Evaluates statutory product applicability across 6 orthogonal dimensions (Standard Scope, QCO Mandate, Product Conditions, Standard Status, Normative Dependencies, Evidence Availability). Implements a strict 10-step decision pipeline powered by an authoritative version/supersession registry (`version_registry.py`), a directed normative/allied standards graph (`relationship_graph.py`), and a typed condition evaluator (`conditional.py`). Invariants: Missing discriminators produce `MORE_INFORMATION_REQUIRED`, contradictions trigger `CONFLICTING_RULES`, and `COVERAGE_GAP ≠ NOT_APPLICABLE`. **LLM Authority = 0.0%**.
 6. **Layer 6 — Clause-Level RAG (Standard-Isolated)**:
    Applies a strict namespace lock preventing cross-standard contamination (e.g., pressure cooker queries can never retrieve helmet clauses). Reranks normative clauses and tracks parent-child requirement hierarchies.
 7. **Layer 7 — Compliance Gap Analysis Engine**:
@@ -356,6 +356,7 @@ The Zyntrix codebase is verified by **584 automated tests** covering every layer
 - **M24.2–M24.4.2 LangGraph Suite**: 11 nodes, 16 edges, DAG topology, agent intelligence optimization.
 - **M24.5 Observability Suite**: 14 tests verifying redaction, PII protection, failure isolation.
 - **M24.6 Benchmark Suite**: 20 tests verifying the 15-dimension reasoning evaluation matrix.
+- **M25.0 Applicability Engine Suite**: 58 focused tests verifying scope inclusion/exclusion, blocking discriminators, typed condition thresholds, QCO gazette orders, supersessions, amendments, normative graphs, contradiction isolation, and the 14 golden benchmark cases.
 
 ### Reproducible Quality Commands
 
@@ -449,13 +450,16 @@ Zyntrix/
 │   │       │   ├── graph/           # 11 nodes, 16 edges, builder, tracing
 │   │       │   └── tools/           # Controlled LangChain tools & guards
 │   │       ├── knowledge/           # Layer 4: Segmented BIS knowledge base
-│   │       ├── applicability/       # Layer 5: Statutory QCO engine
+│   │       ├── applicability/       # Layer 5: 10-step applicability engine
+│   │       │   ├── version_registry.py  # Standard versions, supersessions & amendments
+│   │       │   ├── relationship_graph.py# Normative & allied standard directed graph
+│   │       │   └── conditional.py       # Typed condition evaluator (no guessing)
 │   │       ├── rag/                 # Layer 6: Clause RAG & standard isolation
 │   │       ├── gap_analysis/        # Layer 7: Mathematical gap engine
 │   │       ├── laboratory/          # Layer 8: Evidence firewall & NABL trust
 │   │       ├── passport/            # Layer 9: Compliance passport generator
 │   │       └── evaluation/          # M24.6: 15-dimension benchmark harness
-│   └── tests/                       # 584 unit, integration, and graph tests
+│   └── tests/                       # 905 unit, integration, and graph tests
 ├── frontend/
 │   ├── src/                         # React 18 + TypeScript + Tailwind UI
 │   ├── package.json                 # Frontend dependencies (Vite v6)
@@ -479,7 +483,7 @@ Zyntrix/
 
 | Phase | Milestone | Scope / Objective | Status |
 |:---|:---|:---|:---|
-| **Phase 1** | **M1–M9** | Core 9-Layer Architecture (Input $ightarrow$ Passport) | ✅ **APPROVED** |
+| **Phase 1** | **M1–M9** | Core 9-Layer Architecture (Input &rarr; Passport) | ✅ **APPROVED** |
 | **Phase 2** | **M20–M22** | Gazette Data Ingestion & Real BIS Catalog | ✅ **APPROVED** |
 | **Phase 3** | **M23–M23.1** | ML/DL Intelligence & Model Provenance Audit | ✅ **APPROVED** |
 | **Phase 4** | **M24.1** | LangChain Model Adapter (Single LLM Invariant) | ✅ **APPROVED** |
@@ -490,7 +494,8 @@ Zyntrix/
 | **Phase 9** | **M24.4.2** | Graph Topology & Runtime Path Verification | ✅ **APPROVED** |
 | **Phase 10** | **M24.5** | LangSmith Observability & LangStudio Visualizer | ✅ **APPROVED** |
 | **Phase 11** | **M24.6** | 15-Dimension Evaluation & Benchmarking Suite | ✅ **APPROVED** |
-| **Phase 12** | **M24.7** | Production Deployment & Final Runtime Integration | 🔄 **READY TO BEGIN** |
+| **Phase 12** | **M25.0** | Deterministic BIS Applicability Intelligence & Validation | ✅ **APPROVED** |
+| **Phase 13** | **M25.1** | Production Deployment & Multi-Standard Assembly Pipeline | 🔄 **READY TO BEGIN** |
 
 ---
 
@@ -502,7 +507,7 @@ We welcome contributions adhering to the project's strict engineering and compli
 1. **Never Grant Compliance Authority to LLMs**: AI generates natural language explanations and summaries only. All compliance determinations must remain 100% computed by deterministic rule engines.
 2. **Never Add Dual LLMs**: Exactly one structured LLM model is permitted across the entire platform.
 3. **Preserve Graph Invariants**: The 11-node, 16-edge LangGraph topology must remain a strict Directed Acyclic Graph (DAG) with zero cycles.
-4. **100% Test Pass Rate**: All 584 backend tests and frontend production builds must pass before submitting a Pull Request.
+4. **100% Test Pass Rate**: All 905 backend tests and frontend production builds must pass before submitting a Pull Request.
 
 ### Development Workflow
 ```bash
