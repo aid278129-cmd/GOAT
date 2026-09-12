@@ -43,11 +43,30 @@ backend/.env
 # Storage & Temporary artifacts
 storage/
 backend/storage/
+uploads/
+backend/uploads/
+logs/
+backend/logs/
+generated/
+backend/generated/
 .langgraph_api/
 *.log
 *.sqlite3
 *.db
 data/*.db
+coverage/
+.coverage
+htmlcov/
+tmp/
+temp/
+scratch/
+
+# Root documents / temporary exports
+/*.pdf
+/*.docx
+/*.pptx
+/*.xlsx
+!data/**/*.pdf
 
 # IDE / OS
 .vscode/
