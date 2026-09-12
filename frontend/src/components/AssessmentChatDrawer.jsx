@@ -171,7 +171,7 @@ export function AssessmentChatDrawer({ assessmentId, assessmentNumber }) {
       {/* Footer Invariant & Input */}
       <div className="p-3 bg-white border-t border-slate-200 space-y-2">
         <div className="text-[9px] text-slate-400 text-center font-mono">
-          Strict Invariant: LLM Authority = 0% &bull; Zero Hallucination Policy
+          Strict Invariant: LLM Authority = 0% &bull; Deterministic Citation Guard Policy
         </div>
         <form onSubmit={handleSend} className="flex items-center gap-2">
           <input

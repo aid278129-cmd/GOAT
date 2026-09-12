@@ -1,9 +1,24 @@
 import React from 'react';
 import { Award, ShieldCheck, Printer, CheckCircle2, Clock, AlertTriangle, Sparkles, Building2, FlaskConical, Lock, Hash } from 'lucide-react';
 import { StatusBadge } from './StatusBadge';
-
 export function CompliancePassportView({ passport, onClose }) {
-  if (!passport) return null;
+  if (!passport) {
+    return (
+      <div className="flex-1 p-6 md:p-8 flex items-center justify-center font-sans">
+        <div className="max-w-md w-full bg-white border border-slate-200 rounded-lg p-8 text-center space-y-4 shadow-2xs">
+          <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mx-auto text-slate-500">
+            <Award className="w-6 h-6 text-slate-500" />
+          </div>
+          <div className="space-y-1">
+            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide">No Passport Available</h3>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              No active compliance passport compiled. Complete product evaluation through the pipeline to generate an auditable pre-certification passport.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handlePrint = () => {
     window.print();

@@ -443,7 +443,7 @@ export function KnowledgeBaseExplorer() {
               <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
               OPERATIONAL
             </div>
-            <div className="text-[10px] text-slate-500 mt-0.5">Zero Hallucination</div>
+            <div className="text-[10px] text-slate-500 mt-0.5">Citation-Guarded</div>
           </div>
         </div>
 

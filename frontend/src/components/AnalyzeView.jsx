@@ -519,8 +519,8 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
         const data = await res.json();
         setTimeout(() => {
           onAssessmentCreated(data);
-          onNavigate('standards');
-        }, 500);
+          onNavigate('dna');
+        }, 300);
       } else {
         const errData = await res.json().catch(() => ({}));
         alert(`Assessment Notice: ${errData.detail || errData.message || 'Error occurred'}`);
@@ -537,46 +537,32 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
     <div className="flex-1 p-4 md:p-6 lg:p-8 bg-[#F3F4F6] overflow-y-auto font-sans">
       <div className="max-w-[1100px] mx-auto space-y-6">
         {/* Page Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-4">
           <div>
             <div className="flex items-center gap-2 text-xs text-slate-400 mb-1">
-              <span className="font-bold uppercase tracking-wider text-[10px] text-indigo-600 font-mono">
-                PIPELINE ARCHITECTURE &bull; LAYER 1
+              <span className="font-bold uppercase tracking-wider text-[10px] text-slate-500 bg-slate-200/70 px-2 py-0.5 rounded font-mono">
+                Step 01 / 08 &bull; Layer 1 Ingestion
               </span>
-              <span className="material-symbols-outlined text-[14px]">chevron_right</span>
-              <span className="font-semibold text-slate-700 uppercase text-[10px]">
-                GUIDED MULTI-MODAL INPUT & DOCUMENT PREPARATION
-              </span>
+              <span className="text-xs text-slate-500">Multi-Modal Product Intake</span>
             </div>
-            <h1 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight">
-              Prepare Product Artifacts for BIS Compliance
+            <h1 className="text-xl font-bold text-slate-900 tracking-tight">
+              Product Information Input
             </h1>
-            <p className="text-xs md:text-sm text-slate-500 mt-0.5">
-              Production-grade multi-modal ingestion supporting PDF, Voice (Whisper STT), BOM Tables, Image OCR, and Manual Specs.
+            <p className="text-xs text-slate-600 mt-0.5">
+              Provide product information. Zyntrix extracts Product DNA and determines which BIS standards and requirements may apply.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            {/* Generate Template Button */}
-            <button
-              type="button"
-              onClick={() => (onNavigate ? onNavigate('templates') : setShowTemplateModal(true))}
-              className="px-3 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-semibold hover:bg-slate-50 transition cursor-pointer shadow-2xs flex items-center gap-1.5"
-              title="Generate a clean, fillable specification or BOM template"
-            >
-              <span className="material-symbols-outlined text-[16px] text-indigo-600">description</span>
-              <span>Generate Template</span>
-            </button>
-
             {/* Quick Fill Button */}
             <button
               type="button"
               onClick={handleLoadSampleReport}
-              className="px-3.5 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer shadow-2xs"
+              className="px-3 py-1.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer shadow-2xs"
               title="Auto-fill with sample Electric Immersion Water Heater lab test report"
             >
-              <span className="material-symbols-outlined text-[16px] text-indigo-600">bolt</span>
-              <span>Load Water Heater Sample</span>
+              <span className="material-symbols-outlined text-[15px]">bolt</span>
+              <span>Fill Sample Spec</span>
             </button>
           </div>
         </div>
