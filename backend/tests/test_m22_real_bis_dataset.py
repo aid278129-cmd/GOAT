@@ -226,7 +226,7 @@ def test_immutable_snapshots_reject_mutation():
     # Clean up temporary test snapshot
     test_dir = SnapshotManager.get_snapshots_dir() / "v1.2.0-test"
     if test_dir.exists():
-        shutil.rmtree(test_dir)
+        shutil.rmtree(test_dir, ignore_errors=True)
 
 
 # 13. Synthetic vs Authoritative Separation

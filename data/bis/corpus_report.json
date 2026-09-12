@@ -1,0 +1,54 @@
+{
+  "catalog_records": 52,
+  "sources_discovered": 52,
+  "sources_acquired": 46,
+  "sources_verified": 43,
+  "standards_verified": 2,
+  "qco_verified": 14,
+  "amendments_verified": 0,
+  "revisions_verified": 1,
+  "normative_references_verified": 0,
+  "clause_indexed": 0,
+  "acquisition_pending": 6,
+  "invalid_sources": 0,
+  "generated_at": "2026-09-12T17:45:36.966603+00:00",
+  "categories": {
+    "BIS_STANDARD": {
+      "total": 4,
+      "acquired": 4,
+      "verified": 2,
+      "pending": 0
+    },
+    "BIS_CATALOG": {
+      "total": 27,
+      "acquired": 21,
+      "verified": 21,
+      "pending": 6
+    },
+    "BIS_QCO": {
+      "total": 14,
+      "acquired": 14,
+      "verified": 14,
+      "pending": 0
+    },
+    "BIS_GAZETTE": {
+      "total": 4,
+      "acquired": 4,
+      "verified": 4,
+      "pending": 0
+    },
+    "BIS_REVISION": {
+      "total": 1,
+      "acquired": 1,
+      "verified": 1,
+      "pending": 0
+    },
+    "BIS_LABORATORY": {
+      "total": 2,
+      "acquired": 2,
+      "verified": 1,
+      "pending": 0
+    }
+  },
+  "integrity_status": "VALID"
+}

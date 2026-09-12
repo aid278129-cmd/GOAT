@@ -3,19 +3,85 @@
     {
       "product_name": "Domestic Vacuum Flask",
       "category": "Drinkware",
-      "candidates": [],
+      "candidates": [
+        {
+          "standard_number": "IS 17526:2021",
+          "confidence": 0.95,
+          "category": "Drinkware",
+          "is_authoritative": false,
+          "advisory_only": true
+        },
+        {
+          "standard_number": "IS 17803:2022",
+          "confidence": 0.85,
+          "category": "Drinkware",
+          "is_authoritative": false,
+          "advisory_only": true
+        },
+        {
+          "standard_number": "IS 3196 (Part 1):2006",
+          "confidence": 0.75,
+          "category": "Drinkware",
+          "is_authoritative": false,
+          "advisory_only": true
+        }
+      ],
       "regulatory_authority": 0.0
     },
     {
       "product_name": "Electric Kitchen Kettle",
       "category": "Electrical & Domestic Appliances",
-      "candidates": [],
+      "candidates": [
+        {
+          "standard_number": "IS 302-2-14:2009",
+          "confidence": 0.95,
+          "category": "Electrical & Domestic Appliances",
+          "is_authoritative": false,
+          "advisory_only": true
+        },
+        {
+          "standard_number": "IS 302-2-3:2007",
+          "confidence": 0.85,
+          "category": "Electrical & Domestic Appliances",
+          "is_authoritative": false,
+          "advisory_only": true
+        },
+        {
+          "standard_number": "IS 302-2-201:1992",
+          "confidence": 0.75,
+          "category": "Electrical & Domestic Appliances",
+          "is_authoritative": false,
+          "advisory_only": true
+        }
+      ],
       "regulatory_authority": 0.0
     },
     {
       "product_name": "Motorcycle Safety Helmet",
       "category": "Protective Equipment & Helmets",
-      "candidates": [],
+      "candidates": [
+        {
+          "standard_number": "IS 4151:2015",
+          "confidence": 0.95,
+          "category": "Protective Equipment & Helmets",
+          "is_authoritative": false,
+          "advisory_only": true
+        },
+        {
+          "standard_number": "IS 2925:1984",
+          "confidence": 0.85,
+          "category": "Protective Equipment & Helmets",
+          "is_authoritative": false,
+          "advisory_only": true
+        },
+        {
+          "standard_number": "IS 15298 (Part 2):2016",
+          "confidence": 0.75,
+          "category": "Protective Equipment & Helmets",
+          "is_authoritative": false,
+          "advisory_only": true
+        }
+      ],
       "regulatory_authority": 0.0
     }
   ]

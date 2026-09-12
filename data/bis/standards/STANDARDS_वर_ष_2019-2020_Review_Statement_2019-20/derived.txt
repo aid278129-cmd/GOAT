@@ -1,0 +1,415 @@
+--- Page 1 ---
+1 
+Annexure 1 
+REVIEW OF BIS ANNUAL REPORT 2019-20 
+ 
+The Bureau of Indian Standards (BIS), the National Standard Body of India was established 
+under the BIS Act 1986, assuming the functions of the erstwhile Indian Standards Institution 
+(ISI). BIS is responsible for the harmonious development of the activities of standardization 
+and quality certification of goods and for matters connected therewith or incidental thereto.  
+ 
+The Bureau of Indian Standards Act, 2016, was published for general information in official 
+gazette on 22 March 2016. 
+ 
+Major achievements of BIS during the year 2019-20, as reported in its Annual Report are 
+summarized below: 
+ 
+STANDARDIZATION 
+ 
+The process of standards development adopted by BIS follows internationally accepted good 
+standardization practices and is in compliance with the WTO-TBT code of good practice for 
+preparation, adoption and application of standards. In the development of National 
+Standards, BIS provides all interested stakeholders, with a neutral platform to come together 
+and work towards common agreements. BIS provides a forum for Sectional Committees, 
+representing over a thousand experts from organized consumers and consumer bodies, 
+regulatory and other government bodies, industries, scientists, technologists, testing 
+organizations and individual experts. These committees work to develop consensus based 
+voluntary National standards with stakeholder consultations. 
+ 
+During 2019-20, 1091 (647 new and 444 revised) standards were published. The total 
+number of standards in force, as on 31 March 2020 was 20845. 
+ 
+CERTIFICATION 
+ 
+During 2019-20, BIS operated the Product Certification Scheme under the Bureau of Indian 
+Standards Act, 2016 and the Rules framed there-under and BIS (Conformity Assessment) 
+Regulations, 2018. Under this Certification scheme, a manufacturer of a particular product is 
+given the self-marking rights of the BIS standards mark (ISI mark) on his product after 
+ensuring that his product complies with the relevant Indian Standard. Presence of Standard 
+Mark (popularly known as ISI mark) on a product indicates its conformity to the relevant 
+Indian Standard. The certification scheme is voluntary in nature, except for 211 product 
+standards that have been made mandatory by the Central Government on considerations of 
+health and safety of the consumer.
+
+--- Page 2 ---
+2 
+During the 2019-20, 4159 new licences were granted, which include 40 products covered for 
+the first time under the scheme. The total number of Indian Standards which have been 
+covered so far under BIS Certification Marks Scheme up to March 2020 was 976. The total 
+number of operative licences held by domestic manufacturers as on 31 March 2020 were 
+35623. 
+ 
+In order to monitor the operation of licences, during the year, a total number of 21307 
+inspections were carried out.  
+ 
+A total of 69 licensee/industry meets were conducted in 2019-20 to raise awareness about 
+BIS Certification activities. 
+ 
+Foreign Manufactures Certification Scheme (FMCS) 
+ 
+BIS has been operating separate Scheme for foreign manufacturers. Under this Scheme, 
+foreign manufacturers can seek certification from BIS for use of BIS Standard Mark on their 
+product(s). During 2019-20, 231 licences were issued under FMCS, taking the total number of 
+operative licences to 1089 against 117 Indian Standards. The licences granted covered 
+products such as steel & steel products; cement; PVC insulated cables; tyres & tubes for 
+automotive vehicles; plastic feeding bottles; switchgear products; plugs & socket-outlets and 
+switches; HDPE & UPVC Pipes; Infant milk formula; ac static energy meters etc. from about 
+51 countries. 
+ 
+Compulsory Registration Scheme (CRS) 
+ 
+The Compulsory Registration Scheme is being operated by BIS under the Scheme – II of 
+Schedule – II of the BIS (Conformity Assessment) Regulations, 2018. The introduction of 
+CRS is an alternative mechanism to the Compulsory Certification to facilitate growth of fast 
+growing sectors like IT and protect consumers from spurious and sub-standard products 
+manufactured in India or abroad. The process of Registration has been reengineered and 
+revamped to make it SMART. SMART Registration is aimed to make the process of 
+Registration fast, transparent and completely paperless with a click of button 
+ 
+The first licence was granted by BIS in June 2013. As on 31 March 2020, BIS has granted 
+22260 licences to manufacturers in various countries including domestic manufacturers. 
+ 
+LABORATORY SERVICES 
+ 
+One of the main pillars of conformity assessment is product testing to ascertain the conformity 
+of products to relevant standards. BIS has established eight laboratories in the country to 
+cater to the testing need of samples generated from conformity assessment schemes,
+
+--- Page 3 ---
+3 
+beginning with the establishment of Central Laboratory at Sahibabad in 1962. Subsequently, 
+four regional laboratories at Mohali, Kolkata, Mumbai and Chennai and three branch office 
+laboratories at Patna, Bangalore and Guwahati were established. BIS laboratories have 
+facilities for testing of products in the field of chemical, microbiological, electrical and 
+mechanical requirements. In addition to product testing, BIS has established gold assaying 
+lab at Chennai, Sahibabad and Kolkata. Gold assaying lab at Chennai is a referral lab and 
+also tests silver jewellery. 
+ 
+BIS labs have complete test facilities for 398 Indian Standards and in addition, partial test 
+facilities are also available for 320 Indian Standards.  During the year 2019-20, the BIS 
+laboratories have tested 18853 samples of various products covered under Certification.  
+ 
+Lab Recognition Scheme 
+BIS has established Laboratory Recognition Scheme (LRS) for recognition of outside 
+laboratories (OSLs). The services of such laboratories are utilized when it is economically 
+not viable to develop test facilities in BIS labs or when BIS labs are overloaded. The scheme 
+is based on International Standard IS/ISO/IEC 17025, and in line with the criteria adopted by 
+the National Accreditation Board for Testing and Calibration Laboratories (NABL) for 
+accreditation of laboratories.  
+During the year, 13 new labs were recognized and 05 labs were de-recognized. As on 31 
+March 2020, the total no. of operative BIS recognized labs were 246, which include reputed 
+R&D organizations, technical institutions, Govt. labs and Private sector labs (Government 
+labs – 77 and Private labs - 169).  Besides this, services of 255 Government laboratories of 
+specialized nature are utilized for different products, as and when required.   
+To support the newly launched BIS Compulsory Registration Scheme, 65 outside labs are 
+testing IT products, which were covered under Electronics and Information Technology 
+Goods (Requirement for Compulsory Registration) Order, 2012. 
+ 
+Quality Assurance Activities 
+Quality Assurance is a regular part of testing in BIS Labs by way of which the quality of testing 
+is assured. During the year, 650 Samples were tested under Quality Assurance activities by 
+BIS Labs. These also include the samples tested during participation in proficiency testing/ 
+inter-lab comparison program. 
+ 
+New Initiatives under Laboratory Activities 
+ 
+National Lab Directory: BIS created a National Laboratory Directory which was launched 
+by Shri Ram Vilas Paswan, Hon’ble Minister of Consumer Affairs, Food and Public 
+Distribution on 30 August 2019. This directory is an online platform created on the basis of 
+self-entry by testing laboratories about the available testing facilities in their labs and aims to
+
+--- Page 4 ---
+4 
+bring together the information about test facilities available in the country on a single online 
+platform for use by various stakeholders. 
+ 
+Drinking Water Quality Testing: In keeping with the objectives of the Jal Jeevan Mission 
+of Hon’ble Prime Minister, BIS, as per the directions of Ministry of Consumer Affairs Food & 
+PD, undertook a study of the quality of piped drinking water being supplied in the country. 
+ 
+Workshop on Standard for Drinking Water: A One Day Workshop on ‘Ensuring Quality of 
+Piped Drinking Water’ was organized by BIS on 09 December 2019 with an aim to 
+disseminate the information about the requirements of IS 10500:2012 and other Indian 
+Standards. The workshop was inaugurated by Shri Ram Vilas Paswan, Union Minister for 
+Consumer Affairs Food & Public Distribution 
+ 
+HALLMARKING 
+ 
+Hallmarking of gold jewellery was launched by BIS in April 2000 to provide third party 
+assurance to consumers on the purity of gold jewellery or its fineness. The scheme for 
+Hallmarking of silver jewellery/ artefacts was launched in October 2005. Under these 
+Scheme, while the jewellers are granted licence to sell hallmarked jewellery, Assaying & 
+Hallmarking (A&H) centres are recognized to assay the purity of the jewellery submitted by 
+the licensed jeweller, along with declaration of purity.  
+ 
+As on 31 March 2020, the number of operative licences for Hallmarking of gold and silver 
+jewellery were 28070 and 2556 respectively. The number of operative BIS recognized A&H 
+centres was 915. During the year, 3.89 crore articles of gold and silver jewellery/ artefacts 
+were hallmarked.  
+ 
+Hallmark of Gold Bullion/Coin 
+Hallmarking of gold Bullion/Coin in the fineness of 999 & 995 by giving licence to 
+refineries/Mint was started in October 2015. As on 31 March 2020, 29 licences have been 
+granted to refineries/ India Government Mint for Gold bullion and coin.  
+ 
+Gold Monetization Scheme 
+Government of India has launched Gold Monetization Scheme on 5 November 2015. BIS 
+has played an important role in finalization and implementation of the Gold Monetization 
+Scheme in association with Department of Economic Affairs, Ministry of Finance and 
+Reserve Bank of India. Under the scheme, A&H Centres recognized by BIS have been 
+qualified to act as Collection and Purity Testing Centres (CPTCs). So far 48 A&H centres 
+and one Jeweller have been qualified to act as CPTC. The gold collected by CPTCs is to be 
+refined by refineries licenced by BIS.
+
+--- Page 5 ---
+5 
+Promotion of Hallmarking 
+ 
+To promote hallmarking in the country and for effective consumer protection, awareness 
+programmes are organized by BIS through its various Regional and Branch offices across 
+the country. During 2019-29, 78 such jewellers’ awareness programmes were organized.  
+ 
+MANAGEMENT SYSTEM CERTIFICATION 
+ 
+In the year 2019-2020, BIS has launched the following four Management Systems 
+Certification Schemes: Educational Organizations Quality Management System as per 
+IS/ISO 21001: 2019, Medical Devices Quality Management System with Essential Principles 
+of Safety and Performance as per IS 23485: 2019, Anti- Bribery Management System as per 
+IS/ ISO 37001: 2016 and Information Security Management System as per IS/ISO 27001: 
+2013. This took the count to 17 Management Systems Certification Schemes being operated 
+by BIS as on 31 March 2020. 
+ 
+As on 31 March 2020, a total of 1284 operative licences exist under the Management 
+Systems Certification Schemes in operation in BIS. 
+ 
+INTERNATIONAL ACTIVITIES AND TECHNICAL INFORMATION SERVICES 
+ 
+BIS in its capacity as the National Standards Body of India, is a member of International 
+Organization for Standardization (ISO) and through the Indian National Committee is a 
+member of International Electro-technical Commission (IEC). BIS actively participates in the 
+activities of these International bodies and is involved in development of International 
+Standards as Participating (P) member or Observer (O) member on various Technical 
+Committees and Sub-Committees; and nominates technical experts in Working Groups of 
+these bodies.  
+ 
+As on 31 March 2020, BIS is a ‘P’ member in 470 Technical Committees/ Subcommittees of 
+ISO and 96 Technical Committees/Subcommittees of IEC, and ‘O’ Member in 197 Technical 
+Committees/Subcommittees of ISO and 74 Technical Committees/ Subcommittees of IEC. 
+The Secretariat of 10 important ISO Committees dealing with subjects that are of interest to 
+India are being held by our country through BIS. Chairmanship of three IEC Technical 
+Committee/ Subcommittee/ Systems Committee and vice chair of one Systems Committee 
+are also held by India. 
+ 
+BIS has successfully contested for ISO Technical Management Board (TMB), the apex body 
+of ISO for technical issues and is currently a member of TMB for the term 2020-2022 starting 
+from 01 January 2020.
+
+--- Page 6 ---
+6 
+BIS has entered into Memorandum of Understanding (MoUs) and Bilateral Cooperation 
+Agreements (BCAs) with the National Standards Bodies of various countries for cooperation 
+in the areas of standards, Conformity assessment, testing and training/ capacity building and 
+for mutual acceptance of each other’s conformity assessment results respectively. BIS has 
+so far signed 30 MoUs and 07 BCAs. 
+ 
+TECHNICAL INFORMATION SERVICES & WTO-TBT ENQUIRY POINT 
+ 
+BIS provides technical information services in the field of standards and conformity 
+assessment to industry, importers, exporters and government agencies in response to their 
+enquiries. Around 150 enquiries were responded during the period from April 2019 to March 
+2020. 
+ 
+Sponsorship of Identification Numbers 
+ 
+ Issuer Identification Number (IIN) 
+BIS facilitates issue of IINs as per ISO/IEC 7812 ‘Identification Cards - Identification of 
+issuers’ by sponsoring applications of Banks/ Financial Organizations to the American 
+Bankers Association (ABA). The ISO/IEC 7812 specifies a numbering system for the 
+identification of issuers of the identification cards used in international and/ or inter-industry 
+interchange.  
+ 
+ World Manufacturer Identifier (WMI) Number 
+In co-ordination with the Society of Automotive Engineers (SAE), USA; BIS issues WMI 
+Codes as per ISO 3780 : 2009 ‘Road Vehicles - World Manufacturer Identifier (WMI) Code’ 
+to automobile manufacturers and exporters in India. 204 WMI Codes have been allotted to 
+various vehicle manufacturers during 2019-20. 
+ 
+TRAINING SERVICES 
+ 
+National Institute of Training for Standardization (NITS) was set up under the aegis of BIS in 
+1995 to meet the growing needs and expectations of the industry for quality training in the 
+fields of standardization, quality assurance, management systems, certification, laboratory 
+testing, etc.  NITS has also been organizing various International Training Programmes for 
+the developing countries of Asia, Africa, Europe and Latin and South America.  The 
+programmes are conducted by a team of well-experienced, qualified and trained faculty. 
+ 
+During year 2019-20, NITS conducted a number of training programmes for the Industry, 
+International participants and BIS employees. The total number of programmes conducted 
+during this period is 174. The number of personnel trained during 2019-20 was 3032.
+
+--- Page 7 ---
+7 
+CONSUMER AFFAIRS & PUBLICITY 
+ 
+BIS endeavours to provide its services and the benefits of standardization and certification 
+to all its stakeholders in a focused manner. Think, Nudge and Move Department of BIS 
+handles various consumer related activities which include redressal of public grievances, 
+organizing various awareness programmes for the stakeholders of BIS, holding of World 
+Standards Day and publicity related activities. 
+ 
+During the year, 199 consumer awareness programmes, 69 Industry awareness 
+programmes, 27 Educational Utilization of Standards Programmes were organized across 
+the country. 
+ 
+During 2019-20, 143 complaints related to quality of BIS Standard marked products and 
+unauthorized use of BIS Standard mark were redressed. BIS carried out 104 Search & 
+Seizures all over the country on firms misusing ISI Mark and such products were seized. 
+ 
+World Standards Day  
+BIS celebrated the World Standards Day on 14 October 2019 at New Delhi to pay tribute to 
+the collaborative efforts of thousands of experts worldwide, which develop voluntary technical 
+agreements that are published as International or National Standards. The World Standards 
+Day theme for the year 2019 was ‘Video Standards Create a Global Stage’. BIS on the 
+occasion organized seminars on this theme. World Standards Day programmes were also 
+held across the country by BIS Regional and Branch Offices. 
+ 
+Publicity 
+BIS creates awareness about its various activities through print, electronic, outdoor and 
+digital media. In 2019-20, publicity campaigns were executed to promote importance of ISI-
+Mark, Hallmark on gold jewellery and compulsory registration scheme. BIS is also active on 
+all popular social media platforms and posts are regularly uploaded regarding importance of 
+Standards, other key activities of BIS and events. 
+ 
+SALE OF STANDARDS AND OTHER PUBLICATIONS 
+ 
+BIS sells Indian Standards (IS) and Special Publications (SP) through 25 different sales 
+outlets located at the Headquarters (HQs), Regional and Branch Offices. Sale is also done 
+through registered booksellers spread across major cities of India. BIS also sells foreign 
+standards (ISO, IEC, BSI London, DIN Germany, JIS Japan) in India from BIS Headquarters 
+(HQs). In addition, Indian Standards and Special Publications are also sold through e-portal 
+(www.standardsbis.bsbedge.com). Indian Standards are now available free of cost in 
+downloadable version for non-commercial purposes through e-portal. Alternatively, an order 
+for hard copy can be placed through the e-portal. Online payment can be made over the
+
+--- Page 8 ---
+8 
+portal through credit/debit card. Facility is available to make payment for purchase of Indian 
+Standards through NEFT/RTGS (online transfer). 
+ 
+HINDI ACTIVITIES 
+ 
+BIS is following all the Acts, rules, directions and orders issued by the Department of Official 
+Language regarding official language. Official Language Committee of HQ conducted all its 
+four quarterly meetings on time. The Second Sub Committee of Committee of Parliament on 
+Official Language inspected Jaipur Branch Office on 28 December 2019 and Ahmedabad 
+Branch Office on 27 February 2020. The Committee expressed satisfaction over the 
+progressive use of Hindi in BIS. During the year, around titles of 720 standards were made 
+bilingual. Hindi Pakhwada and workshops were also organized during the year. 
+ 
+PLAN SCHEMES 
+ 
+Hallmarking: 
+ 
+BIS has been implementing the Plan scheme for setting up of gold Assaying and Hallmarking 
+(A&H) centres in India with central assistance.  
+ 
+During 2019-20, BIS received ₹ 100 lakhs under this scheme and spent ₹ 10.49 lakhs. 
+Sixteen programmes were organized for training of artisans, nine programmes were 
+organized for Training of Assaying & Hallmarking personnel and one programme was 
+organised for training of BIS officers during 2019-20.  
+ 
+National System for Standardization: 
+ 
+The scheme on National System for Standardization (NSS) under plan scheme is in 
+operation. 
+ 
+During 2019-20, BIS received ₹ 100 lakhs under this scheme and an amount of ₹ 93.38 
+lakhs has been utilized. 
+ 
+INFORMATION TECHNOLOGY SERVICES 
+ 
+In line with the Government of India’s vision of Digital India and Ease of doing business, BIS 
+is actively progressing towards automating all its activities through development and 
+implementation of software applications/online portals under e-BIS project. It is making all 
+efforts to render software solutions/online portals user-friendly and creating a platform for 
+ease of doing business for its various stakeholders.
+
+--- Page 9 ---
+9 
+A new comprehensive software (e-BIS) has been envisaged encompassing all activities of 
+BIS and with advanced features like data analytics, artificial intelligence, good MIS for 
+effective monitoring, user-friendly interfaces, etc. The e-BIS will provide an integrated 
+platform for all stakeholders-Industry, Consumers, Labs, BIS, etc. Various Discussion Foras 
+and Recommendation Forums have been constituted for timely finalization of requirements. 
+ 
+PROJECT MANAGEMENT AND WORKS 
+ 
+BIS has undertaken a Project of Renovation of all BIS Labs namely NROL, CL, SROL, 
+WROL, EROL, PBOL, GBOL, BNBOL to make them world-class in terms of infrastructure 
+and testing facilities. 
+ 
+BIS has also undertaken a 'green' initiative under which Rooftop Solar Power Plants have 
+been installed in BIS buildings through the Solar Energy Corporation of India and gains were 
+also made from net metering systems installed. 
+ 
+VIGILANCE ACTIVITIES 
+ 
+The vigilance Set up of Bureau of Indian Standards is headed by the Chief Vigilance Officer 
+and comprises of Vigilance Department at BIS Headquarters and a Vigilance Section in the 
+Secretariat of each of the Disciplinary Authority for Group B & C employees (Deputy Director 
+General concerned).  
+ 
+The Vigilance Department functions in close coordination with Central Vigilance Commission 
+(CVC), Central Bureau of Investigation (CBI) and Ministry of Consumer Affairs, Food & Public 
+Distribution. It is entrusted with the responsibility of managing all vigilance related activities 
+of the Bureau in accordance with the guidelines on the subject issued by Central Vigilance 
+Commission, DoPT etc. 
+ 
+HUMAN RESOURCES DEVELOPMENT, ADMINISTRATION AND GENERAL SERVICES 
+ 
+As on 31 March 2020, 1186 employees were on the rolls of BIS. 
+ 
+Swachh Bharat Mission – During the year 2019-20, the Swachh Bharat drive was carried 
+out in BIS in two phases i.e. 11 September 2019 - 02 October 2019 and 16 February 
+2020 to 28 February 2020. 
+ 
+Staff Welfare - BIS continued its welfare measures for its employees namely by way of 
+Group Insurance Schemes, facility of Holiday Homes, subsidized refreshments, medical 
+facilities, Children Scholarship Scheme etc.
+
+--- Page 10 ---
+10 
+Library Services - BIS technical Library located at Headquarters is a national resources 
+centre for information on standards and related matters and meets the needs of industry, 
+trade, government, researchers and consumers alike. 
+ 
+Sexual Harassment of Working Women at Workplace - In compliance with the guidelines 
+of the Supreme Court of India on the prevention of sexual harassment of women at work 
+place, and later on under POSH Act, an Internal Complaints Committee was constituted in 
+Bureau of Indian Standards in Feb 1998 that has since been reconstituted in January 2020. 
+The Composition of the newly constituted Internal Complaints Committee (ICC) at BIS, HQ- 
+New Delhi consists of a senior level woman employee as Presiding Officer along with two 
+other members from BIS-HQ and one of the members from All India Democratic Women’s 
+Association (AIDWA), New Delhi. The ICC is proactively functioning in BIS under the POSH 
+Act. 
+ 
+FINANCE  
+ 
+For the 31st consecutive year i.e. 2019-20, Bureau of Indian Standards continued to be self-
+reliant in meeting its expenditure and other liabilities. The total income (excluding income 
+from investment) during the year 2019-20 amounted to ₹ 77023.69 lakh as against ₹ 
+70579.52 lakh in the previous year resulting in an increase of 9.13%. The largest contribution 
+to the income was from Product Certification Marking Fee which stood at ₹ 61677.06 lakh 
+against ₹ 55410.11 lakh in the previous year i.e. an increase of 11.31%. The total revenue 
+expenditure during the year 2019-20 amounted to ₹ 28573.21 lakh as against ₹ 27901.09 
+lakh in 2018-19 registering an increase of 2.41%.

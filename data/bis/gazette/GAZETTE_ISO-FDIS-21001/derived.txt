@@ -1,0 +1,704 @@
+--- Page 1 ---
+Educational organizations — 
+Management systems for 
+educational organizations — 
+Requirements with guidance for use
+Organismes d'éducation/formation — Systèmes de management 
+des organismes d'éducation/formation — Exigences et 
+recommandations pour leur application
+FINAL DRAFT
+International 
+Standard
+ISO/FDIS 21001
+ISO/TC 232
+Secretariat: SAC
+Voting begins on:  
+2025-04-03
+Voting terminates on:  
+2025-05-29
+Reference number 
+ISO/FDIS 21001:2025(en)
+RECIPIENTS OF THIS DRAFT ARE INVITED TO SUBMIT, 
+WITH THEIR COMMENTS, NOTIFICATION OF ANY 
+RELEVANT PATENT RIGHTS OF WHICH THEY ARE AWARE 
+AND TO PROVIDE SUPPOR­TING DOCUMENTATION.
+IN ADDITION TO THEIR EVALUATION AS  
+BEING ACCEPTABLE FOR INDUSTRIAL, TECHNO­
+LOGICAL, COMMERCIAL AND USER PURPOSES, DRAFT 
+INTERNATIONAL STANDARDS MAY ON OCCASION HAVE 
+TO BE CONSIDERED IN THE LIGHT OF THEIR POTENTIAL 
+TO BECOME STAN­DARDS TO WHICH REFERENCE MAY BE 
+MADE IN NATIONAL REGULATIONS.
+© ISO 2025
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+ISO/FDIS 21001
+https://standards.iteh.ai/catalog/standards/iso/37706f74-f37a-420f-8f0d-70e1cc956103/iso-fdis-21001
+
+--- Page 2 ---
+ii
+ISO/FDIS 21001:2025(en)
+﻿
+© ISO 2025 – All rights reserved
+COPYRIGHT PROTECTED DOCUMENT
+©  ISO 2025
+All rights reserved. Unless otherwise specified, or required in the context of its implementation, no part of this publication may 
+be reproduced or utilized otherwise in any form or by any means, electronic or mechanical, including photocopying, or posting on 
+the internet or an intranet, without prior written permission. Permission can be requested from either ISO at the address below 
+or ISO’s member body in the country of the requester.
+ISO copyright office
+CP 401 • Ch. de Blandonnet 8
+CH-1214 Vernier, Geneva
+Phone: +41 22 749 01 11
+Email: copyright@iso.org
+Website: www.iso.org
+Published in Switzerland
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+ISO/FDIS 21001
+https://standards.iteh.ai/catalog/standards/iso/37706f74-f37a-420f-8f0d-70e1cc956103/iso-fdis-21001
+
+--- Page 3 ---
+ISO/FDIS 21001:2025(en)
+Foreword......................................................................................................................................................................................................................................................v
+Introduction............................................................................................................................................................................................................................................vi
+1	
+Scope.............................................................................................................................................................................................................................................. 1
+2	
+Normative references.................................................................................................................................................................................................. 1
+3 
+Terms and definitions................................................................................................................................................................................................. 1
+4	
+Context of the organization.................................................................................................................................................................................. 7
+4.1	
+Understanding the organization and its context...................................................................................................................7
+4.2	
+Understanding the needs and expectations of interested parties........................................................................8
+4.3	
+Determining the scope of the educational organization management system..........................................8
+4.4	
+Educational organization management system.....................................................................................................................9
+5	
+​Leadership............................................................................................................................................................................................................................... 9
+5.1	
+​Leadership and commitment..................................................................................................................................................................9
+5.1.1	
+General......................................................................................................................................................................................................9
+5.1.2	
+Focus on learners and other beneficiaries.............................................................................................................10
+5.1.3	
+Additional requirements for special needs education................................................................................10
+5.2	
+Educational organization policy.......................................................................................................................................................10
+5.3	
+Roles, responsibilities and authorities........................................................................................................................................11
+6	
+​Planning..................................................................................................................................................................................................................................11
+6.1	
+Actions to address risks and opportunities............................................................................................................................11
+6.2	
+Educational organization objectives and planning to achieve them............................................................... 12
+6.3	
+​Planning of changes..................................................................................................................................................................................... 12
+7	
+Support....................................................................................................................................................................................................................................13
+7.1	
+Resources.............................................................................................................................................................................................................. 13
+7.1.1	
+General.................................................................................................................................................................................................. 13
+7.1.2	
+Human resources........................................................................................................................................................................ 13
+7.1.3	
+Facilities................................................................................................................................................................................................14
+7.1.4	
+Environment for the operation of educational processes........................................................................14
+7.1.5	
+​Monitoring and measuring resources........................................................................................................................14
+7.1.6	
+Organizational knowledge.................................................................................................................................................. 15
+7.2	
+Competence..........................................................................................................................................................................................................16
+7.2.1	
+General...................................................................................................................................................................................................16
+7.2.2	
+Additional requirements for special needs education................................................................................16
+7.3	
+Awareness.............................................................................................................................................................................................................16
+7.4	
+Communication................................................................................................................................................................................................17
+7.4.1	
+General...................................................................................................................................................................................................17
+7.4.2	
+Communication purposes.....................................................................................................................................................17
+7.4.3	
+Communication arrangements........................................................................................................................................17
+7.5	
+Documented information........................................................................................................................................................................18
+7.5.1	
+General...................................................................................................................................................................................................18
+7.5.2	
+Creating and updating documented information............................................................................................18
+7.5.3	
+Control of documented information............................................................................................................................18
+8	
+Operation...............................................................................................................................................................................................................................19
+8.1	
+Operational planning and control....................................................................................................................................................19
+8.1.1	
+General...................................................................................................................................................................................................19
+8.1.2	
+Specific operational planning and control of educational products and services............ 20
+8.1.3	
+Additional requirements for learners with special needs...................................................................... 20
+8.2	
+Requirements for the educational products and services........................................................................................ 20
+8.2.1	
+Determining the requirements for the educational products and services........................... 20
+8.2.2	
+Communicating the requirements for the educational products and services....................21
+8.2.3	
+Changes to requirements for the educational products and services..........................................21
+8.3	
+Design and development of the educational products and services.................................................................21
+8.3.1	
+General...................................................................................................................................................................................................21
+iii
+﻿
+© ISO 2025 – All rights reserved
+Contents
+Page
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+ISO/FDIS 21001
+https://standards.iteh.ai/catalog/standards/iso/37706f74-f37a-420f-8f0d-70e1cc956103/iso-fdis-21001
+
+--- Page 4 ---
+ISO/FDIS 21001:2025(en)
+8.3.2	
+Design and development planning............................................................................................................................... 22
+8.3.3	
+Design and development inputs..................................................................................................................................... 22
+8.3.4	
+Design and development controls................................................................................................................................ 22
+8.3.5	
+Design and development outputs..................................................................................................................................24
+8.3.6	
+Design and development changes..................................................................................................................................24
+8.4	
+Control of externally provided processes, products and services......................................................................24
+8.4.1	
+General...................................................................................................................................................................................................24
+8.4.2	
+Type and extent of control.................................................................................................................................................. 25
+8.4.3	
+Information for external providers............................................................................................................................. 25
+8.5	
+Delivery of the educational products and services......................................................................................................... 26
+8.5.1	
+Control of delivery of the educational products and services............................................................. 26
+8.5.2	
+Identification and traceability......................................................................................................................................... 28
+8.5.3	
+Property belonging to interested parties.............................................................................................................. 28
+8.5.4	
+Preservation.................................................................................................................................................................................... 29
+8.5.5	
+Protection and transparency of learners’ data................................................................................................ 29
+8.5.6	
+Control of changes in the educational products and services............................................................. 29
+8.6	
+Release of the educational products and services........................................................................................................... 29
+8.7	
+Control of the educational nonconforming outputs....................................................................................................... 30
+9	
+​Performance evaluation........................................................................................................................................................................................30
+9.1	
+​Monitoring, measurement, analysis and evaluation...................................................................................................... 30
+9.1.1	
+General.................................................................................................................................................................................................. 30
+9.1.2	
+Satisfaction of learners, other beneficiaries and staff................................................................................31
+9.1.3	
+Other monitoring and measuring needs.................................................................................................................31
+9.1.4	
+Methods for monitoring, measurement, analysis and evaluation....................................................32
+9.1.5	
+Analysis and evaluation.........................................................................................................................................................32
+9.2	
+​Internal audit..................................................................................................................................................................................................... 33
+9.2.1	
+General.................................................................................................................................................................................................. 33
+9.2.2	
+​Internal audit programme................................................................................................................................................... 33
+9.3	
+​Management review.................................................................................................................................................................................... 33
+9.3.1	
+General.................................................................................................................................................................................................. 33
+9.3.2	
+​Management review inputs................................................................................................................................................ 33
+9.3.3	
+​Management review results..............................................................................................................................................34
+10	
+Improvement.....................................................................................................................................................................................................................34
+10.1	
+​Continual improvement...........................................................................................................................................................................34
+10.2	
+Nonconformity and corrective action.........................................................................................................................................34
+10.3	
+Opportunities for improvement....................................................................................................................................................... 35
+Annex A (normative)  Additional requirements for early childhood education............................................................36
+Annex B (informative)  Principles for an educational organization management system.................................39
+Annex C (informative)  Classification of interested parties in educational organizations................................49
+Annex D (informative)  Guidelines for communication with interested parties...........................................................51
+Annex E (informative)  Processes, measures and tools in educational organizations............................................55
+Annex F (informative)  Example of mapping to regional standards...........................................................................................58
+Annex G (informative)  Health and safety considerations for educational organizations..................................61
+Bibliography.........................................................................................................................................................................................................................................62
+iv
+﻿
+© ISO 2025 – All rights reserved
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+ISO/FDIS 21001
+https://standards.iteh.ai/catalog/standards/iso/37706f74-f37a-420f-8f0d-70e1cc956103/iso-fdis-21001
+
+--- Page 5 ---
+ISO/FDIS 21001:2025(en)
+Foreword
+ISO (the International Organization for Standardization) is a worldwide federation of national standards 
+bodies (ISO member bodies). The work of preparing International Standards is normally carried out through 
+ISO technical committees. Each member body interested in a subject for which a technical committee 
+has been established has the right to be represented on that committee. International organizations, 
+governmental and non-governmental, in liaison with ISO, also take part in the work. ISO collaborates closely 
+with the International Electrotechnical Commission (IEC) on all matters of electrotechnical standardization.
+The procedures used to develop this document and those intended for its further maintenance are described 
+in the ISO/IEC Directives, Part 1. In particular, the different approval criteria needed for the different types 
+of ISO document should be noted. This document was drafted in accordance with the editorial rules of the 
+ISO/IEC Directives, Part 2 (see www.iso.org/directives).
+ISO draws attention to the possibility that the implementation of this document may involve the use of (a) 
+patent(s). ISO takes no position concerning the evidence, validity or applicability of any claimed patent 
+rights in respect thereof. As of the date of publication of this document, ISO had not received notice of (a) 
+patent(s) which may be required to implement this document. However, implementers are cautioned that 
+this may not represent the latest information, which may be obtained from the patent database available at 
+www.iso.org/patents. ISO shall not be held responsible for identifying any or all such patent rights.
+Any trade name used in this document is information given for the convenience of users and does not 
+constitute an endorsement.
+For an explanation of the voluntary nature of standards, the meaning of ISO specific terms and expressions 
+related to conformity assessment, as well as information about ISO's adherence to the World Trade 
+Organization (WTO) principles in the Technical Barriers to Trade (TBT), see www.iso.org/iso/foreword.html.
+This document was prepared by Technical Committee ISO/TC 232, Education and learning services.
+This second edition cancels and replaces the first edition (ISO 21001:2018), which has been technically 
+revised.
+The main changes are as follows: assessment related text has been revised to reflect current best practices 
+in educational assessment.
+Any feedback or questions on this document should be directed to the user’s national standards body. A 
+complete listing of these bodies can be found at www.iso.org/members.html.
+v
+﻿
+© ISO 2025 – All rights reserved
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+ISO/FDIS 21001
+https://standards.iteh.ai/catalog/standards/iso/37706f74-f37a-420f-8f0d-70e1cc956103/iso-fdis-21001
+
+--- Page 6 ---
+ISO/FDIS 21001:2025(en)
+Introduction
+0.1   General
+This document provides a common management tool for organizations providing educational products and 
+services capable of meeting learners' and other beneficiaries' requirements.
+0.2   Relevance
+There is a critical and continuous need for educational organizations to evaluate the degree to which they 
+meet the requirements of learners and other beneficiaries, as well as other relevant interested parties and 
+to improve their ability to continue to do so.
+NOTE 1	
+A classification of interested parties in educational organizations is provided in Annex C.
+Although educational organizations and learners worldwide are the main beneficiaries of this document, all 
+interested parties will benefit from standardized management systems in educational organizations.
+EXAMPLE	
+Employers who sponsor and encourage staff to participate in educational services can also benefit 
+from this document.
+The potential benefits to an organization of implementing an educational organizations management system 
+(EOMS) based on this document are:
+a)	 better alignment of objectives and activities with policy (including mission and vision);
+b)	 enhanced social responsibility by providing inclusive and equitable quality education for all;
+c)	
+more personalized learning and effective response to all learners and particularly to learners with 
+special education needs, distance learners and lifelong learning opportunities;
+d)	 consistent processes and evaluation tools to demonstrate and increase effectiveness and efficiency;
+e)	 increased credibility of the organization;
+f)	
+a means that enables educational organizations to demonstrate their commitment to effective 
+educational management practices;
+g)	 a culture for educational organization improvement;
+h)	 harmonization of regional, national, open, proprietary and other standards within an international 
+framework;
+i)	
+widened participation of interested parties;
+j)	
+stimulation of excellence and innovation.
+k)	 continual improvement of the design and development of study programs to ensure the development of 
+the competencies of learners to meet the needs of all interested parties
+0.3   Relationship between this document and other International Standards
+This document is a stand-alone management system standard, aligned with ISO  9001. It focuses on the 
+management systems of educational organizations as well as the impact of these on learners and other 
+relevant interested parties.
+This document conforms to ISO’s requirements for management system standards. These requirements 
+include a high level structure, identical core text, and common terms with core definitions, designed to 
+benefit users implementing multiple ISO management system standards.
+vi
+﻿
+© ISO 2025 – All rights reserved
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+ISO/FDIS 21001
+https://standards.iteh.ai/catalog/standards/iso/37706f74-f37a-420f-8f0d-70e1cc956103/iso-fdis-21001
+
+--- Page 7 ---
+ISO/FDIS 21001:2025(en)
+This document can be implemented alongside regional, national, open, proprietary and other standards or 
+related documents.
+NOTE 2	
+Annex F provides an example of how to implement this document alongside the European Quality Assurance 
+Framework for Vocational Education and Training (EQAVET).
+0.4   Principles for an EOMS
+The EOMS entails the following management principles:
+a)	 focus on learners and other beneficiaries;
+b)	 visionary leadership;
+c)	
+engagement of people;
+d)	 process approach;
+e)	 improvement;
+f)	
+evidence-based decisions;
+g)	 relationship management;
+h)	 social responsibility;
+i)	
+accessibility and equity;
+j)	
+ethical conduct in education;
+k)	 data security and protection.
+NOTE 3	
+The details of these principles are analysed in Annex B.
+0.5   Process approach
+0.5.1   General
+This document promotes the adoption of a process approach when developing, implementing and improving 
+the effectiveness of an EOMS, to enhance learner and other beneficiary satisfaction by meeting learner and 
+other beneficiary requirements. Specific requirements considered essential to the adoption of a process 
+approach are included in 4.4.
+Understanding and managing interrelated processes as a system contributes to the educational 
+organization’s effectiveness and efficiency in achieving its intended results. This approach enables the 
+educational organization to control the interrelationships and interdependencies among the processes of 
+the system, so that the overall performance of the educational organization can be enhanced.
+The process approach involves the systematic definition and management of processes, and their 
+interactions, so as to achieve the intended results in accordance with the policy, objectives and strategic 
+plan of the educational organization. Management of the processes and the system as a whole can be 
+achieved using the Plan-Do-Check-Act (PDCA) cycle (see 0.5.2) with an overall focus on risk-based thinking 
+(see 0.5.3) aimed at taking advantage of opportunities and preventing undesirable results. The application 
+of the process approach in an EOMS enables:
+—	 understanding and consistency in meeting requirements;
+—	 the consideration of processes in terms of added value;
+—	 achievement of effective process performance;
+—	 improvement of processes based on continuous evaluation of data and information.
+vii
+﻿
+© ISO 2025 – All rights reserved
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+ISO/FDIS 21001
+https://standards.iteh.ai/catalog/standards/iso/37706f74-f37a-420f-8f0d-70e1cc956103/iso-fdis-21001
+
+--- Page 8 ---
+ISO/FDIS 21001:2025(en)
+Figure 1 gives a schematic representation of any process (such as assessment of the educational effectiveness 
+process) and shows the interaction of its elements. The monitoring and measuring check points, which are 
+necessary for control, are specific to each process and will vary depending on the related risks.
+Figure 1 — Schematic representation of the elements of a single process (assessment of the 
+educational effectiveness process)
+0.5.2   Plan-Do-Check-Act cycle
+The Plan-Do-Check-Act (PDCA) cycle can be applied to all processes and to the EOMS as a whole. Figure 2 
+illustrates how Clauses 4 to 10 can be grouped in relation to the PDCA cycle.
+NOTE	
+Numbers in brackets refer to clauses in this document.
+Figure 2 — Representation of the structure of this document in the PDCA cycle
+viii
+﻿
+© ISO 2025 – All rights reserved
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+ISO/FDIS 21001
+https://standards.iteh.ai/catalog/standards/iso/37706f74-f37a-420f-8f0d-70e1cc956103/iso-fdis-21001
+
+--- Page 9 ---
+ISO/FDIS 21001:2025(en)
+The PDCA cycle can be briefly described as follows:
+—	 Plan: establish the objectives of the system and its processes, and the resources needed to deliver results 
+in accordance with learners' and other beneficiaries' requirements and the educational organization’s 
+policies, and identify and address risks and opportunities;
+—	 Do: implement what was planned;
+—	 Check: monitor and (where applicable) measure processes and the resulting products and services 
+against policies, objectives, requirements and planned activities, and report the results;
+—	 Act: take actions to improve performance, as necessary.
+0.5.3   Risk-based thinking
+Risk-based thinking is essential for achieving an effective EOMS. To conform to the requirements of 
+this document, an educational organization needs to plan and implement actions to address risks and 
+opportunities. Addressing both risks and opportunities establishes a basis for increasing the effectiveness 
+of the quality management system, achieving improved results and preventing negative effects.
+Opportunities can arise as a result of a situation favourable to achieving an intended result, e.g. a set of 
+circumstances that allow the educational organization to attract learners and other beneficiaries, develop 
+new products and services, reduce waste or improve productivity. Actions to address opportunities can also 
+include consideration of associated risks. Risk is the effect of uncertainty and any such uncertainty can have 
+positive or negative effects. A positive deviation arising from a risk can provide an opportunity, but not all 
+positive effects of risk result in opportunities.
+0.6   Educational organization mission, vision and strategy
+Figure 3 illustrates EOMS strategy as related to mission and vision.
+Figure 3 — EOMS strategy as related to mission and vision
+The EOMS policy statements are framed by the educational organization’s culture (the complete set of beliefs 
+and values that condition its behaviour) and by the EOMS principles. In turn, the EOMS policy statements 
+provide the framework for the establishment of the EOMS objectives, which are periodically revised to 
+ensure the educational organization’s mission is effectively and efficiently accomplished while walking the 
+continuous path towards the achievement of the educational organization’s vision.
+0.7   Additional requirements and guidance
+Annex A specifies additional requirements for early childhood education for educational organizations that 
+provide this service.
+Annex B outlines the principles for an EOMS.
+Annex C provides a classification of interested parties.
+Annex D provides guidelines for communication with interested parties.
+Annex E provides guidance on processes, measures and tools in educational organizations.
+Annex F gives an example of mapping to regional standards.
+Annex G outlines health and safety considerations for educational organizations.
+ix
+﻿
+© ISO 2025 – All rights reserved
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+ISO/FDIS 21001
+https://standards.iteh.ai/catalog/standards/iso/37706f74-f37a-420f-8f0d-70e1cc956103/iso-fdis-21001
+
+--- Page 10 ---
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+ISO/FDIS 21001
+https://standards.iteh.ai/catalog/standards/iso/37706f74-f37a-420f-8f0d-70e1cc956103/iso-fdis-21001
+
+--- Page 11 ---
+FINAL DRAFT International Standard
+ISO/FDIS 21001:2025(en)
+Educational organizations — Management systems 
+for educational organizations — Requirements with 
+guidance for use
+1	 Scope
+This document specifies requirements and provides guidance for a management system for educational 
+organizations (EOMS) when such an organization:
+a)	 needs to demonstrate its ability to support the acquisition and development of competence through 
+teaching, learning or research;
+b)	 aims to enhance satisfaction of learners, other beneficiaries and staff through the effective application 
+of its EOMS, including processes for improvement of the system and assurance of conformity to the 
+requirements of learners and other beneficiaries.
+All requirements of this document are generic and intended to be applicable to any educational organization 
+that uses a curriculum to support the development of competence through teaching, learning, training or 
+research, regardless of the type, size or method of delivery.
+This document can be applied to educational organizations within larger organizations whose core business 
+is not education, such as professional training departments.
+This document also provides guidance for the use of a EOMS.
+This document does not apply to organizations that only produce or manufacture educational products.
+2	 Normative references
+There are no normative references in this document.
+3 Terms and definitions
+For the purposes of this document, the following terms and definitions apply.
+ISO and IEC maintain terminology databases for use in standardization at the following addresses:
+—	 ISO Online browsing platform: available at https://​www​.iso​.org/​obp
+—	 IEC Electropedia: available at https://​www​.electropedia​.org/​
+3.1
+organization
+person or group of people that has its own functions with responsibilities, authorities and relationships to 
+achieve its objectives (3.6)
+Note 1 to entry: The concept of organization includes, but is not limited to, sole-trader, company, corporation, firm, 
+enterprise, authority, partnership, charity or institution, or part or combination thereof, whether incorporated or not, 
+public or private.
+Note 2 to entry: If the organization is part of a larger entity, the term “organization” refers only to the part of the larger 
+entity that is within the scope of the educational organization management system (3.4).
+1
+﻿
+© ISO 2025 – All rights reserved
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+ISO/FDIS 21001
+https://standards.iteh.ai/catalog/standards/iso/37706f74-f37a-420f-8f0d-70e1cc956103/iso-fdis-21001
+
+--- Page 12 ---
+ISO/FDIS 21001:2025(en)
+3.2
+interested party
+stakeholder
+person or organization (3.1) that can affect, be affected by, or perceive itself to be affected by a decision or 
+activity
+3.3
+top management
+person or group of people who directs and controls an organization (3.1) at the highest level
+Note 1 to entry: Top management has the power to delegate authority and provide resources within the organization.
+Note 2 to entry: If the scope of the management system (3.4) covers only part of an organization, then top management 
+refers to those who direct and control that part of the organization.
+3.4
+management system
+set of interrelated or interacting elements of an organization (3.1) to establish policies (3.5) and objectives 
+(3.6), as well as processes (3.8) to achieve those objectives
+Note 1 to entry: A management system can address a single discipline or several disciplines.
+Note 2 to entry: The management system elements include the organization’s structure, roles and responsibilities, 
+planning and operation.
+Note 3 to entry: The scope of a management system may include the whole of the organization, specific and identified 
+functions of the organization, specific and identified sections of the organization, or one or more functions across a 
+group of organizations.
+3.5
+policy
+intentions and direction of an organization (3.1) as formally expressed by its top management (3.3)
+3.6
+objective
+result to be achieved
+Note 1 to entry: An objective can be strategic, tactical, or operational.
+Note 2 to entry: Objectives can relate to different disciplines (such as finance, health and safety, and environment). 
+They can be, for example, organization-wide or specific to a project, product or process (3.8).
+Note 3 to entry: An objective can be expressed in other ways, e.g. as an intended result, as a purpose, as an operational 
+criterion, as an educational organization objective or by the use of other words with similar meaning (e.g. aim, goal, or 
+target).
+Note  4  to entry:  In the context of educational organization management systems (3.4), educational organization 
+objectives are set by the organization (3.1), consistent with the policy (3.5) of the educational organization (3.22) 
+management system, to achieve specific results.
+3.7
+risk
+effect of uncertainty
+Note 1 to entry: An effect is a deviation from the expected — positive or negative.
+Note  2  to entry:  Uncertainty is the state, even partial, of deficiency of information related to, understanding or 
+knowledge of, an event, its consequence, or likelihood.
+Note  3  to entry:  Risk is often characterized by reference to potential events (as defined in ISO Guide 73) and 
+consequences (as defined in ISO Guide 73), or a combination of these.
+Note 4 to entry: Risk is often expressed in terms of a combination of the consequences of an event (including changes 
+in circumstances) and the associated likelihood (as defined in ISO Guide 73) of occurrence.
+2
+﻿
+© ISO 2025 – All rights reserved
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+ISO/FDIS 21001
+https://standards.iteh.ai/catalog/standards/iso/37706f74-f37a-420f-8f0d-70e1cc956103/iso-fdis-21001
+
+--- Page 13 ---
+ISO/FDIS 21001:2025(en)
+3.8
+process
+set of interrelated or interacting activities that uses or transforms inputs to deliver a result
+Note 1 to entry: Whether the result of a process is called an output, a product or a service depends on the context of 
+the reference.
+3.9
+competence
+ability to apply knowledge and skills to achieve intended results
+Note 1 to entry: The ability to apply knowledge and skills means that the learner (3.25) demonstrates appropriate 
+attitudes and behaviour in different contexts or situations with responsibility and autonomy.
+3.10
+documented information
+information required to be controlled and maintained by an organization (3.1) and the medium on which it 
+is contained
+Note 1 to entry: Documented information can be in any format and media and from any source.
+Note 2 to entry: Documented information can refer to: the management system (3.4), including related processes (3.8); 
+information created in order for the organization to operate (documentation); evidence of results achieved (records).
+3.11
+performance
+measurable result
+Note 1 to entry: Performance can relate either to quantitative or qualitative findings.
+Note  2  to entry:  Performance can relate to managing activities, processes (3.8), products, services, systems or 
+organizations (3.1).
+3.12
+continual improvement
+recurring activity to enhance performance (3.11)
+3.13
+effectiveness
+extent to which planned activities are realized and planned results are achieved
+3.14
+requirement
+need or expectation that is stated, generally implied or obligatory
+Note  1  to entry:  “Generally implied” means that it is custom or common practice for the organization (3.1) and 
+interested parties (3.2) that the need or expectation under consideration is implied.
+Note 2 to entry: A specified requirement is one that is stated, e.g. in documented information (3.10).
+3.15
+conformity
+fulfilment of a requirement (3.14)
+3.16
+nonconformity
+non-fulfilment of a requirement (3.14)
+3.17
+corrective action
+action to eliminate the cause(s) of a nonconformity (3.16) and to prevent recurrence
+3
+﻿
+© ISO 2025 – All rights reserved
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+ISO/FDIS 21001
+https://standards.iteh.ai/catalog/standards/iso/37706f74-f37a-420f-8f0d-70e1cc956103/iso-fdis-21001
+
+--- Page 14 ---
+ISO/FDIS 21001:2025(en)
+3.18
+audit
+systematic and independent process (3.8) for obtaining evidence and evaluating it objectively to determine 
+the extent to which the audit criteria are fulfilled
+Note 1 to entry: An audit can be an internal audit (first party) or an external audit (second party or third party), and it 
+can be a combined audit (combining two or more disciplines).
+Note 2 to entry: An internal audit is conducted by the organization (3.1) itself, or by an external party on its behalf.
+Note 3 to entry: “Audit evidence” and “audit criteria” are defined in ISO 19011.
+3.19
+measurement
+process (3.8) to determine a value
+3.20
+monitoring
+determining the status of a system, a process (3.8) or an activity
+Note 1 to entry: To determine the status, there can be a need to check, supervise or critically observe.
+3.21
+outsource
+make an arrangement where an external organization (3.1) performs part of an organization’s function or 
+process (3.12)
+Note 1 to entry: An external organization is outside the scope of the management system (3.4).
+3.22
+educational organization
+organization (3.1) whose core business is the provision of educational products (3.24) and educational 
+services (3.23)
+Note 1 to entry: An educational organization can be included within a larger organization whose core business is not 
+education, such as a professional training department.
+3.23
+educational service
+process (3.12) that supports acquisition and development of learners' (3.25) competence (3.10) through 
+teaching (3.38), learning or research
+3.24
+educational product
+learning resource
+tangible or intangible goods used in pedagogical support of an educational service (3.23)
+Note  1  to entry:  Educational products can be either physical or digital and can include textbooks, workbooks, 
+worksheets, manipulatives (e.g. blocks, beads), flashcards, educator (3.27) workshops, non-fiction, books, posters, 
+educational games, applications, websites, software, online courses (3.33), activity books, graphic novels, reference 
+books, magazines and periodicals, study guides, educator guides, laboratories, models, movies, televisions shows, 
+webcasts, podcasts, maps and atlases, standards, technical specifications, and case studies.
+Note 2 to entry: Educational products can be produced by any parties, including learners (3.25).
+3.25
+learner
+beneficiary (3.26) acquiring and developing competence (3.9) using an educational service (3.23)
+4
+﻿
+© ISO 2025 – All rights reserved
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+ISO/FDIS 21001
+https://standards.iteh.ai/catalog/standards/iso/37706f74-f37a-420f-8f0d-70e1cc956103/iso-fdis-21001
