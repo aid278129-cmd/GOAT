@@ -314,7 +314,7 @@ async def process_unified_input(
 
 
 # Keep existing endpoints for full backward compatibility
-@router.post("/ingest/voice", summary="Transcribe voice query via Whisper STT")
+@router.post("/ingest/voice", summary="Transcribe voice query via Sarvam AI STT")
 async def ingest_voice_query(
     audio: UploadFile = File(...),
     language: Optional[str] = Form(default="en"),

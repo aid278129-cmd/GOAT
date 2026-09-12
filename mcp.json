@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "sarvam": {
+      "command": "C:\\Users\\AFRINMUBENA\\AppData\\Local\\Programs\\Python\\Python311\\Scripts\\sarvam-mcp.exe",
+      "args": [],
+      "env": {
+        "SARVAM_API_KEY": "sk_cujnffhf_FgRqGi4sBpPHX24cCES4671L"
+      }
+    }
+  }
+}

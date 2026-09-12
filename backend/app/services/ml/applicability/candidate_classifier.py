@@ -49,12 +49,29 @@ class ApplicabilityCandidate(BaseModel):
     advisory_only: bool = True
 
 
+import os
+import joblib
+
+MODEL_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "models", "bis_compliance_model.joblib"))
+
+
 class ApplicabilityCandidateClassifier:
     """Predicts candidate standard numbers from Product DNA attributes."""
 
     def __init__(self):
         self.model_name = MODEL_NAME
         self.model_version = MODEL_VERSION
+        self._trained_model = None
+
+    def _get_trained_model(self):
+        if self._trained_model is None and os.path.exists(MODEL_PATH):
+            try:
+                self._trained_model = joblib.load(MODEL_PATH)
+                logger.info(f"Loaded trained BIS compliance model from {MODEL_PATH}")
+            except Exception as e:
+                logger.warning(f"Failed to load trained model from {MODEL_PATH}: {e}")
+                self._trained_model = False
+        return self._trained_model if self._trained_model else None
 
     def is_available(self) -> bool:
         return (
@@ -89,6 +106,42 @@ class ApplicabilityCandidateClassifier:
             )
             return [], contract
 
+        # Attempt prediction using trained production model
+        trained_model = self._get_trained_model()
+        if trained_model:
+            try:
+                top_stds = trained_model.predict_standard_top_k([query_text], k=top_k)[0]
+                candidates = []
+                for rank, std in enumerate(top_stds):
+                    if std not in ["NONE", "AMBIGUOUS"]:
+                        conf = max(0.60, round(0.95 - (rank * 0.10), 3))
+                        candidates.append(
+                            ApplicabilityCandidate(
+                                standard_number=std,
+                                confidence=conf,
+                                category=category or "BIS Regulated Standard",
+                                is_authoritative=False,
+                                advisory_only=True,
+                            )
+                        )
+                if candidates:
+                    latency = (time.time() - t0) * 1000.0
+                    ml_telemetry.record_inference(self.model_name, latency, fallback_used=False)
+                    contract = MLPredictionContract(
+                        model_name=self.model_name,
+                        model_version=self.model_version,
+                        task=MLTaskType.APPLICABILITY_CLASSIFICATION.value,
+                        prediction=[c.model_dump() for c in candidates],
+                        confidence=candidates[0].confidence,
+                        input_hash=input_hash,
+                        fallback_used=False,
+                        regulatory_authority=0.0,
+                    )
+                    return candidates, contract
+            except Exception as e:
+                logger.warning(f"Error in trained model prediction: {e}; falling back to embeddings")
+
+        # Fallback to embedding-based matching over known standard profiles
         q_emb = default_embedding_provider.embed_text(query_text)
         candidates = []
 

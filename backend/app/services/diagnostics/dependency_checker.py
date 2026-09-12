@@ -165,11 +165,11 @@ def check_all_dependencies() -> SystemDiagnosticsResponse:
     # -------------------------------------------------------------
     t0 = time.perf_counter()
     voice_info = voice_transcription_service.get_runtime_info()
-    whisper_lat = round((time.perf_counter() - t0) * 1000, 2)
+    voice_lat = round((time.perf_counter() - t0) * 1000, 2)
 
     records.append(
         DependencyHealthRecord(
-            name="Whisper STT",
+            name="Speech-to-Text (Sarvam AI)",
             type="external_api",
             status=voice_info["status"],
             installed=voice_info["installed"],
@@ -177,7 +177,7 @@ def check_all_dependencies() -> SystemDiagnosticsResponse:
             reachable=voice_info["api_reachable"],
             functional=voice_info["configured"],
             version=voice_info.get("model_available"),
-            latency_ms=whisper_lat,
+            latency_ms=voice_lat,
             error=voice_info.get("error"),
             fallback_available=True,
             fallback_details="Offline speech envelope and technical audio query tokenizer active." if settings.DEMO_MODE else None,
@@ -355,7 +355,7 @@ def check_all_dependencies() -> SystemDiagnosticsResponse:
         else ("FALLBACK_ACTIVE (Tesseract Unavailable)" if ocr_info["status"] == "FALLBACK_ACTIVE" else "NOT_CONFIGURED")
     )
     voice_status_str = (
-        "FUNCTIONAL (Whisper STT Connected)"
+        f"FUNCTIONAL ({voice_info.get('active_provider', 'STT')} Connected)"
         if voice_info["configured"]
         else ("FALLBACK_ACTIVE (Demo Mode)" if settings.DEMO_MODE else "NOT_CONFIGURED")
     )

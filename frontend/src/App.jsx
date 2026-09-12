@@ -4,7 +4,6 @@ import { TopBar } from './components/common/TopBar';
 import { OverviewView } from './components/OverviewView';
 import { AnalyzeView } from './components/AnalyzeView';
 import { AssessmentWorkspace } from './components/AssessmentWorkspace';
-import { ProductWorkspace } from './components/ProductWorkspace';
 import { KnowledgeBaseExplorer } from './components/KnowledgeBaseExplorer';
 import { ComplianceAssistantPage } from './components/ComplianceAssistantPage';
 import { TemplateGeneratorView } from './components/TemplateGeneratorView';
@@ -14,7 +13,7 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
 export default function App() {
   const [health, setHealth] = useState(null);
   const [systemInfo, setSystemInfo] = useState(null);
-  const [activeTab, setActiveTab] = useState('overview'); // overview | analyze | workspace | standards | assistant | passport | knowledge | evaluation | diagnostics
+  const [activeTab, setActiveTab] = useState('overview'); // templates | overview | analyze | standards | assistant | knowledge
   const [assessmentsList, setAssessmentsList] = useState([]);
   const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
   const [activeAssessment, setActiveAssessment] = useState(null);

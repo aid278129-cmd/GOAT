@@ -1,0 +1,97 @@
+{
+  "timestamp": "2026-09-12T08:41:26Z",
+  "model_name": "zyntrix-bis-compliance-model-v3",
+  "dataset_name": "BIS Product Compliance Master Dataset",
+  "dataset_size": 100,
+  "split_ratio": "80% Train (80) / 20% Test (20)",
+  "cross_validation_5fold": {
+    "baseline": {
+      "accuracy_mean": 0.76,
+      "accuracy_std": 0.07348469228349534,
+      "macro_f1_mean": 0.46182760787599497,
+      "macro_f1_std": 0.12128880073919608,
+      "macro_precision_mean": 0.5124767801857586,
+      "macro_recall_mean": 0.4766666666666667
+    },
+    "improved": {
+      "accuracy_mean": 0.9800000000000001,
+      "accuracy_std": 0.024494897427831803,
+      "macro_f1_mean": 0.9654320987654321,
+      "macro_f1_std": 0.048384982573494884,
+      "macro_precision_mean": 0.9904761904761905,
+      "macro_recall_mean": 0.9533333333333334
+    }
+  },
+  "holdout_test_comparison": {
+    "baseline_naive_bayes": {
+      "accuracy": 0.75,
+      "macro_precision": 0.5741,
+      "macro_recall": 0.4667,
+      "macro_f1": 0.47,
+      "latency_ms_per_query": 0.25
+    },
+    "production_bis_compliance_model": {
+      "accuracy": 0.95,
+      "macro_precision": 0.9762,
+      "macro_recall": 0.9333,
+      "macro_f1": 0.9506,
+      "weighted_f1": 0.9481,
+      "scheme_accuracy": 0.95,
+      "test_standard_top1_accuracy": 1.0,
+      "test_standard_top3_accuracy": 1.0,
+      "latency_ms_per_query": 12.3
+    },
+    "absolute_improvements": {
+      "accuracy_delta": "+20.0%",
+      "macro_f1_delta": "+48.06%",
+      "macro_precision_delta": "+40.21%",
+      "macro_recall_delta": "+46.67%"
+    }
+  },
+  "comprehensive_dataset_benchmarks": {
+    "standard_retrieval_all_applicable": {
+      "top_1_accuracy": 0.9697,
+      "top_3_accuracy": 0.9848,
+      "applicable_samples": 66
+    },
+    "hard_negative_discrimination_accuracy": {
+      "baseline": 0.8,
+      "improved": 1.0,
+      "gain": "+20.0%"
+    },
+    "non_bis_false_positive_rate": {
+      "baseline": "29.17% (7/24)",
+      "improved": "4.17% (1/24)",
+      "reduction": "-25.0%"
+    },
+    "ambiguity_detection_accuracy": {
+      "baseline": 0.0,
+      "improved": 1.0,
+      "gain": "+100.0%"
+    }
+  },
+  "confusion_matrix": {
+    "classes": [
+      "ambiguous",
+      "applicable",
+      "exempt"
+    ],
+    "test_matrix": [
+      [
+        2,
+        0,
+        0
+      ],
+      [
+        0,
+        13,
+        0
+      ],
+      [
+        0,
+        1,
+        4
+      ]
+    ]
+  }
+}

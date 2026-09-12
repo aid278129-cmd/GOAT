@@ -13,15 +13,11 @@ export function TopBar({
 }) {
   const navItems = [
     { id: 'templates', label: 'Generate Template' },
-    { id: 'overview', label: 'Overview' },
+    { id: 'overview', label: 'Compliance Overview' },
     { id: 'analyze', label: 'Product Input' },
-    { id: 'workspace', label: 'Product DNA' },
-    { id: 'standards', label: 'Standards & Gaps' },
-    { id: 'assistant', label: 'Copilot' },
-    { id: 'passport', label: 'Passport' },
-    { id: 'knowledge', label: 'BIS Catalog' },
-    { id: 'evaluation', label: 'Evaluation Console' },
-    { id: 'diagnostics', label: 'Architecture & Health' },
+    { id: 'standards', label: 'BIS Standards & Gaps' },
+    { id: 'assistant', label: 'Compliance Copilot' },
+    { id: 'knowledge', label: 'BIS Standards Catalog' },
   ];
 
   return (

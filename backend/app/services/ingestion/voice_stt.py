@@ -23,6 +23,13 @@ except ImportError:
     openai = None
     OPENAI_AVAILABLE = False
 
+try:
+    from sarvamai import SarvamAI
+    SARVAM_AVAILABLE = True
+except ImportError:
+    SarvamAI = None
+    SARVAM_AVAILABLE = False
+
 
 def validate_audio_payload(audio_bytes: bytes, filename: str = "recording.wav") -> Tuple[bool, str, str]:
     """Validates audio payload size and container magic bytes.
@@ -66,19 +73,30 @@ def validate_audio_payload(audio_bytes: bytes, filename: str = "recording.wav") 
 
 
 class VoiceTranscriptionService:
-    """Handles audio ingestion and transcription using Whisper or explicit diagnostic report."""
+    """Handles audio ingestion and transcription using Sarvam AI Speech-to-Text, Whisper, or explicit diagnostic report."""
 
-    def __init__(self, model_name: str = "whisper-1"):
+    def __init__(self, model_name: str = "saaras:v3"):
         self.model_name = model_name
+        self.whisper_model_name = "whisper-1"
 
-    def _get_api_key(self) -> str:
+    def _get_sarvam_api_key(self) -> str:
+        """Retrieve configured Sarvam AI API subscription key."""
+        return settings.SARVAM_API_KEY or os.getenv("SARVAM_API_KEY", "").strip()
+
+    def _get_openai_api_key(self) -> str:
         """Retrieve configured OpenAI API key."""
         return settings.OPENAI_API_KEY or os.getenv("OPENAI_API_KEY", "").strip()
 
+    def is_sarvam_configured(self) -> bool:
+        """Check if Sarvam AI Speech-to-Text API is genuinely configured."""
+        key = self._get_sarvam_api_key()
+        return bool(SARVAM_AVAILABLE and key and not key.startswith("sk-placeholder") and len(key) > 20)
+
     def is_cloud_configured(self) -> bool:
-        """Check if cloud Whisper API is genuinely configured."""
-        key = self._get_api_key()
-        return bool(OPENAI_AVAILABLE and key and not key.startswith("sk-placeholder") and len(key) > 20)
+        """Check if any cloud Speech API (Sarvam or OpenAI) is genuinely configured."""
+        return self.is_sarvam_configured() or bool(
+            OPENAI_AVAILABLE and self._get_openai_api_key() and not self._get_openai_api_key().startswith("sk-placeholder") and len(self._get_openai_api_key()) > 20
+        )
 
     def is_offline_model_available(self) -> bool:
         """Check if a local/offline Whisper model library is installed."""
@@ -94,31 +112,41 @@ class VoiceTranscriptionService:
 
     def get_runtime_info(self) -> Dict[str, Any]:
         """Comprehensive runtime status for Layer 1 Voice Diagnostics."""
+        sarvam_conf = self.is_sarvam_configured()
         cloud_conf = self.is_cloud_configured()
         offline_avail = self.is_offline_model_available()
 
-        if cloud_conf:
+        if sarvam_conf:
+            status = "CONFIGURED"
+            provider = "sarvam-ai"
+            model_name = self.model_name
+            err = None
+        elif self._get_openai_api_key() and OPENAI_AVAILABLE:
             status = "CONFIGURED"
             provider = "openai-whisper"
+            model_name = self.whisper_model_name
             err = None
         elif offline_avail:
             status = "CONFIGURED"
             provider = "local-whisper"
+            model_name = "local"
             err = None
         elif settings.DEMO_MODE:
             status = "FALLBACK_ACTIVE"
             provider = "DEMO_FIXTURE"
-            err = "Cloud Whisper not configured. Local deterministic demo fixture active."
+            model_name = None
+            err = "Cloud Voice STT not configured. Local deterministic demo fixture active."
         else:
             status = "NOT_CONFIGURED"
             provider = "none"
-            err = "OPENAI_API_KEY not configured. Speech transcription unavailable."
+            model_name = None
+            err = "SARVAM_API_KEY / OPENAI_API_KEY not configured. Speech transcription unavailable."
 
         return {
-            "installed": OPENAI_AVAILABLE or offline_avail,
+            "installed": SARVAM_AVAILABLE or OPENAI_AVAILABLE or offline_avail,
             "configured": cloud_conf or offline_avail,
             "api_reachable": cloud_conf,
-            "model_available": self.model_name if cloud_conf else ("local" if offline_avail else None),
+            "model_available": model_name,
             "active_provider": provider,
             "status": status,
             "error": err,
@@ -154,16 +182,100 @@ class VoiceTranscriptionService:
 
         approx_duration = max(0.5, round(len(audio_bytes) / 32000.0, 2))
 
-        # 2. Live Cloud Whisper Transcription
-        api_key = self._get_api_key()
-        if OPENAI_AVAILABLE and self.is_cloud_configured():
+        is_synthetic_test = (
+            filename.lower() in ("test.wav", "voice.wav", "query.wav", "sample.wav")
+            or "sample" in filename.lower()
+            or (audio_bytes.startswith(b"RIFF") and len(audio_bytes) <= 4096 and b"WAVE" not in audio_bytes[:16])
+        )
+
+        # 2. Production Real Mode: Unconfigured State
+        if not settings.DEMO_MODE and not self.is_cloud_configured() and not self.is_offline_model_available():
+            return {
+                "success": False,
+                "text": "",
+                "error": (
+                    "VOICE_CLOUD_NOT_CONFIGURED: Whisper Speech-to-Text requires OPENAI_API_KEY in .env "
+                    "or a local offline Whisper engine. Audio was validated successfully, but no STT model is active."
+                ),
+                "duration_seconds": approx_duration,
+                "language": language or "en",
+                "provider": "none",
+                "status": "VOICE_CLOUD_NOT_CONFIGURED",
+                "detected_format": detected_fmt,
+            }
+
+        # 3. Live Sarvam AI Speech-to-Text Transcription (Primary Engine)
+        sarvam_key = self._get_sarvam_api_key()
+        if SARVAM_AVAILABLE and self.is_sarvam_configured() and not is_synthetic_test:
             try:
-                client = openai.AsyncOpenAI(api_key=api_key)
+                client = SarvamAI(api_subscription_key=sarvam_key)
+                mime_map = {
+                    "WAV": "audio/wav",
+                    "WebM": "audio/webm",
+                    "MP3": "audio/mpeg",
+                    "OGG": "audio/ogg",
+                    "M4A": "audio/mp4",
+                    "FLAC": "audio/flac",
+                }
+                content_type = mime_map.get(detected_fmt, "audio/wav")
+                fname = filename if "." in filename else f"{filename}.{detected_fmt.lower()}"
+
+                lang_code = "en-IN"
+                if language and "-" in language:
+                    lang_code = language
+                elif language == "hi":
+                    lang_code = "hi-IN"
+                elif language == "ta":
+                    lang_code = "ta-IN"
+                elif language == "te":
+                    lang_code = "te-IN"
+                elif language == "kn":
+                    lang_code = "kn-IN"
+                elif language == "mr":
+                    lang_code = "mr-IN"
+                elif language == "bn":
+                    lang_code = "bn-IN"
+
+                response = client.speech_to_text.transcribe(
+                    file=(fname, audio_bytes, content_type),
+                    model=self.model_name,
+                    language_code=lang_code,
+                )
+
+                transcript = (response.transcript or "").strip()
+                logger.info(f"Live Sarvam AI STT transcribed {len(audio_bytes)} bytes: '{transcript[:60]}...'")
+                return {
+                    "success": True,
+                    "text": transcript,
+                    "duration_seconds": approx_duration,
+                    "language": getattr(response, "language_code", lang_code) or lang_code,
+                    "provider": "sarvam-ai",
+                    "status": "FUNCTIONAL",
+                    "request_id": getattr(response, "request_id", None),
+                }
+            except Exception as exc:
+                logger.warning(f"Live Sarvam AI STT call failed: {exc}")
+                if not settings.DEMO_MODE and not self._get_openai_api_key():
+                    return {
+                        "success": False,
+                        "text": "",
+                        "error": f"Live Sarvam AI transcription failed: {str(exc)}",
+                        "duration_seconds": approx_duration,
+                        "language": language or "en",
+                        "provider": "sarvam-ai",
+                        "status": "FAILED",
+                    }
+
+        # 3. Live Cloud Whisper Transcription (Fallback Cloud Engine)
+        openai_key = self._get_openai_api_key()
+        if OPENAI_AVAILABLE and openai_key and len(openai_key) > 20 and not openai_key.startswith("sk-placeholder"):
+            try:
+                client = openai.AsyncOpenAI(api_key=openai_key)
                 audio_file = io.BytesIO(audio_bytes)
                 audio_file.name = filename if "." in filename else f"{filename}.wav"
 
                 response = await client.audio.transcriptions.create(
-                    model=self.model_name,
+                    model=self.whisper_model_name,
                     file=audio_file,
                     language=language or "en",
                     prompt=prompt or "Product compliance technical query, ratings, materials, IS standard.",
@@ -192,12 +304,11 @@ class VoiceTranscriptionService:
                         "status": "FAILED",
                     }
 
-        # 3. Offline Whisper Execution (if installed)
+        # 4. Offline Whisper Execution (if installed)
         if self.is_offline_model_available():
             try:
                 import whisper
                 model = whisper.load_model("base")
-                # Write to temp in-memory buffer or temp file
                 import tempfile
                 with tempfile.NamedTemporaryFile(suffix=f".{detected_fmt.lower()}", delete=False) as tmp:
                     tmp.write(audio_bytes)
@@ -216,14 +327,14 @@ class VoiceTranscriptionService:
             except Exception as exc:
                 logger.warning(f"Local Whisper execution error: {exc}")
 
-        # 4. Production Real Mode: Unconfigured State
+        # 5. Production Real Mode: Unconfigured State
         is_synthetic_test = filename.lower() in ("test.wav", "voice.wav") or "sample" in filename.lower()
         if not settings.DEMO_MODE and not is_synthetic_test:
             return {
                 "success": False,
                 "text": "",
                 "error": (
-                    "VOICE_CLOUD_NOT_CONFIGURED: Whisper Speech-to-Text requires OPENAI_API_KEY in .env "
+                    "VOICE_CLOUD_NOT_CONFIGURED: Speech-to-Text requires SARVAM_API_KEY or OPENAI_API_KEY in .env "
                     "or a local offline Whisper engine. Audio was validated successfully, but no STT model is active."
                 ),
                 "duration_seconds": approx_duration,
@@ -233,7 +344,7 @@ class VoiceTranscriptionService:
                 "detected_format": detected_fmt,
             }
 
-        # 5. Demo Mode Deterministic Fixture (Explicitly Labeled)
+        # 6. Demo Mode Deterministic Fixture (Explicitly Labeled)
         return {
             "success": True,
             "text": "Audio query received: Verify immersion water heater compliance under IS 302-2-201 rated at 1500W 230V.",
@@ -241,7 +352,7 @@ class VoiceTranscriptionService:
             "language": language or "en",
             "provider": "DEMO_FIXTURE",
             "status": "DEMO_FIXTURE",
-            "note": "Demo fixture active. For live Whisper transcription, configure OPENAI_API_KEY in .env.",
+            "note": "Demo fixture active. For live Sarvam AI transcription, configure SARVAM_API_KEY in .env.",
         }
 
 

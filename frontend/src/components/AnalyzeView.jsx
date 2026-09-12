@@ -345,7 +345,7 @@ export function AnalyzeView({ onAssessmentCreated, onNavigate }) {
 
   const sendVoiceQuery = async (audioBlob) => {
     setIsParsingFile(true);
-    setExtractedNotice('Layer 1 Voice Ingestion: Calling Whisper STT service...');
+    setExtractedNotice('Layer 1 Voice Ingestion: Calling Sarvam AI Indic Speech-to-Text...');
     try {
       const formData = new FormData();
       formData.append('audio', audioBlob, 'voice_query.webm');
@@ -359,17 +359,18 @@ export function AnalyzeView({ onAssessmentCreated, onNavigate }) {
           setValidationIssues([
             {
               code: 'VOICE_CLOUD_NOT_CONFIGURED',
-              message: data.error || 'Whisper Speech-to-Text unavailable: OPENAI_API_KEY is not configured.',
-              remediation: 'Configure OPENAI_API_KEY in backend/.env for live cloud Whisper, or click "Test Sample Voice Query" to test with a simulated acoustic sample.',
+              message: data.error || 'Speech-to-Text unavailable: SARVAM_API_KEY is not configured.',
+              remediation: 'Configure SARVAM_API_KEY in .env for live Sarvam AI Indic Speech STT, or click "Test Sample Voice Query" to test with a simulated acoustic sample.',
             },
           ]);
-          setExtractedNotice('⚠ Voice STT Unavailable: Configure OPENAI_API_KEY in backend/.env.');
+          setExtractedNotice('⚠ Voice STT Unavailable: Configure SARVAM_API_KEY in .env.');
         } else {
-          setExtractedNotice(`Whisper STT Ingested (${data.provider}): "${data.text}" [VOICE_TRANSCRIPT]`);
+          setExtractedNotice(`Sarvam AI STT Ingested (${data.provider}): "${data.text}" [VOICE_TRANSCRIPT]`);
           if (!productName) setProductName('Electric Immersion Water Heater (Voice Query)');
           setDescription((prev) => (prev ? prev + '\n\n' : '') + `Transcribed Voice Input: ${data.text}`);
           setExtractedAttributes([
-            { name: 'Input Source', value: 'Whisper STT Voice Audio', provenance: 'VOICE_TRANSCRIPT' },
+            { name: 'Input Source', value: 'Sarvam AI Speech Audio', provenance: 'VOICE_TRANSCRIPT' },
+            { name: 'Language', value: `${data.language || 'en-IN'}`, provenance: 'VOICE_TRANSCRIPT' },
             { name: 'Duration', value: `${data.duration_seconds || 1.5}s`, provenance: 'VOICE_TRANSCRIPT' },
           ]);
         }
@@ -383,7 +384,7 @@ export function AnalyzeView({ onAssessmentCreated, onNavigate }) {
 
   const handleSampleVoiceQuery = () => {
     setIsParsingFile(true);
-    setExtractedNotice('Processing sample voice query via Whisper STT...');
+    setExtractedNotice('Processing sample voice query via Sarvam AI Speech-to-Text...');
     setTimeout(() => {
       setProductName('Electric Immersion Water Heater (Voice Input)');
       setCategory('Kitchen & Domestic Appliances');
@@ -391,11 +392,11 @@ export function AnalyzeView({ onAssessmentCreated, onNavigate }) {
         `Transcribed Voice Statement: "We manufacture an electric immersion water heater rated at 1500W, 230V AC, 50Hz. The heating element is stainless steel 304 tube, handle is flame-retardant polypropylene, with 3-core PVC flexible cord and molded 6A plug top conforming to IS 1293."`
       );
       setExtractedAttributes([
-        { name: 'Input Channel', value: 'Whisper STT Speech Processor', provenance: 'VOICE_TRANSCRIPT' },
+        { name: 'Input Channel', value: 'Sarvam AI Speech Processor', provenance: 'VOICE_TRANSCRIPT' },
         { name: 'Rated Voltage', value: '230 V AC', provenance: 'VOICE_TRANSCRIPT' },
         { name: 'Power Input', value: '1500 W', provenance: 'VOICE_TRANSCRIPT' },
       ]);
-      setExtractedNotice('Whisper STT transcribed voice query into product specifications with [VOICE_TRANSCRIPT] provenance.');
+      setExtractedNotice('Sarvam AI STT transcribed voice query into product specifications with [VOICE_TRANSCRIPT] provenance.');
       setIsParsingFile(false);
     }, 500);
   };
@@ -665,8 +666,8 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
               layer1Status.voiceFunctional
                 ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
                 : 'bg-amber-100 text-amber-800 border-amber-200'
-            }`} title={layer1Status.voiceFunctional ? 'Whisper model active' : 'OPENAI_API_KEY required for live Whisper'}>
-              {layer1Status.voiceFunctional ? '✓ Whisper connected' : '⚠ Voice transcription unavailable — configure Whisper/API'}
+            }`} title={layer1Status.voiceFunctional ? 'Sarvam AI STT active' : 'SARVAM_API_KEY required for live STT'}>
+              {layer1Status.voiceFunctional ? '✓ Sarvam AI STT connected' : '⚠ Voice transcription unavailable — configure SARVAM_API_KEY'}
             </span>
           </div>
         </div>
@@ -796,7 +797,7 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
               {[
                 { mode: 'pdf', icon: 'picture_as_pdf', label: 'PDF Report' },
-                { mode: 'voice', icon: 'mic', label: 'Voice (Whisper)' },
+                { mode: 'voice', icon: 'mic', label: 'Voice (Sarvam AI)' },
                 { mode: 'bom', icon: 'table_chart', label: 'BOM Tables' },
                 { mode: 'image', icon: 'photo_camera', label: 'Image OCR' },
                 { mode: 'text', icon: 'edit_note', label: 'Manual Spec' },
@@ -897,10 +898,10 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                 <div>
                   <h4 className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
                     <span className="material-symbols-outlined text-indigo-600 text-[18px]">mic</span>
-                    Voice Query Ingestion (Whisper STT)
+                    Voice Query Ingestion (Sarvam AI Indic STT)
                   </h4>
                   <p className="text-[11px] text-slate-500">
-                    Capture verbal product specs or test with a simulated acoustic sample.
+                    Capture verbal product specs in Indic languages or test with a simulated acoustic sample.
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -909,7 +910,7 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                       ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
                       : 'bg-amber-100 text-amber-800 border-amber-200'
                   }`}>
-                    {layer1Status.voiceFunctional ? '✓ Whisper Connected' : '⚠ API Key Unset'}
+                    {layer1Status.voiceFunctional ? '✓ Sarvam AI Connected' : '⚠ API Key Unset'}
                   </span>
                   <button
                     type="button"
@@ -925,7 +926,7 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                 <div className="p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-[11px] text-amber-900 flex items-start gap-2">
                   <span className="material-symbols-outlined text-amber-600 text-[16px] shrink-0 mt-0.5">info</span>
                   <div>
-                    <strong>Cloud Whisper unconfigured:</strong> For live microphone STT, set <code className="font-mono bg-amber-100 px-1 rounded">OPENAI_API_KEY</code> in <code className="font-mono bg-amber-100 px-1 rounded">backend/.env</code>. Click <strong>Test Sample Voice Query</strong> to test with a verified domestic appliance sample.
+                    <strong>Sarvam AI STT unconfigured:</strong> For live microphone STT, set <code className="font-mono bg-amber-100 px-1 rounded">SARVAM_API_KEY</code> in <code className="font-mono bg-amber-100 px-1 rounded">.env</code>. Click <strong>Test Sample Voice Query</strong> to test with a verified domestic appliance sample.
                   </div>
                 </div>
               )}

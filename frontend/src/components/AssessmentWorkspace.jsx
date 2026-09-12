@@ -40,7 +40,7 @@ export function AssessmentWorkspace() {
   const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
   const [assessment, setAssessment] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [activeSection, setActiveSection] = useState('overview'); // overview | dna | applicability | requirements | evidence | evaluation | roadmap | graph | passport | history
+  const [activeSection, setActiveSection] = useState('overview'); // overview | dna | requirements | evidence | evaluation | roadmap | graph | passport | history
   const [passportData, setPassportData] = useState(null);
   const [snapshots, setSnapshots] = useState([]);
 
@@ -528,15 +528,14 @@ export function AssessmentWorkspace() {
             {/* Navigation Stepper (8-Step Workflow) */}
             <div className="flex border-b border-slate-200 gap-1 overflow-x-auto pt-2 pb-px text-xs font-semibold">
               {[
-                { id: 'overview', label: '1. Overview' },
+                { id: 'overview', label: '1. Overview & Standards' },
                 { id: 'dna', label: '2. Product DNA & Claims' },
-                { id: 'applicability', label: '3. Standards Applicability' },
-                { id: 'requirements', label: '4. Requirements & Evidence' },
-                { id: 'evidence', label: '5. Evidence Workspace' },
-                { id: 'evaluation', label: '6. Deterministic Evaluation' },
-                { id: 'roadmap', label: '7. Testing & Laboratories' },
-                { id: 'graph', label: '8. Evidence Graph' },
-                { id: 'history', label: '9. Audit Snapshots' },
+                { id: 'requirements', label: '3. Requirements & Evidence' },
+                { id: 'evidence', label: '4. Evidence Workspace' },
+                { id: 'evaluation', label: '5. Deterministic Evaluation' },
+                { id: 'roadmap', label: '6. Testing & Laboratories' },
+                { id: 'graph', label: '7. Evidence Graph' },
+                { id: 'history', label: '8. Audit Snapshots' },
               ].map((tab) => (
                 <button
                   key={tab.id}

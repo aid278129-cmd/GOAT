@@ -29,6 +29,7 @@ class Settings(BaseSettings):
     TESSERACT_CMD: Optional[str] = None
     OPENAI_API_KEY: Optional[str] = None
     GEMINI_API_KEY: Optional[str] = None
+    SARVAM_API_KEY: Optional[str] = None
 
     # M23 ML/DL Intelligence Layer Feature Flags
     ML_ENABLED: bool = True
@@ -37,7 +38,7 @@ class Settings(BaseSettings):
     EVIDENCE_MATCHING_ML_ENABLED: bool = True
     ANOMALY_DETECTION_ENABLED: bool = True
     NLI_ENABLED: bool = True
-    APPLICABILITY_CLASSIFIER_ENABLED: bool = False
+    APPLICABILITY_CLASSIFIER_ENABLED: bool = True
 
     # M24 LangChain Reasoning Graph Feature Flags
     LANGCHAIN_LLM_ADAPTER_ENABLED: bool = False
