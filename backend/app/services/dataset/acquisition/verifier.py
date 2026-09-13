@@ -22,21 +22,65 @@ from backend.app.services.dataset.acquisition.config import (
     is_official_bis_domain,
     MAGIC_BYTES,
 )
+import re
 from backend.app.services.dataset.acquisition.models import (
     SourceManifest,
     AcquisitionState,
+    SourceDomainClassification,
+    LicensingProvenanceStatus,
     VerificationReport,
     VerificationIssue,
 )
 
 
 class CorpusVerifier:
-    """Explicit verification engine for local BIS corpus resources."""
+    """Explicit verification engine for local BIS corpus resources.
+    
+    Enforces the explicit state machine:
+    DISCOVERED -> ACQUIRED -> HASHED -> SOURCE_VERIFIED -> CONTENT_VERIFIED -> INDEXED.
+    """
+
+    ADMINISTRATIVE_PATTERNS = [
+        r"ANNUALREPORT",
+        r"Annual[_\s-]?Report",
+        r"Review[_\s-]?Statement",
+        r"Delay[_\s-]?Statement",
+        r"Organisation[_\s-]?Chart",
+        r"Organization[_\s-]?Chart",
+        r"प्रशासनिक\s*संरचना",
+        r"वर्ष\s*\d{4}",
+        r"संगठन\s*चार्ट",
+        r"ECGazetteNotification",
+        r"ईसी\s*सदस्य",
+    ]
+
+    @classmethod
+    def classify_source_domain(cls, url: str) -> SourceDomainClassification:
+        """Classify the source domain authority."""
+        if not url:
+            return SourceDomainClassification.UNKNOWN
+        if is_official_bis_domain(url):
+            return SourceDomainClassification.OFFICIAL_BIS
+        u_lower = url.lower()
+        if "egazette.gov.in" in u_lower or "dpiit.gov.in" in u_lower or ".gov.in" in u_lower or ".nic.in" in u_lower:
+            return SourceDomainClassification.OFFICIAL_GOVERNMENT
+        return SourceDomainClassification.UNVERIFIED_EXTERNAL
+
+    @classmethod
+    def is_administrative_artifact(cls, source_id: str, title: str) -> bool:
+        """Detect whether an artifact is an administrative publication rather than a standard."""
+        combined = f"{source_id} {title}"
+        return any(re.search(pat, combined, re.IGNORECASE) for pat in cls.ADMINISTRATIVE_PATTERNS)
 
     @classmethod
     def verify_manifest(cls, manifest: SourceManifest) -> Tuple[bool, List[VerificationIssue]]:
         """Verifies a single SourceManifest against strict integrity rules."""
         issues: List[VerificationIssue] = []
+
+        # Classify domain
+        manifest.domain_classification = cls.classify_source_domain(manifest.source_url or "")
+        if cls.is_administrative_artifact(manifest.source_id, manifest.title):
+            manifest.is_administrative_document = True
 
         # 1. Source URL Official Domain
         url = manifest.source_url or ""
@@ -128,7 +172,7 @@ class CorpusVerifier:
         is_valid, issues = cls.verify_manifest(manifest)
         if is_valid:
             manifest.verification_status = AcquisitionState.VERIFIED
-            logger.info(f"Verified source {manifest.source_id} successfully.")
+            logger.info(f"Verified source {manifest.source_id} successfully as VERIFIED.")
         else:
             manifest.verification_status = AcquisitionState.INVALID_SOURCE
             logger.warning(f"Verification failed for {manifest.source_id}: {[i.message for i in issues]}")

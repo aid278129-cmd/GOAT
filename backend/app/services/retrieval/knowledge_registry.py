@@ -150,12 +150,15 @@ def search_standards(
     Search standards in the registry using lexical keyword and attribute matching.
     Returns matched standards sorted by relevance score.
     """
-    if is_out_of_scope_query(query):
-        logger.info(f"Query '{query}' classified as out-of-scope. Refusing retrieval.")
+    from backend.app.services.retrieval.authoritative_index_gate import AuthoritativeIndexGate
+    sanitized_query = AuthoritativeIndexGate.sanitize_untrusted_text(query)
+
+    if is_out_of_scope_query(sanitized_query):
+        logger.info(f"Query '{sanitized_query}' classified as out-of-scope. Refusing retrieval.")
         return []
 
     standards = load_knowledge_registry()
-    q_tokens = set(re.findall(r"\w+", query.lower()))
+    q_tokens = set(re.findall(r"\w+", sanitized_query.lower()))
     scored_results = []
 
     for std in standards:

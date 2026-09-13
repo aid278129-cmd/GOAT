@@ -16,13 +16,32 @@ from pydantic import BaseModel, Field, ConfigDict
 class AcquisitionState(str, Enum):
     """Explicit lifecycle states for source acquisition."""
     DISCOVERED = "DISCOVERED"
-    ACQUISITION_PENDING = "ACQUISITION_PENDING"
     ACQUIRED = "ACQUIRED"
     HASHED = "HASHED"
-    VERIFIED = "VERIFIED"
+    SOURCE_VERIFIED = "SOURCE_VERIFIED"
+    CONTENT_VERIFIED = "CONTENT_VERIFIED"
+    VERIFIED = "VERIFIED"  # Backward-compatible aggregate state
     INDEXED = "INDEXED"
+    ACQUISITION_PENDING = "ACQUISITION_PENDING"
     REJECTED = "REJECTED"
     INVALID_SOURCE = "INVALID_SOURCE"
+
+
+class SourceDomainClassification(str, Enum):
+    """Source domain authority classification."""
+    OFFICIAL_BIS = "OFFICIAL_BIS"
+    OFFICIAL_GOVERNMENT = "OFFICIAL_GOVERNMENT"
+    AUTHORIZED_EXTERNAL = "AUTHORIZED_EXTERNAL"
+    UNVERIFIED_EXTERNAL = "UNVERIFIED_EXTERNAL"
+    UNKNOWN = "UNKNOWN"
+
+
+class LicensingProvenanceStatus(str, Enum):
+    """Legal, access, and acquisition compliance status."""
+    OFFICIAL_OPEN_ACCESS = "OFFICIAL_OPEN_ACCESS"
+    COMMERCIAL_ACCESS_RESTRICTED = "COMMERCIAL_ACCESS_RESTRICTED"
+    ACQUISITION_PROVENANCE_UNVERIFIED = "ACQUISITION_PROVENANCE_UNVERIFIED"
+    LICENSED_AUTHORIZED = "LICENSED_AUTHORIZED"
 
 
 class SourceType(str, Enum):
@@ -58,6 +77,9 @@ class SourceManifest(BaseModel):
     document_status: str = Field(default="ACTIVE", description="ACTIVE | WITHDRAWN | SUPERSEDED | UNKNOWN")
     acquisition_status: AcquisitionState = Field(default=AcquisitionState.DISCOVERED)
     verification_status: AcquisitionState = Field(default=AcquisitionState.DISCOVERED)
+    domain_classification: SourceDomainClassification = Field(default=SourceDomainClassification.OFFICIAL_BIS)
+    licensing_provenance: LicensingProvenanceStatus = Field(default=LicensingProvenanceStatus.OFFICIAL_OPEN_ACCESS)
+    is_administrative_document: bool = Field(default=False, description="True if administrative report/statement rather than technical standard")
     file_path: Optional[str] = Field(default=None, description="Relative path to stored original file")
     mime_type: Optional[str] = Field(default=None, description="MIME type of stored document")
     file_size: int = Field(default=0, description="Exact size in bytes")

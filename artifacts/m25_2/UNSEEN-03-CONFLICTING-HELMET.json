@@ -7,7 +7,7 @@
   "validation_scope": "CONTROLLED_FIXTURE",
   "source_authority": "AUTHORITATIVE",
   "source_authenticity": "SYNTHETIC",
-  "run_timestamp": "2026-09-13T11:35:40.253537+00:00",
+  "run_timestamp": "2026-09-13T12:31:49.427987+00:00",
   "input_hash": "2c6bab7d5fdc2e22b81d8ec9059a4958b64766fd9ac77db24c6f5187a22e2ebe",
   "evidence_hashes": [
     "11223344556677889900aabbccddeeff11223344556677889900aabbccddeeff",

@@ -196,7 +196,7 @@ class CorpusManager:
             elif m.acquisition_status == AcquisitionState.ACQUISITION_PENDING:
                 pending_count += 1
 
-            if m.verification_status == AcquisitionState.VERIFIED:
+            if m.verification_status in (AcquisitionState.VERIFIED, AcquisitionState.CONTENT_VERIFIED, AcquisitionState.SOURCE_VERIFIED):
                 verified_count += 1
             elif m.verification_status == AcquisitionState.INDEXED:
                 indexed_count += 1
@@ -263,7 +263,7 @@ class CorpusManager:
                 acquisition_pending += 1
                 categories_summary[stype]["pending"] += 1
 
-            if m.verification_status == AcquisitionState.VERIFIED:
+            if m.verification_status in (AcquisitionState.VERIFIED, AcquisitionState.CONTENT_VERIFIED, AcquisitionState.SOURCE_VERIFIED):
                 sources_verified += 1
                 categories_summary[stype]["verified"] += 1
                 if m.source_type == SourceType.BIS_STANDARD:
