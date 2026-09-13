@@ -1,0 +1,133 @@
+{
+  "case_id": "UNSEEN-05-VERSION-CABLE",
+  "case_type": "UNSEEN",
+  "source_authority": "AUTHORITATIVE",
+  "challenge": "VERSION_AMENDMENT_SENSITIVE",
+  "product_name": "PowerCore 4.0 sq mm Single Core FR PVC Insulated Cable 1100V",
+  "category": "Electrical Cables & Conductors",
+  "intended_use": "Fixed electrical installation wiring in industrial and residential distribution",
+  "declared_facts": [
+    {
+      "attribute": "rated_voltage",
+      "raw_value": "Up to and including 1100 V AC",
+      "normalized_value": 1100.0,
+      "unit": "V",
+      "provenance": "VERIFIED_DOCUMENT_FACT",
+      "source_reference": "powercore_datasheet.pdf",
+      "source_location": "Page 1, Electrical Rating"
+    },
+    {
+      "attribute": "conductor_material",
+      "raw_value": "Plain Annealed High Conductivity Copper Class 2 conforming to IS 8130",
+      "normalized_value": "Copper Class 2",
+      "unit": null,
+      "provenance": "VERIFIED_DOCUMENT_FACT",
+      "source_reference": "powercore_datasheet.pdf",
+      "source_location": "Page 1, Conductor Details"
+    },
+    {
+      "attribute": "insulation_type",
+      "raw_value": "Flame Retardant (FR) PVC Compound Type A conforming to IS 5831",
+      "normalized_value": "FR PVC Type A",
+      "unit": null,
+      "provenance": "VERIFIED_DOCUMENT_FACT",
+      "source_reference": "powercore_datasheet.pdf",
+      "source_location": "Page 2, Insulation Specs"
+    }
+  ],
+  "evidence_records": [
+    {
+      "evidence_id": "EVID-CABLE-DS-01",
+      "evidence_type": "DATASHEET",
+      "hierarchy_level": 2,
+      "source_type": "PDF",
+      "source_reference": "powercore_datasheet.pdf",
+      "source_location": "Page 1, Technical Data",
+      "extracted_value": "Rated Operating Voltage: 1100 V AC",
+      "attribute": "rated_voltage",
+      "extraction_method": "OPENDATALOADER_PDF",
+      "confidence": 1.0,
+      "provenance": "Manufacturer Technical Datasheet Rev 4.0",
+      "sha256": "445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233",
+      "verified": true,
+      "verification_status": "VERIFIED",
+      "source_authenticity": "SYNTHETIC",
+      "artifact_integrity": "HASH_VALID",
+      "verification_method": "BENCHMARK_CONTROLLED_FIXTURE"
+    },
+    {
+      "evidence_id": "EVID-CABLE-DS-02",
+      "evidence_type": "DATASHEET",
+      "hierarchy_level": 2,
+      "source_type": "PDF",
+      "source_reference": "powercore_datasheet.pdf",
+      "source_location": "Page 1, Conductor Details",
+      "extracted_value": "Conductor: High Conductivity Plain Annealed Copper to IS 8130",
+      "attribute": "conductor_material",
+      "extraction_method": "OPENDATALOADER_PDF",
+      "confidence": 1.0,
+      "provenance": "Manufacturer Technical Datasheet Rev 4.0",
+      "sha256": "445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233",
+      "verified": true,
+      "verification_status": "VERIFIED",
+      "source_authenticity": "SYNTHETIC",
+      "artifact_integrity": "HASH_VALID",
+      "verification_method": "BENCHMARK_CONTROLLED_FIXTURE"
+    },
+    {
+      "evidence_id": "EVID-CABLE-DS-03",
+      "evidence_type": "DATASHEET",
+      "hierarchy_level": 2,
+      "source_type": "PDF",
+      "source_reference": "powercore_datasheet.pdf",
+      "source_location": "Page 2, Insulation",
+      "extracted_value": "Insulation: Heat Resistant Flame Retardant (FR) PVC Type A to IS 5831",
+      "attribute": "insulation_type",
+      "extraction_method": "OPENDATALOADER_PDF",
+      "confidence": 1.0,
+      "provenance": "Manufacturer Technical Datasheet Rev 4.0",
+      "sha256": "445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233",
+      "verified": true,
+      "verification_status": "VERIFIED",
+      "source_authenticity": "SYNTHETIC",
+      "artifact_integrity": "HASH_VALID",
+      "verification_method": "BENCHMARK_CONTROLLED_FIXTURE"
+    },
+    {
+      "evidence_id": "EVID-CABLE-TEST-01",
+      "evidence_type": "TEST_REPORT",
+      "hierarchy_level": 3,
+      "source_type": "PDF",
+      "source_reference": "cable_test_cert_nabl.pdf",
+      "source_location": "Page 2, Table 1 (Conductor Resistance)",
+      "extracted_value": "Conductor Resistance Test at 20 deg C: 4.61 Ohms/km (Limit: max 4.61 Ohms/km). PASS. Complies with IS 694:2010 Clause 9.2.",
+      "attribute": "conductor_resistance_test",
+      "extraction_method": "OPENDATALOADER_PDF",
+      "confidence": 1.0,
+      "provenance": "NABL Accredited Cable Testing Facility Certificate #CBL-2026-441",
+      "sha256": "556677889900aabbccddeeff11223344556677889900aabbccddeeff11223344",
+      "verified": true,
+      "verification_status": "VERIFIED",
+      "source_authenticity": "SYNTHETIC",
+      "artifact_integrity": "HASH_VALID",
+      "verification_method": "BENCHMARK_CONTROLLED_FIXTURE"
+    }
+  ],
+  "expected_evaluation": {
+    "applicable_standard": "IS 694:2010",
+    "standard_title": "Polyvinyl chloride insulated unsheathed-and-sheathed cables/cords with rigid and flexible conductor for working voltages-up to and including 450/750 V",
+    "revision": "Fourth Revision",
+    "status": "ACTIVE",
+    "qco_mandatory": true,
+    "qco_order": "Wires and Cables (Quality Control) Order",
+    "amendments_incorporated": [
+      "Amendment No. 1",
+      "Amendment No. 2"
+    ],
+    "applicability_decision": "APPLICABLE",
+    "expected_verdict": "SATISFIED",
+    "standard_status": "STANDARD_STATUS_VERIFIED"
+  },
+  "validation_scope": "CONTROLLED_FIXTURE",
+  "source_authenticity": "SYNTHETIC"
+}

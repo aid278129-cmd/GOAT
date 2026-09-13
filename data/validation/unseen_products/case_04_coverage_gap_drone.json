@@ -1,0 +1,69 @@
+{
+  "case_id": "UNSEEN-04-COVERAGE-GAP-DRONE",
+  "case_type": "UNSEEN",
+  "source_authority": "NON_AUTHORITATIVE",
+  "challenge": "COVERAGE_GAP",
+  "product_name": "AgriFly X6 Heavy-Payload Agricultural Drone",
+  "category": "Autonomous Aerial Systems & Robotics",
+  "intended_use": "Commercial agricultural precision pesticide and fertilizer aerial crop spraying",
+  "declared_facts": [
+    {
+      "attribute": "airframe_type",
+      "raw_value": "Hexacopter with 6 brushless electric motors",
+      "normalized_value": "Hexacopter",
+      "unit": null,
+      "provenance": "DOCUMENTARY_PRODUCT_EVIDENCE",
+      "source_reference": "agrifly_spec.pdf",
+      "source_location": "Page 1"
+    },
+    {
+      "attribute": "all_up_weight",
+      "raw_value": "24.9 kg (Max Take-off Weight)",
+      "normalized_value": 24.9,
+      "unit": "kg",
+      "provenance": "DOCUMENTARY_PRODUCT_EVIDENCE",
+      "source_reference": "agrifly_spec.pdf",
+      "source_location": "Page 2"
+    },
+    {
+      "attribute": "battery_type",
+      "raw_value": "Lithium Polymer 22000 mAh 44.4 V",
+      "normalized_value": "LiPo",
+      "unit": null,
+      "provenance": "DOCUMENTARY_PRODUCT_EVIDENCE",
+      "source_reference": "agrifly_spec.pdf",
+      "source_location": "Page 2"
+    }
+  ],
+  "evidence_records": [
+    {
+      "evidence_id": "EVID-DRONE-SPEC-01",
+      "evidence_type": "PRODUCT_SPECIFICATION",
+      "hierarchy_level": 2,
+      "source_type": "PDF",
+      "source_reference": "agrifly_spec.pdf",
+      "source_location": "Page 1, General Specs",
+      "extracted_value": "AgriFly X6 Agricultural Drone: 25L Spray Tank, 24.9 kg MTOW, autonomous waypoint navigation.",
+      "attribute": "airframe_type",
+      "extraction_method": "OPENDATALOADER_PDF",
+      "confidence": 0.95,
+      "provenance": "Manufacturer Product Specification Sheet",
+      "sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+      "verified": false,
+      "verification_status": "ACQUISITION_PENDING",
+      "notes": "Legitimate product specification; governed BIS standard missing in catalog.",
+      "source_authenticity": "SYNTHETIC",
+      "artifact_integrity": "HASH_VALID"
+    }
+  ],
+  "expected_evaluation": {
+    "applicable_standard": null,
+    "applicability_decision": "COVERAGE_GAP",
+    "coverage_gap_reason": "No verified coverage found in governed corpus snapshot for commercial agricultural hexacopter unmanned aircraft systems (UAS). External regulatory review (e.g. DGCA Drone Rules 2021) may be required.",
+    "is_exempt": false,
+    "prohibited_verdict": "NOT_APPLICABLE",
+    "expected_verdict": "COVERAGE_GAP"
+  },
+  "validation_scope": "CONTROLLED_FIXTURE",
+  "source_authenticity": "SYNTHETIC"
+}

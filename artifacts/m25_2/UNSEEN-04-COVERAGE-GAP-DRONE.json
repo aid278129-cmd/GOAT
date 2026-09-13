@@ -1,0 +1,43 @@
+{
+  "case_id": "UNSEEN-04-COVERAGE-GAP-DRONE",
+  "case_name": "AgriFly X6 Heavy-Payload Agricultural Drone",
+  "category": "Autonomous Aerial Systems & Robotics",
+  "challenge": "COVERAGE_GAP",
+  "case_type": "UNSEEN",
+  "validation_scope": "CONTROLLED_FIXTURE",
+  "source_authority": "NON_AUTHORITATIVE",
+  "source_authenticity": "SYNTHETIC",
+  "run_timestamp": "2026-09-13T11:35:40.253537+00:00",
+  "input_hash": "a67ef1e3483372cad37f8b6e3ef3157ac6244fe1f78ad765acecc1d811936181",
+  "evidence_hashes": [
+    "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
+  ],
+  "applicability_decision": "COVERAGE_GAP",
+  "overall_status": "COVERAGE_GAP",
+  "total_requirements": 0,
+  "satisfied_count": 0,
+  "gap_count": 1,
+  "conflicts_detected": [],
+  "conflict_type": null,
+  "evidence_matrix": [
+    {
+      "requirement": "REQ-GOVERNED-COVERAGE",
+      "standard": "NONE",
+      "version": "N/A",
+      "clause": "N/A",
+      "required_evidence": "OFFICIAL_GAZETTE_QCO",
+      "available_evidence": "No verified mandatory BIS standard in current governed corpus snapshot",
+      "evidence_status": "NOT_APPLICABLE",
+      "source": "BIS Catalog Index (Snapshot)",
+      "verification_status": "GOVERNANCE_INCOMPLETE",
+      "deterministic_result": "COVERAGE_GAP",
+      "gap": "Catalog coverage gap: Product not governed under existing BIS CRS / Scheme I standards in corpus snapshot. External regulatory review may be required.",
+      "next_action": "EXPERT_REVIEW",
+      "eligibility_status": "MISSING_REQUIRED_EVIDENCE",
+      "source_authenticity": "SYNTHETIC",
+      "artifact_integrity": "HASH_VALID",
+      "requirement_class": "TECHNICAL_SPECIFICATION"
+    }
+  ],
+  "notes": "No verified coverage found in governed corpus snapshot for commercial agricultural hexacopter unmanned aircraft systems (UAS). External regulatory review (e.g. DGCA Drone Rules 2021) may be required."
+}

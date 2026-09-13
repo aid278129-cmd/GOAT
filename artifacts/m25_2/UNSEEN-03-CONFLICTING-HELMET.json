@@ -1,0 +1,65 @@
+{
+  "case_id": "UNSEEN-03-CONFLICTING-HELMET",
+  "case_name": "Apex Pro Two-Wheeler Protective Helmet",
+  "category": "Personal Protective Equipment",
+  "challenge": "CONFLICTING_PRODUCT_EVIDENCE",
+  "case_type": "UNSEEN",
+  "validation_scope": "CONTROLLED_FIXTURE",
+  "source_authority": "AUTHORITATIVE",
+  "source_authenticity": "SYNTHETIC",
+  "run_timestamp": "2026-09-13T11:35:40.253537+00:00",
+  "input_hash": "2c6bab7d5fdc2e22b81d8ec9059a4958b64766fd9ac77db24c6f5187a22e2ebe",
+  "evidence_hashes": [
+    "11223344556677889900aabbccddeeff11223344556677889900aabbccddeeff",
+    "99887766554433221100ffeeddccbbaa99887766554433221100ffeeddccbbaa"
+  ],
+  "applicability_decision": "APPLICABLE",
+  "overall_status": "EXPERT_REVIEW_REQUIRED",
+  "total_requirements": 2,
+  "satisfied_count": 0,
+  "gap_count": 2,
+  "conflicts_detected": [
+    "shell_material: Shell Construction: High Impact Injection Molded Thermoplast... (brochure_apex.pdf)",
+    "shell_material: Outer Shell: Multi-layer Fiber Reinforced Plastic (FRP) with... (manual_apex_v2.pdf)"
+  ],
+  "conflict_type": "CONFLICTING_PRODUCT_EVIDENCE",
+  "evidence_matrix": [
+    {
+      "requirement": "REQ-VERIFY-SHELL_MATERIAL",
+      "standard": "IS 4151:2015",
+      "version": "2018",
+      "clause": "Clause 4.2 / Clause 7.1",
+      "required_evidence": "VERIFIED_DOCUMENTARY_EVIDENCE",
+      "available_evidence": "Shell Construction: High Impact Injection Molded Thermoplastic ABS; Total Weight: 950 grams ultra-lightweight design.",
+      "evidence_status": "CONFLICTING",
+      "source": "brochure_apex.pdf",
+      "verification_status": "CONFLICTING",
+      "deterministic_result": "EXPERT_REVIEW_REQUIRED",
+      "gap": "Contradictory product documentation for shell_material: Contradicted by engineering manual regarding shell material and mass.",
+      "next_action": "EXPERT_REVIEW",
+      "eligibility_status": "CONFLICTING_EVIDENCE",
+      "source_authenticity": "SYNTHETIC",
+      "artifact_integrity": "HASH_VALID",
+      "requirement_class": "TECHNICAL_SPECIFICATION"
+    },
+    {
+      "requirement": "REQ-VERIFY-SHELL_MATERIAL",
+      "standard": "IS 4151:2015",
+      "version": "2018",
+      "clause": "Clause 4.2 / Clause 7.1",
+      "required_evidence": "VERIFIED_DOCUMENTARY_EVIDENCE",
+      "available_evidence": "Outer Shell: Multi-layer Fiber Reinforced Plastic (FRP) with carbon reinforcement; Net Mass: 1600 +/- 50 grams.",
+      "evidence_status": "CONFLICTING",
+      "source": "manual_apex_v2.pdf",
+      "verification_status": "CONFLICTING",
+      "deterministic_result": "EXPERT_REVIEW_REQUIRED",
+      "gap": "Contradictory product documentation for shell_material: Direct factual conflict with marketing brochure.",
+      "next_action": "EXPERT_REVIEW",
+      "eligibility_status": "CONFLICTING_EVIDENCE",
+      "source_authenticity": "SYNTHETIC",
+      "artifact_integrity": "HASH_VALID",
+      "requirement_class": "TECHNICAL_SPECIFICATION"
+    }
+  ],
+  "notes": "Contradictory product evidence detected between specifications. Autonomous resolution prohibited."
+}

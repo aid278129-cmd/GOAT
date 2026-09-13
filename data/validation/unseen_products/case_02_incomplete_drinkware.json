@@ -1,0 +1,73 @@
+{
+  "case_id": "UNSEEN-02-INCOMPLETE-DRINKWARE",
+  "case_type": "UNSEEN",
+  "source_authority": "AUTHORITATIVE",
+  "challenge": "INCOMPLETE_PRODUCT",
+  "product_name": "EcoSip Stainless Steel Thermal Travel Mug",
+  "category": "Drinkware & Containers",
+  "intended_use": "Portable beverage container",
+  "declared_facts": [
+    {
+      "attribute": "product_name",
+      "raw_value": "EcoSip Travel Mug",
+      "normalized_value": "EcoSip Travel Mug",
+      "unit": null,
+      "provenance": "USER_CLAIM",
+      "source_reference": "user_input",
+      "source_location": null
+    },
+    {
+      "attribute": "material",
+      "raw_value": "Stainless steel body with plastic lid",
+      "normalized_value": "Stainless steel",
+      "unit": null,
+      "provenance": "USER_CLAIM",
+      "source_reference": "catalog_snippet.txt",
+      "source_location": "Line 2"
+    }
+  ],
+  "missing_discriminators": [
+    {
+      "attribute": "nominal_capacity",
+      "reason": "Mandatory under IS 17526:2021 Clause 5.4 to determine capacity category (<=1000ml vs >1000ml) and heat retention thresholds.",
+      "rule_reference": "IS 17526:2021 Clause 5.4"
+    },
+    {
+      "attribute": "insulation_type",
+      "reason": "Mandatory under IS 17526:2021 Clause 1 Scope to determine applicability between double-wall vacuum flasks (IS 17526) vs single-wall metal bottles (IS 17803).",
+      "rule_reference": "IS 17526:2021 Clause 1"
+    }
+  ],
+  "evidence_records": [
+    {
+      "evidence_id": "EVID-MUG-CLAIM-01",
+      "evidence_type": "USER_PROVIDED_CLAIM",
+      "hierarchy_level": 0,
+      "source_type": "MANUAL",
+      "source_reference": "user_input_form",
+      "source_location": null,
+      "extracted_value": "EcoSip Stainless Steel Travel Mug for coffee and tea",
+      "attribute": "product_description",
+      "extraction_method": "USER_INPUT",
+      "confidence": 0.5,
+      "provenance": "User claim entered in chat",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified": false,
+      "verification_status": "UNVERIFIED",
+      "source_authenticity": "UNVERIFIED",
+      "artifact_integrity": "HASH_VALID"
+    }
+  ],
+  "expected_evaluation": {
+    "applicable_standard": "IS 17526:2021",
+    "applicability_decision": "MORE_INFORMATION_REQUIRED",
+    "clarification_required": true,
+    "missing_attributes": [
+      "nominal_capacity",
+      "insulation_type"
+    ],
+    "expected_verdict": "MORE_INFORMATION_REQUIRED"
+  },
+  "validation_scope": "CONTROLLED_FIXTURE",
+  "source_authenticity": "UNVERIFIED"
+}

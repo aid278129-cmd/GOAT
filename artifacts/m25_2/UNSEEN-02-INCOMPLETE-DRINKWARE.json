@@ -1,0 +1,61 @@
+{
+  "case_id": "UNSEEN-02-INCOMPLETE-DRINKWARE",
+  "case_name": "EcoSip Stainless Steel Thermal Travel Mug",
+  "category": "Drinkware & Containers",
+  "challenge": "INCOMPLETE_PRODUCT",
+  "case_type": "UNSEEN",
+  "validation_scope": "CONTROLLED_FIXTURE",
+  "source_authority": "AUTHORITATIVE",
+  "source_authenticity": "UNVERIFIED",
+  "run_timestamp": "2026-09-13T11:35:40.253537+00:00",
+  "input_hash": "e0567e91d029b52e8c57b2d77b083c77999fa6d8fb4f26cc2e2f6d758b02e2cd",
+  "evidence_hashes": [
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  ],
+  "applicability_decision": "MORE_INFORMATION_REQUIRED",
+  "overall_status": "MORE_INFORMATION_REQUIRED",
+  "total_requirements": 2,
+  "satisfied_count": 0,
+  "gap_count": 2,
+  "conflicts_detected": [],
+  "conflict_type": null,
+  "evidence_matrix": [
+    {
+      "requirement": "REQ-DISCRIMINATOR-NOMINAL_CAPACITY",
+      "standard": "IS 17526:2021",
+      "version": "2018",
+      "clause": "IS 17526:2021 Clause 5.4",
+      "required_evidence": "PRODUCT_SPECIFICATION",
+      "available_evidence": null,
+      "evidence_status": "MISSING",
+      "source": null,
+      "verification_status": "UNVERIFIED",
+      "deterministic_result": "MORE_INFORMATION_REQUIRED",
+      "gap": "Missing essential discriminator: nominal_capacity (Mandatory under IS 17526:2021 Clause 5.4 to determine capacity category (<=1000ml vs >1000ml) and heat retention thresholds.)",
+      "next_action": "PROVIDE_SPECIFICATION",
+      "eligibility_status": "MISSING_REQUIRED_EVIDENCE",
+      "source_authenticity": "UNVERIFIED",
+      "artifact_integrity": "UNHASHED",
+      "requirement_class": "TECHNICAL_SPECIFICATION"
+    },
+    {
+      "requirement": "REQ-DISCRIMINATOR-INSULATION_TYPE",
+      "standard": "IS 17526:2021",
+      "version": "2018",
+      "clause": "IS 17526:2021 Clause 1",
+      "required_evidence": "PRODUCT_SPECIFICATION",
+      "available_evidence": null,
+      "evidence_status": "MISSING",
+      "source": null,
+      "verification_status": "UNVERIFIED",
+      "deterministic_result": "MORE_INFORMATION_REQUIRED",
+      "gap": "Missing essential discriminator: insulation_type (Mandatory under IS 17526:2021 Clause 1 Scope to determine applicability between double-wall vacuum flasks (IS 17526) vs single-wall metal bottles (IS 17803).)",
+      "next_action": "PROVIDE_SPECIFICATION",
+      "eligibility_status": "MISSING_REQUIRED_EVIDENCE",
+      "source_authenticity": "UNVERIFIED",
+      "artifact_integrity": "UNHASHED",
+      "requirement_class": "TECHNICAL_SPECIFICATION"
+    }
+  ],
+  "notes": "Clarification required before standard applicability can be finalized: nominal_capacity: Mandatory under IS 17526:2021 Clause 5.4 to determine capacity category (<=1000ml vs >1000ml) and heat retention thresholds.; insulation_type: Mandatory under IS 17526:2021 Clause 1 Scope to determine applicability between double-wall vacuum flasks (IS 17526) vs single-wall metal bottles (IS 17803)."
+}

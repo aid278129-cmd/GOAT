@@ -55,6 +55,7 @@ class SystemDiagnosticsResponse(BaseModel):
     dependencies: List[DependencyHealthRecord]
     ocr_diagnostic: Dict[str, Any] = Field(default_factory=dict)
     voice_diagnostic: Dict[str, Any] = Field(default_factory=dict)
+    opendataloader_diagnostic: Dict[str, Any] = Field(default_factory=dict)
 
 
 def _mask_url(url: Optional[str]) -> str:
@@ -159,6 +160,53 @@ def check_all_dependencies() -> SystemDiagnosticsResponse:
             },
         )
     )
+
+    # -------------------------------------------------------------
+    # 2b. OpenDataLoader PDF (AI Document Parser & Accessibility Engine)
+    # -------------------------------------------------------------
+    t0 = time.perf_counter()
+    from backend.app.services.ingestion.opendataloader_extractor import (
+        is_opendataloader_ready,
+        check_java_runtime,
+        OPENDATALOADER_AVAILABLE,
+    )
+    java_info = check_java_runtime()
+    odl_ready = is_opendataloader_ready()
+    odl_lat = round((time.perf_counter() - t0) * 1000, 2)
+
+    records.append(
+        DependencyHealthRecord(
+            name="OpenDataLoader PDF",
+            type="system",
+            status="FUNCTIONAL" if odl_ready else ("FALLBACK_ACTIVE" if OPENDATALOADER_AVAILABLE else "NOT_CONFIGURED"),
+            installed=OPENDATALOADER_AVAILABLE,
+            configured=bool(java_info.get("available")),
+            reachable=bool(java_info.get("available")),
+            functional=odl_ready,
+            executable_path=java_info.get("path"),
+            version=java_info.get("version"),
+            latency_ms=odl_lat,
+            error=None if odl_ready else "Java 11+ runtime required for OpenDataLoader PDF core engine.",
+            fallback_available=True,
+            fallback_details="PyMuPDF native vector text extractor active.",
+            details={
+                "java_version": java_info.get("version"),
+                "python_module": OPENDATALOADER_AVAILABLE,
+                "reading_order": "XY-Cut++",
+                "features": ["bounding_boxes", "table_detection", "markdown_export"],
+            },
+        )
+    )
+
+    odl_diagnostic = {
+        "installed": OPENDATALOADER_AVAILABLE,
+        "functional": odl_ready,
+        "java_runtime": java_info.get("available", False),
+        "java_version": java_info.get("version"),
+        "java_path": java_info.get("path"),
+        "engine": "opendataloader-pdf",
+        "benchmark_accuracy": 0.907,
+    }
 
     # -------------------------------------------------------------
     # 3. Whisper / Speech-to-Text
@@ -361,7 +409,7 @@ def check_all_dependencies() -> SystemDiagnosticsResponse:
     )
 
     input_services = {
-        "PDF": "FUNCTIONAL",
+        "PDF": "FUNCTIONAL (OpenDataLoader PDF)" if odl_ready else "FUNCTIONAL",
         "OCR": ocr_status_str,
         "VOICE": voice_status_str,
         "BOM": "FUNCTIONAL",
@@ -396,7 +444,7 @@ def check_all_dependencies() -> SystemDiagnosticsResponse:
         },
     }
 
-    overall_health = "OPERATIONAL" if ocr_info["functional"] and has_live_llm else "DEGRADED"
+    overall_health = "OPERATIONAL" if (odl_ready or ocr_info["functional"]) and has_live_llm else "DEGRADED"
 
     return SystemDiagnosticsResponse(
         timestamp=time.time(),
@@ -408,4 +456,5 @@ def check_all_dependencies() -> SystemDiagnosticsResponse:
         dependencies=records,
         ocr_diagnostic=ocr_info,
         voice_diagnostic=voice_info,
+        opendataloader_diagnostic=odl_diagnostic,
     )

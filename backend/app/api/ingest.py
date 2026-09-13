@@ -185,8 +185,8 @@ async def process_unified_input(
 
         # Extraction by Mode
         if input_mode == InputMode.PDF:
-            pdf_result = extract_pdf_content(file_bytes, filename=source_filename)
-            extracted_text = "\n\n".join(p.text for p in pdf_result.pages if p.text.strip())
+            pdf_result = extract_pdf_content(file_bytes, filename=source_filename, use_opendataloader=True)
+            extracted_text = pdf_result.markdown_content or "\n\n".join(p.text for p in pdf_result.pages if p.text.strip())
             provenance = InputProvenanceType.DOCUMENT_EVIDENCE
 
         elif input_mode == InputMode.IMAGE_OCR:

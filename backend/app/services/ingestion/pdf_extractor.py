@@ -1,9 +1,10 @@
 """PDF Text, Layout & Scanned Document Extractor.
 
-Layer 1: Input Processing (PyMuPDF Vector Layout & Scanned OCR Engine).
+Layer 1: Input Processing (PyMuPDF Vector Layout, OpenDataLoader AI Parser & Scanned OCR Engine).
 Enforces zero-hallucination and evidence provenance:
+- OpenDataLoader AI-Ready extraction for structured Markdown, tables, and reading order (XY-Cut++).
 - Native PDF layout extraction with page/block bounding boxes.
-- Scanned PDF detection and Tesseract OCR dispatch.
+- Scanned PDF detection and graceful fallback handling.
 - Corrupted and malformed PDF detection with actionable diagnostics.
 - Supports both filesystem paths and in-memory byte streams.
 """
@@ -25,7 +26,7 @@ from backend.app.services.ingestion.ocr import (
 class ExtractedPage(BaseModel):
     page_number: int  # 1-indexed
     text: str
-    extraction_method: str = "TEXT"  # TEXT | NATIVE_TESSERACT_OCR | FALLBACK_PARSER
+    extraction_method: str = "TEXT"  # TEXT | OPENDATALOADER_PDF | NATIVE_TESSERACT_OCR | FALLBACK_PARSER
     char_count: int = 0
     blocks: List[Dict[str, Any]] = Field(default_factory=list)
     images_count: int = 0
@@ -38,12 +39,23 @@ class PDFExtractionResult(BaseModel):
     author_metadata: Optional[str] = None
     is_mostly_scanned: bool = False
     source_name: str = "document.pdf"
+    engine: str = "pymupdf"
+    markdown_content: Optional[str] = None
+
+
+def extract_pdf_with_opendataloader(
+    file_input: Union[str, bytes],
+    filename: Optional[str] = None,
+) -> PDFExtractionResult:
+    """Extract structured pages using OpenDataLoader PDF with fallback to vector layout."""
+    return extract_pdf_content(file_input, filename=filename, use_opendataloader=True)
 
 
 def extract_pdf_content(
     file_input: Union[str, bytes],
     filename: Optional[str] = None,
     enable_ocr: bool = True,
+    use_opendataloader: bool = False,
 ) -> PDFExtractionResult:
     """Extract structured text and page provenance from a PDF document.
     
@@ -51,6 +63,39 @@ def extract_pdf_content(
     Enforces robust error handling for corrupted, empty, or scanned documents.
     """
     doc_name = filename or "uploaded_document.pdf"
+
+    # 0. Check OpenDataLoader PDF path if explicitly requested or preferred
+    if use_opendataloader:
+        try:
+            from backend.app.services.ingestion.opendataloader_extractor import (
+                is_opendataloader_ready,
+                extract_with_opendataloader,
+            )
+            if is_opendataloader_ready():
+                odl_res = extract_with_opendataloader(file_input, filename=doc_name)
+                converted_pages = [
+                    ExtractedPage(
+                        page_number=p.page_number,
+                        text=p.text,
+                        extraction_method="OPENDATALOADER_PDF",
+                        char_count=p.char_count,
+                        blocks=p.blocks,
+                        images_count=p.images_count,
+                    )
+                    for p in odl_res.pages
+                ]
+                return PDFExtractionResult(
+                    total_pages=odl_res.total_pages,
+                    pages=converted_pages,
+                    title_metadata=odl_res.title_metadata,
+                    author_metadata=odl_res.author_metadata,
+                    is_mostly_scanned=False,
+                    source_name=odl_res.source_name,
+                    engine="opendataloader-pdf",
+                    markdown_content=odl_res.markdown_content,
+                )
+        except Exception as exc:
+            logger.warning(f"OpenDataLoader PDF extraction failed, falling back to PyMuPDF: {exc}")
 
     # 1. Open document via PyMuPDF
     try:
@@ -155,4 +200,5 @@ def extract_pdf_content(
         author_metadata=author_meta,
         is_mostly_scanned=is_mostly_scanned,
         source_name=doc_name,
+        engine="pymupdf",
     )

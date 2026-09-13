@@ -1,0 +1,84 @@
+{
+  "case_id": "UNSEEN-03-CONFLICTING-HELMET",
+  "case_type": "UNSEEN",
+  "source_authority": "AUTHORITATIVE",
+  "challenge": "CONFLICTING_PRODUCT_EVIDENCE",
+  "product_name": "Apex Pro Two-Wheeler Protective Helmet",
+  "category": "Personal Protective Equipment",
+  "intended_use": "Head protection for motorcycle and scooter riders",
+  "declared_facts": [
+    {
+      "attribute": "shell_material",
+      "raw_value": "Thermoplastic ABS Shell (Brochure) vs Fiber Reinforced Plastic Composite (Manual)",
+      "normalized_value": "CONFLICTING",
+      "unit": null,
+      "provenance": "CONFLICTING",
+      "source_reference": "brochure_apex.pdf vs manual_apex_v2.pdf",
+      "source_location": "Page 1 vs Page 3"
+    },
+    {
+      "attribute": "total_mass",
+      "raw_value": "950g (Brochure) vs 1600g (Manual)",
+      "normalized_value": "CONFLICTING",
+      "unit": "g",
+      "provenance": "CONFLICTING",
+      "source_reference": "brochure_apex.pdf vs manual_apex_v2.pdf",
+      "source_location": "Page 1 vs Page 4"
+    }
+  ],
+  "evidence_records": [
+    {
+      "evidence_id": "EVID-HELMET-DOC-01",
+      "evidence_type": "DATASHEET",
+      "hierarchy_level": 2,
+      "source_type": "PDF",
+      "source_reference": "brochure_apex.pdf",
+      "source_location": "Page 1, Specifications",
+      "extracted_value": "Shell Construction: High Impact Injection Molded Thermoplastic ABS; Total Weight: 950 grams ultra-lightweight design.",
+      "attribute": "shell_material",
+      "extraction_method": "OPENDATALOADER_PDF",
+      "confidence": 0.9,
+      "provenance": "Apex Marketing Brochure 2026",
+      "sha256": "11223344556677889900aabbccddeeff11223344556677889900aabbccddeeff",
+      "verified": false,
+      "verification_status": "CONFLICTING",
+      "notes": "Contradicted by engineering manual regarding shell material and mass.",
+      "source_authenticity": "SYNTHETIC",
+      "artifact_integrity": "HASH_VALID"
+    },
+    {
+      "evidence_id": "EVID-HELMET-DOC-02",
+      "evidence_type": "USER_MANUAL",
+      "hierarchy_level": 2,
+      "source_type": "PDF",
+      "source_reference": "manual_apex_v2.pdf",
+      "source_location": "Page 3, Technical Specifications",
+      "extracted_value": "Outer Shell: Multi-layer Fiber Reinforced Plastic (FRP) with carbon reinforcement; Net Mass: 1600 +/- 50 grams.",
+      "attribute": "shell_material",
+      "extraction_method": "OPENDATALOADER_PDF",
+      "confidence": 0.9,
+      "provenance": "Apex Official Engineering Manual v2",
+      "sha256": "99887766554433221100ffeeddccbbaa99887766554433221100ffeeddccbbaa",
+      "verified": false,
+      "verification_status": "CONFLICTING",
+      "notes": "Direct factual conflict with marketing brochure.",
+      "source_authenticity": "SYNTHETIC",
+      "artifact_integrity": "HASH_VALID"
+    }
+  ],
+  "expected_evaluation": {
+    "applicable_standard": "IS 4151:2015",
+    "standard_title": "Protective helmets for motorcycle riders",
+    "applicability_decision": "APPLICABLE",
+    "qco_mandatory": true,
+    "qco_order": "Two-Wheeler Helmets (Quality Control) Order",
+    "compliance_status": "EXPERT_REVIEW_REQUIRED",
+    "conflict_detected": true,
+    "conflict_reason": "Direct contradiction between product documentary sources: Shell material (ABS 950g vs FRP 1600g). Affects penetration resistance and mass limits under IS 4151:2015 Clause 4.2 & 7.1.",
+    "expected_verdict": "EXPERT_REVIEW_REQUIRED"
+  },
+  "validation_scope": "CONTROLLED_FIXTURE",
+  "source_authenticity": "SYNTHETIC",
+  "conflict_type": "CONFLICTING_PRODUCT_EVIDENCE",
+  "conflict_description": "Brochure specifies Thermoplastic ABS (950g), whereas engineering manual specifies Fiber-Reinforced Plastic (1600g). Standard IS 4151:2015 itself is not in conflict."
+}

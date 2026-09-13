@@ -1,0 +1,74 @@
+{
+  "benchmark_version": "v1.1.0-evidence-authenticity-hardened",
+  "created_at": "2026-09-13T11:20:00Z",
+  "description": "Zyntrix M25.2A Hardened Unseen-Product Validation Benchmark. Enforces strict separation of artifact integrity, source authenticity, and evidence eligibility across controlled benchmark fixtures.",
+  "total_cases": 5,
+  "validation_scope": "CONTROLLED_FIXTURE",
+  "cases": [
+    {
+      "case_id": "UNSEEN-01-COMPLETE-GEYSER",
+      "case_name": "Instant Storage Water Heater 230V 3000W 15L",
+      "category": "Household & Kitchen Electrical Appliances",
+      "case_type": "UNSEEN",
+      "validation_scope": "CONTROLLED_FIXTURE",
+      "source_authority": "AUTHORITATIVE",
+      "source_authenticity": "SYNTHETIC",
+      "challenge": "COMPLETE_PRODUCT",
+      "expected_outcome": "APPLICABLE",
+      "target_standard": "IS 302-2-21:2018",
+      "file": "case_01_complete_water_heater.json"
+    },
+    {
+      "case_id": "UNSEEN-02-INCOMPLETE-DRINKWARE",
+      "case_name": "Generic Insulated Travel Mug",
+      "category": "Drinkware & Containers",
+      "case_type": "UNSEEN",
+      "validation_scope": "CONTROLLED_FIXTURE",
+      "source_authority": "AUTHORITATIVE",
+      "source_authenticity": "UNVERIFIED",
+      "challenge": "INCOMPLETE_PRODUCT",
+      "expected_outcome": "MORE_INFORMATION_REQUIRED",
+      "target_standard": "IS 17526:2021",
+      "file": "case_02_incomplete_drinkware.json"
+    },
+    {
+      "case_id": "UNSEEN-03-CONFLICTING-HELMET",
+      "case_name": "Full-Face Motorcycle Rider Helmet",
+      "category": "Personal Protective Equipment",
+      "case_type": "UNSEEN",
+      "validation_scope": "CONTROLLED_FIXTURE",
+      "source_authority": "AUTHORITATIVE",
+      "source_authenticity": "SYNTHETIC",
+      "challenge": "CONFLICTING_PRODUCT_EVIDENCE",
+      "expected_outcome": "EXPERT_REVIEW_REQUIRED",
+      "target_standard": "IS 4151:2015",
+      "file": "case_03_conflicting_helmet.json"
+    },
+    {
+      "case_id": "UNSEEN-04-COVERAGE-GAP-DRONE",
+      "case_name": "Commercial Agricultural Spraying Drone (Hexacopter UAV)",
+      "category": "Autonomous Aerial Systems & Robotics",
+      "case_type": "UNSEEN",
+      "validation_scope": "CONTROLLED_FIXTURE",
+      "source_authority": "NON_AUTHORITATIVE",
+      "source_authenticity": "SYNTHETIC",
+      "challenge": "COVERAGE_GAP",
+      "expected_outcome": "COVERAGE_GAP",
+      "target_standard": null,
+      "file": "case_04_coverage_gap_drone.json"
+    },
+    {
+      "case_id": "UNSEEN-05-VERSION-CABLE",
+      "case_name": "Single Core PVC Insulated Heavy Duty Power Cable 1100V",
+      "category": "Electrical Cables & Conductors",
+      "case_type": "UNSEEN",
+      "validation_scope": "CONTROLLED_FIXTURE",
+      "source_authority": "AUTHORITATIVE",
+      "source_authenticity": "SYNTHETIC",
+      "challenge": "VERSION_AMENDMENT_SENSITIVE",
+      "expected_outcome": "APPLICABLE",
+      "target_standard": "IS 694:2010",
+      "file": "case_05_version_sensitive_cable.json"
+    }
+  ]
+}

@@ -12,7 +12,7 @@ NO VERIFIED EVIDENCE -> NO SATISFIED
 LLM COMPLIANCE AUTHORITY = 0%
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import List, Optional, Dict, Any, Union
 from pydantic import BaseModel, Field, ConfigDict
@@ -47,6 +47,16 @@ class FactAuditEntry(BaseModel):
     updated_by: str = "user"
 
 
+class FactCategory(str, Enum):
+    """The 6 rigorous fact categories for Milestone M25.2."""
+    DIRECTLY_OBSERVED = "DIRECTLY_OBSERVED"
+    NORMALIZED_FACT = "NORMALIZED_FACT"
+    AI_DERIVED_CANDIDATE = "AI_DERIVED_CANDIDATE"
+    USER_CONFIRMED = "USER_CONFIRMED"
+    VERIFIED_DOCUMENTARY_EVIDENCE = "VERIFIED_DOCUMENTARY_EVIDENCE"
+    UNRESOLVED = "UNRESOLVED"
+
+
 class ProductFact(BaseModel):
     """A deterministic, typed product fact with complete provenance and audit history."""
     fact_id: str = Field(..., description="Unique fact identifier e.g. FACT-VOLTAGE-01")
@@ -56,7 +66,11 @@ class ProductFact(BaseModel):
     raw_value: Optional[str] = None
     unit: Optional[str] = None
     source: Optional[str] = None  # Document name, BOM row, or manual input
+    source_location: Optional[str] = None  # Page, bounding box, or line number
     provenance: FactProvenanceType = FactProvenanceType.USER_CLAIM
+    fact_category: FactCategory = FactCategory.DIRECTLY_OBSERVED
+    evidence_references: List[str] = Field(default_factory=list, description="IDs of backing ProductEvidenceRecord objects")
+    evidence_sha256: Optional[str] = None
     confidence: float = Field(default=1.0, ge=0.0, le=1.0)
     verification_state: FactVerificationState = FactVerificationState.NEEDS_CONFIRMATION
     derivation_rule: Optional[str] = None  # Formula/rule if DERIVED_VALUE
@@ -66,12 +80,15 @@ class ProductFact(BaseModel):
 
     def is_eligible_for_compliance_evidence(self) -> bool:
         """USER_CLAIM, USER_CLARIFICATION, OCR, VOICE, and BOM can NEVER by themselves constitute compliance evidence."""
-        return self.provenance == FactProvenanceType.VERIFIED_DOCUMENT_FACT
+        return (
+            self.provenance == FactProvenanceType.VERIFIED_DOCUMENT_FACT
+            or self.fact_category == FactCategory.VERIFIED_DOCUMENTARY_EVIDENCE
+        )
 
 
 class ClarificationRequirement(BaseModel):
     """Generated clarification request when an essential product discriminator is missing."""
-    requirement_id: str = Field(default_factory=lambda: f"REQ-{datetime.utcnow().strftime('%M%S%f')[:8]}")
+    requirement_id: str = Field(default_factory=lambda: f"REQ-{datetime.now(timezone.utc).strftime('%M%S%f')[:8]}")
     attribute_name: str
     display_question: Optional[str] = None
     reason: str
