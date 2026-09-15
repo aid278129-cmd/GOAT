@@ -299,19 +299,27 @@ We audited crawler configurations and retrieval procedures against the Zero-Bypa
 
 ## 17. Authoritative Coverage Report & Asset Definitions
 
-### Definition of "51 Codified Standards"
-To eliminate ambiguity during jury presentation, **"51 Codified Standards"** is defined explicitly:
-- **51 Structured Catalog Standards** (`data/bis_dataset/real_bis_standards.json`): Structured JSON representations where technical scopes, normative clauses, pass/fail threshold parameters, and SIT testing rules have been codified from official BIS gazette and publication references.
-- **Physical Acquired Full Texts**:
-  - Full standard commercial texts acquired: **0** (under Zero-Bypass Legal Policy, paywalled full texts are not scraped or pirated)
-  - Synthetic layout standard fixtures: **1** (`STANDARDS_IS_17526_2021`)
-  - Sales catalog slips: **1** (`IS_29997_2026`)
-  - Test stubs: **2**
-  - QCO documents: **14**
-  - Gazette notifications: **4**
-  - Revisions / Formulation Manuals: **1**
-  - Product Manual & SIT packages: **5** (in `data/bis/verified/`)
-  - Administrative crawled publications: **22** (Annual reports, statements, org charts)
+### Precise Scope & Asset Taxonomy
+To eliminate ambiguity during jury presentation, the corpus assets are strictly distinguished across three levels of authority:
+
+1. **51 Governed BIS Standard Catalog Records** (`data/bis_dataset/real_bis_standards.json`):
+   Structured JSON catalog representations where technical scopes, normative clauses, pass/fail threshold parameters, and SIT testing rules have been codified from official BIS gazette and publication references.
+2. **19 Verified Authoritative BIS/Government Source Artifacts** (`data/bis/`):
+   Official government documents admitted to `AUTHORITATIVE_PRODUCTION_INDEX` (14 CRS QCOs, 3 Gazette Notifications, 1 Standards Formulation Revision Manual, 1 Official Laboratory Directory).
+3. **Physical Acquired Full Texts**:
+   - Full commercial standard texts acquired: **0** (under Zero-Bypass Legal Policy, paywalled full texts are not scraped or pirated)
+   - Synthetic layout standard fixtures: **1** (`STANDARDS_IS_17526_2021`, admitted to `SYNTHETIC_TEST_INDEX` only)
+   - Sales catalog slips: **1** (`IS_29997_2026`)
+   - Test stubs: **2**
+   - QCO documents: **14**
+   - Gazette notifications: **4**
+   - Revisions / Formulation Manuals: **1**
+   - Product Manual & SIT packages: **5** (in `data/bis/verified/`)
+   - Administrative crawled publications: **22** (Annual reports, statements, org charts)
+
+> [!NOTE]
+> **SIH Judge-Facing Wording**:
+> *"Our governed snapshot currently contains 51 BIS standard catalog records. Only source-verified material is promoted to the authoritative production index. Full standard texts requiring authorized access remain acquisition-pending and cannot silently become compliance evidence."*
 
 ### Detailed Breakdown of Manifest Records:
 
@@ -329,18 +337,22 @@ To eliminate ambiguity during jury presentation, **"51 Codified Standards"** is 
 
 ## 18. M25.2 Unseen Products Real Corpus Coverage
 
-We evaluated how the acquired BIS corpus supports the 5 validation archetypes from Milestone M25.2:
+We evaluated how the acquired BIS corpus supports the 5 validation archetypes from Milestone M25.2, applying the strict 3-tier authority ladder:
 
-| Case ID | Product | Applicable Standard | BIS Standard Source | QCO Source Verified? | Governed Coverage Status | Compliance Authority |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **UNSEEN-01** | Water Heater | IS 302-2-201:2008 | `data/bis/verified/` pkg | Yes (Electrical QCO) | **REAL AUTHORITATIVE** | Established |
-| **UNSEEN-02** | Insulated Flask | IS 17526:2021 | `STANDARDS_IS_17526_2021`| Yes (DPIIT QCO 2023) | **PARTIAL / CONTROLLED** | **NOT ESTABLISHED** (Synthetic fixture; test only) |
-| **UNSEEN-03** | Two-Wheeler Helmet| IS 4151:2015 | `data/bis/verified/` pkg | Yes (MoRTH QCO) | **REAL AUTHORITATIVE** | Established |
-| **UNSEEN-04** | Agricultural Drone | None (Coverage Gap) | Not in Snapshot | No Verified QCO | **COVERAGE_GAP** | **Correct Abstention: 1/1** (Abstention Outcome: `COVERAGE_GAP`) |
-| **UNSEEN-05** | Flexible Cable | IS 694 (Version Gap)| `data/bis_dataset/` | Yes (Cables QCO) | **REAL AUTHORITATIVE** | Established (Version Registry Supersession) |
+$$\text{CATALOG\_RECORD\_VERIFIED} \longrightarrow \text{REGULATORY\_SOURCE\_VERIFIED} \longrightarrow \text{CLAUSE\_TEXT\_VERIFIED}$$
+
+### Component-by-Component Authority Status Matrix
+
+| Product Archetype | Standard Identity | Standard Revision | Mandatory QCO Status | Full Standard Text Status | Clause Text Authority | Clause-Level Production Authority |
+| :--- | :---: | :---: | :---: | :---: | :--- | :--- |
+| **UNSEEN-01** (Water Heater / IS 302-2-201:2008) | ✅ Verified | ✅ Active | ✅ Verified (Electrical QCO) | ⏳ `ACQUISITION_PENDING` (Commercial portal) | Codified Catalog Extract | ⚠️ **Applicability & Mandate Verified; Full clause text pending** |
+| **UNSEEN-02** (Insulated Flask / IS 17526:2021) | ✅ Verified | ✅ Active | ✅ Verified (DPIIT QCO 2023) | 🧪 `SYNTHETIC_TEST_FIXTURE` (4-page layout) | Synthetic Test Extract | 🛑 **TEST ONLY / NOT ESTABLISHED FOR PRODUCTION** |
+| **UNSEEN-03** (Two-Wheeler Helmet / IS 4151:2015) | ✅ Verified | ✅ Active | ✅ Verified (MoRTH QCO) | ⏳ `ACQUISITION_PENDING` (Commercial portal) | Codified Catalog Extract | ⚠️ **Applicability & Mandate Verified; Full clause text pending** |
+| **UNSEEN-04** (Agricultural Drone) | ❌ None | ❌ None | ❌ None in snapshot | ❌ None | ❌ None (`COVERAGE_GAP`) | 🛡️ **Correct Abstention: 1/1 (Outcome: `COVERAGE_GAP`)** |
+| **UNSEEN-05** (Flexible Cable / IS 694) | ✅ Verified | ✅ Verified (1990 superseded by 2010) | ✅ Verified (Cables QCO) | ⏳ `ACQUISITION_PENDING` (Commercial portal) | Codified Catalog Extract | ⚠️ **Applicability & Mandate Verified; Full clause text pending** |
 
 > [!IMPORTANT]
-> **UNSEEN-02 Qualification**: Because full technical standard procurement requires authorized portal payment without digital rights bypass, UNSEEN-02 relies on a controlled developer layout fixture. Its compliance authority is explicitly flagged as **NOT ESTABLISHED / CONTROLLED TEST ONLY**.
+> **Scientific Integrity Invariant**: A structured catalog record or QCO mandate proves regulatory applicability and legal scope, but does **not** equal physical possession of the full standard text with all clauses, tables, and annexes. The compiler explicitly outputs `APPLICABILITY_AND_REGULATORY_COVERAGE_VERIFIED_FULL_CLAUSE_TEXT_PENDING` rather than claiming clause-level production authority.
 
 ---
 
@@ -371,7 +383,7 @@ We executed adversarial penetration tests against acquired document text extract
 
 ## 21. Regression Test Suite
 
-The dedicated audit test suite `backend/tests/test_m25_3_acquisition_audit.py` validates all areas across 53 focused tests:
+The dedicated audit test suite `backend/tests/test_m25_3_acquisition_audit.py` validates all areas across 55 focused tests:
 - `test_01_corpus_manifest_count_minimum`
 - `test_02_manifest_categories_represented`
 - `test_03_on_disk_file_existence`
@@ -425,6 +437,8 @@ The dedicated audit test suite `backend/tests/test_m25_3_acquisition_audit.py` v
 - `test_50_no_banned_marketing_claims_in_dataset`
 - `test_51_scoped_governed_snapshot_language`
 - `test_52_final_audit_conditional_pass_invariants`
+- `test_53_authority_levels_and_clause_compliance_eligibility`
+- `test_54_unseen_products_authority_breakdown`
 
 ---
 

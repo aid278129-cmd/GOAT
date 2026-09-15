@@ -52,6 +52,7 @@ from backend.app.services.retrieval.authoritative_index_gate import (
     AuthoritativeIndexGate,
     GateVerdict,
     IndexTier,
+    AuthorityLevel,
     DocumentRejectionReason,
     GateEvaluationResult,
 )
@@ -694,3 +695,70 @@ def test_52_final_audit_conditional_pass_invariants():
     assert len(blocked) == 32
     # Total evaluated manifests: 19 real authoritative + 1 synthetic + 32 blocked = 52
     assert len(prod_admitted) + len(test_admitted) + len(blocked) == 52
+
+
+def test_53_authority_levels_and_clause_compliance_eligibility():
+    """Verify 3-stage authority separation: catalog verified -> regulatory verified -> clause verified."""
+    # 1. Catalog record only (no QCO)
+    res1 = AuthoritativeIndexGate.evaluate_compliance_authority(
+        has_catalog_record=True,
+        has_verified_qco=False,
+        has_full_standard_text=False,
+        has_eligible_evidence=False,
+    )
+    assert res1["established"] is False
+    assert res1["authority_status"] == AuthorityLevel.CATALOG_RECORD_VERIFIED.value
+
+    # 2. Regulatory QCO verified, but full standard text not acquired
+    res2 = AuthoritativeIndexGate.evaluate_compliance_authority(
+        has_catalog_record=True,
+        has_verified_qco=True,
+        has_full_standard_text=False,
+        has_eligible_evidence=False,
+    )
+    assert res2["established"] is False
+    assert res2["authority_status"] == AuthorityLevel.REGULATORY_SOURCE_VERIFIED.value
+    assert "FULL_CLAUSE_TEXT_PENDING" in res2["scope"]
+
+    # 3. Full standard text verified, but product evidence missing/ineligible
+    res3 = AuthoritativeIndexGate.evaluate_compliance_authority(
+        has_catalog_record=True,
+        has_verified_qco=True,
+        has_full_standard_text=True,
+        has_eligible_evidence=False,
+    )
+    assert res3["established"] is False
+    assert res3["authority_status"] == AuthorityLevel.CLAUSE_TEXT_VERIFIED.value
+
+    # 4. All four gates satisfied -> Clause-level compliance established
+    res4 = AuthoritativeIndexGate.evaluate_compliance_authority(
+        has_catalog_record=True,
+        has_verified_qco=True,
+        has_full_standard_text=True,
+        has_eligible_evidence=True,
+    )
+    assert res4["established"] is True
+    assert res4["authority_status"] == AuthorityLevel.CLAUSE_LEVEL_COMPLIANCE_ELIGIBLE.value
+
+
+def test_54_unseen_products_authority_breakdown():
+    """Verify unseen product cases distinguish regulatory coverage from full clause text authority."""
+    # UNSEEN-01: IS 302-2-201 water heater (QCO verified, catalog codified, full text pending commercial acquisition)
+    auth_01 = AuthoritativeIndexGate.evaluate_compliance_authority(
+        has_catalog_record=True,
+        has_verified_qco=True,
+        has_full_standard_text=False,
+        has_eligible_evidence=True,
+    )
+    assert auth_01["established"] is False
+    assert auth_01["authority_status"] == AuthorityLevel.REGULATORY_SOURCE_VERIFIED.value
+
+    # UNSEEN-04: Agricultural Drone (No QCO, no catalog record -> gap)
+    auth_04 = AuthoritativeIndexGate.evaluate_compliance_authority(
+        has_catalog_record=False,
+        has_verified_qco=False,
+        has_full_standard_text=False,
+        has_eligible_evidence=False,
+    )
+    assert auth_04["established"] is False
+    assert auth_04["scope"] == "NOT_GOVERNED"

@@ -78,6 +78,15 @@ class DocumentRejectionReason(str, Enum):
     UNAUTHORIZED_ACQUISITION = "UNAUTHORIZED_ACQUISITION"
 
 
+class AuthorityLevel(str, Enum):
+    """Explicit multi-tier regulatory authority classification."""
+    CATALOG_RECORD_VERIFIED = "CATALOG_RECORD_VERIFIED"
+    REGULATORY_SOURCE_VERIFIED = "REGULATORY_SOURCE_VERIFIED"
+    CLAUSE_TEXT_VERIFIED = "CLAUSE_TEXT_VERIFIED"
+    CLAUSE_LEVEL_COMPLIANCE_ELIGIBLE = "CLAUSE_LEVEL_COMPLIANCE_ELIGIBLE"
+    UNVERIFIED = "UNVERIFIED"
+
+
 class GateEvaluationResult(BaseModel):
     """Auditable result of evaluating an artifact through the Authoritative Index Gate."""
     source_id: str
@@ -95,6 +104,8 @@ class GateEvaluationResult(BaseModel):
     admitted_tier: Optional[IndexTier] = None
     is_synthetic: bool = False
     is_real_authoritative: bool = False
+    authority_level: AuthorityLevel = AuthorityLevel.UNVERIFIED
+    clause_text_verified: bool = False
 
 
 class AuthoritativeIndexGate:
@@ -348,6 +359,26 @@ class AuthoritativeIndexGate:
             else:
                 verdict = GateVerdict.BLOCKED
 
+        # Determine authority level
+        authority_level = AuthorityLevel.UNVERIFIED
+        clause_text_verified = False
+
+        if is_real_auth:
+            if manifest.source_type in (
+                SourceType.BIS_QCO,
+                SourceType.BIS_GAZETTE,
+                SourceType.BIS_REVISION,
+                SourceType.BIS_LABORATORY,
+            ):
+                authority_level = AuthorityLevel.REGULATORY_SOURCE_VERIFIED
+            elif manifest.source_type == SourceType.BIS_STANDARD:
+                authority_level = AuthorityLevel.CLAUSE_TEXT_VERIFIED
+                clause_text_verified = True
+        elif is_synthetic:
+            authority_level = AuthorityLevel.CATALOG_RECORD_VERIFIED
+        elif manifest.acquisition_status in (AcquisitionState.ACQUISITION_PENDING, "ACQUISITION_PENDING"):
+            authority_level = AuthorityLevel.CATALOG_RECORD_VERIFIED
+
         return GateEvaluationResult(
             source_id=manifest.source_id,
             verdict=verdict,
@@ -363,7 +394,53 @@ class AuthoritativeIndexGate:
             admitted_tier=admitted_tier,
             is_synthetic=is_synthetic,
             is_real_authoritative=is_real_auth,
+            authority_level=authority_level,
+            clause_text_verified=clause_text_verified,
         )
+
+    @classmethod
+    def evaluate_compliance_authority(
+        cls,
+        has_catalog_record: bool,
+        has_verified_qco: bool,
+        has_full_standard_text: bool,
+        has_eligible_evidence: bool,
+    ) -> Dict[str, Any]:
+        """Evaluates whether clause-level compliance authority is established."""
+        if not has_catalog_record:
+            return {
+                "established": False,
+                "reason": "NO_CATALOG_RECORD",
+                "authority_status": AuthorityLevel.UNVERIFIED.value,
+                "scope": "NOT_GOVERNED",
+            }
+        if not has_verified_qco:
+            return {
+                "established": False,
+                "reason": "NO_VERIFIED_QCO_IN_GOVERNED_CORPUS",
+                "authority_status": AuthorityLevel.CATALOG_RECORD_VERIFIED.value,
+                "scope": "VOLUNTARY_OR_UNCONFIRMED_MANDATE",
+            }
+        if not has_full_standard_text:
+            return {
+                "established": False,
+                "reason": "FULL_STANDARD_TEXT_ACQUISITION_PENDING",
+                "authority_status": AuthorityLevel.REGULATORY_SOURCE_VERIFIED.value,
+                "scope": "APPLICABILITY_AND_REGULATORY_COVERAGE_VERIFIED_FULL_CLAUSE_TEXT_PENDING",
+            }
+        if not has_eligible_evidence:
+            return {
+                "established": False,
+                "reason": "EVIDENCE_INSUFFICIENT_OR_INELIGIBLE",
+                "authority_status": AuthorityLevel.CLAUSE_TEXT_VERIFIED.value,
+                "scope": "CLAUSE_SPECIFICATION_VERIFIED_EVIDENCE_PENDING",
+            }
+        return {
+            "established": True,
+            "reason": "ALL_GATES_PASSED",
+            "authority_status": AuthorityLevel.CLAUSE_LEVEL_COMPLIANCE_ELIGIBLE.value,
+            "scope": "CLAUSE_LEVEL_COMPLIANCE_ESTABLISHED",
+        }
 
     @classmethod
     def evaluate_for_production(
