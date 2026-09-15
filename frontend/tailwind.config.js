@@ -17,11 +17,13 @@ export default {
         },
         slate: {
           850: '#151e2e',
-          950: '#0b111e',
+          900: '#0f172a',
+          950: '#0b1325',
         },
+        canvas: '#f8fafc',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        sans: ['IBM Plex Sans', 'Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
         mono: ['JetBrains Mono', 'Fira Code', 'Courier New', 'monospace'],
       },
     },

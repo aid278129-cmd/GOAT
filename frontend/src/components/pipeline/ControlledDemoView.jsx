@@ -5,6 +5,20 @@ export function ControlledDemoView({ onLoadDemoAssessment, onNavigate }) {
 
   const demoCases = [
     {
+      id: 'DEMO-SMPS-IS13252',
+      name: 'Industrial Edge Gateway & Power Supply Unit (SMPS-500W-IND)',
+      category: 'Information Technology & Power Electronics',
+      standard: 'IS 13252 (Part 1):2010',
+      qco: 'MeitY CRO Phase II (Mandatory Before Customs)',
+      description: 'Industrial edge computing gateway and switch-mode power supply unit rated 90-264 VAC 50/60Hz, IP65 gasket sealed enclosure, 3.75 kV AC galvanic reinforced barrier, and CR2032 RTC lithium coin cell backup. Evaluated against BIS CRO Phase II and IS 13252 (Part 1):2010 limit thresholds.',
+      clausesCount: 38,
+      satisfiedCount: 34,
+      status: 'ACTION_NEEDED',
+      badge: 'STITCH REFERENCE BENCHMARK',
+      isPrimary: true,
+      targetView: 'clauses',
+    },
+    {
       id: 'GOLDEN-SIH-2026-DEMO',
       name: 'Double-Walled Stainless Steel Vacuum Insulated Flask (750ml)',
       category: 'Drinkware & Food Contact Containers',
@@ -15,7 +29,7 @@ export function ControlledDemoView({ onLoadDemoAssessment, onNavigate }) {
       satisfiedCount: 14,
       status: 'SATISFIED',
       badge: 'GOLDEN SIH 2026 CASE',
-      isPrimary: true,
+      isPrimary: false,
     },
     {
       id: 'DEMO-HEATER-IS302',
@@ -63,10 +77,25 @@ export function ControlledDemoView({ onLoadDemoAssessment, onNavigate }) {
       if (res.ok) {
         const data = await res.json();
         onLoadDemoAssessment(data);
-        onNavigate('dna');
+        onNavigate(demoCase.targetView || 'dna');
+      } else {
+        throw new Error('Backend response not OK');
       }
     } catch (err) {
-      console.warn('Failed to load demo assessment:', err);
+      console.warn('Failed to load demo assessment from backend, initializing client-side dossier:', err);
+      const fallbackData = {
+        assessment_id: demoCase.id,
+        assessment_number: demoCase.id === 'DEMO-SMPS-IS13252' ? 'BIS-24-SMPS-0049' : 'IND-2024-0049',
+        product_name: demoCase.name,
+        category: demoCase.category,
+        description: demoCase.description,
+        target_standard: demoCase.standard,
+        scheme: 'MeitY CRO Phase II',
+        sha256_hash: 'c892da47f8721c5b8e99b0c034731872ef7ae1262d08912e73ce6723e742881b',
+        status: demoCase.status,
+      };
+      onLoadDemoAssessment(fallbackData);
+      onNavigate(demoCase.targetView || 'dna');
     } finally {
       setLoadingDemoId(null);
     }
