@@ -51,6 +51,7 @@ from backend.app.services.dataset.acquisition.corpus_manager import CorpusManage
 from backend.app.services.retrieval.authoritative_index_gate import (
     AuthoritativeIndexGate,
     GateVerdict,
+    IndexTier,
     DocumentRejectionReason,
     GateEvaluationResult,
 )
@@ -317,6 +318,24 @@ def test_20_gate_admits_official_standards_formulation_manual():
     if sfm:
         result = AuthoritativeIndexGate.evaluate_manifest(sfm)
         assert result.verdict == GateVerdict.ADMITTED
+
+
+def test_20b_synthetic_fixture_barred_from_production_index():
+    """Verify synthetic developer fixture IS 17526:2021 is barred from Authoritative Production Index."""
+    manifests = CorpusManager.load_all_manifests()
+    flask = manifests.get("STANDARDS_IS_17526_2021")
+    assert flask is not None
+    # Barred from authoritative production index
+    prod_res = AuthoritativeIndexGate.evaluate_for_production(flask)
+    assert prod_res.verdict == GateVerdict.BLOCKED
+    assert DocumentRejectionReason.SYNTHETIC_FIXTURE in prod_res.rejection_reasons
+    assert prod_res.is_real_authoritative is False
+    assert prod_res.is_synthetic is True
+    # Admitted strictly to synthetic test index for developer unit validation
+    test_res = AuthoritativeIndexGate.evaluate_for_test(flask)
+    assert test_res.verdict == GateVerdict.ADMITTED_SYNTHETIC_TEST
+    assert test_res.admitted_tier == IndexTier.SYNTHETIC_TEST
+    assert test_res.is_real_authoritative is False
 
 
 # ==============================================================================
@@ -648,12 +667,30 @@ def test_51_scoped_governed_snapshot_language():
 def test_52_final_audit_conditional_pass_invariants():
     """Verify that M25.3 pre-authority audit conditions guarantee CONDITIONAL_PASS."""
     manifests = CorpusManager.load_all_manifests()
-    assert len(manifests) > 0
+    assert len(manifests) == 52
     # Provenance is 100% official BIS
     for m in manifests.values():
         if m.source_url and m.source_url.startswith("http"):
             domain = m.source_url.split("/")[2].lower()
             assert any(d in domain for d in ["bis.gov.in", "crsbis.in", "bsbedge.com"])
-    # 4-Tier Gate admits only verified regulatory records
-    admitted = [m for m in manifests.values() if AuthoritativeIndexGate.evaluate_manifest(m).verdict == GateVerdict.ADMITTED]
-    assert len(admitted) >= 15
+    # 4-Tier Gate admits strictly 19 real authoritative records to production index
+    prod_admitted = [
+        m for m in manifests.values()
+        if AuthoritativeIndexGate.evaluate_for_production(m).verdict == GateVerdict.ADMITTED
+    ]
+    assert len(prod_admitted) == 19
+    # Exactly 1 synthetic controlled fixture admitted to test index only
+    test_admitted = [
+        m for m in manifests.values()
+        if AuthoritativeIndexGate.evaluate_for_test(m).verdict == GateVerdict.ADMITTED_SYNTHETIC_TEST
+    ]
+    assert len(test_admitted) == 1
+    # Exactly 32 non-standard administrative/catalog crawled records barred from production
+    blocked = [
+        m for m in manifests.values()
+        if AuthoritativeIndexGate.evaluate_for_production(m).verdict == GateVerdict.BLOCKED
+        and m.source_id != "STANDARDS_IS_17526_2021"
+    ]
+    assert len(blocked) == 32
+    # Total evaluated manifests: 19 real authoritative + 1 synthetic + 32 blocked = 52
+    assert len(prod_admitted) + len(test_admitted) + len(blocked) == 52

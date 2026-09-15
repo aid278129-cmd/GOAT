@@ -22,7 +22,8 @@
   "related_qco": [],
   "related_amendments": [],
   "provenance": {},
-  "notes": "Authentic BIS standard full text package",
+  "is_synthetic": true,
+  "notes": "Synthetic developer test fixture (4 pages) verifying clause hierarchy; barred from authoritative production index",
   "derived_text_path": "data\\bis\\standards\\STANDARDS_IS_17526_2021\\derived.txt",
   "extraction_metadata": {
     "extraction_engine": "pymupdf",

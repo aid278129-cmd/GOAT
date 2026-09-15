@@ -47,9 +47,16 @@ from backend.app.services.dataset.acquisition.models import (
 from backend.app.services.dataset.acquisition.config import is_official_bis_domain, MAGIC_BYTES
 
 
+class IndexTier(str, Enum):
+    """Target index tier for document admittance."""
+    AUTHORITATIVE_PRODUCTION = "AUTHORITATIVE_PRODUCTION"
+    SYNTHETIC_TEST = "SYNTHETIC_TEST"
+
+
 class GateVerdict(str, Enum):
     """Verdict of the Authoritative Index Gate."""
     ADMITTED = "ADMITTED"
+    ADMITTED_SYNTHETIC_TEST = "ADMITTED_SYNTHETIC_TEST"
     BLOCKED = "BLOCKED"
     ACQUISITION_PENDING = "ACQUISITION_PENDING"
 
@@ -85,6 +92,9 @@ class GateEvaluationResult(BaseModel):
     is_product_manual_requirement: bool = False
     active_standard_id: Optional[str] = None
     sanitized_text: Optional[str] = None
+    admitted_tier: Optional[IndexTier] = None
+    is_synthetic: bool = False
+    is_real_authoritative: bool = False
 
 
 class AuthoritativeIndexGate:
@@ -110,6 +120,7 @@ class AuthoritativeIndexGate:
         cls,
         manifest: SourceManifest,
         allow_historical_search: bool = False,
+        target_tier: IndexTier = IndexTier.AUTHORITATIVE_PRODUCTION,
     ) -> GateEvaluationResult:
         """Evaluates a single SourceManifest against the 4-tier Authoritative Index Gate.
 
@@ -188,9 +199,9 @@ class AuthoritativeIndexGate:
         hash_valid = False
         content_bytes: Optional[bytes] = None
 
-        if manifest.acquisition_status == AcquisitionState.ACQUISITION_PENDING:
+        if manifest.acquisition_status in (AcquisitionState.ACQUISITION_PENDING, "ACQUISITION_PENDING"):
             reasons.append(DocumentRejectionReason.ACQUISITION_PENDING)
-            details.append("Document text acquisition is pending; cannot enter authoritative index.")
+            details.append("Document text acquisition is pending authorized access; cannot enter authoritative index.")
             return GateEvaluationResult(
                 source_id=manifest.source_id,
                 verdict=GateVerdict.ACQUISITION_PENDING,
@@ -258,9 +269,20 @@ class AuthoritativeIndexGate:
             details.append("Document is a 1-page sales price slip without technical standard clauses.")
 
         # Check if declared synthetic or fixture
-        if manifest.source_type == SourceType.DEVELOPMENT_FIXTURE or "fixture" in sid.lower():
-            reasons.append(DocumentRejectionReason.SYNTHETIC_FIXTURE)
-            details.append("Development fixture cannot enter authoritative production index.")
+        is_synthetic = (
+            manifest.source_type == SourceType.DEVELOPMENT_FIXTURE
+            or "fixture" in sid.lower()
+            or sid == "STANDARDS_IS_17526_2021"
+            or (manifest.file_path and "STANDARDS_IS_17526_2021" in manifest.file_path)
+            or getattr(manifest, "is_synthetic", False)
+        )
+
+        if is_synthetic:
+            if target_tier == IndexTier.AUTHORITATIVE_PRODUCTION:
+                reasons.append(DocumentRejectionReason.SYNTHETIC_FIXTURE)
+                details.append(
+                    "Synthetic developer fixture is barred from Authoritative Production Index (eligible for Synthetic Test Index only)."
+                )
 
         if hash_valid and not is_admin and DocumentRejectionReason.CATALOG_PRICE_SLIP_ONLY not in reasons:
             content_verified = True
@@ -294,10 +316,37 @@ class AuthoritativeIndexGate:
             SourceType.BIS_PRODUCT_GUIDELINE,
         )
 
-        # Overall 4-Tier Gate Decision
-        gate_passed = source_verified and content_verified and hash_valid and not_rejected and len(reasons) == 0
+        # Overall 4-Tier Gate Decision across Index Tiers
+        is_real_auth = False
+        admitted_tier = None
 
-        verdict = GateVerdict.ADMITTED if gate_passed else GateVerdict.BLOCKED
+        if is_synthetic and target_tier == IndexTier.SYNTHETIC_TEST:
+            # Synthetic fixture admitted to test index if hash, domain, and structural checks pass
+            fixture_passed = (
+                source_verified
+                and hash_valid
+                and not is_admin
+                and DocumentRejectionReason.CATALOG_PRICE_SLIP_ONLY not in reasons
+            )
+            if fixture_passed:
+                verdict = GateVerdict.ADMITTED_SYNTHETIC_TEST
+                admitted_tier = IndexTier.SYNTHETIC_TEST
+            else:
+                verdict = GateVerdict.BLOCKED
+        else:
+            gate_passed = (
+                source_verified
+                and content_verified
+                and hash_valid
+                and not_rejected
+                and len(reasons) == 0
+            )
+            if gate_passed:
+                verdict = GateVerdict.ADMITTED
+                admitted_tier = IndexTier.AUTHORITATIVE_PRODUCTION
+                is_real_auth = True
+            else:
+                verdict = GateVerdict.BLOCKED
 
         return GateEvaluationResult(
             source_id=manifest.source_id,
@@ -311,6 +360,35 @@ class AuthoritativeIndexGate:
             is_standard_requirement=is_std,
             is_product_manual_requirement=is_pm,
             active_standard_id=active_id,
+            admitted_tier=admitted_tier,
+            is_synthetic=is_synthetic,
+            is_real_authoritative=is_real_auth,
+        )
+
+    @classmethod
+    def evaluate_for_production(
+        cls,
+        manifest: SourceManifest,
+        allow_historical_search: bool = False,
+    ) -> GateEvaluationResult:
+        """Convenience method to evaluate strictly for Authoritative Production Index."""
+        return cls.evaluate_manifest(
+            manifest,
+            allow_historical_search=allow_historical_search,
+            target_tier=IndexTier.AUTHORITATIVE_PRODUCTION,
+        )
+
+    @classmethod
+    def evaluate_for_test(
+        cls,
+        manifest: SourceManifest,
+        allow_historical_search: bool = False,
+    ) -> GateEvaluationResult:
+        """Convenience method to evaluate for Synthetic Test Index."""
+        return cls.evaluate_manifest(
+            manifest,
+            allow_historical_search=allow_historical_search,
+            target_tier=IndexTier.SYNTHETIC_TEST,
         )
 
     @classmethod

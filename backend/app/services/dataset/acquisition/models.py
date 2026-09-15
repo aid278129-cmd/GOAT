@@ -80,6 +80,7 @@ class SourceManifest(BaseModel):
     domain_classification: SourceDomainClassification = Field(default=SourceDomainClassification.OFFICIAL_BIS)
     licensing_provenance: LicensingProvenanceStatus = Field(default=LicensingProvenanceStatus.OFFICIAL_OPEN_ACCESS)
     is_administrative_document: bool = Field(default=False, description="True if administrative report/statement rather than technical standard")
+    is_synthetic: bool = Field(default=False, description="True if developer test fixture or synthetic layout, never authoritative")
     file_path: Optional[str] = Field(default=None, description="Relative path to stored original file")
     mime_type: Optional[str] = Field(default=None, description="MIME type of stored document")
     file_size: int = Field(default=0, description="Exact size in bytes")
