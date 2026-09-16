@@ -231,7 +231,7 @@ export function StandardsClausesView({ assessment, onNavigate }) {
                   <span>QCO STATUS: {isMandatory ? 'MANDATORY BEFORE CUSTOMS' : 'VOLUNTARY STANDARD'}</span>
                 </div>
                 <div className="px-2 py-0.5 rounded bg-sky-50 border border-sky-200 text-sky-700 text-[10px] font-mono font-bold">
-                  100% Deterministic Rule-set (Zero Hallucination)
+                  Deterministic Compliance Rule-Set (0% LLM Authority)
                 </div>
               </div>
             </div>

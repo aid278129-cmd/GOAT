@@ -23,7 +23,7 @@ import {
 import { StatusBadge } from './StatusBadge';
 
 export function KnowledgeBaseExplorer() {
-  const [searchQuery, setSearchQuery] = useState('stainless steel grade 304 material');
+  const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [activeSubTab, setActiveSubTab] = useState('packages'); // packages | search | catalog | registry | sources | audit | evaluation
@@ -244,10 +244,14 @@ export function KnowledgeBaseExplorer() {
 
   const handleSearch = async (e) => {
     if (e) e.preventDefault();
+    if (!searchQuery || !searchQuery.trim()) {
+      setSearchResults([]);
+      return;
+    }
     setIsSearching(true);
     try {
       // 1. Try Layer 4 GET retrieval endpoint first
-      const getRes = await fetch(`/api/v1/knowledge/search?query=${encodeURIComponent(searchQuery)}&top_k=5`);
+      const getRes = await fetch(`/api/v1/knowledge/search?query=${encodeURIComponent(searchQuery.trim())}&top_k=5`);
       if (getRes.ok) {
         const data = await getRes.json();
         if (Array.isArray(data) && data.length > 0) {

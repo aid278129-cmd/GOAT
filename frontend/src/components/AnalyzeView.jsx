@@ -7,9 +7,9 @@ export function AnalyzeView({ onAssessmentCreated, onNavigate }) {
 
   // Step 2 & 3: Product Data & Document State
   const [productName, setProductName] = useState('');
-  const [category, setCategory] = useState('Kitchen & Domestic Appliances');
+  const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
-  const [targetStandard, setTargetStandard] = useState('IS 302-2-201:2008');
+  const [targetStandard, setTargetStandard] = useState('');
   const [uploadedFileName, setUploadedFileName] = useState('');
   const [isAuthoritative, setIsAuthoritative] = useState(false);
 
@@ -146,6 +146,11 @@ export function AnalyzeView({ onAssessmentCreated, onNavigate }) {
         status: r.present ? 'PRESENT' : 'MISSING',
         sample: r.sample,
       });
+    }
+
+    if (!cleanName && !cleanDesc) {
+      setReadinessChecklist(null);
+      return;
     }
 
     const percentage = Math.round(((presentCount / Math.max(reqCount, 1)) * 85) + ((optPresent / Math.max(optCount, 1)) * 15));
@@ -1097,10 +1102,15 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                   onChange={(e) => setTargetStandard(e.target.value)}
                   className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs md:text-sm text-slate-900 focus:outline-none focus:border-indigo-500 font-mono"
                 >
+                  <option value="">Select Indian Standard (Optional)...</option>
                   <option value="IS 302-2-201:2008">IS 302-2-201:2008 (Electric Immersion Water Heaters)</option>
                   <option value="IS 302-1:2008">IS 302-1:2008 (General Safety of Electrical Appliances)</option>
                   <option value="IS 17526:2021">IS 17526:2021 (Stainless Steel Vacuum Flasks / Containers)</option>
                   <option value="IS 1293:2019">IS 1293:2019 (Plugs and Socket-Outlets)</option>
+                  <option value="IS 14543:2024">IS 14543:2024 (Packaged Drinking Water)</option>
+                  <option value="IS 2347:2017">IS 2347:2017 (Domestic Pressure Cookers)</option>
+                  <option value="IS 4151:2015">IS 4151:2015 (Protective Helmets for Two-Wheelers)</option>
+                  <option value="IS 9873 (Part 1):2019">IS 9873 (Part 1):2019 (Safety of Toys)</option>
                 </select>
               </div>
 
