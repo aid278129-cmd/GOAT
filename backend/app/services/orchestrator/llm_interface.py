@@ -70,7 +70,7 @@ class SingleStructuredLLM:
 
 
         # 2. Check if user is asking about an unverified / non-existent clause
-        m_cl = re.search(r"\bclause\s*(\d+(?:\.\d+)+)\b", q_lower)
+        m_cl = re.search(r"\bclause\s*(\d+(?:\.\d+)*)\b", q_lower)
         if m_cl:
             asked_cl = m_cl.group(1)
             if asked_cl not in clauses_dict:
@@ -101,7 +101,7 @@ class SingleStructuredLLM:
                 regulatory_conclusion="NONE",
             )
 
-        # 4. Intent: Query Requirement
+        # 4. Intent: Query Requirement (Explicit Clause Match)
         if m_cl and m_cl.group(1) in clauses_dict:
             cl_info = clauses_dict[m_cl.group(1)]
             return OrchestratedAIResponse(
@@ -117,6 +117,47 @@ class SingleStructuredLLM:
                         standard_number=std_key,
                         clause_number=m_cl.group(1),
                         clause_title=cl_info["title"],
+                        verified=True,
+                    )
+                ],
+                deterministic_fallback_used=False,
+                regulatory_conclusion="NONE",
+            )
+
+        # 4b. Semantic Clause Keyword Matching within verified target standard (Best Match Scoring)
+        stop_words = {"what", "does", "require", "under", "standard", "limit", "with", "from", "for", "the", "is", "are", "shall", "and", "can", "applicable"}
+        q_keywords = [w for w in re.findall(r"\b[a-zA-Z0-9]{2,}\b", q_lower) if w not in stop_words]
+        best_clause = None
+        best_score = 0
+
+        for c_num, c_data in clauses_dict.items():
+            clause_text = (c_data.get("title", "") + " " + c_data.get("req", "")).lower()
+            score = 0
+            for kw in q_keywords:
+                if kw in c_data.get("title", "").lower():
+                    score += 3  # Title matches are highly salient
+                elif kw in c_data.get("req", "").lower():
+                    score += 1
+
+            if score > best_score:
+                best_score = score
+                best_clause = (c_num, c_data)
+
+        if best_clause and best_score >= 4:
+            c_num, c_data = best_clause
+            return OrchestratedAIResponse(
+                answer=(
+                    f"Under {std_key} Clause {c_num} ({c_data['title']}), "
+                    f"the standard mandates: {c_data['req']}"
+                ),
+                intent=intent,
+                grounding_status=GroundingStatus.SUPPORTED,
+                confidence_score=0.95,
+                citations=[
+                    CitationItem(
+                        standard_number=std_key,
+                        clause_number=c_num,
+                        clause_title=c_data["title"],
                         verified=True,
                     )
                 ],
@@ -147,7 +188,7 @@ class SingleStructuredLLM:
             answer=(
                 f"For {context.product_name} evaluated against {std_key} ({std_data.get('title', '')}), "
                 f"the mandatory Quality Control Order is '{std_data.get('qco_order', '')}'. "
-                f"You can query specific clauses (e.g. Clause 6.1 for voltage or Clause 22.101 for element sheath)."
+                f"You can query specific clauses (e.g. Clause {list(clauses_dict.keys())[0] if clauses_dict else '1.1'})."
             ),
             intent=intent,
             grounding_status=GroundingStatus.SUPPORTED,

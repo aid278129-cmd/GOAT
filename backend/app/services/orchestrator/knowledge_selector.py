@@ -65,10 +65,11 @@ VERIFIED_STANDARDS_CATALOG: Dict[str, Dict[str, Any]] = {
     "IS 4151:2015": {
         "title": "Protective Helmets for Two Wheeler Riders - Specification",
         "ministry": "Ministry of Road Transport and Highways",
-        "qco_order": "Two-Wheeler Helmets (Quality Control) Order",
+        "qco_order": "Two-Wheeler Helmets (Quality Control) Order, 2020",
         "clauses": {
             "4.1": {"title": "Material Construction", "req": "Shell material shall be high-impact polymer or composite."},
             "7.1": {"title": "Impact Absorption Test", "req": "Peak acceleration shall not exceed 300g during drop tower test."},
+            "7.2": {"title": "Impact Attenuation Test", "req": "The peak acceleration imparted to the headform during impact onto flat and hemispherical steel anvils from a height of 2.8 m shall not exceed 300 g."},
             "8.1": {"title": "Retention System Test", "req": "Chin strap dynamic extension shall not exceed 25 mm."},
         },
     },
@@ -77,8 +78,64 @@ VERIFIED_STANDARDS_CATALOG: Dict[str, Dict[str, Any]] = {
         "ministry": "Ministry of Commerce and Industry",
         "qco_order": "Toys (Quality Control) Order, 2020",
         "clauses": {
-            "4.1": {"title": "Normal Use and Abuse Testing", "req": "Toy shall withstand drop, torque, and tension tests without sharp edges."},
+            "4.1": {"title": "Normal Use and Abuse Testing / Small Parts", "req": "Toys intended for children under 36 months, and removable components thereof, shall not fit entirely within the small parts cylinder (diameter 31.7 mm)."},
             "4.4": {"title": "Small Parts Choking Hazard", "req": "No small parts fit entirely within small parts cylinder for children under 36 months."},
+        },
+    },
+    "IS 14543:2024": {
+        "title": "Packaged Drinking Water (Other than Packaged Natural Mineral Water) - Specification",
+        "ministry": "Ministry of Consumer Affairs, Food & Public Distribution",
+        "qco_order": "Packaged Drinking Water (Quality Control) Order",
+        "clauses": {
+            "1.1": {"title": "Scope of Packaged Drinking Water", "req": "Prescribes requirements and methods of sampling and test for packaged drinking water other than packaged natural mineral water intended for direct human consumption."},
+            "5.1": {"title": "Total Dissolved Solids (TDS)", "req": "The total dissolved solids (TDS) of packaged drinking water shall not exceed 500 mg/l when tested in accordance with IS 3025 (Part 16)."},
+            "5.2": {"title": "Microbiological Requirements", "req": "Escherichia coli and coliform bacteria shall be absent in any 250 ml sample when tested according to IS 15185."},
+            "7.1": {"title": "Marking Requirements", "req": "Each container shall be clearly and indelibly marked with the Standard Mark (ISI mark), batch number, date of manufacture, best before date, and net volume."},
+        },
+    },
+    "IS 2347:2017": {
+        "title": "Domestic Pressure Cookers - Specification",
+        "ministry": "Ministry of Commerce and Industry / DPIIT",
+        "qco_order": "Domestic Pressure Cooker (Quality Control) Order, 2020",
+        "clauses": {
+            "1": {"title": "Scope of Pressure Cookers", "req": "Specifies requirements for domestic pressure cookers having nominal capacities up to and including 22 litres."},
+            "4.1": {"title": "Materials of Body and Lid", "req": "The cooker body and lid shall be manufactured from aluminium alloy conforming to IS 21, or stainless steel conforming to IS 6911."},
+            "5.4": {"title": "Operating Pressure and Weight Valve", "req": "The pressure cooker shall operate smoothly at an operating pressure between 0.9 kgf/cm2 and 1.1 kgf/cm2 with automatic pressure release."},
+            "6.2": {"title": "Hydraulic Burst Pressure Test", "req": "The pressure cooker shall withstand hydrostatic pressure of not less than 3 times the operating pressure (minimum 3.0 kgf/cm2) without rupture or catastrophic leakage."},
+        },
+    },
+    "IS 302-2-3:2007": {
+        "title": "Safety of Household and Similar Electrical Appliances: Particular Requirements for Electric Irons",
+        "ministry": "Ministry of Consumer Affairs, Food & Public Distribution",
+        "qco_order": "Electrical Appliances (Quality Control) Order",
+        "clauses": {
+            "8.1": {"title": "Protection Against Electric Shock", "req": "Live parts shall not be accessible to standard test finger per IEC 61032 under all normal operating conditions."},
+            "13.2": {"title": "Leakage Current and Dielectric Strength", "req": "The leakage current of the appliance at operating temperature shall not exceed 0.75 mA."},
+        },
+    },
+    "IS 13252 (Part 1):2010": {
+        "title": "Information Technology Equipment - Safety - Part 1: General Requirements",
+        "ministry": "Ministry of Electronics and Information Technology (MeitY)",
+        "qco_order": "Electronics and Information Technology Goods (Requirement for Compulsory Registration) Order, 2012",
+        "clauses": {
+            "2.1.1": {"title": "Protection in Operator Access Areas", "req": "Operator access areas shall be designed so that bare parts operating at hazardous voltage (SELV limit > 42.4V peak or 60V DC) are not touchable."},
+            "5.2.2": {"title": "Electric Strength (High Voltage Withstand)", "req": "Reinforced insulation between primary circuits and accessible parts shall withstand 3000 V r.m.s. AC for 60 seconds without breakdown."},
+        },
+    },
+    "IS 1786:2008": {
+        "title": "High Strength Deformed Steel Bars and Wires for Concrete Reinforcement - Specification",
+        "ministry": "Ministry of Steel",
+        "qco_order": "Steel and Steel Products (Quality Control) Order, 2020",
+        "clauses": {
+            "8.1": {"title": "0.2% Proof Stress / Yield Strength", "req": "For grade Fe 500D, the 0.2 percent proof stress shall not be less than 500.0 N/mm2."},
+        },
+    },
+    "IS 8112:2013": {
+        "title": "43 Grade Ordinary Portland Cement - Specification",
+        "ministry": "Ministry of Commerce and Industry / DPIIT",
+        "qco_order": "Cement (Quality Control) Order, 2003",
+        "clauses": {
+            "6.1": {"title": "28-Day Compressive Strength", "req": "The average compressive strength of at least three mortar cubes at 28 days (672 +/- 4 h) shall not be less than 43.0 MPa."},
         },
     },
 }
