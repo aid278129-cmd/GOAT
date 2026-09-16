@@ -79,10 +79,10 @@ export function SideNav({
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
-              className={`flex items-center justify-between px-2 py-1.5 text-xs rounded transition cursor-pointer text-left ${
+              className={`flex items-center justify-between px-2.5 py-1.5 text-xs rounded transition-all duration-150 transform cursor-pointer text-left ${
                 isActive
-                  ? 'font-bold text-white bg-slate-900 shadow-2xs'
-                  : 'font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+                  ? 'font-bold text-white bg-slate-900 shadow-xs translate-x-0.5'
+                  : 'font-medium text-slate-700 hover:bg-slate-100/90 hover:text-slate-900 hover:translate-x-0.5 active:scale-[0.99]'
               }`}
             >
               <div className="flex items-center gap-2 truncate">
@@ -136,10 +136,10 @@ export function SideNav({
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
-              className={`flex items-center justify-between px-2 py-1.5 text-xs rounded transition cursor-pointer text-left ${
+              className={`flex items-center justify-between px-2.5 py-1.5 text-xs rounded transition-all duration-150 transform cursor-pointer text-left ${
                 isActive
-                  ? 'font-bold text-slate-900 bg-slate-100 border border-slate-300 shadow-2xs'
-                  : 'font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                  ? 'font-bold text-slate-900 bg-slate-100 border border-slate-300 shadow-xs translate-x-0.5'
+                  : 'font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 hover:translate-x-0.5 active:scale-[0.99]'
               }`}
             >
               <div className="flex items-center gap-2 truncate">

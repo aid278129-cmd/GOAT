@@ -14,6 +14,17 @@ import { KnowledgeBaseExplorer } from './components/KnowledgeBaseExplorer';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
 
+export const PIPELINE_STEPS = [
+  { id: 'input', step: '01', short: 'Input', title: 'Product Input', icon: 'upload_file' },
+  { id: 'dna', step: '02', short: 'DNA', title: 'Product DNA', icon: 'fingerprint' },
+  { id: 'applicability', step: '03', short: 'Applicability', title: 'BIS Applicability', icon: 'gavel' },
+  { id: 'clauses', step: '04', short: 'Clauses', title: 'Standards & Clauses', icon: 'account_tree' },
+  { id: 'evidence', step: '05', short: 'Evidence', title: 'Evidence Matrix', icon: 'policy' },
+  { id: 'gaps', step: '06', short: 'Gaps', title: 'Compliance Gaps', icon: 'troubleshoot' },
+  { id: 'actions', step: '07', short: 'Actions', title: 'Lab & Actions', icon: 'science' },
+  { id: 'passport', step: '08', short: 'Passport', title: 'Compliance Passport', icon: 'verified' },
+];
+
 export default function App() {
   const [health, setHealth] = useState(null);
   const [systemInfo, setSystemInfo] = useState(null);
@@ -232,6 +243,11 @@ export default function App() {
     passportBadge: passportData ? (passportData.overall_status || 'PASS') : null,
   } : {};
 
+  const currentStepIndex = PIPELINE_STEPS.findIndex((s) => s.id === activeTab);
+  const isPipelineStep = currentStepIndex !== -1;
+  const prevStep = isPipelineStep && currentStepIndex > 0 ? PIPELINE_STEPS[currentStepIndex - 1] : null;
+  const nextStep = isPipelineStep && currentStepIndex < PIPELINE_STEPS.length - 1 ? PIPELINE_STEPS[currentStepIndex + 1] : null;
+
   return (
     <div className="flex h-screen w-full bg-[#F8FAFC] text-slate-900 antialiased overflow-hidden font-sans">
       {/* Primary Fixed Left Navigation */}
@@ -289,92 +305,170 @@ export default function App() {
           </div>
         )}
 
-        {/* Dynamic Pipeline Content Area */}
+        {/* Stitch-Style Interactive Pipeline Progress Stepper */}
+        {isPipelineStep && (
+          <div className="bg-white border-b border-slate-200 px-3 md:px-5 py-2 shrink-0 flex items-center justify-between gap-3 shadow-2xs font-sans text-xs">
+            {/* Step Status Pill & Title */}
+            <div className="flex items-center gap-2 shrink-0">
+              <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-slate-700 font-mono text-[10px] font-bold">
+                <span className="text-slate-400">STEP</span>
+                <span className="text-slate-900">{PIPELINE_STEPS[currentStepIndex].step}</span>
+                <span className="text-slate-400">/ 08</span>
+              </div>
+              <span className="font-bold text-slate-900 hidden sm:inline">
+                {PIPELINE_STEPS[currentStepIndex].title}
+              </span>
+            </div>
+
+            {/* Stepper Dots & Horizontal Track */}
+            <div className="hidden md:flex items-center gap-1 overflow-x-auto py-0.5">
+              {PIPELINE_STEPS.map((step, idx) => {
+                const isCurrent = step.id === activeTab;
+                const isPassed = idx < currentStepIndex;
+                return (
+                  <button
+                    key={step.id}
+                    onClick={() => setActiveTab(step.id)}
+                    title={step.title}
+                    className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-[11px] font-medium transition-all duration-200 cursor-pointer ${
+                      isCurrent
+                        ? 'bg-slate-900 text-white shadow-xs font-semibold scale-105'
+                        : isPassed
+                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100'
+                        : 'bg-slate-50 text-slate-500 hover:bg-slate-100 hover:text-slate-800'
+                    }`}
+                  >
+                    <span
+                      className={`w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-mono font-bold ${
+                        isCurrent
+                          ? 'bg-white text-slate-900'
+                          : isPassed
+                          ? 'bg-emerald-600 text-white'
+                          : 'bg-slate-200 text-slate-600'
+                      }`}
+                    >
+                      {isPassed ? '✓' : step.step}
+                    </span>
+                    <span className="hidden lg:inline">{step.short}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Navigation Controls: Prev / Next */}
+            <div className="flex items-center gap-1.5 shrink-0">
+              {prevStep && (
+                <button
+                  onClick={() => setActiveTab(prevStep.id)}
+                  className="px-2.5 py-1 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 rounded font-medium text-xs flex items-center gap-1 transition btn-press cursor-pointer"
+                  title={`Go to Step ${prevStep.step}: ${prevStep.title}`}
+                >
+                  <span className="material-symbols-outlined text-[14px]">arrow_back</span>
+                  <span className="hidden sm:inline">Prev</span>
+                </button>
+              )}
+              {nextStep && (
+                <button
+                  onClick={() => setActiveTab(nextStep.id)}
+                  className="px-3 py-1 bg-slate-900 hover:bg-slate-800 text-white rounded font-medium text-xs flex items-center gap-1 transition btn-press cursor-pointer shadow-2xs"
+                  title={`Advance to Step ${nextStep.step}: ${nextStep.title}`}
+                >
+                  <span>Next: {nextStep.short}</span>
+                  <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Dynamic Pipeline Content Area with Smooth View Transition */}
         <main className="flex-1 flex flex-col overflow-hidden">
-          {/* Step 01: Product Input */}
-          {activeTab === 'input' && (
-            <AnalyzeView
-              onAssessmentCreated={handleAssessmentCreated}
-              onNavigate={setActiveTab}
-            />
-          )}
-
-          {/* Step 02: Product DNA */}
-          {activeTab === 'dna' && (
-            <ProductDNAView
-              assessment={activeAssessment}
-              onClarify={handleClarifyAttribute}
-              onNavigate={setActiveTab}
-            />
-          )}
-
-          {/* Step 03: BIS Applicability */}
-          {activeTab === 'applicability' && (
-            <BISApplicabilityView
-              assessment={activeAssessment}
-              onNavigate={setActiveTab}
-            />
-          )}
-
-          {/* Step 04: Standards & Clauses (Regulatory Assurance Matrix) */}
-          {activeTab === 'clauses' && (
-            <StandardsClausesView
-              assessment={activeAssessment}
-              onNavigate={setActiveTab}
-            />
-          )}
-
-          {/* Step 05: Evidence Matrix */}
-          {activeTab === 'evidence' && (
-            <EvidenceMatrixView
-              assessment={activeAssessment}
-              onUploadEvidence={handleUploadEvidence}
-              onNavigate={setActiveTab}
-            />
-          )}
-
-          {/* Step 06: Compliance Gaps */}
-          {activeTab === 'gaps' && (
-            <ComplianceGapsView
-              assessment={activeAssessment}
-              onNavigate={setActiveTab}
-            />
-          )}
-
-          {/* Step 07: Lab & Actions */}
-          {activeTab === 'actions' && (
-            <LabActionsView
-              assessment={activeAssessment}
-              onNavigate={setActiveTab}
-            />
-          )}
-
-          {/* Step 08: Compliance Passport */}
-          {activeTab === 'passport' && (
-            <div className="flex-1 p-4 md:p-6 lg:p-8 bg-[#F8FAFC] overflow-y-auto">
-              <CompliancePassportView
-                passport={passportData}
-                onClose={() => setActiveTab('gaps')}
+          <div key={activeTab} className="view-enter flex-1 flex flex-col overflow-hidden">
+            {/* Step 01: Product Input */}
+            {activeTab === 'input' && (
+              <AnalyzeView
+                onAssessmentCreated={handleAssessmentCreated}
+                onNavigate={setActiveTab}
               />
-            </div>
-          )}
+            )}
 
-          {/* Secondary: Workspace Overview / Assessments Dashboard */}
-          {activeTab === 'dashboard' && (
-            <OverviewView
-              assessmentsList={assessmentsList}
-              onNavigate={setActiveTab}
-              onSelectAssessment={handleSelectAssessment}
-              onNewAnalysis={() => setActiveTab('input')}
-            />
-          )}
+            {/* Step 02: Product DNA */}
+            {activeTab === 'dna' && (
+              <ProductDNAView
+                assessment={activeAssessment}
+                onClarify={handleClarifyAttribute}
+                onNavigate={setActiveTab}
+              />
+            )}
 
-          {/* Secondary: BIS Standards Catalog Knowledge Base */}
-          {activeTab === 'knowledge' && (
-            <div className="flex-1 p-4 md:p-6 lg:p-8 bg-[#F8FAFC] overflow-y-auto">
-              <KnowledgeBaseExplorer />
-            </div>
-          )}
+            {/* Step 03: BIS Applicability */}
+            {activeTab === 'applicability' && (
+              <BISApplicabilityView
+                assessment={activeAssessment}
+                onNavigate={setActiveTab}
+              />
+            )}
+
+            {/* Step 04: Standards & Clauses (Regulatory Assurance Matrix) */}
+            {activeTab === 'clauses' && (
+              <StandardsClausesView
+                assessment={activeAssessment}
+                onNavigate={setActiveTab}
+              />
+            )}
+
+            {/* Step 05: Evidence Matrix */}
+            {activeTab === 'evidence' && (
+              <EvidenceMatrixView
+                assessment={activeAssessment}
+                onUploadEvidence={handleUploadEvidence}
+                onNavigate={setActiveTab}
+              />
+            )}
+
+            {/* Step 06: Compliance Gaps */}
+            {activeTab === 'gaps' && (
+              <ComplianceGapsView
+                assessment={activeAssessment}
+                onNavigate={setActiveTab}
+              />
+            )}
+
+            {/* Step 07: Lab & Actions */}
+            {activeTab === 'actions' && (
+              <LabActionsView
+                assessment={activeAssessment}
+                onNavigate={setActiveTab}
+              />
+            )}
+
+            {/* Step 08: Compliance Passport */}
+            {activeTab === 'passport' && (
+              <div className="flex-1 p-4 md:p-6 lg:p-8 bg-[#F8FAFC] overflow-y-auto">
+                <CompliancePassportView
+                  passport={passportData}
+                  onClose={() => setActiveTab('gaps')}
+                />
+              </div>
+            )}
+
+            {/* Secondary: Workspace Overview / Assessments Dashboard */}
+            {activeTab === 'dashboard' && (
+              <OverviewView
+                assessmentsList={assessmentsList}
+                onNavigate={setActiveTab}
+                onSelectAssessment={handleSelectAssessment}
+                onNewAnalysis={() => setActiveTab('input')}
+              />
+            )}
+
+            {/* Secondary: BIS Standards Catalog Knowledge Base */}
+            {activeTab === 'knowledge' && (
+              <div className="flex-1 p-4 md:p-6 lg:p-8 bg-[#F8FAFC] overflow-y-auto">
+                <KnowledgeBaseExplorer />
+              </div>
+            )}
+          </div>
         </main>
       </div>
 
