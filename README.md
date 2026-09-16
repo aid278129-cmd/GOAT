@@ -44,7 +44,8 @@
 - [15. Repository Structure](#15-repository-structure)
 - [16. Project Roadmap](#16-project-roadmap)
 - [17. Contribution Guide](#17-contribution-guide)
-- [18. Regulatory Disclaimer](#18-regulatory-disclaimer)
+- [18. Team Members & Roles](#18-team-members--roles)
+- [19. Regulatory Disclaimer](#19-regulatory-disclaimer)
 
 ---
 
@@ -525,7 +526,26 @@ git commit -m "feat(module): description of changes"
 
 ---
 
-## 18. Regulatory Disclaimer
+## 18. Team Members & Roles
+
+<div align="center">
+
+### 🏆 Smart India Hackathon (SIH 2026) — Core Project Team
+
+| # | Name | Team Role & Core Responsibilities | Focus Areas |
+|:---:|:---|:---|:---|
+| **1** | **Jeffin Josva** | **Team Leader & Chief Systems Architect** | End-to-end system design, LangGraph 11-node orchestration, zero-authority compiler architecture & cross-layer integration |
+| **2** | **Srimuthukrishnan** | **Backend & Deterministic Rule Engine Specialist** | Layers 5, 7 & 9 rule engines, parameter tolerance algorithms, mathematical gap analysis & FastAPI performance |
+| **3** | **Hariprasad** | **Regulatory Data Architect & Knowledge Engineer** | Layer 4 BIS standards codification, Gazette QCO mapping, amendment tracking & SHA-256 cryptographic provenance |
+| **4** | **Afrin Mubena** | **AI/ML Ingestion & Prompt Alignment Engineer** | Layer 1 multi-modal ingestion (PDF/OCR/STT), Layer 3 SingleStructuredLLM adapter & fine-tuning dataset curation |
+| **5** | **Mili** | **Compliance Verification & QA Testing Engineer** | Multi-scenario benchmark testing (905+ test suite), golden case validation, security injection tests & audit trail verification |
+| **6** | **Dharshini** | **Frontend Experience & Regulatory UI Architect** | Vite + React + Tailwind user interface, 8-step compiler pipeline UX, dynamic Product DNA dashboards & Compliance Passport export |
+
+</div>
+
+---
+
+## 19. Regulatory Disclaimer
 
 > [!IMPORTANT]
 > **Regulatory Disclaimer**:  
