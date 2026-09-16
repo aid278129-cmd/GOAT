@@ -22,7 +22,7 @@ class StructuredFormatter(logging.Formatter):
 
 def setup_logging(log_level: str = "INFO") -> logging.Logger:
     """Configure system logger for auditable and privacy-conscious compliance records."""
-    logger = logging.getLogger("zyntrix")
+    logger = logging.getLogger("goat")
     logger.setLevel(getattr(logging, log_level.upper(), logging.INFO))
 
     if not logger.handlers:

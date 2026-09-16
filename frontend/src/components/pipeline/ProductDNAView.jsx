@@ -15,21 +15,15 @@ export function ProductDNAView({ assessment, onClarify, onNavigate }) {
           <div className="space-y-1">
             <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide">No Product DNA Loaded</h3>
             <p className="text-xs text-slate-500 leading-relaxed">
-              No active product assessment is currently selected. Start by providing technical product information in Step 1 or load a controlled demo case.
+              No active product assessment is currently selected. Start by providing technical product information in Step 1.
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-2 justify-center pt-2">
+          <div className="flex justify-center pt-2">
             <button
               onClick={() => onNavigate('input')}
               className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded text-xs font-semibold transition cursor-pointer"
             >
               Step 1: Product Input
-            </button>
-            <button
-              onClick={() => onNavigate('evaluation')}
-              className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-xs font-semibold border border-slate-200 transition cursor-pointer"
-            >
-              Load Demo Case
             </button>
           </div>
         </div>

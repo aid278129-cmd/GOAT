@@ -55,7 +55,7 @@ def extract_pdf_content(
     file_input: Union[str, bytes],
     filename: Optional[str] = None,
     enable_ocr: bool = True,
-    use_opendataloader: bool = False,
+    use_opendataloader: bool = True,
 ) -> PDFExtractionResult:
     """Extract structured text and page provenance from a PDF document.
     

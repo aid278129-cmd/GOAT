@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⚡ ZYNTRIX
+# ⚡ GOAT
 ### Bureau of Indian Standards (BIS) Compliance Compiler
 
 **Turn product information into traceable, source-backed BIS compliance intelligence.**
@@ -19,7 +19,7 @@
 
 <br/>
 
-<img src="docs/assets/hero-pipeline.svg" alt="Zyntrix End-to-End Compliance Pipeline" width="100%"/>
+<img src="docs/assets/hero-pipeline.svg" alt="GOAT End-to-End Compliance Pipeline" width="100%"/>
 
 </div>
 
@@ -28,7 +28,7 @@
 ## 📑 Table of Contents
 
 - [1. Executive Overview](#1-executive-overview)
-- [2. Why Zyntrix? (The Paradigm Shift)](#2-why-zyntrix-the-paradigm-shift)
+- [2. Why GOAT? (The Paradigm Shift)](#2-why-goat-the-paradigm-shift)
 - [3. Verified Repository Metrics](#3-verified-repository-metrics)
 - [4. 9-Layer Modular Architecture](#4-9-layer-modular-architecture)
 - [5. LangGraph Reasoning Topology](#5-langgraph-reasoning-topology)
@@ -50,11 +50,11 @@
 
 ## 1. Executive Overview
 
-**Zyntrix** is an evidence-first, deterministic regulatory intelligence compiler engineered for Indian Standards (IS), Quality Control Orders (QCOs), and Scheme of Inspection and Testing (STI) conformity assessment.
+**GOAT** is an evidence-first, deterministic regulatory intelligence compiler engineered for Indian Standards (IS), Quality Control Orders (QCOs), and Scheme of Inspection and Testing (STI) conformity assessment.
 
 Modern industrial compliance in India requires navigating hundreds of statutory Quality Control Orders (QCOs) issued by DPIIT, MeitY, and the Ministry of Steel. Traditional generic AI chatbots hallucinate compliance percentages, invent non-existent standard clauses, and conflate unverified manufacturer datasheets with empirical laboratory evidence.
 
-Zyntrix enforces a **strict cryptographic and architectural separation**:
+GOAT enforces a **strict cryptographic and architectural separation**:
 - **Generative Language (Layer 3)** is handled by **exactly ONE LLM** (`SingleStructuredLLM`) with **strictly 0.0% compliance authority**. It parses intents, extracts technical entities, and explains standards.
 - **Compliance Determinations (Layers 5, 7, 8, 9)** are computed **100% deterministically** by mathematical constraint evaluators, gazette order matching engines, and empirical laboratory evidence verification firewalls.
 
@@ -72,14 +72,14 @@ Zyntrix enforces a **strict cryptographic and architectural separation**:
 ```
 
 <div align="center">
-  <img src="docs/assets/pipeline-3d.svg" alt="Zyntrix Compilation Lifecycle" width="100%"/>
+  <img src="docs/assets/pipeline-3d.svg" alt="GOAT Compilation Lifecycle" width="100%"/>
 </div>
 
 ---
 
-## 2. Why Zyntrix? (The Paradigm Shift)
+## 2. Why GOAT? (The Paradigm Shift)
 
-| Architectural Dimension | Generic AI Chatbot | Zyntrix BIS Compliance Compiler |
+| Architectural Dimension | Generic AI Chatbot | GOAT BIS Compliance Compiler |
 |:---|:---|:---|
 | **Compliance Decision Maker** | Probabilistic LLM guessing verdicts | **100% Deterministic Rule Engine** (Layer 7) |
 | **LLM Compliance Authority** | Unbounded (~100%) | **Strictly 0.0%** (Hard-enforced by firewall) |
@@ -119,20 +119,20 @@ Every statistic below is audited directly from the live codebase, Git commit his
 
 ## 4. 9-Layer Modular Architecture
 
-Zyntrix is structured into 9 isolated, independently auditable layers:
+GOAT is structured into 9 isolated, independently auditable layers:
 
 <div align="center">
-  <img src="docs/assets/architecture.svg" alt="Zyntrix 9-Layer Architecture" width="100%"/>
+  <img src="docs/assets/architecture.svg" alt="GOAT 9-Layer Architecture" width="100%"/>
 </div>
 
 ### Layer Breakdown
 
 1. **Layer 1 — Guided Multi-Modal Input & Preparation**:
-   Ingests manufacturer test documentation across PDF datasheets, high-resolution rating plate images (OCR via Tesseract), voice memos (STT), Excel/CSV Bills of Materials (BOM), and manual inputs. Generates dynamic document readiness checklists.
+   Ingests manufacturer test documentation across PDF datasheets, high-resolution rating plate images (structured layout & OCR via OpenDataLoader PDF), voice memos (STT), Excel/CSV Bills of Materials (BOM), and manual inputs. Generates dynamic document readiness checklists.
 2. **Layer 2 — Product DNA Engine & Normalization**:
    Extracts structured technical parameters (`rated_wattage`, `capacity_ml`, `sheath_material`). Executes deterministic unit conversion (°F &rarr; °C, inches &rarr; mm) without loss of precision. Features an automated clarification queue when mandatory attributes are absent.
 3. **Layer 3 — AI Orchestrator & Reasoning Graph**:
-   Wraps the single underlying LLM via `ZyntrixLangChainChatAdapter`. Operates a 11-node compiled LangGraph state graph. Governs intent classification, conversational explanations, and controlled tool dispatches. **LLM Compliance Authority = 0.0%**.
+   Wraps the single underlying LLM via `GOATLangChainChatAdapter`. Operates a 11-node compiled LangGraph state graph. Governs intent classification, conversational explanations, and controlled tool dispatches. **LLM Compliance Authority = 0.0%**.
 4. **Layer 4 — Segmented BIS Knowledge Base**:
    Dual lexical BM25 and vector embeddings index verified Indian Standards, Quality Control Orders (QCOs), and Schemes of Inspection and Testing (STI). Enforces cryptographic SHA-256 clause fingerprinting.
 5. **Layer 5 — Deterministic BIS Applicability Engine**:
@@ -199,7 +199,7 @@ output_integrity_gate          ──>  __end__                    [terminal exi
 
 ## 6. Trust, Provenance & Authority Firewall
 
-Zyntrix establishes an unbreachable firewall between conversational language generation and compliance determination:
+GOAT establishes an unbreachable firewall between conversational language generation and compliance determination:
 
 <div align="center">
   <img src="docs/assets/authority-model.svg" alt="Authority Firewall & Trust Boundaries" width="100%"/>
@@ -236,11 +236,11 @@ Raw product facts are transformed into auditable pre-certification compliance it
 
 ## 8. The Compliance Passport
 
-The primary output of Zyntrix is the **Evidence-Backed Pre-Certification Compliance Passport** (Layer 9), structured for MSMEs, testing laboratories, and regulatory auditors:
+The primary output of GOAT is the **Evidence-Backed Pre-Certification Compliance Passport** (Layer 9), structured for MSMEs, testing laboratories, and regulatory auditors:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────────────┐
-│  ZYNTRIX EVIDENCE-BACKED COMPLIANCE PASSPORT                                                │
+│  GOAT EVIDENCE-BACKED COMPLIANCE PASSPORT                                                │
 │  Standard: IS 17526:2021 • Product: Domestic Vacuum Flask 750ml • Status: PRE-CERT AUDITED   │
 ├─────────────────────────────────────────────────────────────────────────────────────────────┤
 │  1. EXECUTIVE SUMMARY                                                                       │
@@ -268,13 +268,13 @@ The primary output of Zyntrix is the **Evidence-Backed Pre-Certification Complia
 ```
 
 > [!NOTE]
-> **Legal Notice**: Zyntrix provides an evidence-backed pre-certification compliance assessment. It does **not** issue official BIS licenses or ISI marks. Official licenses are granted exclusively by the Bureau of Indian Standards following statutory inspection.
+> **Legal Notice**: GOAT provides an evidence-backed pre-certification compliance assessment. It does **not** issue official BIS licenses or ISI marks. Official licenses are granted exclusively by the Bureau of Indian Standards following statutory inspection.
 
 ---
 
 ## 9. Security, Privacy & Deterministic Redaction
 
-Zyntrix enforces strict security and data protection invariants:
+GOAT enforces strict security and data protection invariants:
 
 1. **Deterministic Secret Redaction**: All trace logs and observability payloads pass through recursive regex sanitization:
    - OpenAI, Composio, Groq, and LangSmith API keys (`sk-...`, `ak_...`, `gsk_...`, `lsv2_pt_...`)
@@ -289,7 +289,7 @@ Zyntrix enforces strict security and data protection invariants:
 
 ## 10. LangGraph Studio & Observability
 
-Zyntrix includes native configuration for **LangGraph Studio**, providing real-time visual inspection of the reasoning graph canvas:
+GOAT includes native configuration for **LangGraph Studio**, providing real-time visual inspection of the reasoning graph canvas:
 
 ```powershell
 # Launch the interactive LangGraph Studio development server
@@ -307,7 +307,7 @@ To toggle LangSmith cloud tracing:
 # In your .env file
 LANGSMITH_TRACING=true
 LANGSMITH_API_KEY=lsv2_pt_your_key_here
-LANGSMITH_PROJECT=zyntrix-bis-compliance
+LANGSMITH_PROJECT=goat-bis-compliance
 ```
 
 ---
@@ -316,7 +316,7 @@ LANGSMITH_PROJECT=zyntrix-bis-compliance
 
 ```
 +─────────────────────────────────────────────────────────────────────────────────────────────────────────+
-|                                         Zyntrix Technology Stack                                        |
+|                                         GOAT Technology Stack                                        |
 +──────────────────────────┬────────────────────────────────────────┬─────────────────────────────────────+
 | Layer Area               | Technology / Framework                 | Purpose                             |
 +──────────────────────────┼────────────────────────────────────────┼─────────────────────────────────────+
@@ -328,7 +328,7 @@ LANGSMITH_PROJECT=zyntrix-bis-compliance
 | Relational & Vector DB   | PostgreSQL • pgvector • SQLAlchemy 2.0 | Standard knowledge & clause storage |
 | Local Dev Fallback DB    | SQLite • aiosqlite                     | Zero-configuration offline mode     |
 | Document Intelligence    | PyMuPDF (fitz) • PyPDF • ReportLab     | PDF parsing, OCR & passport export  |
-| Image & Speech OCR       | Pillow • PyTesseract                   | Multi-modal spec sheet intake       |
+| Image & Speech OCR       | OpenDataLoader PDF • Pillow                   | Multi-modal spec sheet intake       |
 | Statistical Testing      | Pytest 9.1 • pytest-asyncio            | 584 automated verification tests    |
 +──────────────────────────┴────────────────────────────────────────┴─────────────────────────────────────+
 ```
@@ -337,7 +337,7 @@ LANGSMITH_PROJECT=zyntrix-bis-compliance
 
 ## 12. Testing, Benchmarking & Quality Assurance
 
-The Zyntrix codebase is verified by **584 automated tests** covering every layer, node, tool, and compliance firewall:
+The GOAT codebase is verified by **584 automated tests** covering every layer, node, tool, and compliance firewall:
 
 ```
 ============================= 584 passed in 12.32s =============================
@@ -399,8 +399,8 @@ The repository includes a cryptographically locked golden demonstration case (`G
 ### 1. Clone & Configure Workspace
 
 ```bash
-git clone https://github.com/Jeffin2007/Zyntrix.git
-cd Zyntrix
+git clone https://github.com/Jeffin2007/GOAT.git
+cd GOAT
 ```
 
 ### 2. Backend Setup
@@ -438,7 +438,7 @@ py -3.14 -m pytest backend/tests -q
 ## 15. Repository Structure
 
 ```
-Zyntrix/
+GOAT/
 ├── backend/
 │   ├── app/
 │   │   ├── api/                     # FastAPI REST API endpoints
@@ -529,9 +529,9 @@ git commit -m "feat(module): description of changes"
 
 > [!IMPORTANT]
 > **Regulatory Disclaimer**:  
-> Zyntrix is an evidence-first software intelligence platform designed to assist manufacturers, laboratories, and regulatory consultants with **pre-certification compliance analysis**.
+> GOAT is an evidence-first software intelligence platform designed to assist manufacturers, laboratories, and regulatory consultants with **pre-certification compliance analysis**.
 > 
-> - Zyntrix **does NOT grant official BIS certification** or issue ISI mark licenses.
+> - GOAT **does NOT grant official BIS certification** or issue ISI mark licenses.
 > - Official licenses are issued exclusively by the **Bureau of Indian Standards (BIS)** in accordance with the Bureau of Indian Standards Act, 2016, and statutory verification by designated BIS officers.
 > - LLM-generated explanations are analytical aids and do **not** constitute legal or regulatory opinions.
 > - Binding compliance determinations strictly require authentic NABL-accredited test reports and statutory conformity inspection.
@@ -540,8 +540,8 @@ git commit -m "feat(module): description of changes"
 
 <div align="center">
 
-**Zyntrix — BIS Compliance Compiler**  
+**GOAT — BIS Compliance Compiler**  
 Built for the Smart India Hackathon (Problem ID: 26107)  
-*Crafted with precision by the Zyntrix Engineering Team*
+*Crafted with precision by the GOAT Engineering Team*
 
 </div>

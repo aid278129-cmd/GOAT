@@ -13,7 +13,7 @@ export function OverviewView({ assessmentsList = [], onNavigate, onSelectAssessm
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded">
-              Zyntrix Workspace Overview
+              GOAT Workspace Overview
             </span>
             <span className="text-xs text-slate-500">Bureau of Indian Standards Smart Pre-Certification</span>
           </div>
@@ -26,12 +26,6 @@ export function OverviewView({ assessmentsList = [], onNavigate, onSelectAssessm
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => onNavigate('evaluation')}
-            className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-xs font-semibold border border-slate-200 transition cursor-pointer"
-          >
-            Load Demo Case
-          </button>
           <button
             onClick={onNewAnalysis}
             className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer shadow-2xs"
@@ -108,12 +102,6 @@ export function OverviewView({ assessmentsList = [], onNavigate, onSelectAssessm
                 className="px-4 py-2 rounded bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition cursor-pointer"
               >
                 Step 1: Product Input
-              </button>
-              <button
-                onClick={() => onNavigate('evaluation')}
-                className="px-4 py-2 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold border border-slate-200 transition cursor-pointer"
-              >
-                Load SIH 2026 Golden Demo
               </button>
             </div>
           </div>

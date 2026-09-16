@@ -1,8 +1,8 @@
 @echo off
 setlocal
-title Zyntrix LangGraph Studio Server
+title GOAT LangGraph Studio Server
 echo ===================================================
-echo Starting Zyntrix LangGraph Studio Server...
+echo Starting GOAT LangGraph Studio Server...
 echo ===================================================
 set PYTHONIOENCODING=utf-8
 langgraph dev --port 2024

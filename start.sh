@@ -2,12 +2,12 @@
 set -e
 
 # ==============================================================================
-# Zyntrix BIS Compliance Compiler — One-Command Startup (Linux / macOS)
+# GOAT BIS Compliance Compiler — One-Command Startup (Linux / macOS)
 # SIH Problem Statement 26107
 # ==============================================================================
 
 echo "=============================================================================="
-echo "  ZYNTRIX BIS COMPLIANCE COMPILER — ONE-COMMAND STARTUP"
+echo "  GOAT BIS COMPLIANCE COMPILER — ONE-COMMAND STARTUP"
 echo "=============================================================================="
 
 # 1. Check Python

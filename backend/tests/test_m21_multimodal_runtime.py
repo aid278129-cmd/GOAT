@@ -83,9 +83,9 @@ def test_ocr_method_distinction_and_no_hallucinated_ocr(monkeypatch):
     assert isinstance(text, str)
     assert isinstance(ok, bool)
 
-    # Invariant: Extraction method MUST be either NATIVE_TESSERACT_OCR (if binary installed)
-    # or FALLBACK_PARSER (if binary not installed). Never fake OCR!
-    assert res.extraction_method in ("NATIVE_TESSERACT_OCR", "FALLBACK_PARSER")
+    # Invariant: Extraction method MUST be either OPENDATALOADER_PDF (if opendataloader active),
+    # NATIVE_TESSERACT_OCR (if binary installed), or FALLBACK_PARSER. Never fake OCR!
+    assert res.extraction_method in ("OPENDATALOADER_PDF", "NATIVE_TESSERACT_OCR", "FALLBACK_PARSER")
     if res.extraction_method == "FALLBACK_PARSER":
         assert "not detected" in res.details.lower() or "unavailable" in res.details.lower()
 
@@ -109,7 +109,7 @@ def test_image_formats_png_jpg_webp_rotated():
 
         # Execution
         res = extract_text_from_image_bytes(raw_bytes)
-        assert res.extraction_method in ("NATIVE_TESSERACT_OCR", "FALLBACK_PARSER", "DEMO_FIXTURE")
+        assert res.extraction_method in ("OPENDATALOADER_PDF", "NATIVE_TESSERACT_OCR", "FALLBACK_PARSER", "DEMO_FIXTURE")
 
 
 def test_empty_and_corrupted_image_handling():
@@ -145,7 +145,7 @@ def test_normal_vector_pdf_extraction(tmp_path):
     assert res.total_pages == 2
     assert "Test Report #ABC-2026-001" in res.pages[0].text
     assert "Earth Continuity" in res.pages[1].text
-    assert res.pages[0].extraction_method == "TEXT"
+    assert res.pages[0].extraction_method in ("OPENDATALOADER_PDF", "TEXT")
     assert len(res.pages[0].blocks) > 0
 
 

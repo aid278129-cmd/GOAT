@@ -278,7 +278,35 @@ def extract_text_from_image_bytes(
             details=f"Invalid or unsupported image format: {exc}",
         )
 
-    # 2. Check if Tesseract is available and configured
+    # 2. Try OpenDataLoader AI-Ready extraction engine first
+    try:
+        from backend.app.services.ingestion.opendataloader_extractor import (
+            is_opendataloader_ready,
+            extract_with_opendataloader,
+        )
+        import tempfile
+        if is_opendataloader_ready():
+            with tempfile.TemporaryDirectory() as tmpdir:
+                pdf_path = os.path.join(tmpdir, "image_page.pdf")
+                # Save processed image as a clean single-page PDF for OpenDataLoader
+                image.convert("RGB").save(pdf_path, "PDF", resolution=150.0)
+                odl_res = extract_with_opendataloader(pdf_path, filename="document_image.pdf")
+                extracted_text = odl_res.markdown_content or (odl_res.pages[0].text if odl_res.pages else "")
+                clean_text = extracted_text.strip()
+                if clean_text:
+                    logger.info(f"OPENDATALOADER_PDF succeeded: {len(clean_text)} characters extracted from {format_name}.")
+                    return OCRExtractionResult(
+                        text=clean_text,
+                        success=True,
+                        extraction_method="OPENDATALOADER_PDF",
+                        confidence=0.95,
+                        languages=[lang],
+                        details="OpenDataLoader AI-Ready structured document extractor.",
+                    )
+    except Exception as exc:
+        logger.warning(f"OpenDataLoader image extraction notice: {exc}")
+
+    # 3. Check if Tesseract is available as fallback
     binary_path = configure_tesseract()
 
     if PYTESSERACT_AVAILABLE and binary_path:

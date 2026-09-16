@@ -11,7 +11,6 @@ import { ComplianceGapsView } from './components/pipeline/ComplianceGapsView';
 import { LabActionsView } from './components/pipeline/LabActionsView';
 import { CompliancePassportView } from './components/CompliancePassportView';
 import { KnowledgeBaseExplorer } from './components/KnowledgeBaseExplorer';
-import { ControlledDemoView } from './components/pipeline/ControlledDemoView';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
 
@@ -195,21 +194,15 @@ export default function App() {
 
   // Export official BIS technical compliance file
   const handleExportDossier = () => {
-    const dossierData = activeAssessment || {
-      dossier_id: 'BIS-24-SMPS-0049',
-      product_name: 'Industrial Edge Gateway & Power Supply Unit (SMPS-500W-IND)',
-      standard: 'IS 13252 (Part 1):2010',
-      scheme: 'MeitY CRO Phase II',
-      sha256_seal: 'c892da47f8721c5b8e99b0c034731872ef7ae1262d08912e73ce6723e742881b',
-      compliance_index: '92.4%',
-      timestamp: new Date().toISOString(),
-    };
-
-    const blob = new Blob([JSON.stringify(dossierData, null, 2)], { type: 'application/json' });
+    if (!activeAssessment) {
+      showToast('No active product assessment to export.');
+      return;
+    }
+    const blob = new Blob([JSON.stringify(activeAssessment, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${dossierData.dossier_id || 'zyntrix-dossier'}-compliance-file.json`;
+    a.download = `${activeAssessment.assessment_number || activeAssessment.assessment_id || 'goat-dossier'}-compliance-file.json`;
     a.click();
     URL.revokeObjectURL(url);
     showToast('BIS technical compliance file downloaded.');
@@ -220,7 +213,24 @@ export default function App() {
   };
 
   const activeProductName = activeAssessment?.product_name || activeAssessment?.title;
-  const sha256Seal = activeAssessment?.sha256_hash || 'c892da47f8721c5b8e99b0c034731872ef7ae1262d08912e73ce6723e742881b';
+  const sha256Seal = activeAssessment?.sha256_hash || 'SHA-256 Pending Verification';
+
+  // Compute real dynamic badge stats for SideNav from active assessment
+  const evaluatedReqs = activeAssessment?.compliance?.evaluated_requirements || activeAssessment?.requirements || activeAssessment?.clauses || [];
+  const verifiedCount = evaluatedReqs.filter((r) => r.status === 'VERIFIED' || r.status === 'SATISFIED').length;
+  const gapsList = activeAssessment?.compliance?.gaps || activeAssessment?.gaps || [];
+  const actionsList = activeAssessment?.testing_roadmap || activeAssessment?.roadmap || activeAssessment?.actions || [];
+  const rawAttrsCount = Object.keys(activeAssessment?.product_dna?.attributes || {}).length;
+
+  const navStats = activeAssessment ? {
+    dnaCount: rawAttrsCount > 0 ? `${rawAttrsCount} ATTR` : null,
+    standardsCountBadge: (activeAssessment.applicability?.length || 0) > 0 ? `${activeAssessment.applicability.length} STDs` : null,
+    clausesCountBadge: evaluatedReqs.length > 0 ? `${evaluatedReqs.length} CLAUSES` : null,
+    evidenceCountBadge: (activeAssessment.evidence_items?.length || activeAssessment.evidence?.length || 0) > 0 ? `${verifiedCount} VER` : null,
+    gapsCountBadge: gapsList.length > 0 ? `${gapsList.length} GAP` : null,
+    actionsCountBadge: actionsList.length > 0 ? `${actionsList.length} ACT` : null,
+    passportBadge: passportData ? (passportData.overall_status || 'PASS') : null,
+  } : {};
 
   return (
     <div className="flex h-screen w-full bg-[#F8FAFC] text-slate-900 antialiased overflow-hidden font-sans">
@@ -233,6 +243,7 @@ export default function App() {
         assessmentsCount={assessmentsList.length}
         standardsCount={51}
         onExecuteIntegrityCheck={() => setIntegrityModalOpen(true)}
+        stats={navStats}
       />
 
       {/* Main Execution Workspace Container */}
@@ -364,14 +375,6 @@ export default function App() {
               <KnowledgeBaseExplorer />
             </div>
           )}
-
-          {/* Secondary: Controlled Demonstration / SIH Evaluation */}
-          {activeTab === 'evaluation' && (
-            <ControlledDemoView
-              onLoadDemoAssessment={handleAssessmentCreated}
-              onNavigate={setActiveTab}
-            />
-          )}
         </main>
       </div>
 
@@ -415,11 +418,13 @@ export default function App() {
               <div className="space-y-1.5 text-xs text-slate-700">
                 <div className="flex items-center justify-between py-1 border-b border-slate-100 font-mono text-[11px]">
                   <span>Product DNA Conformance</span>
-                  <span className="text-emerald-700 font-bold">100% Validated</span>
+                  <span className="text-emerald-700 font-bold">Validated</span>
                 </div>
                 <div className="flex items-center justify-between py-1 border-b border-slate-100 font-mono text-[11px]">
                   <span>Gazette QCO Order Mapping</span>
-                  <span className="text-emerald-700 font-bold">Gaz. S.O. 3250(E)</span>
+                  <span className="text-emerald-700 font-bold truncate max-w-[200px]" title={activeAssessment?.applicability?.[0]?.provenance || 'Official Gazette Order'}>
+                    {activeAssessment?.applicability?.[0]?.provenance || 'Official Gazette Order'}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between py-1 border-b border-slate-100 font-mono text-[11px]">
                   <span>Deterministic Rule Authority</span>
@@ -462,12 +467,12 @@ export default function App() {
             </div>
 
             <p className="text-xs text-slate-600 leading-relaxed">
-              Committing this audit will freeze the current evaluation ledger, record all 38 clause verdicts into the tamper-evident audit trail, and stamp the official Pre-Certification Compliance Passport.
+              Committing this audit will freeze the current evaluation ledger, record all verified clause verdicts into the tamper-evident audit trail, and stamp the official Pre-Certification Compliance Passport.
             </p>
 
             <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded text-xs text-emerald-900 flex items-center gap-2">
               <span className="material-symbols-outlined text-emerald-600 text-base shrink-0">check_circle</span>
-              <span>All 34 verified clauses will be cryptographically sealed.</span>
+              <span>All verified clauses will be cryptographically sealed.</span>
             </div>
 
             <div className="flex justify-end gap-2 pt-2 border-t border-slate-200">

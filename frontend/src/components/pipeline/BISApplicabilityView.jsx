@@ -27,7 +27,7 @@ export function BISApplicabilityView({ assessment, onNavigate }) {
   }
 
   const applicability = assessment.applicability || [];
-  const primaryStandard = assessment.target_standard || (applicability[0]?.standard_number) || 'IS 17526:2021';
+  const primaryStandard = assessment.target_standard || (applicability[0]?.standard_number) || 'Pending Scoping';
   const clarifications = assessment.clarifications || [];
 
   return (
@@ -104,7 +104,7 @@ export function BISApplicabilityView({ assessment, onNavigate }) {
         <div className="flex items-center justify-between">
           <h2 className="text-xs font-bold text-slate-800 uppercase tracking-wide flex items-center gap-1.5">
             <span className="material-symbols-outlined text-slate-600 text-sm">assignment</span>
-            <span>Evaluated Standard Candidates ({applicability.length || 1})</span>
+            <span>Evaluated Standard Candidates ({applicability.length})</span>
           </h2>
           <span className="text-[11px] font-mono text-slate-500">
             Primary Target: <strong className="text-slate-900">{primaryStandard}</strong>
@@ -112,19 +112,16 @@ export function BISApplicabilityView({ assessment, onNavigate }) {
         </div>
 
         {applicability.length === 0 ? (
-          <div className="p-4 rounded-lg bg-white border border-slate-200 text-xs space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="font-mono font-bold text-slate-900">{primaryStandard}</span>
-              <StatusBadge status="APPLICABLE" />
-            </div>
-            <p className="text-slate-600 text-xs">
-              Direct technical scope mapping confirmed for product category: <strong className="text-slate-800">{assessment.category}</strong>.
+          <div className="p-6 rounded-lg bg-white border border-slate-200 text-xs text-center space-y-1">
+            <p className="font-semibold text-slate-700">No applicable standards identified yet</p>
+            <p className="text-slate-500">
+              No gazetted BIS standards matched the provided product attributes. Update product specifications in Step 1 or Step 2.
             </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-4">
             {applicability.map((app, idx) => {
-              const stdNum = app.standard_number || app.standard || 'IS 17526:2021';
+              const stdNum = app.standard_number || app.standard || 'IS Standard';
               const title = app.title || app.standard_name || 'Indian Standard Specification';
               const status = app.status || app.applicability_status || 'APPLICABLE';
               const scopeStatus = app.scope_status || 'IN_SCOPE';

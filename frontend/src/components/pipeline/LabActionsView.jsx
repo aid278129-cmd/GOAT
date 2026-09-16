@@ -25,42 +25,8 @@ export function LabActionsView({ assessment, onNavigate }) {
     );
   }
 
-  const roadmap = assessment.roadmap || assessment.actions || [];
-  const primaryStandard = assessment.target_standard || (assessment.applicability?.[0]?.standard_number) || 'IS 17526:2021';
-
-  // Fallback demo items if backend hasn't generated detailed roadmap
-  const displayRoadmap = roadmap.length > 0 ? roadmap : [
-    {
-      action_type: 'LAB_TEST_REQUIRED',
-      title: 'Thermal Retention 6-Hour Water Temperature Test',
-      clause: 'IS 17526 Cl 5.4',
-      priority: 'HIGH',
-      reason: 'Mandatory statutory parameter under DPIIT QCO 2023. Missing accredited laboratory test certificate.',
-      evidence_needed: 'NABL accredited test certificate showing water temperature >= 60 C after 6h.',
-      suggested_step: 'Submit product test sample to recognized NABL testing facility.',
-      target_labs: ['National Test House (NTH)', 'Shri Ram Institute for Industrial Research (SRI)'],
-    },
-    {
-      action_type: 'LAB_TEST_REQUIRED',
-      title: 'Inversion Hydrostatic Leakage Resistance Test',
-      clause: 'IS 17526 Cl 5.2',
-      priority: 'HIGH',
-      reason: 'Physical leak-tightness test required under inversion at room temperature for 10 minutes.',
-      evidence_needed: 'Lab test observation log confirming no fluid egress.',
-      suggested_step: 'Conduct routine batch testing under Scheme of Testing and Inspection (STI).',
-      target_labs: ['BIS Central Laboratory (Sahibabad)', 'ERTL / NABL Accredited Facilities'],
-    },
-    {
-      action_type: 'PHOTO_MARKING_EVIDENCE_REQUIRED',
-      title: 'Statutory ISI Mark & Registration Rating Plate',
-      clause: 'IS 17526 Cl 7.1',
-      priority: 'MEDIUM',
-      reason: 'Mandatory rating plate labeling format required before customs clearance or domestic sale.',
-      evidence_needed: 'High-resolution photograph of laser-etched / printed product bottom plate.',
-      suggested_step: 'Upload engineering artwork or pre-production sample marking photograph.',
-      target_labs: ['In-House Factory QA / BIS Officer Inspection'],
-    },
-  ];
+  const roadmap = assessment.testing_roadmap || assessment.roadmap || assessment.actions || [];
+  const primaryStandard = assessment.target_standard || (assessment.applicability?.[0]?.standard_number) || 'Applicable Standard';
 
   return (
     <div className="flex-1 p-6 md:p-8 space-y-6 overflow-y-auto font-sans bg-[#F8FAFC]">
@@ -100,7 +66,7 @@ export function LabActionsView({ assessment, onNavigate }) {
           <span>Pre-Certification Advisory Scope</span>
         </div>
         <p className="text-[11px] leading-relaxed">
-          Zyntrix provides actionable guidance for laboratory test parameters and documentation requirements. Zyntrix does not book laboratories, issue testing tokens, or communicate with the Bureau of Indian Standards on the manufacturer's behalf.
+          GOAT provides actionable guidance for laboratory test parameters and documentation requirements. GOAT does not book laboratories, issue testing tokens, or communicate with the Bureau of Indian Standards on the manufacturer's behalf.
         </p>
       </div>
 
@@ -109,15 +75,23 @@ export function LabActionsView({ assessment, onNavigate }) {
         <div className="flex items-center justify-between">
           <h2 className="text-xs font-bold text-slate-800 uppercase tracking-wide flex items-center gap-1.5">
             <span className="material-symbols-outlined text-slate-600 text-sm">checklist</span>
-            <span>Remediation Tasks ({displayRoadmap.length})</span>
+            <span>Remediation Tasks ({roadmap.length})</span>
           </h2>
           <span className="text-[11px] font-mono text-slate-500">
-            {displayRoadmap.filter((r) => r.priority === 'HIGH').length} High Priority
+            {roadmap.filter((r) => r.priority === 'HIGH').length} High Priority
           </span>
         </div>
 
-        <div className="grid grid-cols-1 gap-4">
-          {displayRoadmap.map((item, idx) => {
+        {roadmap.length === 0 ? (
+          <div className="p-8 rounded-lg bg-white border border-slate-200 text-xs text-center space-y-2">
+            <p className="font-semibold text-slate-700">No laboratory testing or remediation actions pending</p>
+            <p className="text-slate-500 max-w-sm mx-auto">
+              All evaluated clauses have either met deterministic conformance or do not require laboratory remediation.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-4">
+            {roadmap.map((item, idx) => {
             const actionType = item.action_type || 'LAB_TEST_REQUIRED';
             const title = item.title || item.name || 'Testing Requirement';
             const clause = item.clause || item.clause_id || 'Standard Clause';
@@ -189,6 +163,7 @@ export function LabActionsView({ assessment, onNavigate }) {
             );
           })}
         </div>
+        )}
       </div>
     </div>
   );

@@ -549,7 +549,7 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
               Product Information Input
             </h1>
             <p className="text-xs text-slate-600 mt-0.5">
-              Provide product information. Zyntrix extracts Product DNA and determines which BIS standards and requirements may apply.
+              Provide product information. GOAT extracts Product DNA and determines which BIS standards and requirements may apply.
             </p>
           </div>
 
@@ -631,8 +631,8 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
               layer1Status.ocrFunctional
                 ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
                 : 'bg-amber-100 text-amber-800 border-amber-200'
-            }`} title={layer1Status.ocrFunctional ? 'Tesseract OCR binary active' : 'Tesseract binary not detected; high-contrast fallback active'}>
-              {layer1Status.ocrFunctional ? '✓ Tesseract OCR' : '⚠ OCR unavailable — install/configure Tesseract'}
+            }`} title={layer1Status.ocrFunctional ? 'OpenDataLoader AI document extractor active' : 'OpenDataLoader engine standby'}>
+              {layer1Status.ocrFunctional ? '✓ OpenDataLoader' : '⚠ Standby'}
             </span>
           </div>
 
@@ -1048,7 +1048,7 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                 <div className="p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-[11px] text-amber-900 flex items-start gap-2">
                   <span className="material-symbols-outlined text-amber-600 text-[16px] shrink-0 mt-0.5">warning</span>
                   <div>
-                    <strong>Native Tesseract OCR unavailable:</strong> Offline high-contrast fallback active. To enable native OCR on rating plates, install Tesseract OCR or configure <code className="font-mono bg-amber-100 px-1 rounded">TESSERACT_CMD</code> in <code className="font-mono bg-amber-100 px-1 rounded">backend/.env</code>.
+                    <strong>OpenDataLoader engine offline:</strong> High-contrast fallback active. OpenDataLoader requires Java 11+ runtime for document extraction.
                   </div>
                 </div>
               )}

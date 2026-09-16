@@ -2,7 +2,7 @@ services:
   # PostgreSQL 16 with pgvector extension enabled
   postgres:
     image: pgvector/pgvector:pg16
-    container_name: zyntrix_postgres
+    container_name: goat_postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
@@ -23,7 +23,7 @@ services:
     build:
       context: .
       dockerfile: docker/backend.Dockerfile
-    container_name: zyntrix_backend
+    container_name: goat_backend
     restart: unless-stopped
     environment:
       ENVIRONMENT: development
@@ -50,7 +50,7 @@ services:
     build:
       context: .
       dockerfile: docker/frontend.Dockerfile
-    container_name: zyntrix_frontend
+    container_name: goat_frontend
     restart: unless-stopped
     ports:
       - "5173:80"

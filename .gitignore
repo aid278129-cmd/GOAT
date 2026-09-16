@@ -34,6 +34,7 @@ frontend/dist/
 frontend/node_modules/
 .eslintcache
 zyntrix-*
+goat-*
 
 # Environment & Secrets (Never commit production .env)
 .env

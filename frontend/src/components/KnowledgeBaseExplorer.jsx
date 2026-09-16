@@ -125,7 +125,7 @@ export function KnowledgeBaseExplorer() {
     {
       id: 'src-user-003',
       name: 'Preserved Synthetic Test Fixture',
-      publisher: 'Team Zyntrix Ingestion Harness',
+      publisher: 'Team GOAT Ingestion Harness',
       source_type: 'USER_PROVIDED',
       authority_level: 'UNVERIFIED',
       source_url: null,

@@ -10,17 +10,17 @@ export function SideNav({
   onExecuteIntegrityCheck,
   stats = {},
 }) {
-  // Extract or default dynamic badges to match Stitch Regulatory Matrix
-  const dnaCount = stats.dnaCount || '16 OK';
-  const standardsCountBadge = stats.standardsCountBadge || '2 STDs';
-  const clausesCountBadge = stats.clausesCountBadge || '38 CLAUSES';
-  const evidenceCountBadge = stats.evidenceCountBadge || '36 VER';
-  const gapsCountBadge = stats.gapsCountBadge || '2 GAP';
-  const actionsCountBadge = stats.actionsCountBadge || '3 ACT';
-  const passportBadge = stats.passportBadge || 'PASS';
+  // Dynamic badges from real assessment stats only (no fake demo fallbacks)
+  const dnaCount = stats.dnaCount || null;
+  const standardsCountBadge = stats.standardsCountBadge || null;
+  const clausesCountBadge = stats.clausesCountBadge || null;
+  const evidenceCountBadge = stats.evidenceCountBadge || null;
+  const gapsCountBadge = stats.gapsCountBadge || null;
+  const actionsCountBadge = stats.actionsCountBadge || null;
+  const passportBadge = stats.passportBadge || null;
 
   const pipelineSteps = [
-    { id: 'input', step: '01', label: '1. Product Input', icon: 'upload_file', badge: '173' },
+    { id: 'input', step: '01', label: '1. Product Input', icon: 'upload_file' },
     { id: 'dna', step: '02', label: '2. Product DNA', icon: 'fingerprint', badge: dnaCount, badgeType: 'info' },
     { id: 'applicability', step: '03', label: '3. BIS Applicability', icon: 'gavel', badge: standardsCountBadge, badgeType: 'info' },
     { id: 'clauses', step: '04', label: '4. Standards & Clauses', icon: 'account_tree', badge: clausesCountBadge, badgeType: 'primary' },
@@ -33,7 +33,6 @@ export function SideNav({
   const secondaryNav = [
     { id: 'dashboard', label: 'Workspace Overview', icon: 'dashboard' },
     { id: 'knowledge', label: 'BIS Standards Catalog', icon: 'menu_book', count: standardsCount },
-    { id: 'evaluation', label: 'Controlled Demo (SIH)', icon: 'biotech' },
   ];
 
   return (
@@ -65,10 +64,10 @@ export function SideNav({
       <div className="px-2.5 py-1.5 mb-2.5 rounded bg-slate-50 border border-slate-200 flex flex-col gap-0.5">
         <div className="flex items-center justify-between">
           <span className="text-[9px] font-mono uppercase text-slate-400 font-bold">Active Dossier</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" title="Active"></span>
+          <span className={`w-1.5 h-1.5 rounded-full ${activeProductName ? 'bg-emerald-500' : 'bg-slate-300'}`} title={activeProductName ? 'Active' : 'No Active Dossier'}></span>
         </div>
-        <span className="text-xs font-semibold text-slate-900 truncate" title={activeProductName || 'No Product Active'}>
-          {activeProductName || 'Industrial Edge Gateway (SMPS-500W)'}
+        <span className="text-xs font-semibold text-slate-900 truncate" title={activeProductName || 'No Dossier Selected'}>
+          {activeProductName || 'No Dossier Selected'}
         </span>
       </div>
 

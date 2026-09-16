@@ -40,7 +40,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
-    description="BIS Compliance Compiler - AI-powered Intelligent Assistant for Indian Standards & Compliance Intelligence (SIH 26107)",
+    description="GOAT BIS Compliance Compiler - AI-powered Intelligent Assistant for Indian Standards & Compliance Intelligence (SIH 26107)",
     version=settings.VERSION,
     lifespan=lifespan,
     docs_url="/docs",

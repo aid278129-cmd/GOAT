@@ -118,10 +118,18 @@ def extract_with_opendataloader(
     file_input: Union[str, bytes],
     filename: Optional[str] = None,
     keep_temp: bool = False,
+    use_struct_tree: bool = True,
+    sanitize: bool = False,
+    reading_order: Optional[str] = None,
+    hybrid: Optional[str] = None,
 ) -> OpenDataLoaderResult:
     """Extract structured pages and reading-order markdown using OpenDataLoader PDF.
     
     Accepts either an absolute filesystem path or raw PDF bytes.
+    Features enabled:
+    - XY-Cut++ reading order & table border detection.
+    - AI safety prompt injection protection (hidden/transparent text filtering).
+    - Native Tagged PDF structure tree preservation when present.
     """
     if not is_opendataloader_ready():
         raise RuntimeError(
@@ -152,13 +160,21 @@ def extract_with_opendataloader(
         else:
             raise TypeError(f"Unsupported file_input type: {type(file_input)}")
 
-        # 2. Run OpenDataLoader conversion
-        opendataloader_pdf.convert(
-            input_path=target_input_path,
-            output_dir=temp_out_dir,
-            format=["markdown", "json"],
-            quiet=True,
-        )
+        # 2. Run OpenDataLoader conversion with advanced options
+        convert_kwargs: Dict[str, Any] = {
+            "input_path": target_input_path,
+            "output_dir": temp_out_dir,
+            "format": ["markdown", "json"],
+            "quiet": True,
+            "use_struct_tree": use_struct_tree,
+            "sanitize": sanitize,
+        }
+        if reading_order:
+            convert_kwargs["reading_order"] = reading_order
+        if hybrid:
+            convert_kwargs["hybrid"] = hybrid
+
+        opendataloader_pdf.convert(**convert_kwargs)
 
         # 3. Read generated output files
         out_files = os.listdir(temp_out_dir)
@@ -262,3 +278,123 @@ def extract_with_opendataloader(
                     shutil.rmtree(temp_out_dir, ignore_errors=True)
                 except Exception:
                     pass
+
+
+def batch_extract_with_opendataloader(
+    file_paths: List[str],
+    output_dir: Optional[str] = None,
+    use_struct_tree: bool = True,
+    sanitize: bool = False,
+) -> Dict[str, OpenDataLoaderResult]:
+    """Batch process multiple PDF files in a single JVM call for maximal throughput.
+    
+    Spawns one single JVM process rather than repeatedly launching JVM instances.
+    """
+    if not is_opendataloader_ready():
+        raise RuntimeError("OpenDataLoader PDF is not available.")
+    
+    if not file_paths:
+        return {}
+
+    temp_out_dir = output_dir or tempfile.mkdtemp(prefix="zyntrix_odl_batch_")
+    results: Dict[str, OpenDataLoaderResult] = {}
+
+    try:
+        opendataloader_pdf.convert(
+            input_path=file_paths,
+            output_dir=temp_out_dir,
+            format=["markdown", "json"],
+            quiet=True,
+            use_struct_tree=use_struct_tree,
+            sanitize=sanitize,
+        )
+
+        for path in file_paths:
+            base = os.path.splitext(os.path.basename(path))[0]
+            json_file = os.path.join(temp_out_dir, f"{base}.json")
+            md_file = os.path.join(temp_out_dir, f"{base}.md")
+
+            if os.path.exists(json_file):
+                with open(json_file, "r", encoding="utf-8") as jf:
+                    parsed_json = json.load(jf)
+                md_text = ""
+                if os.path.exists(md_file):
+                    with open(md_file, "r", encoding="utf-8", errors="replace") as mf:
+                        md_text = mf.read()
+
+                total_pages = int(parsed_json.get("number_pages") or parsed_json.get("number of pages") or 1)
+                all_kids = parsed_json.get("kids") or []
+                flat_items = _flatten_kids(all_kids)
+
+                pages_elements: Dict[int, List[Dict[str, Any]]] = {p: [] for p in range(1, total_pages + 1)}
+                for item in flat_items:
+                    pnum = item.get("page number") or item.get("page_number") or 1
+                    pages_elements.setdefault(pnum, []).append(item)
+
+                extracted_pages = []
+                for p_idx in range(1, total_pages + 1):
+                    items = pages_elements.get(p_idx, [])
+                    text_pieces = []
+                    structured_blocks = []
+                    img_cnt = sum(1 for el in items if el.get("type") == "image")
+                    tbl_cnt = sum(1 for el in items if el.get("type") == "table")
+
+                    for el in items:
+                        c = _extract_content_string(el)
+                        if c:
+                            text_pieces.append(c)
+                            structured_blocks.append({
+                                "bbox": el.get("bounding box") or el.get("bbox") or [],
+                                "text": c,
+                                "block_type": el.get("type", "unknown"),
+                                "tag": el.get("pdfua_tag"),
+                                "id": el.get("id"),
+                            })
+
+                    p_text = "\n\n".join(text_pieces)
+                    extracted_pages.append(
+                        OpenDataLoaderPage(
+                            page_number=p_idx,
+                            text=p_text,
+                            char_count=len(p_text),
+                            blocks=structured_blocks,
+                            images_count=img_cnt,
+                            tables_count=tbl_cnt,
+                            extraction_method="OPENDATALOADER_PDF",
+                        )
+                    )
+
+                results[path] = OpenDataLoaderResult(
+                    total_pages=total_pages,
+                    pages=extracted_pages,
+                    markdown_content=md_text,
+                    title_metadata=parsed_json.get("title"),
+                    author_metadata=parsed_json.get("author"),
+                    source_name=os.path.basename(path),
+                    engine="opendataloader-pdf",
+                )
+        return results
+
+    finally:
+        if not output_dir and os.path.exists(temp_out_dir):
+            try:
+                shutil.rmtree(temp_out_dir, ignore_errors=True)
+            except Exception:
+                pass
+
+
+def auto_tag_pdf(input_path: str, output_dir: str) -> str:
+    """Generate screen-reader-ready Tagged PDF from an untagged PDF (Well-Tagged PDF / veraPDF specification)."""
+    if not is_opendataloader_ready():
+        raise RuntimeError("OpenDataLoader PDF is not available.")
+    
+    opendataloader_pdf.convert(
+        input_path=input_path,
+        output_dir=output_dir,
+        format="tagged-pdf",
+        quiet=True,
+    )
+    base = os.path.splitext(os.path.basename(input_path))[0]
+    candidate = os.path.join(output_dir, f"{base}.pdf")
+    return candidate if os.path.exists(candidate) else output_dir
+

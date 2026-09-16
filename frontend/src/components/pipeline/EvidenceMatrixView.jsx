@@ -36,10 +36,10 @@ export function EvidenceMatrixView({ assessment, onUploadEvidence, onNavigate })
     );
   }
 
-  const evidenceList = assessment.evidence || [];
-  const requirements = assessment.requirements || assessment.clauses || [];
-  const standardNumber = assessment.standard_number || assessment.primary_standard || 'IS 302-2-21:2018';
-  const standardRevision = assessment.standard_revision || '2011 (Consolidated Active)';
+  const evidenceList = assessment.evidence_items || assessment.evidence || [];
+  const requirements = assessment.compliance?.evaluated_requirements || assessment.requirements || assessment.clauses || [];
+  const standardNumber = assessment.target_standard || assessment.standard_number || assessment.primary_standard || (assessment.applicability?.[0]?.standard_number) || '—';
+  const standardRevision = assessment.standard_revision || assessment.applicability?.[0]?.edition || 'Consolidated Active';
 
   const handleEvidenceSubmit = async (e) => {
     e.preventDefault();
@@ -253,56 +253,61 @@ export function EvidenceMatrixView({ assessment, onUploadEvidence, onNavigate })
               </span>
             </div>
 
-            <div className="divide-y divide-slate-100 mt-3 space-y-6 pt-2">
-              {(requirements.length > 0 ? requirements : [{ clause_number: 'Cl. 13.2', title: 'Electrical Insulation Resistance' }]).map((req, idx) => {
-                const matchedEv = evidenceList.find(e => e.clause === req.clause_number || e.target_clause === req.clause_number) || evidenceList[idx];
-                const isSatisfied = matchedEv && (matchedEv.status === 'VERIFIED' || matchedEv.authority === 'NABL_ACCREDITED_LAB');
-                const isLabReq = (req.title || req.clause_number || '').toLowerCase().includes('resistance') || (req.title || '').toLowerCase().includes('test');
+            {requirements.length === 0 ? (
+              <div className="p-8 text-center text-xs text-slate-500">
+                No requirement clauses recorded to audit. Complete standard scoping in Step 3.
+              </div>
+            ) : (
+              <div className="divide-y divide-slate-100 mt-3 space-y-6 pt-2">
+                {requirements.map((req, idx) => {
+                  const matchedEv = evidenceList.find(e => e.clause === req.clause_number || e.target_clause === req.clause_number) || evidenceList[idx];
+                  const isSatisfied = matchedEv && (matchedEv.status === 'VERIFIED' || matchedEv.authority === 'NABL_ACCREDITED_LAB');
+                  const isLabReq = (req.title || req.clause_number || '').toLowerCase().includes('resistance') || (req.title || '').toLowerCase().includes('test');
 
-                return (
-                  <div key={idx} className="pt-4 first:pt-0 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-mono font-bold text-slate-900 bg-amber-50 text-amber-900 border border-amber-200 px-2 py-0.5 rounded">
-                          Audit Row #{idx + 1}
-                        </span>
-                        <span className="text-xs font-bold text-slate-800">
-                          {req.clause_number || `Clause ${idx + 1}`} &bull; {req.title || req.clause_title || 'Mandatory Technical Requirement'}
+                  return (
+                    <div key={idx} className="pt-4 first:pt-0 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-mono font-bold text-slate-900 bg-amber-50 text-amber-900 border border-amber-200 px-2 py-0.5 rounded">
+                            Audit Row #{idx + 1}
+                          </span>
+                          <span className="text-xs font-bold text-slate-800">
+                            {req.clause_number || `Clause ${idx + 1}`} &bull; {req.title || req.clause_title || 'Mandatory Technical Requirement'}
+                          </span>
+                        </div>
+                        <span className={`text-[10px] font-mono font-bold px-2.5 py-1 rounded border ${
+                          isSatisfied ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-800 border-amber-200'
+                        }`}>
+                          {isSatisfied ? 'DETERMINISTIC VERDICT: SATISFIED' : 'DETERMINISTIC VERDICT: EVIDENCE_REQUIRED'}
                         </span>
                       </div>
-                      <span className={`text-[10px] font-mono font-bold px-2.5 py-1 rounded border ${
-                        isSatisfied ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-800 border-amber-200'
-                      }`}>
-                        {isSatisfied ? 'DETERMINISTIC VERDICT: SATISFIED' : 'DETERMINISTIC VERDICT: EVIDENCE_REQUIRED'}
-                      </span>
-                    </div>
 
-                    {/* 10-Question Structured Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-slate-50/70 p-4 rounded-lg border border-slate-200 text-xs">
-                      <div className="space-y-2">
-                        <div>
-                          <span className="font-mono text-[10px] font-bold text-slate-500 uppercase block">1. Triggering Product Fact</span>
-                          <p className="font-semibold text-slate-800 font-mono">
-                            {assessment.product_name || 'ThermalPro 15L Instant Water Heater'} &bull; 230V AC, 3000W, 15L
-                          </p>
+                      {/* 10-Question Structured Grid */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-slate-50/70 p-4 rounded-lg border border-slate-200 text-xs">
+                        <div className="space-y-2">
+                          <div>
+                            <span className="font-mono text-[10px] font-bold text-slate-500 uppercase block">1. Triggering Product Fact</span>
+                            <p className="font-semibold text-slate-800 font-mono">
+                              {assessment.product_name || 'Product'} &bull; {assessment.category || 'Compliance Assessment'}
+                            </p>
+                          </div>
+                          <div>
+                            <span className="font-mono text-[10px] font-bold text-slate-500 uppercase block">2. Applicable BIS Standard</span>
+                            <p className="font-semibold text-slate-800 font-mono">{standardNumber}</p>
+                          </div>
+                          <div>
+                            <span className="font-mono text-[10px] font-bold text-slate-500 uppercase block">3. Standard Revision & Amendments</span>
+                            <p className="font-mono text-slate-700">{standardRevision}</p>
+                          </div>
+                          <div>
+                            <span className="font-mono text-[10px] font-bold text-slate-500 uppercase block">4. Governed Standard Clause</span>
+                            <p className="font-mono text-slate-800 font-semibold">{req.clause_number || `Clause ${idx + 1}`}</p>
+                          </div>
+                          <div>
+                            <span className="font-mono text-[10px] font-bold text-slate-500 uppercase block">5. Exact Regulatory Requirement</span>
+                            <p className="text-slate-700">{req.description || req.measurable_condition || req.title || 'Standard criteria'}</p>
+                          </div>
                         </div>
-                        <div>
-                          <span className="font-mono text-[10px] font-bold text-slate-500 uppercase block">2. Applicable BIS Standard</span>
-                          <p className="font-semibold text-slate-800 font-mono">{standardNumber}</p>
-                        </div>
-                        <div>
-                          <span className="font-mono text-[10px] font-bold text-slate-500 uppercase block">3. Standard Revision & Amendments</span>
-                          <p className="font-mono text-slate-700">{standardRevision}</p>
-                        </div>
-                        <div>
-                          <span className="font-mono text-[10px] font-bold text-slate-500 uppercase block">4. Governed Standard Clause</span>
-                          <p className="font-mono text-slate-800 font-semibold">{req.clause_number || `Clause 13.2`}</p>
-                        </div>
-                        <div>
-                          <span className="font-mono text-[10px] font-bold text-slate-500 uppercase block">5. Exact Regulatory Requirement</span>
-                          <p className="text-slate-700">{req.title || 'Insulation resistance shall be not less than 2.0 MegaOhms at 500V DC.'}</p>
-                        </div>
-                      </div>
 
                       <div className="space-y-2 border-t md:border-t-0 md:border-l border-slate-200 md:pl-4">
                         <div>
@@ -343,6 +348,7 @@ export function EvidenceMatrixView({ assessment, onUploadEvidence, onNavigate })
                 );
               })}
             </div>
+            )}
           </div>
         </div>
       ) : viewMode === 'trace' ? (
@@ -364,10 +370,15 @@ export function EvidenceMatrixView({ assessment, onUploadEvidence, onNavigate })
               </span>
             </div>
 
-            <div className="divide-y divide-slate-100 mt-3 space-y-4 pt-1">
-              {(requirements.length > 0 ? requirements : [{ clause_number: 'Cl. 1', title: 'General Safety & Rating' }]).map((req, idx) => {
-                const matchedEv = evidenceList.find(e => e.clause === req.clause_number || e.target_clause === req.clause_number) || evidenceList[idx];
-                const hasVerifiedEvidence = matchedEv && (matchedEv.authority === 'NABL_ACCREDITED_LAB' || matchedEv.status === 'VERIFIED');
+            {requirements.length === 0 ? (
+              <div className="p-8 text-center text-xs text-slate-500">
+                No requirement clauses recorded to trace. Complete standard scoping in Step 3.
+              </div>
+            ) : (
+              <div className="divide-y divide-slate-100 mt-3 space-y-4 pt-1">
+                {requirements.map((req, idx) => {
+                  const matchedEv = evidenceList.find(e => e.clause === req.clause_number || e.target_clause === req.clause_number) || evidenceList[idx];
+                  const hasVerifiedEvidence = matchedEv && (matchedEv.authority === 'NABL_ACCREDITED_LAB' || matchedEv.status === 'VERIFIED');
                 
                 return (
                   <div key={idx} className="pt-4 first:pt-0 space-y-3">
@@ -469,6 +480,7 @@ export function EvidenceMatrixView({ assessment, onUploadEvidence, onNavigate })
                 );
               })}
             </div>
+            )}
           </div>
         </div>
       ) : (

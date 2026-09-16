@@ -10,8 +10,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "BIS Compliance Compiler"
-    PROJECT_TEAM: str = "Zyntrix"
+    PROJECT_NAME: str = "GOAT BIS Compliance Compiler"
+    PROJECT_TEAM: str = "GOAT"
     SIH_PROBLEM_ID: str = "26107"
     VERSION: str = "0.1.0"
     ENVIRONMENT: str = "development"

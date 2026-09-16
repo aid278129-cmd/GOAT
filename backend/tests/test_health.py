@@ -10,8 +10,8 @@ async def test_root_endpoint():
         response = await ac.get("/")
         assert response.status_code == 200
         data = response.json()
-        assert data["project"] == "BIS Compliance Compiler"
-        assert data["team"] == "Zyntrix"
+        assert data["project"] == "GOAT BIS Compliance Compiler"
+        assert data["team"] == "GOAT"
         assert data["sih_problem"] == "26107"
 
 

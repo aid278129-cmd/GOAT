@@ -55,7 +55,7 @@ async def test_db_connectivity(retries: int = 1, delay_sec: float = 0.2) -> bool
 
     # Automatic local database fallback for development and offline demo
     if settings.DEV_FALLBACK_SQLITE and not settings.is_sqlite and settings.ENVIRONMENT != "production":
-        sqlite_db_path = f"{settings.DATA_PATH}/zyntrix.db"
+        sqlite_db_path = f"{settings.DATA_PATH}/goat.db"
         sqlite_url = f"sqlite+aiosqlite:///{sqlite_db_path}"
         try:
             fallback_engine = create_resilient_engine(sqlite_url)

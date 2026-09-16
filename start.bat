@@ -1,9 +1,9 @@
 @echo off
 setlocal enabledelayedexpansion
-title Zyntrix BIS Compliance Compiler
+title GOAT BIS Compliance Compiler
 
 echo ==============================================================================
-echo   ZYNTRIX BIS COMPLIANCE COMPILER — ONE-COMMAND STARTUP (WINDOWS)
+echo   GOAT BIS COMPLIANCE COMPILER — ONE-COMMAND STARTUP (WINDOWS)
 echo   SIH Problem Statement 26107
 echo ==============================================================================
 echo.

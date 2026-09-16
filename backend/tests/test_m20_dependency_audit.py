@@ -64,7 +64,7 @@ def test_pymupdf_real_runtime_execution(tmp_path):
     assert result.total_pages == 1
     assert "IS 17526:2021" in result.pages[0].text
     assert "750 ml" in result.pages[0].text
-    assert result.pages[0].extraction_method == "TEXT"
+    assert result.pages[0].extraction_method in ("OPENDATALOADER_PDF", "TEXT")
 
 
 # 3. Scanned PDF & OCR Fallback Runtime Handling

@@ -25,14 +25,13 @@ export function TopBar({
     { id: 'passport', label: '8. Compliance Passport' },
     { id: 'dashboard', label: 'Workspace Overview' },
     { id: 'knowledge', label: 'BIS Standards Catalog' },
-    { id: 'evaluation', label: 'Controlled Demo (SIH)' },
   ];
 
-  // Derive metadata from active assessment or fallback to Stitch reference
-  const dossierId = activeAssessment?.assessment_number || activeAssessment?.assessment_id?.slice(0, 12) || 'IND-2024-0049';
-  const targetStandard = activeAssessment?.target_standard || activeAssessment?.primary_standard || (activeAssessment?.applicability?.[0]?.standard_number) || 'IS 13252, 16046';
-  const schemeName = activeAssessment?.scheme || 'CRS / MeitY';
-  const sha256Short = activeAssessment?.sha256_hash ? `${activeAssessment.sha256_hash.slice(0, 4)}...${activeAssessment.sha256_hash.slice(-4)}` : 'e84a...c96e';
+  // Derive metadata from active assessment only
+  const dossierId = activeAssessment?.assessment_number || activeAssessment?.assessment_id?.slice(0, 12) || '—';
+  const targetStandard = activeAssessment?.target_standard || activeAssessment?.primary_standard || (activeAssessment?.applicability?.[0]?.standard_number) || 'Pending';
+  const schemeName = activeAssessment?.scheme || 'BIS / CRS';
+  const sha256Short = activeAssessment?.sha256_hash ? `${activeAssessment.sha256_hash.slice(0, 4)}...${activeAssessment.sha256_hash.slice(-4)}` : null;
 
   return (
     <header className="border-b border-slate-200 bg-white sticky top-0 z-30 shadow-2xs font-sans">
@@ -60,37 +59,48 @@ export function TopBar({
           </div>
         </div>
 
-        {/* Center: High-Density Regulatory Context Strip (from Stitch) */}
-        <div className="hidden xl:flex items-center gap-3 text-xs font-mono border-x border-slate-200 px-4 py-1 bg-slate-50/70 rounded">
-          <div className="flex items-center gap-1 text-slate-700">
-            <span className="text-slate-400 uppercase text-[10px]">Dossier:</span>
-            <span className="font-semibold text-slate-900">{dossierId}</span>
+        {/* Center: Regulatory Context Strip (Only when active dossier loaded) */}
+        {activeAssessment ? (
+          <div className="hidden xl:flex items-center gap-3 text-xs font-mono border-x border-slate-200 px-4 py-1 bg-slate-50/70 rounded">
+            <div className="flex items-center gap-1 text-slate-700">
+              <span className="text-slate-400 uppercase text-[10px]">Dossier:</span>
+              <span className="font-semibold text-slate-900">{dossierId}</span>
+            </div>
+            <span className="text-slate-300">|</span>
+            <div className="flex items-center gap-1 text-slate-700">
+              <span className="text-slate-400 uppercase text-[10px]">IS:</span>
+              <span className="font-semibold text-slate-900">{targetStandard.replace(/^IS\s*/i, '')}</span>
+            </div>
+            <span className="text-slate-300">|</span>
+            <div className="flex items-center gap-1 text-slate-700">
+              <span className="text-slate-400 uppercase text-[10px]">Scheme:</span>
+              <span className="font-semibold text-slate-900">{schemeName}</span>
+            </div>
+            {sha256Short && (
+              <>
+                <span className="text-slate-300">|</span>
+                <div className="flex items-center gap-1.5 text-slate-700">
+                  <span className="text-slate-400 uppercase text-[10px]">SHA-256:</span>
+                  <span className="font-mono text-[11px] text-slate-800">{sha256Short}</span>
+                  <span className="px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                    VERIFIED
+                  </span>
+                </div>
+              </>
+            )}
+            <span className="text-slate-300">|</span>
+            <div className="flex items-center gap-1 text-slate-700">
+              <span className="material-symbols-outlined text-[14px] text-slate-600">lock</span>
+              <span className="text-[10px] text-slate-500 uppercase">State:</span>
+              <span className="font-bold text-slate-800 text-[11px]">{activeAssessment.status || 'Active'}</span>
+            </div>
           </div>
-          <span className="text-slate-300">|</span>
-          <div className="flex items-center gap-1 text-slate-700">
-            <span className="text-slate-400 uppercase text-[10px]">IS:</span>
-            <span className="font-semibold text-slate-900">{targetStandard.replace(/^IS\s*/i, '')}</span>
+        ) : (
+          <div className="hidden xl:flex items-center gap-2 text-xs font-mono text-slate-400 border-x border-slate-200 px-4 py-1">
+            <span className="w-2 h-2 rounded-full bg-slate-300"></span>
+            <span>No Active Dossier &bull; Ready for Input</span>
           </div>
-          <span className="text-slate-300">|</span>
-          <div className="flex items-center gap-1 text-slate-700">
-            <span className="text-slate-400 uppercase text-[10px]">Scheme:</span>
-            <span className="font-semibold text-slate-900">{schemeName}</span>
-          </div>
-          <span className="text-slate-300">|</span>
-          <div className="flex items-center gap-1.5 text-slate-700">
-            <span className="text-slate-400 uppercase text-[10px]">SHA-256:</span>
-            <span className="font-mono text-[11px] text-slate-800">{sha256Short}</span>
-            <span className="px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
-              VERIFIED
-            </span>
-          </div>
-          <span className="text-slate-300">|</span>
-          <div className="flex items-center gap-1 text-slate-700">
-            <span className="material-symbols-outlined text-[14px] text-slate-600">lock</span>
-            <span className="text-[10px] text-slate-500 uppercase">State:</span>
-            <span className="font-bold text-slate-800 text-[11px]">Locked</span>
-          </div>
-        </div>
+        )}
 
         {/* Right: Actions & Switchers */}
         <div className="flex items-center gap-2 shrink-0">
