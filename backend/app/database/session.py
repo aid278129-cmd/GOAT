@@ -74,11 +74,17 @@ async def test_db_connectivity(retries: int = 1, delay_sec: float = 0.2) -> bool
     return False
 
 
-async def get_db() -> AsyncGenerator[AsyncSession | None, None]:
-    """Dependency for obtaining async database session with resilient standalone fallback."""
+async def get_db() -> AsyncGenerator[AsyncSession, None]:
+    """Dependency for obtaining async database session with strict mandatory database enforcement."""
+    global _DB_AVAILABLE
     if not _DB_AVAILABLE:
-        yield None
-        return
+        connected = await test_db_connectivity(retries=2, delay_sec=0.1)
+        if not connected:
+            from fastapi import HTTPException, status
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Authoritative PostgreSQL database is currently unreachable. Compliance operations require an active datastore.",
+            )
 
     async with AsyncSessionLocal() as session:
         try:
@@ -141,13 +147,37 @@ async def check_pgvector_extension() -> dict:
 
 
 async def create_tables_if_needed() -> None:
-    """Create database tables if connected to database schema."""
+    """Create database tables if connected to database schema and ensure statutory columns."""
     if not _DB_AVAILABLE:
-        await test_db_connectivity(retries=1)
+        await test_db_connectivity(retries=2)
     if _DB_AVAILABLE:
         try:
+            import backend.app.models  # noqa: F401 - Register all models
             async with engine.begin() as conn:
                 await conn.run_sync(Base.metadata.create_all)
+                # Ensure all Phase 2A columns exist on existing job_requirements table
+                col_migrations = [
+                    "ALTER TABLE job_requirements ADD COLUMN IF NOT EXISTS requirement_id VARCHAR(100) DEFAULT '' NOT NULL;",
+                    "ALTER TABLE job_requirements ADD COLUMN IF NOT EXISTS clause_reference VARCHAR(50) DEFAULT '' NOT NULL;",
+                    "ALTER TABLE job_requirements ADD COLUMN IF NOT EXISTS section VARCHAR(255) DEFAULT '' NOT NULL;",
+                    "ALTER TABLE job_requirements ADD COLUMN IF NOT EXISTS requirement_text TEXT DEFAULT '' NOT NULL;",
+                    "ALTER TABLE job_requirements ADD COLUMN IF NOT EXISTS parameter_key VARCHAR(255);",
+                    "ALTER TABLE job_requirements ADD COLUMN IF NOT EXISTS expected_unit VARCHAR(50);",
+                    "ALTER TABLE job_requirements ADD COLUMN IF NOT EXISTS comparison_operator VARCHAR(50) DEFAULT '>=' NOT NULL;",
+                    "ALTER TABLE job_requirements ADD COLUMN IF NOT EXISTS threshold_min VARCHAR(100);",
+                    "ALTER TABLE job_requirements ADD COLUMN IF NOT EXISTS threshold_max VARCHAR(100);",
+                    "ALTER TABLE job_requirements ADD COLUMN IF NOT EXISTS expected_value TEXT;",
+                    "ALTER TABLE job_requirements ADD COLUMN IF NOT EXISTS allowed_values JSON DEFAULT '[]';",
+                    "ALTER TABLE job_requirements ADD COLUMN IF NOT EXISTS applicability_condition TEXT;",
+                    "ALTER TABLE job_requirements ADD COLUMN IF NOT EXISTS evidence_requirement TEXT;",
+                    "ALTER TABLE job_requirements ADD COLUMN IF NOT EXISTS verification_method VARCHAR(100) DEFAULT 'TYPE_TEST';",
+                    "ALTER TABLE job_requirements ADD COLUMN IF NOT EXISTS source_reference VARCHAR(255);",
+                ]
+                for stmt in col_migrations:
+                    try:
+                        await conn.execute(text(stmt))
+                    except Exception:
+                        pass
                 logger.info(f"Database schema verified/created successfully on {engine.url.drivername}.")
         except Exception as exc:
             logger.warning(f"Database table creation notice: {exc}")

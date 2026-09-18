@@ -76,13 +76,13 @@ class Settings(BaseSettings):
             return v
         return []
 
-    # Database Configuration (PostgreSQL + pgvector or SQLite dev fallback)
+    # Database Configuration (Mandatory PostgreSQL Authoritative Datastore)
     DATABASE_URL: Optional[str] = None
-    DEV_FALLBACK_SQLITE: bool = True
-    POSTGRES_SERVER: str = "localhost"
-    POSTGRES_PORT: int = 5432
+    DEV_FALLBACK_SQLITE: bool = False
+    POSTGRES_SERVER: str = "127.0.0.1"
+    POSTGRES_PORT: int = 5433
     POSTGRES_USER: str = "postgres"
-    POSTGRES_PASSWORD: str = "postgrespassword"
+    POSTGRES_PASSWORD: str = ""
     POSTGRES_DB: str = "bis_compliance_db"
     
     # Storage & Upload limits (OS-independent Pathlib)
@@ -123,8 +123,9 @@ class Settings(BaseSettings):
                 return raw.replace("sqlite://", "sqlite+aiosqlite://", 1)
             return raw
 
+        auth_part = f"{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@" if self.POSTGRES_PASSWORD else f"{self.POSTGRES_USER}@"
         return (
-            f"postgresql+psycopg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@"
+            f"postgresql+psycopg://{auth_part}"
             f"{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
         )
 
@@ -139,8 +140,9 @@ class Settings(BaseSettings):
                 return raw.replace("sqlite+aiosqlite://", "sqlite://", 1)
             return raw
 
+        auth_part = f"{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@" if self.POSTGRES_PASSWORD else f"{self.POSTGRES_USER}@"
         return (
-            f"postgresql+psycopg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@"
+            f"postgresql+psycopg://{auth_part}"
             f"{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
         )
 

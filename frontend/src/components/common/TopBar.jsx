@@ -1,191 +1,105 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-export function TopBar({
-  currentView,
-  onNavigate,
-  onNewAnalysis,
-  mobileMenuOpen,
-  setMobileMenuOpen,
-  activeAssessment,
-  assessmentsList = [],
-  onSelectAssessment,
-  isHealthy = true,
-  onClearAll,
-  onExportDossier,
-  onCommitAudit,
-}) {
-  const pipelineSteps = [
-    { id: 'input', label: '1. Product Input' },
-    { id: 'dna', label: '2. Product DNA' },
-    { id: 'applicability', label: '3. BIS Applicability' },
-    { id: 'clauses', label: '4. Standards & Clauses' },
-    { id: 'evidence', label: '5. Evidence Matrix' },
-    { id: 'gaps', label: '6. Compliance Gaps' },
-    { id: 'actions', label: '7. Lab & Actions' },
-    { id: 'passport', label: '8. Compliance Passport' },
-    { id: 'dashboard', label: 'Workspace Overview' },
-    { id: 'knowledge', label: 'BIS Standards Catalog' },
-  ];
-
-  // Derive metadata from active assessment only
-  const dossierId = activeAssessment?.assessment_number || activeAssessment?.assessment_id?.slice(0, 12) || '—';
-  const targetStandard = activeAssessment?.target_standard || activeAssessment?.primary_standard || (activeAssessment?.applicability?.[0]?.standard_number) || 'Pending';
-  const schemeName = activeAssessment?.scheme || 'BIS / CRS';
-  const sha256Short = activeAssessment?.sha256_hash ? `${activeAssessment.sha256_hash.slice(0, 4)}...${activeAssessment.sha256_hash.slice(-4)}` : null;
+export function TopBar({ activeTabTitle, onToggleMobile }) {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
 
   return (
-    <header className="border-b border-slate-200 bg-white sticky top-0 z-30 shadow-2xs font-sans">
-      {/* Primary Regulatory Header Strip */}
-      <div className="h-12 flex items-center justify-between px-3 md:px-5 gap-3">
-        {/* Left Section: Mobile Toggle & Brand / Dossier Title */}
-        <div className="flex items-center gap-2.5 shrink-0">
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden text-slate-600 p-1.5 rounded hover:bg-slate-100 transition cursor-pointer"
-            aria-label="Toggle navigation menu"
-          >
-            <span className="material-symbols-outlined text-lg">{mobileMenuOpen ? 'close' : 'menu'}</span>
-          </button>
+    <header className="fixed top-0 left-0 lg:left-60 right-0 h-14 bg-white border-b border-[#E2E8F0] z-30 px-4 sm:px-6 flex items-center justify-between">
+      {/* Left: Mobile Toggle & Context Breadcrumb */}
+      <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
+        <button
+          type="button"
+          onClick={onToggleMobile}
+          className="lg:hidden p-1.5 text-[#64748B] hover:text-[#0F172A] hover:bg-[#F8F9FA] rounded"
+        >
+          <span className="material-symbols-outlined text-xl">menu</span>
+        </button>
 
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-slate-900 rounded flex items-center justify-center shrink-0 shadow-2xs">
-              <span className="text-white font-mono font-bold text-[10px] tracking-tighter">BIS</span>
-            </div>
-            <div className="hidden sm:flex flex-col">
-              <span className="font-bold text-xs tracking-tight text-slate-900 leading-tight">
-                BIS Compliance Intelligence Compiler
-              </span>
-            </div>
-          </div>
+        <div className="flex items-center gap-2 min-w-0">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+          <span className="font-mono text-xs text-[#0F172A] font-medium truncate">
+            BIS Gazette: Synchronized
+          </span>
+          <span className="hidden sm:inline-block font-mono text-[10px] text-[#64748B] bg-[#F8F9FA] px-1.5 py-0.5 rounded border border-[#E2E8F0]">
+            IS Gazette 2026.09
+          </span>
         </div>
 
-        {/* Center: Regulatory Context Strip (Only when active dossier loaded) */}
-        {activeAssessment ? (
-          <div className="hidden xl:flex items-center gap-3 text-xs font-mono border-x border-slate-200 px-4 py-1 bg-slate-50/70 rounded">
-            <div className="flex items-center gap-1 text-slate-700">
-              <span className="text-slate-400 uppercase text-[10px]">Dossier:</span>
-              <span className="font-semibold text-slate-900">{dossierId}</span>
-            </div>
-            <span className="text-slate-300">|</span>
-            <div className="flex items-center gap-1 text-slate-700">
-              <span className="text-slate-400 uppercase text-[10px]">IS:</span>
-              <span className="font-semibold text-slate-900">{targetStandard.replace(/^IS\s*/i, '')}</span>
-            </div>
-            <span className="text-slate-300">|</span>
-            <div className="flex items-center gap-1 text-slate-700">
-              <span className="text-slate-400 uppercase text-[10px]">Scheme:</span>
-              <span className="font-semibold text-slate-900">{schemeName}</span>
-            </div>
-            {sha256Short && (
-              <>
-                <span className="text-slate-300">|</span>
-                <div className="flex items-center gap-1.5 text-slate-700">
-                  <span className="text-slate-400 uppercase text-[10px]">SHA-256:</span>
-                  <span className="font-mono text-[11px] text-slate-800">{sha256Short}</span>
-                  <span className="px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
-                    VERIFIED
-                  </span>
-                </div>
-              </>
-            )}
-            <span className="text-slate-300">|</span>
-            <div className="flex items-center gap-1 text-slate-700">
-              <span className="material-symbols-outlined text-[14px] text-slate-600">lock</span>
-              <span className="text-[10px] text-slate-500 uppercase">State:</span>
-              <span className="font-bold text-slate-800 text-[11px]">{activeAssessment.status || 'Active'}</span>
-            </div>
-          </div>
-        ) : (
-          <div className="hidden xl:flex items-center gap-2 text-xs font-mono text-slate-400 border-x border-slate-200 px-4 py-1">
-            <span className="w-2 h-2 rounded-full bg-slate-300"></span>
-            <span>No Active Dossier &bull; Ready for Input</span>
-          </div>
-        )}
-
-        {/* Right: Actions & Switchers */}
-        <div className="flex items-center gap-2 shrink-0">
-          {/* Assessment Switcher Dropdown */}
-          {assessmentsList.length > 0 && (
-            <div className="flex items-center gap-1.5">
-              <select
-                id="topbar-assessment-select"
-                aria-label="Select Product Dossier"
-                value={activeAssessment?.assessment_id || ''}
-                onChange={(e) => onSelectAssessment(e.target.value)}
-                className="px-2 py-1 text-xs border border-slate-300 rounded bg-slate-50 font-medium text-slate-800 focus:outline-none focus:border-slate-900 max-w-[140px] md:max-w-[190px] truncate"
-              >
-                {assessmentsList.map((a) => (
-                  <option key={a.assessment_id} value={a.assessment_id}>
-                    {a.product_name || a.title}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-
-          {/* Export BIS Dossier Button */}
-          <button
-            onClick={onExportDossier || (() => onNavigate('passport'))}
-            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded border border-slate-300 hover:border-slate-400 bg-white text-slate-800 text-xs font-semibold hover:bg-slate-50 transition cursor-pointer shadow-2xs"
-            title="Export official BIS technical compliance file"
-          >
-            <span className="material-symbols-outlined text-[14px] text-slate-600">file_download</span>
-            <span>Export BIS Dossier</span>
-          </button>
-
-          {/* Commit Audit Action (Stitch Primary Action) */}
-          <button
-            onClick={onCommitAudit || (() => onNavigate('passport'))}
-            className="flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-3 py-1.5 rounded transition shadow-2xs cursor-pointer active:scale-95"
-            title="Commit cryptographic audit signature and freeze dossier state"
-          >
-            <span className="material-symbols-outlined text-[14px]">verified_user</span>
-            <span>Commit Audit</span>
-          </button>
-
-          {/* Backend Status Indicator */}
-          <div
-            className="hidden md:flex items-center gap-1.5 px-2 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] font-mono text-slate-700"
-            title={isHealthy ? 'FastAPI Compliance Engine Online' : 'Backend Disconnected'}
-          >
-            <span className={`w-1.5 h-1.5 rounded-full ${isHealthy ? 'bg-emerald-500' : 'bg-rose-500'}`}></span>
-            <span className="font-bold">{isHealthy ? 'LIVE' : 'OFFLINE'}</span>
-          </div>
-
-          {/* Reset Workspace */}
-          {onClearAll && (
-            <button
-              onClick={onClearAll}
-              className="text-slate-400 hover:text-rose-600 p-1.5 rounded hover:bg-rose-50 transition cursor-pointer"
-              title="Reset workspace and clear assessments"
-            >
-              <span className="material-symbols-outlined text-base">refresh</span>
-            </button>
-          )}
+        <div className="hidden xl:flex items-center gap-2 pl-3 border-l border-[#E2E8F0]">
+          <span className="text-xs text-[#64748B]">Context:</span>
+          <span className="font-mono text-xs text-[#0F172A] font-semibold">
+            {activeTabTitle || 'Production Workstation'}
+          </span>
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-slate-200 bg-white p-3 shadow-xl z-50 space-y-1">
-          {pipelineSteps.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => {
-                onNavigate(item.id);
-                setMobileMenuOpen(false);
-              }}
-              className={`w-full text-left px-3 py-2 rounded text-xs font-semibold ${
-                currentView === item.id
-                  ? 'bg-slate-100 text-slate-900 font-bold border border-slate-300'
-                  : 'text-slate-600 hover:bg-slate-50'
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
+      {/* Right: Search, Notifications, Profile */}
+      <div className="flex items-center gap-3 sm:gap-4">
+        {/* Universal Search Input */}
+        <div className="relative hidden md:flex items-center">
+          <span className="material-symbols-outlined text-sm text-[#94A3B8] absolute left-2.5 pointer-events-none">
+            search
+          </span>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-56 lg:w-72 pl-8 pr-12 py-1 text-xs bg-[#F8F9FA] border border-[#E2E8F0] rounded text-[#0F172A] placeholder-[#94A3B8] focus:outline-none focus:border-[#1D4ED8] focus:bg-white transition-all"
+            placeholder="Search standards, jobs, clauses, or evidence..."
+          />
+          <span className="absolute right-2 font-mono text-[10px] text-[#94A3B8] border border-[#E2E8F0] px-1 rounded bg-white pointer-events-none">
+            Ctrl+K
+          </span>
         </div>
-      )}
+
+        <div className="hidden md:block h-4 w-px bg-[#E2E8F0]" />
+
+        {/* Notifications Popover */}
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setNotificationsOpen(!notificationsOpen)}
+            className="relative p-1.5 text-[#64748B] hover:text-[#0F172A] hover:bg-[#F8F9FA] rounded transition-colors"
+            title="Notifications"
+          >
+            <span className="material-symbols-outlined text-lg">notifications</span>
+          </button>
+
+          {notificationsOpen && (
+            <div className="absolute right-0 mt-2 w-72 bg-white border border-[#E2E8F0] rounded-lg shadow-xl p-4 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+              <div className="flex items-center justify-between pb-2 border-b border-[#E2E8F0] mb-3">
+                <span className="font-semibold text-xs text-[#0F172A]">Statutory Notifications</span>
+                <span className="font-mono text-[10px] text-[#94A3B8]">0 Unread</span>
+              </div>
+              <div className="py-6 text-center text-[#64748B]">
+                <span className="material-symbols-outlined text-2xl text-slate-300 mb-1 block">
+                  notifications_paused
+                </span>
+                <p className="text-xs font-medium text-[#0F172A]">No unread notifications</p>
+                <p className="text-[11px] text-[#94A3B8] mt-0.5">
+                  Audit events and gazette amendments will appear here.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Engineer Profile Avatar */}
+        <div className="flex items-center gap-2 pl-1 border-l border-[#E2E8F0]">
+          <div className="w-7 h-7 rounded-full bg-[#1D4ED8] text-white flex items-center justify-center font-bold text-xs shadow-sm">
+            RE
+          </div>
+          <div className="hidden sm:flex flex-col text-left">
+            <span className="text-xs text-[#0F172A] font-medium leading-none">
+              Regulatory Engineer
+            </span>
+            <span className="font-mono text-[10px] text-[#64748B] leading-tight mt-0.5">
+              Unassigned Org
+            </span>
+          </div>
+        </div>
+      </div>
     </header>
   );
 }

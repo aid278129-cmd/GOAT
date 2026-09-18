@@ -5,8 +5,7 @@ import asyncio
 from pathlib import Path
 from httpx import AsyncClient, ASGITransport
 
-# Configure SelectorEventLoop for psycopg async on Windows
-if sys.platform == "win32" and sys.version_info < (3, 14):
+if sys.platform == "win32":
     try:
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     except Exception:

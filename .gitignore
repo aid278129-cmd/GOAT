@@ -55,6 +55,7 @@ backend/generated/
 *.sqlite3
 *.db
 data/*.db
+data/pgdata/
 coverage/
 .coverage
 htmlcov/

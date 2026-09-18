@@ -11,6 +11,8 @@
   "dependencies": {
     "@rollup/rollup-win32-x64-msvc": "^4.63.1",
     "@xyflow/react": "^12.11.6",
+    "animejs": "^4.5.0",
+    "babylonjs": "^9.27.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.469.0",
     "pdfjs-dist": "^3.11.174",

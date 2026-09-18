@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "secondary-container": "#d0e1fb",
+          "on-secondary": "#ffffff",
+          "surface-dim": "#d9dadb",
+          "inverse-on-surface": "#f0f1f2",
+          "surface-variant": "#e1e3e4",
+          "secondary-fixed-dim": "#b7c8e1",
+          "on-tertiary-fixed": "#131b2e",
+          "surface-container-lowest": "#ffffff",
+          "surface-container": "#edeeef",
+          "surface-bright": "#f8f9fa",
+          "on-primary-fixed-variant": "#0039b5",
+          "surface-container-high": "#e7e8e9",
+          "primary": "#0037b0",
+          "surface": "#f8f9fa",
+          "on-error-container": "#93000a",
+          "error-container": "#ffdad6",
+          "on-secondary-fixed-variant": "#38485d",
+          "on-tertiary-fixed-variant": "#3f465c",
+          "surface-container-low": "#f3f4f5",
+          "surface-tint": "#2151da",
+          "inverse-primary": "#b7c4ff",
+          "on-tertiary-container": "#cdd5ef",
+          "on-primary": "#ffffff",
+          "on-secondary-fixed": "#0b1c30",
+          "tertiary-container": "#545c72",
+          "tertiary-fixed-dim": "#bec6e0",
+          "inverse-surface": "#2e3132",
+          "outline": "#747686",
+          "on-tertiary": "#ffffff",
+          "on-secondary-container": "#54647a",
+          "secondary": "#505f76",
+          "on-primary-container": "#cad3ff",
+          "primary-container": "#1d4ed8",
+          "on-background": "#191c1d",
+          "on-error": "#ffffff",
+          "on-surface-variant": "#434655",
+          "primary-fixed-dim": "#b7c4ff",
+          "surface-container-highest": "#e1e3e4",
+          "primary-fixed": "#dce1ff",
+          "error": "#ba1a1a",
+          "tertiary": "#3d445a",
+          "outline-variant": "#c4c5d7",
+          "secondary-fixed": "#d3e4fe",
+          "on-surface": "#191c1d",
+          "tertiary-fixed": "#dae2fd",
+          "background": "#f8f9fa",
+          "on-primary-fixed": "#001551"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.125rem",
+          "lg": "0.25rem",
+          "xl": "0.5rem",
+          "full": "0.75rem"
+        },
+        "spacing": {
+          "space-2xs": "0.125rem",
+          "gutter-lg": "1.5rem",
+          "margin-lg": "2rem",
+          "space-md": "0.75rem",
+          "space-lg": "1rem",
+          "margin": "1.5rem",
+          "space-2xl": "2rem",
+          "margin-sm": "1rem",
+          "gutter": "1rem",
+          "gutter-sm": "0.75rem",
+          "space-xl": "1.5rem",
+          "space-sm": "0.5rem",
+          "space-xs": "0.25rem"
+        },
+        "fontFamily": {
+          "headline-lg": [
+            "Inter"
+          ],
+          "label-sm": [
+            "Inter"
+          ],
+          "headline-lg-mobile": [
+            "Inter"
+          ],
+          "label-md": [
+            "Inter"
+          ],
+          "body-lg": [
+            "Inter"
+          ],
+          "body-md": [
+            "Inter"
+          ],
+          "headline-md": [
+            "Inter"
+          ],
+          "mono-code": [
+            "JetBrains Mono"
+          ],
+          "mono-data": [
+            "JetBrains Mono"
+          ],
+          "headline-sm": [
+            "Inter"
+          ],
+          "body-sm": [
+            "Inter"
+          ],
+          "display": [
+            "Inter"
+          ]
+        },
+        "fontSize": {
+          "headline-lg": [
+            "24px",
+            {
+              "lineHeight": "32px",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "600"
+            }
+          ],
+          "label-sm": [
+            "11px",
+            {
+              "lineHeight": "14px",
+              "letterSpacing": "0.02em",
+              "fontWeight": "500"
+            }
+          ],
+          "headline-lg-mobile": [
+            "20px",
+            {
+              "lineHeight": "28px",
+              "letterSpacing": "-0.015em",
+              "fontWeight": "600"
+            }
+          ],
+          "label-md": [
+            "12px",
+            {
+              "lineHeight": "16px",
+              "letterSpacing": "0.01em",
+              "fontWeight": "500"
+            }
+          ],
+          "body-lg": [
+            "15px",
+            {
+              "lineHeight": "24px",
+              "letterSpacing": "-0.005em",
+              "fontWeight": "400"
+            }
+          ],
+          "body-md": [
+            "13px",
+            {
+              "lineHeight": "20px",
+              "letterSpacing": "0em",
+              "fontWeight": "400"
+            }
+          ],
+          "headline-md": [
+            "18px",
+            {
+              "lineHeight": "24px",
+              "letterSpacing": "-0.015em",
+              "fontWeight": "600"
+            }
+          ],
+          "mono-code": [
+            "11px",
+            {
+              "lineHeight": "15px",
+              "letterSpacing": "0em",
+              "fontWeight": "400"
+            }
+          ],
+          "mono-data": [
+            "12px",
+            {
+              "lineHeight": "16px",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "400"
+            }
+          ],
+          "headline-sm": [
+            "15px",
+            {
+              "lineHeight": "20px",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "600"
+            }
+          ],
+          "body-sm": [
+            "12px",
+            {
+              "lineHeight": "16px",
+              "letterSpacing": "0em",
+              "fontWeight": "400"
+            }
+          ],
+          "display": [
+            "32px",
+            {
+              "lineHeight": "40px",
+              "letterSpacing": "-0.025em",
+              "fontWeight": "600"
+            }
+          ]
+        }
+      },
+    },
+  }</script></head><body class="bg-background font-body-md text-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-60 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col"><div class="h-14 px-space-md flex items-center gap-space-sm bg-surface-container-low"><img alt="Brand logo. - Primary color: #0f172a
+- Font: inter
+- Mode: light
+- Roundness: rounded-sm
+" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VBOk-5a2hkOY1U0pQ9TsmDtaD_-jE2igWaVlRtdC3n4tTQ_NusBU6pQizyKCJ-CiNT9naxBVqN0AB1LWA7LoVZcokcwlYQEOPm19SQRLBrtmcDh1Xu79-zV5ND5H2ZCW2BTpLPCxKbMlM-NEXDXWAzqWzJLSUQaKqBAwW5-CtdpXypqVWZ4NipGnfgEsxRe994GmKpPYDvgzStD6MTS1m2grqkiyEZvlk7qE-RZqeWh2lAyluB76EkP4Q"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm tracking-tight text-on-surface">Zyntrix</span><span class="font-mono-code text-mono-code text-on-surface-variant uppercase tracking-wider">Compiler OS</span></div></div><div class="px-space-md pt-space-md pb-space-xs"><span class="font-mono-code text-mono-code text-outline uppercase tracking-wider">Platform Modules</span></div><nav class="flex flex-col px-space-sm gap-space-2xs" data-active-classes="bg-surface-container-high text-primary font-medium"><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="home" href="#"><span class="material-symbols-outlined text-[18px]">roofing</span><span class="font-body-md text-body-md">Home</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="workspace" href="#"><span class="material-symbols-outlined text-[18px]">grid_view</span><span class="font-body-md text-body-md">Workspace</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="compliance-jobs" href="#"><span class="material-symbols-outlined text-[18px]">fact_check</span><span class="font-body-md text-body-md">Compliance Jobs</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="reports" href="#"><span class="material-symbols-outlined text-[18px]">analytics</span><span class="font-body-md text-body-md">Reports</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[18px]">tune</span><span class="font-body-md text-body-md">Settings</span></a></nav></div><div class="p-space-md m-space-sm rounded-lg bg-surface-container-lowest shadow-[0_1px_3px_0_rgba(15,23,42,0.04)] flex flex-col gap-space-xs"><div class="flex items-center justify-between"><span class="font-mono-code text-mono-code text-outline uppercase">Engine v4.12</span><span class="flex h-2 w-2 rounded-full bg-primary-container"></span></div><div class="flex items-center justify-between"><span class="font-body-sm text-body-sm text-on-surface-variant">Tier: Enterprise</span><span class="font-mono-code text-mono-code text-primary">READY</span></div></div></aside><div class="pl-60"><header class="fixed top-0 left-60 right-0 z-40 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-14 w-full px-gutter-lg flex items-center justify-between"><div class="flex items-center gap-space-sm"><span class="font-body-sm text-body-sm text-on-surface-variant">Bharat Dynamics</span><span class="text-outline-variant font-mono-code text-mono-code">/</span><span class="font-body-sm text-body-sm text-on-surface-variant">Compliance Operations</span><span class="text-outline-variant font-mono-code text-mono-code">/</span><div class="flex items-center gap-space-xs"><span class="font-mono-data text-mono-data text-on-surface font-medium">JOB-IS13252-881</span><span class="px-space-xs py-space-2xs rounded bg-secondary-container text-on-secondary-fixed-variant font-mono-code text-mono-code">Active Pipeline</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center bg-surface-container-low px-space-sm py-space-2xs rounded-lg gap-space-sm"><span class="material-symbols-outlined text-outline text-[16px]">search</span><span class="font-body-sm text-body-sm text-outline">Search specs, clauses, telemetry...</span><kbd class="px-space-xs py-space-2xs bg-surface-container-lowest rounded font-mono-code text-mono-code text-outline">⌘K</kbd></div><button class="relative p-space-xs rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-primary"></span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div><div class="h-16 w-full px-gutter-lg bg-surface-container-lowest flex items-center justify-between shadow-[0_1px_3px_0_rgba(15,23,42,0.04)]"><div class="flex items-center gap-space-xl"><div class="flex flex-col"><div class="flex items-center gap-space-sm"><span class="font-headline-sm text-headline-sm text-on-surface">Smart Hybrid Inverter 5kW</span><span class="font-mono-data text-mono-data text-outline font-normal">JOB-IS13252-881</span></div><div class="flex items-center gap-space-sm"><span class="font-mono-code text-mono-code text-on-surface-variant">Standard: IS 16221 / IS 13252</span><span class="text-outline-variant font-mono-code text-mono-code">•</span><span class="font-body-sm text-body-sm text-on-surface-variant">Stage: Findings &amp; Evidence</span></div></div><div class="h-8 w-px bg-surface-container-high hidden lg:block"></div><div class="flex flex-col gap-space-2xs min-w-[160px]"><div class="flex items-center justify-between"><span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Readiness</span><span class="font-mono-code text-mono-code text-primary font-medium">68%</span></div><div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden"><div class="h-full bg-primary rounded-full" style="width: 68%"></div></div></div></div><div class="flex items-center gap-space-md"><nav class="hidden xl:flex items-center gap-space-xs bg-surface-container-low p-space-2xs rounded-lg" data-active-classes="text-primary font-medium bg-secondary-fixed/40"><a class="px-space-sm py-space-xs rounded text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors" data-path="overview" href="#">Overview</a><a class="px-space-sm py-space-xs rounded text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors" data-path="product-dna" href="#">Product DNA</a><a class="px-space-sm py-space-xs rounded text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors" data-path="analysis" href="#">Analysis</a><a class="px-space-sm py-space-xs rounded text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors" data-path="findings" href="#">Findings</a><a aria-current="page" class="px-space-sm py-space-xs rounded transition-colors text-primary font-medium bg-secondary-fixed/40" data-path="evidence" href="#">Evidence</a><a class="px-space-sm py-space-xs rounded text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors" data-path="passport" href="#">Passport</a></nav><button class="flex items-center gap-space-xs px-space-md py-space-xs rounded bg-primary text-on-primary hover:bg-primary-container transition-colors shadow-[0_1px_2px_rgba(15,23,42,0.04)]"><span class="material-symbols-outlined text-[16px]">warning</span><span class="font-label-md text-label-md font-medium">Review 1 Blocking Finding</span></button></div></div></header><main class="relative pt-[120px] bg-background min-h-screen w-full px-gutter-lg py-gutter"><div class="flex flex-col w-full">
+<!-- Sub-bar Workspace Command Controls -->
+<div class="flex items-center justify-between py-space-sm mb-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-space-2xs rounded-lg shadow-sm">
+<span class="material-symbols-outlined text-[15px] text-primary">verified_user</span>
+<span class="font-mono-code text-mono-code text-on-surface font-medium">CHAIN-OF-CUSTODY ACTIVE</span>
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+</div>
+<span class="text-outline-variant font-mono-code text-mono-code">/</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Artifact Ledger: <span class="font-mono-data text-mono-data text-on-surface font-medium">6 verified assets</span></span>
+<span class="text-outline-variant font-mono-code text-mono-code">•</span>
+<span class="font-mono-code text-mono-code text-on-surface-variant">Synchronized with BIS Portal v2.8</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<div class="flex items-center bg-surface-container-low rounded-lg p-space-2xs shadow-sm">
+<button class="px-space-sm py-space-2xs rounded text-primary font-label-md text-label-md font-medium bg-surface-container-lowest shadow-sm flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[15px]">view_column</span>
+<span>Dual Pane</span>
+</button>
+<button class="px-space-sm py-space-2xs rounded text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[15px]">fullscreen</span>
+<span>Max Preview</span>
+</button>
+</div>
+<button class="flex items-center gap-space-xs px-space-md py-space-2xs rounded-lg bg-surface-container-low text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+<span>Audit Bundle (.zip)</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-space-2xs rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px]">add_circle</span>
+<span>Ingest Evidence</span>
+</button>
+</div>
+</div>
+<!-- Primary Split-Screen Workspace (40% Repository, 60% Interactive Document & Provenance Dock) -->
+<div class="grid grid-cols-12 gap-gutter items-start">
+<!-- LEFT COLUMN (40% - 5 cols in 12-grid system) -->
+<div class="col-span-12 lg:col-span-5 flex flex-col gap-space-md">
+<!-- Repository Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<!-- Repository Header -->
+<div class="p-space-md bg-surface-container-low/50 flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-primary">inventory_2</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Evidence Repository</h2>
+</div>
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-high font-mono-code text-mono-code text-on-surface-variant font-medium">6 Ingested</span>
+</div>
+<!-- Search Filter -->
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-space-sm text-outline text-[16px]">filter_list</span>
+<input class="w-full bg-surface-container-lowest pl-9 pr- space-md py-space-2xs rounded-lg text-body-sm text-on-surface placeholder:text-outline shadow-sm focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Filter artifacts by title, hash, type..." type="text" value=""/>
+<kbd class="absolute right-space-sm px-space-2xs py-0.5 bg-surface-container-low rounded font-mono-code text-[10px] text-outline">⌘F</kbd>
+</div>
+</div>
+<!-- Artifact Categories & Ledger Stack -->
+<div class="p-space-sm flex flex-col gap-space-md overflow-y-auto max-h-[calc(100vh-270px)]">
+<!-- Category 1: Test Reports & Lab Certificates -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between px-space-xs py-space-2xs">
+<span class="font-mono-code text-mono-code text-outline uppercase tracking-wider font-medium flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[14px]">science</span>
+                Test Reports &amp; Lab Certificates (2)
+              </span>
+<span class="material-symbols-outlined text-[15px] text-outline">unfold_less</span>
+</div>
+<!-- Item 1: Active Selected -->
+<div class="p-space-sm rounded-lg bg-secondary-container/40 shadow-sm flex flex-col gap-space-xs cursor-pointer transition-all">
+<div class="flex items-start justify-between gap-space-xs">
+<div class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px] mt-0.5">picture_as_pdf</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate">ERDA_Test_Report_TR-994_Rev2.pdf</span>
+<div class="flex items-center gap-space-xs mt-0.5">
+<span class="px-space-2xs py-0.5 rounded bg-surface-container-lowest text-primary font-mono-code text-[10px] font-medium">NABL Accredited</span>
+<span class="text-outline-variant font-mono-code text-mono-code">•</span>
+<span class="font-mono-code text-mono-code text-on-surface-variant">4.2 MB</span>
+</div>
+</div>
+</div>
+<span class="flex items-center justify-center w-5 h-5 rounded-full bg-primary text-on-primary">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</span>
+</div>
+<!-- Cryptographic provenance stamp -->
+<div class="mt-space-2xs pt-space-xs bg-surface-container-lowest/70 p-space-xs rounded flex flex-col gap-space-2xs">
+<div class="flex items-center justify-between">
+<span class="font-mono-code text-[10px] text-on-surface-variant uppercase tracking-wider">SHA-256 Provenance</span>
+<span class="font-mono-code text-[10px] text-primary font-medium">LEDGER ANCHORED</span>
+</div>
+<div class="font-mono-code text-[11px] text-outline truncate bg-surface-container-low px-space-xs py-0.5 rounded">
+                  8f2a630cd89e1b742aa1049281e0...91ce
+                </div>
+<div class="flex items-center justify-between text-label-sm text-label-sm pt-space-2xs">
+<span class="text-on-surface-variant flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-[13px] text-primary">link</span>
+                    8 clauses linked
+                  </span>
+<span class="text-primary font-medium">Active In Inspector →</span>
+</div>
+</div>
+</div>
+<!-- Item 2: Unselected -->
+<div class="p-space-sm rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer flex flex-col gap-space-xs">
+<div class="flex items-start justify-between gap-space-xs">
+<div class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[20px] mt-0.5">picture_as_pdf</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-medium truncate">TUV_Anti_Islanding_Log_TL-881.pdf</span>
+<div class="flex items-center gap-space-xs mt-0.5">
+<span class="px-space-2xs py-0.5 rounded bg-surface-container text-on-surface-variant font-mono-code text-[10px]">TÜV Rheinland</span>
+<span class="text-outline-variant font-mono-code text-mono-code">•</span>
+<span class="font-mono-code text-mono-code text-on-surface-variant">1.8 MB</span>
+</div>
+</div>
+</div>
+<span class="font-mono-code text-mono-code text-outline">3 linked</span>
+</div>
+</div>
+</div>
+<!-- Category 2: Technical Specifications & CAD -->
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<div class="flex items-center justify-between px-space-xs py-space-2xs">
+<span class="font-mono-code text-mono-code text-outline uppercase tracking-wider font-medium flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[14px]">developer_board</span>
+                Technical Specifications &amp; CAD (3)
+              </span>
+<span class="material-symbols-outlined text-[15px] text-outline">unfold_less</span>
+</div>
+<!-- Item 1: Datasheet -->
+<div class="p-space-sm rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer flex flex-col gap-space-xs">
+<div class="flex items-start justify-between gap-space-xs">
+<div class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[20px] mt-0.5">description</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-medium truncate">Datasheet_ZYN-5K_Rev2.1.pdf</span>
+<div class="flex items-center gap-space-xs mt-0.5">
+<span class="px-space-2xs py-0.5 rounded bg-surface-container text-on-surface-variant font-mono-code text-[10px]">OEM Master</span>
+<span class="text-outline-variant font-mono-code text-mono-code">•</span>
+<span class="font-mono-code text-mono-code text-on-surface-variant">1.1 MB</span>
+</div>
+</div>
+</div>
+<span class="font-mono-code text-mono-code text-outline">14 linked</span>
+</div>
+</div>
+<!-- Item 2: Schematic CAD -->
+<div class="p-space-sm rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer flex flex-col gap-space-xs">
+<div class="flex items-start justify-between gap-space-xs">
+<div class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[20px] mt-0.5">memory</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-medium truncate">Inverter_Power_Stage_Schematic_v3.cad</span>
+<div class="flex items-center gap-space-xs mt-0.5">
+<span class="px-space-2xs py-0.5 rounded bg-surface-container text-on-surface-variant font-mono-code text-[10px]">Altium / Gerber</span>
+<span class="text-outline-variant font-mono-code text-mono-code">•</span>
+<span class="font-mono-code text-mono-code text-on-surface-variant">18.4 MB</span>
+</div>
+</div>
+</div>
+<span class="font-mono-code text-mono-code text-outline">6 linked</span>
+</div>
+</div>
+<!-- Item 3: BOM -->
+<div class="p-space-sm rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer flex flex-col gap-space-xs">
+<div class="flex items-start justify-between gap-space-xs">
+<div class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[20px] mt-0.5">table_view</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-medium truncate">BOM_ZYN5000_RevB.xlsx</span>
+<div class="flex items-center gap-space-xs mt-0.5">
+<span class="px-space-2xs py-0.5 rounded bg-surface-container text-on-surface-variant font-mono-code text-[10px]">Component Ledger</span>
+<span class="text-outline-variant font-mono-code text-mono-code">•</span>
+<span class="font-mono-code text-mono-code text-on-surface-variant">640 KB</span>
+</div>
+</div>
+</div>
+<span class="font-mono-code text-mono-code text-outline">22 linked</span>
+</div>
+</div>
+</div>
+<!-- Category 3: Statutory & Declarations -->
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<div class="flex items-center justify-between px-space-xs py-space-2xs">
+<span class="font-mono-code text-mono-code text-outline uppercase tracking-wider font-medium flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[14px]">assignment_turned_in</span>
+                Regulatory Declarations (1)
+              </span>
+<span class="material-symbols-outlined text-[15px] text-outline">unfold_less</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer flex flex-col gap-space-xs">
+<div class="flex items-start justify-between gap-space-xs">
+<div class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[20px] mt-0.5">badge</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-medium truncate">BIS_Form_VI_Self_Declaration_Draft.pdf</span>
+<div class="flex items-center gap-space-xs mt-0.5">
+<span class="px-space-2xs py-0.5 rounded bg-surface-container text-on-surface-variant font-mono-code text-[10px]">Statutory Form</span>
+<span class="text-outline-variant font-mono-code text-mono-code">•</span>
+<span class="font-mono-code text-mono-code text-on-surface-variant">420 KB</span>
+</div>
+</div>
+</div>
+<span class="font-mono-code text-mono-code text-outline">Pending</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Ingest New Bottom Trigger -->
+<div class="p-space-md bg-surface-container-low/60 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface font-medium">Automated OCR Extraction</span>
+<span class="font-mono-code text-[10px] text-on-surface-variant">Drop PDF, Gerber or CSV files to auto-parse</span>
+</div>
+<button class="px-space-sm py-space-xs bg-surface-container-lowest text-on-surface hover:bg-surface-container rounded-lg text-label-md font-label-md font-medium shadow-sm transition-all flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">upload</span>
+<span>Upload Artifact</span>
+</button>
+</div>
+</div>
+<!-- Quick Evidence Integrity Summary Card -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-on-surface">Provenance Health</span>
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-high text-on-surface-variant font-mono-code text-mono-code">NABL #TC-8812</span>
+</div>
+<div class="grid grid-cols-3 gap-space-sm pt-space-xs">
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col">
+<span class="font-mono-code text-mono-code text-outline">MATCH RATE</span>
+<span class="font-display text-[22px] leading-tight text-primary font-semibold mt-1">99.4%</span>
+<span class="font-mono-code text-[10px] text-on-surface-variant mt-0.5">High Confidence</span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col">
+<span class="font-mono-code text-mono-code text-outline">CLAUSES COVERED</span>
+<span class="font-display text-[22px] leading-tight text-on-surface font-semibold mt-1">45 / 58</span>
+<span class="font-mono-code text-[10px] text-on-surface-variant mt-0.5">77.5% Standard</span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col">
+<span class="font-mono-code text-mono-code text-outline">SIGNATURE STATUS</span>
+<span class="font-display text-[22px] leading-tight text-on-surface font-semibold mt-1">VALID</span>
+<span class="font-mono-code text-[10px] text-on-surface-variant mt-0.5">PKI e-Signed</span>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: MAIN DOCUMENT & PROVENANCE INSPECTOR (60% - 7 cols in 12-grid system) -->
+<div class="col-span-12 lg:col-span-7 flex flex-col gap-space-md">
+<!-- Document Viewer Canvas Wrapper -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<!-- Viewer Top Toolbar -->
+<div class="h-14 px-space-md bg-surface-container-low/70 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+<span class="font-mono-data text-mono-data text-on-surface font-medium truncate">ERDA_Test_Report_TR-994_Rev2.pdf</span>
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-highest font-mono-code text-mono-code text-on-surface-variant">Page 12 of 38</span>
+</div>
+<!-- Viewer Control Buttons -->
+<div class="flex items-center gap-space-xs">
+<div class="flex items-center bg-surface-container-lowest rounded px-space-xs py-0.5 shadow-sm">
+<button class="p-space-2xs text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined text-[16px]">zoom_out</span>
+</button>
+<span class="font-mono-code text-mono-code text-on-surface px-space-xs">100%</span>
+<button class="p-space-2xs text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined text-[16px]">zoom_in</span>
+</button>
+</div>
+<div class="h-5 w-px bg-surface-container-high mx-space-2xs"></div>
+<button class="flex items-center gap-space-xs px-space-xs py-space-2xs rounded bg-surface-container text-primary font-mono-code text-mono-code font-medium">
+<span class="material-symbols-outlined text-[15px]">highlight</span>
+<span>B-Box (Cl. 8.2.1)</span>
+</button>
+<button class="p-space-2xs rounded hover:bg-surface-container text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">rotate_right</span>
+</button>
+<button class="p-space-2xs rounded hover:bg-surface-container text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+</div>
+</div>
+<!-- Split View inside Document Canvas: Simulated PDF Sheet (left) + Provenance Citation Dock (right) -->
+<div class="grid grid-cols-12 min-h-[640px] bg-surface-dim/30">
+<!-- LEFT PANE: HIGH-FIDELITY SIMULATED PDF PAGE PREVIEW -->
+<div class="col-span-12 xl:col-span-7 p-space-md flex flex-col justify-start items-center overflow-y-auto">
+<!-- Document Sheet Paper Simulation -->
+<div class="w-full max-w-full bg-surface-container-lowest rounded shadow-md p-space-lg flex flex-col relative text-on-surface">
+<!-- Subtle Watermark / Security Tag -->
+<div class="absolute top-space-sm right-space-sm font-mono-code text-[9px] text-outline opacity-60">
+                DOC ID: ERDA/VAD/2024/0994-B
+              </div>
+<!-- Formal Lab Header -->
+<div class="flex flex-col items-center pb-space-sm mb-space-sm bg-surface-container-low/40 p-space-sm rounded">
+<div class="flex items-center gap-space-xs mb-space-2xs">
+<span class="material-symbols-outlined text-primary text-[22px]">corporate_fare</span>
+<span class="font-headline-sm text-headline-sm font-bold tracking-tight text-on-surface uppercase">ERDA VADODARA</span>
+</div>
+<span class="font-body-sm text-[10px] text-on-surface-variant text-center font-medium">ELECTRICAL RESEARCH AND DEVELOPMENT ASSOCIATION</span>
+<span class="font-mono-code text-[9px] text-outline text-center uppercase tracking-wider">NABL ACCREDITED TESTING LABORATORY • CERTIFICATE NO. TC-8812</span>
+</div>
+<!-- Report Meta Strip -->
+<div class="grid grid-cols-2 gap-space-xs bg-surface-container-low p-space-xs rounded font-mono-code text-[11px] mb-space-sm">
+<div><span class="text-outline">Product:</span> Smart Hybrid Inverter 5kW</div>
+<div><span class="text-outline">Applicant:</span> Bharat Dynamics Ltd.</div>
+<div><span class="text-outline">Standard:</span> IS 16221-2:2015</div>
+<div><span class="text-outline">Date of Test:</span> 2025-02-26</div>
+</div>
+<!-- Paragraph Description -->
+<div class="font-body-sm text-body-sm text-on-surface-variant mb-space-sm">
+<span class="font-semibold text-on-surface">Clause 8.2 — High Voltage Dielectric Evaluation:</span> The Equipment Under Test (EUT) was subjected to specified dielectric stress tests in accordance with Table 5 requirements for solar power conversion equipment.
+              </div>
+<!-- Table 5.2 Test Data -->
+<div class="flex flex-col rounded overflow-hidden bg-surface-container-lowest shadow-sm mb-space-sm">
+<div class="bg-surface-container-high px-space-sm py-space-2xs flex items-center justify-between">
+<span class="font-mono-code text-[11px] font-semibold text-on-surface">TABLE 5.2: DIELECTRIC &amp; INSULATION WITHSTAND READINGS</span>
+<span class="font-mono-code text-[10px] text-outline">TEMP: 24.2°C • RH: 54%</span>
+</div>
+<table class="w-full text-left text-body-sm">
+<thead class="bg-surface-container-low text-outline font-mono-code text-[10px] uppercase">
+<tr>
+<th class="p-space-xs">Test Point</th>
+<th class="p-space-xs">Applied Voltage</th>
+<th class="p-space-xs">Duration</th>
+<th class="p-space-xs">Leakage Current</th>
+<th class="p-space-xs">Observed</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-transparent font-mono-data text-[11px]">
+<tr class="bg-surface-container-lowest">
+<td class="p-space-xs">AC Mains to Chassis</td>
+<td class="p-space-xs">2000V AC RMS</td>
+<td class="p-space-xs">60 sec</td>
+<td class="p-space-xs">0.42 mA</td>
+<td class="p-space-xs text-primary font-medium">PASSED</td>
+</tr>
+</tbody>
+</table>
+<!-- Bounding Box #EV-094 Target Highlight Area -->
+<div class="m-space-xs p-space-sm rounded-lg bg-secondary-container/50 shadow-sm relative">
+<div class="flex items-center justify-between mb-space-2xs">
+<span class="font-mono-code text-[10px] px-space-xs py-0.5 rounded bg-primary text-on-primary font-medium flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-[12px]">crop_free</span>
+                      BOUNDING BOX #EV-094 (Cl. 8.2.1)
+                    </span>
+<span class="font-mono-code text-[10px] text-primary font-semibold">MATCH 99.4%</span>
+</div>
+<div class="font-mono-data text-[11.5px] leading-relaxed text-on-surface font-medium bg-surface-container-lowest/80 p-space-xs rounded">
+                    "Applied 2500V AC RMS at 50Hz between PV+ / PV- and Chassis Ground for 60 seconds continuous. Maximum measured breakdown current: 0.82mA (Prescribed Limit: 5.0mA). Insulation integrity retained without flashover. Result: SATISFACTORY / PASSED."
+                  </div>
+<div class="mt-space-2xs flex items-center justify-between text-[10px] font-mono-code text-on-surface-variant">
+<span>Target Coordinates: [x:114, y:382, w:420, h:68]</span>
+<span class="text-primary">Linked to Clause 8.2.1</span>
+</div>
+</div>
+</div>
+<!-- Lab Digital Stamp & Scientist Sign-off -->
+<div class="mt-space-sm pt-space-sm bg-surface-container-low/50 rounded p-space-sm flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[28px]">verified</span>
+<div class="flex flex-col">
+<span class="font-mono-code text-[11px] font-bold text-on-surface">DIGITALLY CERTIFIED - ERDA VADODARA</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Signatory: Dr. K. Ramanathan, Principal Scientist (HV Lab)</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="px-space-xs py-0.5 rounded bg-surface-container-highest font-mono-code text-[9px] text-on-surface">DS-ERDA-99120</span>
+<span class="font-mono-code text-[9px] text-outline mt-0.5">2025-02-27 14:18 IST</span>
+</div>
+</div>
+<!-- Page Footer Note -->
+<div class="mt-space-md pt-space-xs flex items-center justify-between font-mono-code text-[9px] text-outline">
+<span>ERDA Test Report TR-994 Rev 2.0</span>
+<span>Page 12 of 38</span>
+</div>
+</div>
+</div>
+<!-- RIGHT PANE: EVIDENCE & CLAUSE CITATION INSPECTOR DOCK -->
+<div class="col-span-12 xl:col-span-5 bg-surface-container-lowest p-space-md flex flex-col gap-space-md overflow-y-auto">
+<!-- Inspector Dock Header -->
+<div class="flex items-center justify-between pb-space-2xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-primary">fact_check</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Citation Inspector</span>
+</div>
+<span class="px-space-xs py-0.5 rounded bg-secondary-container text-on-secondary-fixed-variant font-mono-code text-mono-code font-medium">
+                Clause 8.2.1
+              </span>
+</div>
+<!-- Provenance Card -->
+<div class="bg-surface-container-low p-space-md rounded-xl shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-mono-code text-mono-code text-outline uppercase">Active Standard Clause</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mt-0.5">IS 16221 (Part 2) Cl. 8.2.1</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant">"Dielectric Withstand Voltage Test"</span>
+</div>
+<!-- Verification Status Pill -->
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-lowest text-primary font-mono-code text-mono-code font-semibold shadow-sm flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                  Verified Evidence
+                </span>
+</div>
+<!-- Extracted Data Metrics Grid -->
+<div class="grid grid-cols-2 gap-space-xs pt-space-xs">
+<div class="bg-surface-container-lowest p-space-xs rounded shadow-sm flex flex-col">
+<span class="font-mono-code text-[10px] text-outline">EXTRACTED VALUE</span>
+<span class="font-mono-data text-[13px] font-semibold text-primary mt-0.5">2500V AC / 60s</span>
+<span class="font-mono-code text-[10px] text-on-surface-variant">Limit: 2000V + 2Un</span>
+</div>
+<div class="bg-surface-container-lowest p-space-xs rounded shadow-sm flex flex-col">
+<span class="font-mono-code text-[10px] text-outline">MEASURED LEAKAGE</span>
+<span class="font-mono-data text-[13px] font-semibold text-on-surface mt-0.5">0.82 mA</span>
+<span class="font-mono-code text-[10px] text-on-surface-variant">Threshold &lt; 5.0mA</span>
+</div>
+</div>
+<!-- Provenance Technical Integrity Details -->
+<div class="flex flex-col gap-space-xs pt-space-xs text-body-sm">
+<div class="flex items-center justify-between py-space-2xs bg-surface-container-lowest px-space-xs rounded">
+<span class="font-mono-code text-mono-code text-outline">Hash Integrity</span>
+<span class="font-mono-code text-mono-code text-on-surface font-medium truncate max-w-[170px]" title="9a88ff3e0b2d6a71cb01e901b">SHA-256: 9a88ff3e...e901b</span>
+</div>
+<div class="flex items-center justify-between py-space-2xs bg-surface-container-lowest px-space-xs rounded">
+<span class="font-mono-code text-mono-code text-outline">Parser Method</span>
+<span class="font-mono-code text-mono-code text-on-surface">OCR v4.2 + Table Transformer</span>
+</div>
+<div class="flex items-center justify-between py-space-2xs bg-surface-container-lowest px-space-xs rounded">
+<span class="font-mono-code text-mono-code text-outline">Model Confidence</span>
+<span class="font-mono-code text-mono-code text-primary font-bold">99.4% (Direct Text Match)</span>
+</div>
+</div>
+<!-- Human Attestation Stamp Box -->
+<div class="mt-space-2xs p-space-xs bg-surface-container-lowest rounded-lg shadow-sm flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5">admin_panel_settings</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">Human Attestation Signed</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant leading-normal">
+                    Confirmed by <span class="text-on-surface font-medium">Rajan Malhotra</span> (Lead Certifier) on <span class="font-mono-code text-[11px]">2025-02-28 10:24 AM</span>.
+                  </span>
+</div>
+</div>
+</div>
+<!-- Cross-Referenced Clauses Accordion/List -->
+<div class="flex flex-col gap-space-xs">
+<span class="font-mono-code text-mono-code text-outline uppercase tracking-wider font-medium flex items-center justify-between">
+<span>Cross-Referenced Clauses (2)</span>
+<span class="text-primary font-normal">Auto-linked</span>
+</span>
+<!-- Ref 1 -->
+<div class="p-space-xs bg-surface-container-low rounded-lg flex items-center justify-between hover:bg-surface-container transition-colors cursor-pointer">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">join_inner</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-medium truncate">Cl. 5.3 Isolation Resistance</span>
+<span class="font-mono-code text-[10px] text-outline truncate">Page 11 • Test Value &gt; 100 MΩ</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline text-[16px]">chevron_right</span>
+</div>
+<!-- Ref 2 -->
+<div class="p-space-xs bg-surface-container-low rounded-lg flex items-center justify-between hover:bg-surface-container transition-colors cursor-pointer">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">join_inner</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-medium truncate">Cl. 6.1 Protective Earthing Integrity</span>
+<span class="font-mono-code text-[10px] text-outline truncate">Page 14 • Resistance: 0.04 Ω (Limit 0.1 Ω)</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline text-[16px]">chevron_right</span>
+</div>
+</div>
+<!-- Quick Action Toolbar -->
+<div class="flex items-center gap-space-xs pt-space-xs mt-auto">
+<button class="flex-1 flex items-center justify-center gap-space-xs px-space-sm py-space-xs rounded bg-primary text-on-primary font-label-md text-label-md font-medium hover:bg-primary-container transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px]">bookmark_added</span>
+<span>Export Evidence Clip</span>
+</button>
+<button class="flex items-center justify-center p-space-xs rounded bg-surface-container-low text-on-surface hover:bg-surface-container transition-colors shadow-sm" title="Re-Run Optical OCR">
+<span class="material-symbols-outlined text-[18px]">sync</span>
+</button>
+<button class="flex items-center justify-center p-space-xs rounded bg-surface-container-low text-on-surface hover:bg-surface-container transition-colors" title="Flag Citation Discrepancy">
+<span class="material-symbols-outlined text-[18px]">flag</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Audit Metadata & Submission Bar -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[22px]">gavel</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Statutory BIS Compliance Packet Ready</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">All 8 clauses for ERDA report TR-994 are corroborated with cryptographic hashes.</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm w-full md:w-auto justify-end">
+<button class="px-space-md py-space-xs rounded bg-surface-container-low text-on-surface hover:bg-surface-container text-label-md font-label-md transition-colors shadow-sm">
+            View Raw JSON
+          </button>
+<button class="px-space-md py-space-xs rounded bg-primary text-on-primary hover:bg-primary-container text-label-md font-label-md font-medium shadow-sm transition-colors flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px]">task_alt</span>
+<span>Approve &amp; Lock Stage</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div></main></div></body></html>

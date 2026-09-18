@@ -1,8 +1,9 @@
 import sys
 import asyncio
 
-if sys.platform == "win32" and sys.version_info < (3, 14):
+if sys.platform == "win32":
     try:
+        # psycopg async requires SelectorEventLoop on Windows
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     except Exception:
         pass
