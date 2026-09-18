@@ -113,12 +113,14 @@ class AIToolRegistry:
             {
                 "id": m.id,
                 "evidence_id": m.evidence_id,
-                "file_name": m.file_name,
+                "file_name": (m.metadata_json or {}).get("original_filename", m.id),
                 "model_hash": m.model_hash,
                 "processing_status": m.processing_status,
-                "bounding_box": m.bounding_box or {},
-                "volume_mm3": m.volume_mm3,
-                "surface_area_mm2": m.surface_area_mm2,
+                "bounding_box": {
+                    "dimensions": [m.dim_x, m.dim_y, m.dim_z]
+                } if m.dim_x is not None else {},
+                "volume_mm3": m.volume,
+                "surface_area_mm2": m.surface_area,
             }
             for m in models
         ]
@@ -139,9 +141,9 @@ class AIToolRegistry:
                 "id": m.id,
                 "cad_model_id": m.cad_model_id,
                 "measurement_type": m.measurement_type,
-                "measured_value": m.measured_value,
+                "measured_value": m.value,
                 "unit": m.unit,
-                "feature_reference": m.feature_reference,
+                "feature_reference": m.source_reference,
                 "metadata": m.metadata_json or {},
             }
             for m in measurements
@@ -258,10 +260,10 @@ class AIToolRegistry:
             {
                 "id": r.id,
                 "status": r.status,
-                "review_decision": r.review_decision,
+                "review_decision": r.decision,
                 "requirement_id": r.requirement_id,
                 "finding_id": r.finding_id,
-                "review_notes": r.review_notes,
+                "review_notes": r.decision_notes,
             }
             for r in items
         ]
@@ -276,8 +278,8 @@ class AIToolRegistry:
                 "id": a.id,
                 "attestation_type": a.attestation_type,
                 "status": a.status,
-                "declaration_text": a.declaration_text,
-                "attestor_name": a.attestor_name,
+                "declaration_text": a.attestation_statement,
+                "attestor_name": a.attestor_email,
                 "attested_at": a.attested_at.isoformat() if a.attested_at else None,
             }
             for a in attestations

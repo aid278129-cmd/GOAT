@@ -102,10 +102,18 @@ class AIAuthorityFirewall:
     """Centralized gatekeeper validating queries, intents, and generated responses."""
 
     FORBIDDEN_QUERY_PATTERNS = [
+        # Evidence acceptance — "accept this evidence", "approve this evidence"
         (r"\b(approve|accept)\s+this\s+evidence\b", ForbiddenAIAction.EVIDENCE_ACCEPTANCE),
-        (r"\b(certify|grant)\s+(bis|compliance|certificate)\b", ForbiddenAIAction.STATUTORY_CERTIFICATION),
+        # Statutory certification — "certify" anywhere in a query about BIS/compliance/certificate
+        # Also catches: "certify this product for BIS", "grant BIS compliance", "certify compliance"
+        (r"\bcertif(y|ied|ication)\b", ForbiddenAIAction.STATUTORY_CERTIFICATION),
+        (r"\bgrant\s+(bis|compliance|certificate)\b", ForbiddenAIAction.STATUTORY_CERTIFICATION),
+        # Attestation — "issue attestation", "sign attestation", "attest", "issue an attestation"
         (r"\b(issue|sign|create)\s+(an?\s+)?attestation\b", ForbiddenAIAction.AUTOMATIC_ATTESTATION),
+        (r"\battest(ation)?\b.*\bfor\b", ForbiddenAIAction.AUTOMATIC_ATTESTATION),
+        # Assessment override
         (r"\b(override|change)\s+(assessment|result|pass|gap)\b", ForbiddenAIAction.OVERRIDE_DETERMINISTIC_RESULT),
+        # Finding waiver
         (r"\b(waive|dismiss|resolve)\s+(this\s+)?finding\b", ForbiddenAIAction.AUTOMATIC_REVIEW_APPROVAL),
     ]
 

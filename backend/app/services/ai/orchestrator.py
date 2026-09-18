@@ -311,7 +311,11 @@ class ZyntrixAIOrchestrator:
             return state
 
         # Specialist classification
-        if any(w in q_lower for w in ["cad", "geometry", "height", "width", "wall thickness", "diameter", "mesh", "stp", "step"]):
+        # Clause failure/compliance analysis queries → COMPLIANCE_ANALYST (must come before STANDARDS_ANALYST)
+        if any(w in q_lower for w in ["fail", "gap", "pass", "why did", "assessment", "non-conform", "nonconform", "finding"]):
+            state["target_specialist"] = "COMPLIANCE_ANALYST"
+            state["intent"] = AllowedAIAction.TRACE_EXPLANATION.value
+        elif any(w in q_lower for w in ["cad", "geometry", "height", "width", "wall thickness", "diameter", "mesh", "stp", "step"]):
             state["target_specialist"] = "CAD_ANALYST"
             state["intent"] = AllowedAIAction.TRACE_EXPLANATION.value
         elif any(w in q_lower for w in ["standard", "clause", "is 13252", "is 302", "requirement", "statutory"]):
