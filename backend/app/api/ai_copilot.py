@@ -25,7 +25,11 @@ from backend.app.models.persistent_ai import (
     AIActionProposal,
 )
 from backend.app.models.persistent_audit import AuditEvent
-from backend.app.api.deps import get_current_user, get_current_org
+from backend.app.models.persistent_evidence import PersistentEvidence
+from backend.app.models.persistent_dna import PersistentDNA
+from backend.app.models.persistent_standards import JobRequirement
+from backend.app.models.persistent_review import ReviewItem
+from backend.app.api.deps import get_current_user, get_current_org, require_role
 from backend.app.services.ai.provider import get_llm_provider, AIProviderNotConfiguredError
 from backend.app.services.ai.orchestrator import ZyntrixAIOrchestrator
 
@@ -193,11 +197,11 @@ async def list_action_proposals(
 @router.post("/proposals/{proposal_id}/confirm", response_model=Dict[str, Any])
 async def confirm_action_proposal(
     proposal_id: str,
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_role("ENGINEER", "REVIEWER", "ADMIN")),
     org: Organization = Depends(get_current_org),
     db: AsyncSession = Depends(get_db),
 ):
-    """Human Gate: Confirm an AI proposal and mark it CONFIRMED."""
+    """Human Gate: Confirm an AI proposal and execute it with strict validation."""
     stmt = select(AIActionProposal).where(
         AIActionProposal.id == proposal_id,
         AIActionProposal.organization_id == org.id,
@@ -214,6 +218,79 @@ async def confirm_action_proposal(
         )
 
     now = datetime.now(timezone.utc)
+    payload = proposal.proposal_payload or {}
+
+    # Target & Evidence Gating Enforcement
+    if proposal.action_type == "CREATE_DNA_CANDIDATE":
+        source_evidence_id = payload.get("source_evidence_id") or proposal.target_id
+        if not source_evidence_id:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="DNA candidate proposal lacks mandatory source evidence reference.",
+            )
+        ev_res = await db.execute(
+            select(PersistentEvidence).where(
+                PersistentEvidence.id == source_evidence_id,
+                PersistentEvidence.job_id == proposal.job_id,
+                PersistentEvidence.organization_id == org.id,
+            )
+        )
+        evidence = ev_res.scalars().first()
+        if not evidence:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Linked source evidence '{source_evidence_id}' does not exist for this job.",
+            )
+        if evidence.acceptance_status != "ACCEPTED":
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=(
+                    f"Evidence gating violation: Source evidence '{evidence.file_name}' has status "
+                    f"'{evidence.acceptance_status}'. Only ACCEPTED evidence may contribute parameters to Product DNA."
+                ),
+            )
+        # Authoritative creation of Product DNA record upon confirmed proposal
+        dna_param = PersistentDNA(
+            organization_id=org.id,
+            job_id=proposal.job_id,
+            category=payload.get("category", "General"),
+            parameter=payload.get("parameter", "unspecified"),
+            value=str(payload.get("value", "")),
+            unit=payload.get("unit"),
+            confidence=1.0,
+            status="VERIFIED",
+            source_evidence_id=evidence.id,
+            source_file_name=evidence.file_name,
+            extraction_method="AI_PROPOSAL_CONFIRMED",
+            verified_by=current_user.id,
+            verification_timestamp=now,
+        )
+        db.add(dna_param)
+
+    elif proposal.action_type == "CREATE_REVIEW_REQUEST":
+        target_ref = str(payload.get("requirement_id") or proposal.target_id or "")
+        req_res = await db.execute(
+            select(JobRequirement).where(
+                (JobRequirement.id == target_ref) | (JobRequirement.requirement_id == target_ref),
+                JobRequirement.job_id == proposal.job_id,
+            )
+        )
+        req = req_res.scalars().first()
+        req_fk = req.id if req else None
+
+        review_item = ReviewItem(
+            organization_id=org.id,
+            job_id=proposal.job_id,
+            review_type="ENGINEERING_JUDGEMENT",
+            title=f"AI-Proposed Review: {target_ref}",
+            description=proposal.reason,
+            priority="MEDIUM",
+            status="PENDING",
+            requirement_id=req_fk,
+            review_snapshot={"proposed_by": proposal.created_by_agent, "target_id": proposal.target_id},
+        )
+        db.add(review_item)
+
     proposal.status = "CONFIRMED"
     proposal.confirmed_by_user_id = current_user.id
     proposal.confirmed_at = now
@@ -247,7 +324,7 @@ async def confirm_action_proposal(
 async def reject_action_proposal(
     proposal_id: str,
     payload: ProposalDecisionRequest,
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_role("ENGINEER", "REVIEWER", "ADMIN")),
     org: Organization = Depends(get_current_org),
     db: AsyncSession = Depends(get_db),
 ):

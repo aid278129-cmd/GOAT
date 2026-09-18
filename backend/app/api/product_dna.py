@@ -161,6 +161,12 @@ async def add_dna_parameter(
             )
         source_file_name = evidence.file_name
 
+    if payload.extraction_method == "CAD_MEASUREMENT" and not payload.source_evidence_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="CAD_MEASUREMENT extraction method strictly requires a linked source CAD evidence artifact.",
+        )
+
     param = PersistentDNA(
         organization_id=org.id,
         job_id=job.id,

@@ -657,10 +657,45 @@ class ZyntrixAIOrchestrator:
     async def _node_authority_validator(cls, state: OrchestratorState) -> OrchestratorState:
         agent_out = state["agent_output"]
         answer = agent_out.get("answer", "")
-        
-        # Validate that output does not contain forbidden conclusions
+        ctx = state.get("retrieved_context", {})
+
+        # 1. Strip forbidden compliance claim phrases
         sanitized = AIAuthorityFirewall.sanitize_output(answer)
-        agent_out["answer"] = sanitized
+
+        # 2. Reconcile regulatory consistency with ground-truth backend state
+        reconciled = AIAuthorityFirewall.reconcile_regulatory_consistency(sanitized, ctx)
+        agent_out["answer"] = reconciled
+
+        # 3. Validate citations against authoritative database context
+        raw_citations = agent_out.get("citations", [])
+        if raw_citations:
+            valid_ev_ids = {str(e.get("id")) for e in ctx.get("evidence", []) if e.get("id")}
+            valid_clauses = (
+                {str(r.get("clause_number")) for r in ctx.get("requirements", []) if r.get("clause_number")}
+                | {str(r.get("clause_reference")) for r in ctx.get("requirements", []) if r.get("clause_reference")}
+                | {str(r.get("clause_number")) for r in (ctx.get("assessment") or {}).get("results", []) if r.get("clause_number")}
+            )
+            valid_dna = {str(d.get("parameter")) for d in ctx.get("dna", []) if d.get("parameter")}
+            valid_cad = (
+                {str(m.get("id")) for m in ctx.get("cad_models", []) if m.get("id")}
+                | {str(m.get("id")) for m in ctx.get("cad_measurements", []) if m.get("id")}
+            )
+            valid_assessments = (
+                {str((ctx.get("assessment") or {}).get("id"))}
+                | {str(r.get("id")) for r in (ctx.get("assessment") or {}).get("results", []) if r.get("id")}
+                | {str(r.get("clause_number")) for r in (ctx.get("assessment") or {}).get("results", []) if r.get("clause_number")}
+            ) - {None, "", "None"}
+
+            cit_items = [CitationItem(**c) if isinstance(c, dict) else c for c in raw_citations]
+            validated_cits = AIAuthorityFirewall.validate_citations(
+                citations=cit_items,
+                valid_evidence_ids=valid_ev_ids,
+                valid_clause_numbers=valid_clauses,
+                valid_dna_keys=valid_dna,
+                valid_cad_ids=valid_cad,
+                valid_assessment_ids=valid_assessments,
+            )
+            agent_out["citations"] = [c.model_dump() for c in validated_cits]
 
         state["firewall_status"] = "PASSED_AUTHORITY_FIREWALL"
         return state

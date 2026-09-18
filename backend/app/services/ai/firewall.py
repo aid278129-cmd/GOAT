@@ -160,12 +160,14 @@ class AIAuthorityFirewall:
         valid_clause_numbers: Set[str],
         valid_dna_keys: Set[str],
         valid_cad_ids: Set[str],
+        valid_assessment_ids: Optional[Set[str]] = None,
     ) -> List[CitationItem]:
         """Verify each citation against authoritative database objects."""
         validated: List[CitationItem] = []
+        clean_assessment_ids = {str(a) for a in (valid_assessment_ids or set()) if a}
         for cit in citations:
             s_type = cit.source_type.upper()
-            s_id = cit.source_id.strip()
+            s_id = str(cit.source_id).strip()
 
             is_valid = False
             if s_type == "EVIDENCE" and s_id in valid_evidence_ids:
@@ -177,7 +179,10 @@ class AIAuthorityFirewall:
             elif s_type == "CAD" and s_id in valid_cad_ids:
                 is_valid = True
             elif s_type == "ASSESSMENT":
-                is_valid = True  # Assessment run ID or result
+                if clean_assessment_ids and any(s_id in a or a in s_id for a in clean_assessment_ids):
+                    is_valid = True
+                else:
+                    is_valid = False
 
             if is_valid:
                 cit.support_status = SupportStatus.SUPPORTED
@@ -186,3 +191,54 @@ class AIAuthorityFirewall:
 
             validated.append(cit)
         return validated
+
+    @classmethod
+    def reconcile_regulatory_consistency(cls, answer: str, context: Dict[str, Any]) -> str:
+        """Enforce that AI narratives never contradict authoritative backend state."""
+        reconciled = answer
+        assessment = context.get("assessment") or {}
+        results = assessment.get("results", [])
+        for r in results:
+            cl = str(r.get("clause_number", "")).replace("Clause ", "").strip()
+            state = r.get("assessment_state")
+            if state == "ENGINEERING_GAP":
+                err_patterns = [
+                    rf"\bclause\s+{re.escape(cl)}\s+(passed|conforms|compliant|satisfies|satisfied|met)\b",
+                    rf"\bclause\s+{re.escape(cl)}.*is compliant\b",
+                ]
+                for p in err_patterns:
+                    if re.search(p, reconciled, re.IGNORECASE):
+                        reconciled = re.sub(
+                            p,
+                            f"Clause {cl} has an authoritative status of ENGINEERING_GAP (Observed: {r.get('observed_value')}, Limit: {r.get('threshold_min') or r.get('threshold_max')})",
+                            reconciled,
+                            flags=re.IGNORECASE,
+                        )
+                        if "AUTHORITATIVE REGULATORY CORRECTION" not in reconciled:
+                            reconciled += f"\n\n[AUTHORITATIVE REGULATORY CORRECTION: Clause {cl} evaluates to ENGINEERING_GAP according to deterministic mathematical assessment.]"
+            elif state == "DATA_REQUIRED":
+                err_patterns = [
+                    rf"\bclause\s+{re.escape(cl)}\s+(passed|conforms|compliant|satisfies|satisfied|met)\b",
+                ]
+                for p in err_patterns:
+                    if re.search(p, reconciled, re.IGNORECASE):
+                        reconciled = re.sub(
+                            p,
+                            f"Clause {cl} has an authoritative status of DATA_REQUIRED (missing empirical evidence)",
+                            reconciled,
+                            flags=re.IGNORECASE,
+                        )
+        for ev in context.get("evidence", []):
+            if ev.get("acceptance_status") == "REJECTED":
+                fname = ev.get("file_name", "")
+                if fname and re.search(rf"\b{re.escape(fname)}\s+(is\s+)?(accepted|verified|approved)\b", reconciled, re.IGNORECASE):
+                    reconciled = re.sub(
+                        rf"\b{re.escape(fname)}\s+(is\s+)?(accepted|verified|approved)\b",
+                        f"{fname} is REJECTED",
+                        reconciled,
+                        flags=re.IGNORECASE,
+                    )
+                    if "AUTHORITATIVE EVIDENCE CORRECTION" not in reconciled:
+                        reconciled += f"\n\n[AUTHORITATIVE EVIDENCE CORRECTION: Artifact '{fname}' was formally REJECTED and cannot provide verified compliance data.]"
+
+        return reconciled
