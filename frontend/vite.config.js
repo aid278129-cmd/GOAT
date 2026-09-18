@@ -6,6 +6,9 @@ const backendTarget = process.env.VITE_BACKEND_URL || process.env.BACKEND_URL ||
 
 export default defineConfig({
   plugins: [react()],
+  optimizeDeps: {
+    exclude: ['babylonjs'],
+  },
   server: {
     host: true,
     port: 5173,

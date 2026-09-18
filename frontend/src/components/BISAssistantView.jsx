@@ -1,10 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { assistantApi } from '../api/assistant';
+import { authApi } from '../api/auth';
+import ProductInvestigationModal from './ProductInvestigationModal';
 
 export default function BISAssistantView({ onNavigateWorkstation, onJobCreated }) {
   const [conversations, setConversations] = useState([]);
   const [activeConversationId, setActiveConversationId] = useState(null);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    {
+      id: 'init-1',
+      role: 'assistant',
+      content: (
+        "Welcome to the **Zyntrix BIS Intelligent Assistant** (SIH PS 26107).\n\n" +
+        "I provide accurate, source-grounded regulatory intelligence on **Indian Standards (IS)**, " +
+        "**BIS Conformity Schemes (ISI Mark, CRS)**, **Testing Protocols**, **Recognized Laboratories**, " +
+        "and **Hallmarking**. Every response references authorized BIS regulatory sources.\n\n" +
+        "Ask a question below or choose a sample investigation to begin."
+      ),
+      citations: [],
+      sources: [{ name: 'Bureau of Indian Standards Act 2016', type: 'AUTHORITATIVE_BIS' }],
+    },
+  ]);
   const [inputMessage, setInputMessage] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [loading, setLoading] = useState(false);
@@ -50,30 +66,16 @@ export default function BISAssistantView({ onNavigateWorkstation, onJobCreated }
 
   const loadConversations = async () => {
     try {
+      if (!authApi.getToken()) {
+        await authApi.bootstrap();
+      }
       const convs = await assistantApi.listConversations();
       setConversations(convs || []);
       if (convs && convs.length > 0 && !activeConversationId) {
         loadConversationMessages(convs[0].id);
-      } else if (!convs || convs.length === 0) {
-        // Default initial greeting message
-        setMessages([
-          {
-            id: 'init-1',
-            role: 'assistant',
-            content: (
-              "Welcome to the **Zyntrix BIS Intelligent Assistant** (SIH PS 26107).\n\n" +
-              "I provide accurate, source-grounded regulatory intelligence on **Indian Standards (IS)**, " +
-              "**BIS Conformity Schemes (ISI Mark, CRS)**, **Testing Protocols**, **Recognized Laboratories**, " +
-              "and **Hallmarking**. Every response references authorized BIS regulatory sources.\n\n" +
-              "Ask a question below or choose a sample investigation to begin."
-            ),
-            citations: [],
-            sources: [{ name: 'Bureau of Indian Standards Act 2016', type: 'AUTHORITATIVE_BIS' }],
-          },
-        ]);
       }
     } catch (err) {
-      console.error('Failed to load conversations:', err);
+      console.warn('Failed to load conversations:', err);
     }
   };
 

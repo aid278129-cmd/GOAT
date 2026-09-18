@@ -1,6 +1,32 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { cadApi } from '../api/cad';
 
+let babylonLoadPromise = null;
+function ensureBabylon() {
+  if (typeof window !== 'undefined' && window.BABYLON) {
+    return Promise.resolve(window.BABYLON);
+  }
+  if (!babylonLoadPromise) {
+    babylonLoadPromise = new Promise((resolve, reject) => {
+      const existing = document.querySelector('script[data-babylon]');
+      if (existing) {
+        if (window.BABYLON) return resolve(window.BABYLON);
+        existing.addEventListener('load', () => resolve(window.BABYLON));
+        existing.addEventListener('error', reject);
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = '/babylon.js';
+      script.async = true;
+      script.setAttribute('data-babylon', 'true');
+      script.onload = () => resolve(window.BABYLON);
+      script.onerror = (err) => reject(err);
+      document.head.appendChild(script);
+    });
+  }
+  return babylonLoadPromise;
+}
+
 /**
  * Babylon.js 3D CAD Digital Twin Viewport.
  * Connects directly to authoritative backend CAD pipeline.
@@ -90,20 +116,18 @@ export function DigitalTwinViewport({
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    let active = true;
 
-    const BABYLON = window.BABYLON;
-    if (!BABYLON) {
-      console.warn('Babylon.js is not loaded yet');
-      return;
-    }
+    ensureBabylon().then((BABYLON) => {
+      if (!active || !canvasRef.current || !BABYLON) return;
 
-    try {
-      const engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
-      engineRef.current = engine;
+      try {
+        const engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
+        engineRef.current = engine;
 
-      const scene = new BABYLON.Scene(engine);
-      sceneRef.current = scene;
-      scene.clearColor = new BABYLON.Color4(0.027, 0.039, 0.071, 1.0); // #070A12
+        const scene = new BABYLON.Scene(engine);
+        sceneRef.current = scene;
+        scene.clearColor = new BABYLON.Color4(0.027, 0.039, 0.071, 1.0); // #070A12
 
       // Camera: ArcRotateCamera
       const camera = new BABYLON.ArcRotateCamera(
@@ -159,16 +183,17 @@ export function DigitalTwinViewport({
       const handleResize = () => {
         if (engine) engine.resize();
       };
-      window.addEventListener('resize', handleResize);
+        window.addEventListener('resize', handleResize);
+      } catch (err) {
+        console.warn('Babylon.js initialization error:', err);
+      }
+    });
 
-      return () => {
-        window.removeEventListener('resize', handleResize);
-        scene.dispose();
-        engine.dispose();
-      };
-    } catch (err) {
-      console.warn('Babylon.js initialization error:', err);
-    }
+    return () => {
+      active = false;
+      if (sceneRef.current) sceneRef.current.dispose();
+      if (engineRef.current) engineRef.current.dispose();
+    };
   }, []);
 
   // Update 3D Geometry in Babylon.js when meshData changes
@@ -274,7 +299,9 @@ export function DigitalTwinViewport({
     } else if (preset === 'reset') {
       camera.alpha = -Math.PI / 3;
       camera.beta = Math.PI / 3.2;
-      camera.target = new window.BABYLON.Vector3(0, 0, 0);
+      if (BABYLON?.Vector3) {
+        camera.target = new BABYLON.Vector3(0, 0, 0);
+      }
     }
   };
 

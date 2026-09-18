@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react';
+import { animate, stagger } from 'animejs';
 
 /**
- * Utility hook to execute Anime.js animations with fallback.
- * Adheres to Stitch engineering motion specifications:
+ * Utility hook to execute animations with fallback.
+ * Adheres to engineering motion specifications:
  * - Sub-350ms restrained motions
  * - easeOutQuad or easeOutCubic (no overshoot)
  * - Micro-staggering
@@ -12,18 +13,13 @@ export function useAnimeMotion(animateFn, deps = []) {
 
   useEffect(() => {
     isMounted.current = true;
-    
-    // Check if anime is available globally or via window
-    const anime = window.anime || (typeof window !== 'undefined' ? window.anime : null);
-
-    if (anime && typeof animateFn === 'function') {
+    if (typeof animateFn === 'function') {
       try {
-        animateFn(anime);
+        animateFn(animate);
       } catch (err) {
-        console.warn('Anime.js motion execution error:', err);
+        console.warn('Motion execution notice:', err);
       }
     }
-
     return () => {
       isMounted.current = false;
     };
@@ -34,19 +30,29 @@ export function useAnimeMotion(animateFn, deps = []) {
  * Standard entrance animation for page containers and elements
  */
 export function triggerEntrance(selector = '.animate-entrance', delay = 0) {
-  const anime = window.anime || (typeof window !== 'undefined' ? window.anime : null);
-  if (!anime) return;
+  if (typeof window === 'undefined' || !document.querySelector(selector)) return;
 
   try {
-    anime({
-      targets: selector,
-      translateY: [6, 0],
-      opacity: [0, 1],
-      delay: anime.stagger ? anime.stagger(35, { start: delay }) : delay,
-      duration: 320,
-      easing: 'easeOutQuad'
-    });
+    if (typeof animate === 'function') {
+      animate(selector, {
+        translateY: [6, 0],
+        opacity: [0, 1],
+        delay: typeof stagger === 'function' ? stagger(35, { start: delay }) : delay,
+        duration: 320,
+        ease: 'outQuad',
+      });
+    }
   } catch (e) {
-    // Graceful fallback
+    // Graceful fallback: ensure opacity is 1 if animation fails
+    try {
+      const els = document.querySelectorAll(selector);
+      els.forEach((el) => {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+    } catch {
+      // Ignored
+    }
   }
 }
+
