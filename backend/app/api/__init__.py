@@ -10,6 +10,7 @@ from backend.app.api.assessment_engine import router as assessment_engine_router
 from backend.app.api.review_workflow import router as review_workflow_router
 from backend.app.api.cad import router as cad_router
 from backend.app.api.ai_copilot import router as ai_router
+from backend.app.api.dossier_endpoints import router as dossier_router
 
 # Reference services
 from backend.app.api.system import router as system_router
@@ -37,6 +38,7 @@ api_router.include_router(assessment_engine_router)
 api_router.include_router(review_workflow_router)
 api_router.include_router(cad_router)
 api_router.include_router(ai_router)
+api_router.include_router(dossier_router)
 
 # Layer 2-5 Reference Subsystems
 api_router.include_router(system_router)

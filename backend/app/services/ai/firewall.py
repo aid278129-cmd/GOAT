@@ -106,7 +106,8 @@ class AIAuthorityFirewall:
         (r"\b(approve|accept)\s+this\s+evidence\b", ForbiddenAIAction.EVIDENCE_ACCEPTANCE),
         # Statutory certification — "certify" anywhere in a query about BIS/compliance/certificate
         # Also catches: "certify this product for BIS", "grant BIS compliance", "certify compliance"
-        (r"\bcertif(y|ied|ication)\b", ForbiddenAIAction.STATUTORY_CERTIFICATION),
+        (r"\bcertif(y|ied|ication|icate|ying)\b", ForbiddenAIAction.STATUTORY_CERTIFICATION),
+        (r"\b(modify|mutate|alter|change|edit)\s+.*dossier\b", ForbiddenAIAction.OVERRIDE_DETERMINISTIC_RESULT),
         (r"\bgrant\s+(bis|compliance|certificate)\b", ForbiddenAIAction.STATUTORY_CERTIFICATION),
         # Attestation — "issue attestation", "sign attestation", "attest", "issue an attestation"
         (r"\b(issue|sign|create)\s+(an?\s+)?attestation\b", ForbiddenAIAction.AUTOMATIC_ATTESTATION),

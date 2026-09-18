@@ -9,3 +9,4 @@ export { reviewApi } from './review';
 export { auditApi } from './audit';
 export { cadApi } from './cad';
 export { aiApi } from './ai';
+export { dossierApi } from './dossier';

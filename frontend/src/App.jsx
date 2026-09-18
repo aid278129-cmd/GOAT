@@ -717,6 +717,7 @@ export default function App() {
 
           {activeTab === 'reports' && (
             <DossiersReportsView
+              jobId={activeJobId}
               onNavigateJobs={() => setActiveTab('jobs')}
               evidenceCount={evidenceList.length}
             />

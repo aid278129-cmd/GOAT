@@ -16,6 +16,17 @@ from backend.app.models.persistent_cad import (
     CADSnapshot,
     CADProcessingStatus,
 )
+from backend.app.models.persistent_dossier import (
+    RegulatoryDossier,
+    DossierSection,
+    DossierEvidenceReference,
+    DossierRequirementReference,
+    DossierAssessmentReference,
+    DossierFindingReference,
+    DossierAttestationReference,
+    DossierGeneration,
+    DossierArtifact,
+)
 
 # Retain legacy/reference models
 from backend.app.models.product import Product
@@ -66,6 +77,15 @@ __all__ = [
     "CADMeasurement",
     "CADSnapshot",
     "CADProcessingStatus",
+    "RegulatoryDossier",
+    "DossierSection",
+    "DossierEvidenceReference",
+    "DossierRequirementReference",
+    "DossierAssessmentReference",
+    "DossierFindingReference",
+    "DossierAttestationReference",
+    "DossierGeneration",
+    "DossierArtifact",
     "AIConversation",
     "AIMessage",
     "AIExecution",
