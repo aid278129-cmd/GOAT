@@ -114,6 +114,8 @@ class AIAuthorityFirewall:
         (r"\battest(ation)?\b.*\bfor\b", ForbiddenAIAction.AUTOMATIC_ATTESTATION),
         # Assessment override
         (r"\b(override|change)\s+(assessment|result|pass|gap)\b", ForbiddenAIAction.OVERRIDE_DETERMINISTIC_RESULT),
+        (r"\b(change|modify|override|waive)\s+.*(finding|verdict|result|status|compliant)\b", ForbiddenAIAction.OVERRIDE_DETERMINISTIC_RESULT),
+        (r"\b(director\s+general|dg\s+bis|system\s+override)\b", ForbiddenAIAction.STATUTORY_CERTIFICATION),
         # Finding waiver
         (r"\b(waive|dismiss|resolve)\s+(this\s+)?finding\b", ForbiddenAIAction.AUTOMATIC_REVIEW_APPROVAL),
     ]

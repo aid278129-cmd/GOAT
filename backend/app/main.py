@@ -34,6 +34,15 @@ async def lifespan(app: FastAPI):
     await init_db_extensions()
     await create_tables_if_needed()
 
+    # Seed authoritative BIS knowledge base if needed
+    try:
+        from backend.app.database.session import AsyncSessionLocal
+        from backend.app.services.knowledge.ingest import BISKnowledgeIngestionService
+        async with AsyncSessionLocal() as session:
+            await BISKnowledgeIngestionService.seed_authoritative_knowledge_if_empty(session)
+    except Exception as exc:
+        logger.warning(f"Knowledge seed notice: {exc}")
+
     yield
 
     logger.info(f"Shutting down {settings.PROJECT_NAME}")

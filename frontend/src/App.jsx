@@ -10,6 +10,7 @@ import { DossiersReportsView } from './components/DossiersReportsView';
 import { SettingsView } from './components/SettingsView';
 import { StandardsIntelligenceView } from './components/StandardsIntelligenceView';
 import { ReviewWorkspaceView } from './components/ReviewWorkspaceView';
+import BISAssistantView from './components/BISAssistantView';
 import { AddEvidenceModal } from './components/evidence/AddEvidenceModal';
 import { EvidenceDetailDrawer } from './components/evidence/EvidenceDetailDrawer';
 import { ExtractParameterModal } from './components/dna/ExtractParameterModal';
@@ -100,8 +101,8 @@ function mapBackendResult(res, standard) {
 }
 
 export default function App() {
-  // Navigation active tab
-  const [activeTab, setActiveTab] = useState('workstation');
+  // Navigation active tab (Layer A: BIS Intelligent Assistant is the Front Door)
+  const [activeTab, setActiveTab] = useState('assistant');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Active Context & State
@@ -598,6 +599,23 @@ export default function App() {
 
         {/* Page View Container */}
         <main className="flex-1 pt-14 animate-view-stage">
+          {activeTab === 'assistant' && (
+            <BISAssistantView
+              onNavigateWorkstation={(newJobId) => {
+                if (newJobId) {
+                  setActiveJobId(newJobId);
+                  loadJobData(newJobId);
+                }
+                setActiveTab('workstation');
+                showToast('Navigated to Engineering Workstation');
+              }}
+              onJobCreated={(newJobId) => {
+                setActiveJobId(newJobId);
+                loadJobData(newJobId);
+              }}
+            />
+          )}
+
           {activeTab === 'workstation' && (
             <WorkstationView
               jobId={activeJobId}

@@ -23,6 +23,7 @@ def create_resilient_engine(url: str):
         pool_pre_ping=True,
         pool_size=10,
         max_overflow=20,
+        connect_args={"client_encoding": "utf8"},
     )
 
 
@@ -172,6 +173,7 @@ async def create_tables_if_needed() -> None:
                     "ALTER TABLE job_requirements ADD COLUMN IF NOT EXISTS evidence_requirement TEXT;",
                     "ALTER TABLE job_requirements ADD COLUMN IF NOT EXISTS verification_method VARCHAR(100) DEFAULT 'TYPE_TEST';",
                     "ALTER TABLE job_requirements ADD COLUMN IF NOT EXISTS source_reference VARCHAR(255);",
+                    "ALTER TABLE ai_conversations ALTER COLUMN job_id DROP NOT NULL;",
                 ]
                 for stmt in col_migrations:
                     try:

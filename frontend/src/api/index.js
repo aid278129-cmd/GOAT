@@ -10,3 +10,4 @@ export { auditApi } from './audit';
 export { cadApi } from './cad';
 export { aiApi } from './ai';
 export { dossierApi } from './dossier';
+export { assistantApi } from './assistant';

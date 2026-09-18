@@ -1,7 +1,8 @@
 import React from 'react';
 
 export const NAV_ITEMS = [
-  { id: 'workstation', title: 'Home / Workstation', icon: 'roofing' },
+  { id: 'assistant', title: 'BIS AI Assistant', icon: 'smart_toy' },
+  { id: 'workstation', title: 'Engineering Workstation', icon: 'roofing' },
   { id: 'workspace', title: 'Workspace', icon: 'developer_board' },
   { id: 'jobs', title: 'Compliance Jobs', icon: 'rule_folder' },
   { id: 'evidence', title: 'Evidence Ingestion', icon: 'policy' },
@@ -13,8 +14,8 @@ export const NAV_ITEMS = [
 ];
 
 export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
-  const primaryNav = NAV_ITEMS.slice(0, 8);
-  const settingsNav = NAV_ITEMS.slice(8);
+  const primaryNav = NAV_ITEMS.slice(0, 9);
+  const settingsNav = NAV_ITEMS.slice(9);
 
   const navContent = (
     <div className="flex flex-col justify-between h-full bg-white">

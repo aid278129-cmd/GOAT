@@ -26,8 +26,8 @@ class AIConversation(Base):
     organization_id: Mapped[str] = mapped_column(
         String(36), ForeignKey("organizations.id", ondelete="CASCADE"), nullable=False, index=True
     )
-    job_id: Mapped[str] = mapped_column(
-        String(36), ForeignKey("compliance_jobs.id", ondelete="CASCADE"), nullable=False, index=True
+    job_id: Mapped[Optional[str]] = mapped_column(
+        String(36), ForeignKey("compliance_jobs.id", ondelete="CASCADE"), nullable=True, index=True
     )
     user_id: Mapped[str] = mapped_column(
         String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
