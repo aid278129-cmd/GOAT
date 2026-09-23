@@ -50,8 +50,8 @@ class ProductDNAContract(BaseModel):
 
 class TaskRouterContract(BaseModel):
     """Strongly typed output contract for task_router node."""
-    target_standard_number: str
-    target_standard_title: str
+    target_standard_number: Optional[str] = None
+    target_standard_title: Optional[str] = ""
     retrieval_required: bool
     task_type: str
     deterministic_short_circuit: bool = False

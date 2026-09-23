@@ -146,27 +146,80 @@ VERIFIED_SCHEMES_CATALOG: Dict[str, Dict[str, Any]] = {
         "scheme_code": "SCHEME_I",
         "scheme_name": "Scheme I — Product Certification Scheme (Standard Mark / ISI)",
         "governing_regulation": "BIS (Conformity Assessment) Regulations, 2018, Schedule II, Scheme I",
+        "statutory_act": "BIS Act 2016, Section 13",
         "mark": "ISI Mark (Standard Mark)",
         "description": "Scheme I enables manufacturers to use the ISI Standard Mark. It requires preliminary factory inspection, independent sampling, testing against Indian Standards, and continuous factory surveillance audit.",
         "key_features": "Preliminary factory audit required; independent testing in BIS/recognized labs; continuous surveillance audits; applicable to mandatory safety and industrial products (helmets, water heaters, steel, cement).",
+        "applicable_categories": ["helmet", "helmets", "heater", "water heater", "immersion heater", "electrical appliance", "appliances", "steel", "tmt bar", "cement", "toy", "toys", "cylinder", "cables", "conductor"],
+        "applicable_standards": ["IS 4151:2015", "IS 302-2-201:2008", "IS 1786:2008", "IS 8112:2013", "IS 9873 (Part 1):2019"],
+        "required_documents": [
+            "Factory registration certificate / Business constitution proof",
+            "Manufacturing machinery list and plant layout",
+            "In-house testing equipment list with valid calibration certificates",
+            "Manufacturing process flowchart with quality inspection checkpoints",
+            "Competent testing personnel details and appointment records",
+            "Consent / authorization for preliminary factory inspection",
+            "Agreement with Authorized Indian Representative (AIR) (for foreign manufacturers under FMCS)",
+        ],
+        "major_testing_and_application_steps": [
+            "Step 1: Standard Identification — Identify applicable Indian Standard and conformity requirements.",
+            "Step 2: Online e-Application — Register and submit application with factory documentation via Manakonline portal.",
+            "Step 3: Preliminary Factory Inspection — BIS technical auditor inspects plant, quality controls, and in-house testing facility.",
+            "Step 4: Sample Drawing & Lab Testing — Officer draws representative samples for independent testing in BIS/recognized labs.",
+            "Step 5: Scrutiny & Grant of Licence (GoL) — Scrutiny of test report and factory audit; grant of CML number for ISI mark.",
+            "Step 6: Post-Grant Surveillance — Periodic unannounced factory audits and market sample surveillance.",
+        ],
         "official_guideline_url": "https://www.services.bis.gov.in/php/BIS_2.0/bisconnect/product_certification",
     },
     "SCHEME_II": {
         "scheme_code": "SCHEME_II_CRS",
         "scheme_name": "Scheme II — Compulsory Registration Scheme (CRS)",
         "governing_regulation": "BIS (Conformity Assessment) Regulations, 2018, Schedule II, Scheme II",
+        "statutory_act": "BIS Act 2016, Section 13 & MeitY/MNRE Quality Control Orders",
         "mark": "Standard Mark with Registration Number (R-XXXXXXXX)",
         "description": "Compulsory Registration Scheme for electronics and IT goods notified under MeitY and MNRE Quality Control Orders. Manufacturers register products based on self-declaration of conformity and valid test reports from BIS-recognized laboratories without preliminary factory inspection.",
         "key_features": "Self-declaration of conformity; testing exclusively in BIS-recognized laboratories; no preliminary factory audit; product marked with unique R-number.",
+        "applicable_categories": ["laptop", "laptops", "notebook", "tablet", "tablets", "mobile phone", "mobile phones", "smart watch", "power adapter", "adapter", "led light", "led lamps", "solar inverter", "inverter", "it equipment", "printer", "printers", "scanner", "server", "electronic"],
+        "applicable_standards": ["IS 13252 (Part 1):2010", "IS 16046 (Part 1/2):2018", "IS 15885 (Part 2/Sec 13):2012"],
+        "required_documents": [
+            "Valid test report from a BIS-recognized laboratory (issued within 90 days of application)",
+            "Brand owner trademark registration certificate / Brand authorization letter",
+            "Undertaking for compliance and affidavit per official format",
+            "Business license / company incorporation certificate of manufacturing unit",
+            "Authorized Indian Representative (AIR) appointment letter (for overseas applicants)",
+        ],
+        "major_testing_and_application_steps": [
+            "Step 1: Product Sample Testing — Submit product samples to a BIS-recognized testing laboratory in India.",
+            "Step 2: Obtain Valid Test Report — Lab issues formal test report (valid for 90 days for application filing).",
+            "Step 3: Online CRS Portal Filing — Register and file application with test report and affidavit on crsbis.in.",
+            "Step 4: Document Scrutiny — BIS officers examine report integrity and brand authorizations (no factory inspection required).",
+            "Step 5: Grant of Registration — Issuance of unique Registration number (R-XXXXXXXX).",
+            "Step 6: Market Surveillance — Random market sample purchase and verification testing.",
+        ],
         "official_guideline_url": "https://www.crsbis.in/BIS/",
     },
     "HALLMARKING": {
         "scheme_code": "HALLMARKING_SCHEME",
         "scheme_name": "BIS Hallmarking Scheme for Precious Metals",
         "governing_regulation": "Hallmarking of Gold and Silver Artefacts Order, 2021",
+        "statutory_act": "BIS Act 2016, Section 14",
         "mark": "BIS logo, purity/fineness mark, and 6-digit alphanumeric HUID",
         "description": "Statutory hallmarking certifying the fineness and purity of gold and silver jewelry. Managed through BIS recognized Assaying & Hallmarking Centres (AHC) using digital HUID (Hallmark Unique Identification).",
         "key_features": "Assay testing (XRF / Fire Assay); 3 mandatory marks (BIS logo, fineness, 6-digit HUID); verification through BIS CARE app.",
+        "applicable_categories": ["gold", "silver", "jewellery", "jewelry", "artefacts", "ornaments", "bullion"],
+        "applicable_standards": ["IS 1417 (Gold)", "IS 2112 (Silver)"],
+        "required_documents": [
+            "Premises proof / GST registration certificate of jewellery outlet",
+            "Proof of firm constitution / partnership deed / certificate of incorporation",
+            "Authorized signatory identity and address proof",
+        ],
+        "major_testing_and_application_steps": [
+            "Step 1: Jeweller Online Registration — Apply on Manakonline for instant registration certificate.",
+            "Step 2: Submission to AHC — Submit precious metal items to a BIS-recognized Assaying and Hallmarking Centre.",
+            "Step 3: Assay Testing — Non-destructive XRF screening and cupellation/fire assay testing.",
+            "Step 4: Laser HUID Marking — Laser etching of BIS logo, purity grade, and 6-digit alphanumeric HUID.",
+            "Step 5: Consumer Verification — Verification of HUID authenticity via the BIS CARE mobile app.",
+        ],
         "official_guideline_url": "https://www.services.bis.gov.in/php/BIS_2.0/bisconnect/hallmarking",
     },
 }
@@ -286,6 +339,107 @@ class VerifiedKnowledgeSelector:
                 "services": VERIFIED_SERVICES_CATALOG,
             }
         return None
+
+    @classmethod
+    def check_unverified_scheme(cls, query: str) -> Optional[str]:
+        """Detect if an unverified / invalid scheme number is requested."""
+        q_lower = query.lower()
+        matches = re.findall(r"\bscheme\s+([0-9]+|[ivxlcdm]+)\b", q_lower)
+        valid_schemes = {"i", "1", "ii", "2", "iv", "4"}
+        for sch in matches:
+            if sch not in valid_schemes:
+                return f"Scheme {sch.upper()}"
+        return None
+
+    @classmethod
+    def check_obsolete_procedure(cls, query: str) -> Optional[Dict[str, Any]]:
+        """Detect if the query refers to obsolete, superseded, or discontinued procedures."""
+        q_lower = query.lower()
+        obsolete_indicators = [
+            "offline paper", "physical application", "manual submission", "submit by post",
+            "paper form", "branch office submission", "offline submission", "offline application",
+            "paper application", "manual paper", "dgs&d", "superseded 1987",
+        ]
+        if any(ind in q_lower for ind in obsolete_indicators):
+            return {
+                "is_obsolete": True,
+                "obsolete_practice": "Manual offline physical paper application",
+                "governing_regulation": "BIS (Conformity Assessment) Regulations, 2018, Regulation 3(1)",
+                "modern_portals": "Manakonline (manakonline.in) for Scheme I / crsbis.in for Scheme II (CRS)",
+                "explanation": (
+                    "Manual offline paper applications have been completely discontinued by the Bureau of Indian Standards. "
+                    "Under the BIS (Conformity Assessment) Regulations 2018, all applications for Grant of Licence (Scheme I) "
+                    "and Compulsory Registration (Scheme II) must be submitted electronically through official portals "
+                    "(Manakonline for Scheme I and crsbis.in for Scheme II). Physical paper applications are no longer accepted."
+                ),
+            }
+        return None
+
+    @classmethod
+    def determine_applicable_scheme(cls, query: str, product_dna: Optional[Any] = None) -> Tuple[Optional[str], Optional[Dict[str, Any]], str]:
+        """Determine applicable BIS certification scheme based on query and product context."""
+        q_lower = query.lower()
+        prod_text = ""
+        if product_dna:
+            if isinstance(product_dna, dict):
+                prod_text = f"{product_dna.get('product_name', '')} {product_dna.get('category', '')}".lower()
+            elif hasattr(product_dna, "product_name"):
+                prod_text = f"{getattr(product_dna, 'product_name', '')} {getattr(product_dna, 'category', '')}".lower()
+
+        combined = f"{q_lower} {prod_text}"
+
+        # 1. Check Scheme I keywords
+        sch1 = VERIFIED_SCHEMES_CATALOG["SCHEME_I"]
+        if any(kw in combined for kw in sch1["applicable_categories"]) or any(std.lower() in combined for std in sch1["applicable_standards"]):
+            return (
+                "SCHEME_I",
+                sch1,
+                "Scheme I (Product Certification Scheme — ISI Mark) applies. This scheme mandates preliminary factory inspection, independent sample testing, and continuous surveillance audits under the BIS (Conformity Assessment) Regulations, 2018.",
+            )
+
+        # 2. Check Scheme II keywords
+        sch2 = VERIFIED_SCHEMES_CATALOG["SCHEME_II"]
+        if any(kw in combined for kw in sch2["applicable_categories"]) or any(std.lower() in combined for std in sch2["applicable_standards"]):
+            return (
+                "SCHEME_II",
+                sch2,
+                "Scheme II (Compulsory Registration Scheme — CRS) applies. This scheme operates on self-declaration of conformity based on valid test reports from BIS-recognized laboratories without preliminary factory inspection.",
+            )
+
+        # 3. Check Hallmarking keywords
+        sch_h = VERIFIED_SCHEMES_CATALOG["HALLMARKING"]
+        if any(kw in combined for kw in sch_h["applicable_categories"]):
+            return (
+                "HALLMARKING",
+                sch_h,
+                "BIS Hallmarking Scheme applies for precious metal articles (gold/silver jewellery) under the Hallmarking of Gold and Silver Artefacts Order, 2021, requiring assay testing and a 6-digit HUID.",
+            )
+
+        # 4. If query explicitly asks which scheme applies but no recognizable product is specified
+        if any(phrase in q_lower for phrase in ["which bis certification scheme applies", "which scheme applies", "what scheme applies", "which certification scheme applies", "determine scheme"]):
+            return (
+                None,
+                None,
+                "MORE_INFORMATION_REQUIRED: Please specify the product type, category, or Indian Standard number (e.g. electric water heater, laptop, helmet, gold jewellery) to determine whether Scheme I (ISI Mark), Scheme II (CRS), or Hallmarking applies.",
+            )
+
+        return (None, None, "UNKNOWN: Unable to determine applicable BIS certification scheme from the provided query.")
+
+    @classmethod
+    def get_required_documents(cls, scheme_key: str) -> List[str]:
+        """Retrieve authoritative list of required documents for a scheme."""
+        sch = VERIFIED_SCHEMES_CATALOG.get(scheme_key)
+        if sch and "required_documents" in sch:
+            return sch["required_documents"]
+        return []
+
+    @classmethod
+    def get_testing_and_application_steps(cls, scheme_key: str) -> List[str]:
+        """Retrieve authoritative list of testing and application steps for a scheme."""
+        sch = VERIFIED_SCHEMES_CATALOG.get(scheme_key)
+        if sch and "major_testing_and_application_steps" in sch:
+            return sch["major_testing_and_application_steps"]
+        return []
 
 
 verified_knowledge_selector = VerifiedKnowledgeSelector()

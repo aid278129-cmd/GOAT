@@ -46,10 +46,19 @@ class IntentRouter:
                 "certification scheme", "bis scheme", "difference between scheme", "scheme i and scheme ii",
                 "scheme 1 and scheme 2", "scheme i vs scheme ii", "scheme 1 vs scheme 2", "what is scheme i",
                 "what is scheme ii", "what is a bis certification scheme", "what is crs",
+                "which bis certification scheme applies", "which scheme applies", "what scheme applies",
+                "which certification scheme applies", "which scheme", "what is scheme", "explain scheme",
                 "bis service", "bis services", "services are available", "services available",
                 "what services does bis", "how does bis certification work", "how does certification work",
+                "general bis certification process", "certification process", "certification workflow",
+                "what documents are generally required", "what documents are required", "documents required for",
+                "documents generally required", "documents needed", "what documents are needed",
+                "major testing", "application steps", "testing steps", "testing/application steps",
+                "testing and application steps", "major testing/application steps",
+                "offline paper", "physical application", "manual submission", "paper form",
+                "branch office submission", "offline submission",
             ])
-            or (("scheme i" in q_lower or "scheme ii" in q_lower) and not any(w in q_lower for w in ["my product", "our product", "compliant"]))
+            or (bool(re.search(r"\bscheme\s+([a-zA-Z0-9]+)\b", q_lower)) and not any(w in q_lower for w in ["my product", "our product", "compliant"]))
         ):
             return OrchestratorIntent.GENERAL_BIS_INFORMATION, sanitized, []
 

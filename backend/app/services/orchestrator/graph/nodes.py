@@ -1161,8 +1161,9 @@ def output_integrity_gate_node(state: BISComplianceGraphState) -> BISComplianceG
     g_status_val = state.get("grounding_status", GroundingStatus.SUPPORTED.value)
     g_status = GroundingStatus(g_status_val) if g_status_val in GroundingStatus._value2member_map_ else GroundingStatus.SUPPORTED
 
-    if stripped or suppressed or state.get("unverified_claims_blocked"):
-        g_status = GroundingStatus.NOT_IN_KNOWLEDGE_BASE
+    if stripped or suppressed or state.get("unverified_claims_blocked") or g_status in (GroundingStatus.NOT_IN_KNOWLEDGE_BASE, GroundingStatus.UNKNOWN) or confidence == 0.0:
+        if stripped or suppressed or state.get("unverified_claims_blocked") or g_status == GroundingStatus.NOT_IN_KNOWLEDGE_BASE:
+            g_status = GroundingStatus.NOT_IN_KNOWLEDGE_BASE
         confidence = 0.0
         all_citations = []
 

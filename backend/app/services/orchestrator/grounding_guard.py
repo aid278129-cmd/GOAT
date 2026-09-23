@@ -106,6 +106,17 @@ class GroundingGuard:
             if not any(c.standard_number == item.standard_number for c in citations):
                 citations.append(item)
 
+        if "regulations, 2018" in t_lower or "conformity assessment" in t_lower:
+            item = CitationItem(
+                standard_number="BIS (Conformity Assessment) Regulations, 2018",
+                clause_number="Schedule II",
+                clause_title="Conformity Assessment Schemes",
+                source_authority="Bureau of Indian Standards",
+                verified=True,
+            )
+            if not any(c.standard_number == item.standard_number for c in citations):
+                citations.append(item)
+
         return citations, suppressed
 
     @classmethod

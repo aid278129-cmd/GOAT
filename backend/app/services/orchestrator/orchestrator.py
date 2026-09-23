@@ -149,8 +149,9 @@ class AIOrchestrator:
             grounding_state = GroundingStatus.UNCERTAIN
             expert_review = True
 
-        if suppressed_claims or raw_response.grounding_status == GroundingStatus.NOT_IN_KNOWLEDGE_BASE:
-            grounding_state = GroundingStatus.NOT_IN_KNOWLEDGE_BASE
+        if suppressed_claims or raw_response.grounding_status in (GroundingStatus.NOT_IN_KNOWLEDGE_BASE, GroundingStatus.UNKNOWN) or raw_response.confidence_score == 0.0:
+            if suppressed_claims or raw_response.grounding_status == GroundingStatus.NOT_IN_KNOWLEDGE_BASE:
+                grounding_state = GroundingStatus.NOT_IN_KNOWLEDGE_BASE
             final_citations = []
 
         final_response = OrchestratedAIResponse(
