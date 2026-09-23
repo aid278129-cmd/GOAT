@@ -678,6 +678,268 @@ class SingleStructuredLLM:
                 regulatory_conclusion="NONE",
             )
 
+        # 2.6. Intent: BIS Hallmarking Assistance (Milestone M25.4D)
+        if intent == OrchestratorIntent.HALLMARKING:
+            NON_ISSUANCE_DISCLAIMER = (
+                "\n\n*General Guidance Disclaimer: Zyntrix is an informational compliance tool and does not issue hallmarks, jeweller registrations, or official certifications. All hallmarking operations, HUID assignments, and jeweller registrations are administered exclusively by the Bureau of Indian Standards (BIS) and BIS-recognized Assaying and Hallmarking Centres (AHCs) via official government portals (Manakonline / BIS CARE app).*"
+            )
+
+            # 1. Check for foreign standards or unverified precious metal marks (e.g. UK assay, RJC, hallmark UK)
+            if any(w in q_lower for w in ["uk assay", "hallmark uk", "uk hallmark", "rjc", "foreign hallmark", "foreign assay", "assay office uk"]):
+                return OrchestratedAIResponse(
+                    answer="SOURCE_UNAVAILABLE: The query references a non-BIS / foreign hallmarking standard or unsupported precious metal. The Bureau of Indian Standards officially governs gold (IS 1417) and silver (IS 2112) hallmarking in India. Verified BIS hallmarking procedures are not applicable to foreign hallmarking systems or unsupported precious metals.",
+                    intent=intent,
+                    grounding_status=GroundingStatus.NOT_IN_KNOWLEDGE_BASE,
+                    confidence_score=0.0,
+                    citations=[],
+                    deterministic_fallback_used=True,
+                    regulatory_conclusion="NONE",
+                )
+
+            # 2. Intercept Unsupported Hallmarking Assumptions / Myths / Price Guarantees
+            unsupported_claim = verified_knowledge_selector.check_unsupported_hallmarking_claim(sanitized_query)
+            if unsupported_claim:
+                citations = []
+                if unsupported_claim["claim_type"] == "UNAUTHORIZED_HALLMARKING_OR_DIY":
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS Act 2016",
+                            clause_number="Section 15 & Section 29",
+                            clause_title="Prohibition of unauthorized marking and penalties",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                elif unsupported_claim["claim_type"] == "UNHALLMARKED_SALE_IN_MANDATORY_DISTRICT":
+                    citations.append(
+                        CitationItem(
+                            standard_number="Hallmarking of Gold Jewellery and Gold Artefacts Order, 2020",
+                            clause_number="Order 3",
+                            clause_title="Mandatory Hallmarking in Notified Districts",
+                            source_authority="Ministry of Consumer Affairs, Food & Public Distribution",
+                            verified=True,
+                        )
+                    )
+                elif unsupported_claim["claim_type"] == "NON_PRECIOUS_METAL_HALLMARKING":
+                    citations.append(
+                        CitationItem(
+                            standard_number="IS 1417:2016",
+                            clause_number="Clause 4.1",
+                            clause_title="Fineness Grades of Gold",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                elif unsupported_claim["claim_type"] == "UNOFFICIAL_HUID_CHANNEL":
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS (Hallmarking) Regulations, 2018",
+                            clause_number="Regulation 5",
+                            clause_title="Hallmarking Infrastructure and Verification",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                else:
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS Act 2016",
+                            clause_number="Chapter IV",
+                            clause_title="Hallmarking",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+
+                return OrchestratedAIResponse(
+                    answer=(
+                        f"**Official Hallmarking Guidance — Clarification on Scope & Rules**:\n\n"
+                        f"{unsupported_claim['explanation']}\n\n"
+                        f"- **Governing Framework**: {unsupported_claim['statutory_authority']}"
+                        f"{NON_ISSUANCE_DISCLAIMER}"
+                    ),
+                    intent=intent,
+                    grounding_status=GroundingStatus.SUPPORTED,
+                    confidence_score=0.98,
+                    citations=citations,
+                    deterministic_fallback_used=False,
+                    regulatory_conclusion="NONE",
+                )
+
+            # 3. Match Verified Hallmarking Topic
+            topic_data = verified_knowledge_selector.match_hallmarking_topic(sanitized_query)
+            if topic_data:
+                topic_id = topic_data["topic"]
+                title = topic_data["title"]
+                instructions = topic_data["instructions"]
+                portal = topic_data["official_portal"]
+                provenance = topic_data["statutory_provenance"]
+
+                answer = (
+                    f"**BIS Hallmarking Guidance — {title}**\n\n"
+                    f"{instructions}\n\n"
+                    f"- **Official Portal / Verification**: {portal}\n"
+                    f"- **Statutory Source**: {provenance}"
+                    f"{NON_ISSUANCE_DISCLAIMER}"
+                )
+
+                citations = []
+                if topic_id == "HALLMARKING_DEFINITION":
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS Act 2016",
+                            clause_number="Chapter IV (Sections 14-18)",
+                            clause_title="Hallmarking",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS (Hallmarking) Regulations, 2018",
+                            clause_number="Regulations 3 & 4",
+                            clause_title="Manner of Hallmarking",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                elif topic_id == "HUID_VERIFICATION":
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS (Hallmarking) Regulations, 2018",
+                            clause_number="Regulation 5",
+                            clause_title="Hallmark Unique Identification (HUID)",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS Act 2016",
+                            clause_number="Section 14",
+                            clause_title="Grant of Certificate for Hallmarking",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                elif topic_id == "GOLD_HALLMARK_VERIFICATION":
+                    citations.append(
+                        CitationItem(
+                            standard_number="IS 1417:2016",
+                            clause_number="Clause 4.1 & Clause 5.1",
+                            clause_title="Fineness Grades and Marking of Gold Jewellery",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                    citations.append(
+                        CitationItem(
+                            standard_number="Hallmarking of Gold Jewellery and Gold Artefacts Order, 2020",
+                            clause_number="Order 3",
+                            clause_title="Mandatory Hallmarking of Gold Artefacts",
+                            source_authority="Ministry of Consumer Affairs, Food & Public Distribution",
+                            verified=True,
+                        )
+                    )
+                elif topic_id == "SILVER_HALLMARK_VERIFICATION":
+                    citations.append(
+                        CitationItem(
+                            standard_number="IS 2112:2014",
+                            clause_number="Clause 4.1 & Clause 5.1",
+                            clause_title="Fineness and Marking of Silver Artefacts",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS (Hallmarking) Regulations, 2018",
+                            clause_number="Regulation 4",
+                            clause_title="Silver Hallmarking Guidelines",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                elif topic_id == "HALLMARKING_REGISTRATION_PROCESS":
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS Act 2016",
+                            clause_number="Section 14",
+                            clause_title="Registration of Jewellers",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                    citations.append(
+                        CitationItem(
+                            standard_number="IS 15820:2018",
+                            clause_number="Clause 5.1 & Clause 6.2",
+                            clause_title="Requirements for Assaying and Hallmarking Centres",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                elif topic_id == "CONSUMER_HALLMARKING_GUIDANCE":
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS (Hallmarking) Regulations, 2018",
+                            clause_number="Regulation 18",
+                            clause_title="Compensation for Deficient Purity",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS Rules 2018",
+                            clause_number="Rule 30",
+                            clause_title="Redressal of Consumer Complaints",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                elif topic_id == "HALLMARKING_SERVICES":
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS Act 2016",
+                            clause_number="Section 14",
+                            clause_title="Hallmarking Infrastructure",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                    citations.append(
+                        CitationItem(
+                            standard_number="IS 15820:2018",
+                            clause_number="Clause 5.1",
+                            clause_title="AHC Network Governance",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+
+                return OrchestratedAIResponse(
+                    answer=answer,
+                    intent=intent,
+                    grounding_status=GroundingStatus.SUPPORTED,
+                    confidence_score=0.98,
+                    citations=citations,
+                    deterministic_fallback_used=False,
+                    regulatory_conclusion="NONE",
+                )
+
+            # Fallback for unclassified hallmarking query
+            return OrchestratedAIResponse(
+                answer="SOURCE_UNAVAILABLE / MORE_INFORMATION_REQUIRED: The query does not match any recognized official BIS hallmarking topic or verification procedure. Verified procedures include: BIS hallmarking definition, HUID verification, gold hallmark purity grades (IS 1417), silver hallmark fineness (IS 2112), jeweller registration, consumer testing at AHC, and compensation under Regulation 18." + NON_ISSUANCE_DISCLAIMER,
+                intent=intent,
+                grounding_status=GroundingStatus.NOT_IN_KNOWLEDGE_BASE,
+                confidence_score=0.0,
+                citations=[],
+                missing_information_notes="Specific hallmarking query (e.g. HUID verification, gold purity, jeweller registration, consumer testing) required.",
+                deterministic_fallback_used=True,
+                regulatory_conclusion="NONE",
+            )
+
         std_key = context.target_standard or "IS 302-2-201:2008"
         std_data = VERIFIED_STANDARDS_CATALOG.get(std_key, {})
         clauses_dict = std_data.get("clauses", {})

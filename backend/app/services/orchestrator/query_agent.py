@@ -38,6 +38,7 @@ class RequestType(str, Enum):
     INFORMATION_REQUEST = "INFORMATION_REQUEST"
     GENERAL_BIS_INFO = "GENERAL_BIS_INFO"
     CONSUMER_ASSISTANCE = "CONSUMER_ASSISTANCE"
+    HALLMARKING = "HALLMARKING"
     COMPLIANCE_ASSESSMENT = "COMPLIANCE_ASSESSMENT"
     EVIDENCE_ANALYSIS = "EVIDENCE_ANALYSIS"
     GAP_ANALYSIS = "GAP_ANALYSIS"
@@ -412,9 +413,34 @@ def preprocess_query(query: str) -> PreprocessedQuery:
     ]):
         is_general_bis_info = True
 
-    # 5. BIS Consumer Assistance (Milestone M25.4C)
+    # 5. BIS Hallmarking Assistance (Milestone M25.4D)
+    is_hallmarking = False
+    if not has_guidance_kws and (
+        any(phrase in q_lower for phrase in [
+            "hallmark", "hallmarking", "bis hallmarking", "what is bis hallmarking",
+            "what is hallmarking", "huid", "verify huid", "huid verification",
+            "what is huid", "huid meaning", "meaning of huid", "gold hallmark",
+            "gold hallmarking", "hallmark gold", "gold purity", "gold purity grade",
+            "silver hallmark", "silver hallmarking", "hallmark silver", "silver purity",
+            "silver purity grade", "22k916", "18k750", "14k585", "24k995", "23k958", "20k833",
+            "is 1417", "is 2112", "is 15820", "is 1418", "is 2113", "assaying and hallmarking",
+            "hallmarking centre", "hallmarking center", "hallmarking registration",
+            "jeweller registration", "jeweler registration", "consumer hallmark",
+            "hallmark compensation", "hallmarking fee", "hallmarking process",
+            "how does hallmarking work", "hallmark services", "hallmarking service",
+            "mandatory hallmarking", "gold jewellery hallmark", "gold jewelry hallmark",
+            "silver jewellery hallmark", "silver jewelry hallmark", "gold rate", "gold price",
+            "silver rate", "silver price", "regulation 18", "ahc",
+        ]) or (
+            any(w in q_lower for w in ["jewellery", "jewelry", "gold", "silver"])
+            and any(w in q_lower for w in ["purity", "hallmark", "huid", "test", "testing", "compensation", "ahc"])
+        )
+    ):
+        is_hallmarking = True
+
+    # 6. BIS Consumer Assistance (Milestone M25.4C)
     is_consumer_assistance = False
-    if not has_guidance_kws and any(phrase in q_lower for phrase in [
+    if not has_guidance_kws and not is_hallmarking and any(phrase in q_lower for phrase in [
         "verify a bis", "verify bis", "verify isi", "verify a isi", "verify an isi",
         "verify mark", "verify the mark", "check bis mark", "check isi mark", "how to verify",
         "how can i verify", "verify licence", "verify license", "verify registration",
@@ -436,7 +462,7 @@ def preprocess_query(query: str) -> PreprocessedQuery:
         is_consumer_assistance = True
 
     # Check for broad / underspecified compliance queries: e.g. "Is my flask compliant?"
-    is_compliance_question = (not is_general_bis_info and not is_consumer_assistance) and any(w in q_lower for w in ["compliant", "complies", "compliance", "pass", "certification", "isi mark"])
+    is_compliance_question = (not is_general_bis_info and not is_consumer_assistance and not is_hallmarking) and any(w in q_lower for w in ["compliant", "complies", "compliance", "pass", "certification", "isi mark"])
     if is_compliance_question and not is_safe:
         # Malicious intent takes precedence
         pass
@@ -466,6 +492,9 @@ def preprocess_query(query: str) -> PreprocessedQuery:
     elif out_of_domain:
         candidate_intent = OrchestratorIntent.UNKNOWN_INTENT
         candidate_req_type = RequestType.OUT_OF_DOMAIN_REQUEST
+    elif is_hallmarking:
+        candidate_intent = OrchestratorIntent.HALLMARKING
+        candidate_req_type = RequestType.HALLMARKING
     elif is_consumer_assistance:
         candidate_intent = OrchestratorIntent.CONSUMER_ASSISTANCE
         candidate_req_type = RequestType.CONSUMER_ASSISTANCE
@@ -616,6 +645,33 @@ class QueryAgent:
                     step_index=3,
                     task_type="synthesize_information_response",
                     description="Formulate source-backed informational response with authentic citations and zero compliance claims",
+                    authority="AI_DERIVED",
+                )
+            )
+            return tasks
+
+        if prep.candidate_intent == OrchestratorIntent.HALLMARKING or prep.candidate_request_type == RequestType.HALLMARKING:
+            tasks.append(
+                SubtaskPlanItem(
+                    step_index=1,
+                    task_type="identify_hallmarking_domain",
+                    description="Identify hallmarking subject (gold/silver purity, HUID verification, jeweller registration, AHC workflow, consumer rights)",
+                    authority="AI_DERIVED",
+                )
+            )
+            tasks.append(
+                SubtaskPlanItem(
+                    step_index=2,
+                    task_type="retrieve_official_hallmarking_record",
+                    description="Retrieve verified BIS hallmarking regulation, IS 1417/IS 2112/IS 15820 standard specifications, or HUID rules",
+                    authority="AI_DERIVED",
+                )
+            )
+            tasks.append(
+                SubtaskPlanItem(
+                    step_index=3,
+                    task_type="synthesize_hallmarking_guidance",
+                    description="Synthesize source-backed hallmarking guidance with statutory citations and zero compliance authority",
                     authority="AI_DERIVED",
                 )
             )

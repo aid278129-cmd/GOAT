@@ -62,6 +62,28 @@ class IntentRouter:
         ):
             return OrchestratorIntent.GENERAL_BIS_INFORMATION, sanitized, []
 
+        # 2.4 BIS Hallmarking Assistance Intent (Milestone M25.4D)
+        if any(phrase in q_lower for phrase in [
+            "hallmark", "hallmarking", "bis hallmarking", "what is bis hallmarking",
+            "what is hallmarking", "huid", "verify huid", "huid verification",
+            "what is huid", "huid meaning", "meaning of huid", "gold hallmark",
+            "gold hallmarking", "hallmark gold", "gold purity", "gold purity grade",
+            "silver hallmark", "silver hallmarking", "hallmark silver", "silver purity",
+            "silver purity grade", "22k916", "18k750", "14k585", "24k995", "23k958", "20k833",
+            "is 1417", "is 2112", "is 15820", "is 1418", "is 2113", "assaying and hallmarking",
+            "hallmarking centre", "hallmarking center", "hallmarking registration",
+            "jeweller registration", "jeweler registration", "consumer hallmark",
+            "hallmark compensation", "hallmarking fee", "hallmarking process",
+            "how does hallmarking work", "hallmark services", "hallmarking service",
+            "mandatory hallmarking", "gold jewellery hallmark", "gold jewelry hallmark",
+            "silver jewellery hallmark", "silver jewelry hallmark", "gold rate", "gold price",
+            "silver rate", "silver price", "regulation 18", "ahc",
+        ]) or (
+            any(w in q_lower for w in ["jewellery", "jewelry", "gold", "silver"])
+            and any(w in q_lower for w in ["purity", "hallmark", "huid", "test", "testing", "compensation", "ahc"])
+        ):
+            return OrchestratorIntent.HALLMARKING, sanitized, []
+
         # 2.5 BIS Consumer Assistance Intent (Milestone M25.4C)
         if any(phrase in q_lower for phrase in [
             "verify a bis", "verify bis", "verify isi", "verify a isi", "verify an isi",

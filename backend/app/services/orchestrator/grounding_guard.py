@@ -139,6 +139,28 @@ class GroundingGuard:
             if not any(c.standard_number == item.standard_number for c in citations):
                 citations.append(item)
 
+        if "hallmarking regulations" in t_lower or "bis (hallmarking)" in t_lower:
+            item = CitationItem(
+                standard_number="BIS (Hallmarking) Regulations, 2018",
+                clause_number="Regulation 18",
+                clause_title="Compensation for Hallmarked Articles",
+                source_authority="Bureau of Indian Standards",
+                verified=True,
+            )
+            if not any(c.standard_number == item.standard_number for c in citations):
+                citations.append(item)
+
+        if "gold jewellery and gold artefacts order" in t_lower or "gold jewellery order" in t_lower:
+            item = CitationItem(
+                standard_number="Hallmarking of Gold Jewellery and Gold Artefacts Order, 2020",
+                clause_number="Order 3",
+                clause_title="Mandatory Hallmarking of Gold Artefacts",
+                source_authority="Ministry of Consumer Affairs, Food & Public Distribution",
+                verified=True,
+            )
+            if not any(c.standard_number == item.standard_number for c in citations):
+                citations.append(item)
+
         return citations, suppressed
 
     @classmethod
