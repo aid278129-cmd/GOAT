@@ -43,7 +43,7 @@ def run_compliance_graph_with_state(
         "user_intent": OrchestratorIntent.QUERY_REQUIREMENT.value,
         "task_type": "QUERY_REQUIREMENT",
         "retrieval_required": True,
-        "target_standard_number": assessment_context.get("standard_number", "IS 302-2-201:2008") if assessment_context else "IS 302-2-201:2008",
+        "target_standard_number": assessment_context.get("standard_number") if assessment_context else None,
         "target_standard_title": "",
         "generated_search_queries": [],
         "retrieved_candidate_clauses": assessment_context.get("evaluations", []) if assessment_context else [],

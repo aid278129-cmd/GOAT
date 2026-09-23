@@ -22,6 +22,8 @@ def route_after_request_understanding(state: BISComplianceGraphState) -> Literal
 
 def route_after_product_dna_check(state: BISComplianceGraphState) -> Literal["clarification_request", "task_router"]:
     """Route to clarification if product facts are insufficient."""
+    if state.get("user_intent") == "GENERAL_BIS_INFORMATION":
+        return "task_router"
     if not state.get("dna_sufficient", True):
         return "clarification_request"
     return "task_router"
@@ -36,6 +38,8 @@ def route_after_task_router(state: BISComplianceGraphState) -> Literal["retrieva
 
 def route_after_evidence_validation(state: BISComplianceGraphState) -> Literal["analysis_agent", "output_integrity_gate"]:
     """Route directly to output integrity if severe unverified source or conflict is detected."""
+    if state.get("user_intent") == "GENERAL_BIS_INFORMATION":
+        return "analysis_agent"
     ev_stat = state.get("evidence_status", "")
     if ev_stat in ("NO_VERIFIED_SOURCE", "CONFLICT") and state.get("unverified_claims_blocked"):
         return "output_integrity_gate"

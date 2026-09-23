@@ -251,8 +251,13 @@ def request_understanding_node(state: BISComplianceGraphState) -> BISComplianceG
     state["retrieval_hints"] = [h.model_dump() for h in understanding.retrieval_hints]
 
     # Propagate explicit standard to state if not yet set
-    if understanding.explicit_standard_refs and not state.get("target_standard_number"):
+    if understanding.explicit_standard_refs:
         state["target_standard_number"] = understanding.explicit_standard_refs[0]
+    elif not state.get("target_standard_number"):
+        if understanding.intent != OrchestratorIntent.GENERAL_BIS_INFORMATION:
+            state["target_standard_number"] = "IS 302-2-201:2008"
+        else:
+            state["target_standard_number"] = None
 
     # M24.4.3E Handoff Contract
     handoff = HandoffValidator.validate_handoff(HandoffStage.QUERY_TO_RETRIEVAL, state)
@@ -351,6 +356,22 @@ def product_dna_check_node(state: BISComplianceGraphState) -> BISComplianceGraph
     """Inspects Product DNA facts to determine if mandatory parameters are present."""
     t0 = time.time()
     dna = state.get("product_dna")
+    intent_val = state.get("user_intent")
+
+    # M25.4A: General BIS Information queries do not evaluate a product and do not require Product DNA
+    if intent_val == OrchestratorIntent.GENERAL_BIS_INFORMATION.value:
+        state["dna_sufficient"] = True
+        state["missing_attributes"] = []
+        contract = ProductDNAContract(
+            dna_sufficient=True,
+            missing_attributes=[],
+            identified_facts_count=0,
+        )
+        contracts = state.get("node_contracts", {})
+        contracts["product_dna_check"] = contract.model_dump()
+        state["node_contracts"] = contracts
+        _record_trace(state, "product_dna_check", t0)
+        return state
 
     dna_sufficient = True
     missing_attrs: List[str] = []
@@ -424,12 +445,16 @@ def task_router_node(state: BISComplianceGraphState) -> BISComplianceGraphState:
     t0 = time.time()
     sanitized_q = state.get("sanitized_query", "")
 
+    intent_val = state.get("user_intent", OrchestratorIntent.QUERY_REQUIREMENT.value)
+
     # Match target standard
     target_std, _ = verified_knowledge_selector.match_standard_in_query(sanitized_q)
-    target_std = target_std or state.get("target_standard_number") or "IS 302-2-201:2008"
+    target_std = target_std or state.get("target_standard_number")
+    if not target_std and intent_val != OrchestratorIntent.GENERAL_BIS_INFORMATION.value:
+        target_std = "IS 302-2-201:2008"
     state["target_standard_number"] = target_std
 
-    std_data = VERIFIED_STANDARDS_CATALOG.get(target_std, {})
+    std_data = VERIFIED_STANDARDS_CATALOG.get(target_std, {}) if target_std else {}
     state["target_standard_title"] = std_data.get("title", "")
 
     intent_val = state.get("user_intent", OrchestratorIntent.QUERY_REQUIREMENT.value)
@@ -566,6 +591,27 @@ def evidence_validation_gate_node(state: BISComplianceGraphState) -> BISComplian
     t0 = time.time()
     target_std = state.get("target_standard_number", "")
     avail_evs = state.get("available_evidence_ids", [])
+    intent_val = state.get("user_intent")
+
+    # M25.4A: General BIS Information does not evaluate product laboratory reports
+    if intent_val == OrchestratorIntent.GENERAL_BIS_INFORMATION.value:
+        if target_std and target_std not in VERIFIED_STANDARDS_CATALOG:
+            state["evidence_status"] = "NO_VERIFIED_SOURCE"
+            state["unverified_claims_blocked"] = [f"Standard {target_std} is unverified"]
+        else:
+            state["evidence_status"] = "VERIFIED"
+            state["unverified_claims_blocked"] = []
+
+        contract = EvidenceGateContract(
+            evidence_status=state["evidence_status"],
+            verified_evidence_count=0,
+            unverified_claims_blocked=state.get("unverified_claims_blocked", []),
+        )
+        contracts = state.get("node_contracts", {})
+        contracts["evidence_validation_gate"] = contract.model_dump()
+        state["node_contracts"] = contracts
+        _record_trace(state, "evidence_validation_gate", t0)
+        return state
 
     if target_std and target_std not in VERIFIED_STANDARDS_CATALOG:
         state["evidence_status"] = "NO_VERIFIED_SOURCE"
@@ -643,7 +689,9 @@ def analysis_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphSta
     intent_val = state.get("user_intent", OrchestratorIntent.QUERY_REQUIREMENT.value)
     intent = OrchestratorIntent(intent_val) if intent_val in OrchestratorIntent._value2member_map_ else OrchestratorIntent.QUERY_REQUIREMENT
     sanitized_q = state.get("sanitized_query", "")
-    target_std = state.get("target_standard_number", "IS 302-2-201:2008")
+    target_std = state.get("target_standard_number")
+    if not target_std and intent != OrchestratorIntent.GENERAL_BIS_INFORMATION:
+        target_std = "IS 302-2-201:2008"
 
     # M24.4.3E Agent Readiness Gate
     ready, blocker = AgentReadinessGate.check_readiness(HandoffStage.RETRIEVAL_TO_ANALYSIS, state)
@@ -860,6 +908,29 @@ def deterministic_compliance_gate_node(state: BISComplianceGraphState) -> BISCom
 
     state["regulatory_conclusion"] = "NONE"
     state["llm_compliance_authority"] = 0.0
+    intent_val = state.get("user_intent")
+
+    # M25.4A: General BIS Information queries do not perform product compliance evaluation
+    if intent_val == OrchestratorIntent.GENERAL_BIS_INFORMATION.value:
+        state["unsatisfied_clauses"] = []
+        state["gap_analysis_summary"] = {
+            "total_evaluated": 0,
+            "unsatisfied_count": 0,
+            "authority": "Deterministic Downstream Gate (Layers 5 & 7)",
+            "compliance_evaluation": "SKIPPED_GENERAL_BIS_INFORMATION",
+        }
+        contract = DeterministicGateContract(
+            total_evaluated=0,
+            unsatisfied_count=0,
+            authority_source="LAYER_7_COMPLIANCE_GAP_ENGINE",
+            deterministic=True,
+            llm_authority=0.0,
+        )
+        contracts = state.get("node_contracts", {})
+        contracts["deterministic_compliance_gate"] = contract.model_dump()
+        state["node_contracts"] = contracts
+        _record_trace(state, "deterministic_compliance_gate", t0)
+        return state
 
     retrieved = state.get("retrieved_candidate_clauses", [])
     ev_status = state.get("evidence_status", "NO_VERIFIED_SOURCE")
@@ -931,6 +1002,29 @@ def planning_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphSta
     struct_analysis = state.get("structured_analysis")
     dna = state.get("product_dna")
     user_q = state.get("sanitized_query", "")
+    intent_val = state.get("user_intent")
+
+    # M25.4A: General BIS Information does not produce product remediation plans
+    if intent_val == OrchestratorIntent.GENERAL_BIS_INFORMATION.value:
+        state["action_plan_items"] = []
+        state["structured_action_plan"] = None
+        state["action_blockers"] = []
+        state["regulatory_conclusion"] = "NONE"
+        state["llm_compliance_authority"] = 0.0
+        contract = PlanningAgentContract(
+            action_plan_items_count=0,
+            action_plan_items=[],
+            provenance="DETERMINISTIC_ENGINE",
+            action_plan=None,
+            blockers_count=0,
+            critical_actions_count=0,
+            expert_review_required=False,
+        )
+        contracts = state.get("node_contracts", {})
+        contracts["planning_agent"] = contract.model_dump()
+        state["node_contracts"] = contracts
+        _record_trace(state, "planning_agent", t0)
+        return state
 
     # M24.4.3E Agent Readiness Gate
     ready, blocker = AgentReadinessGate.check_readiness(HandoffStage.LAYER7_TO_PLANNING, state)
@@ -1031,7 +1125,11 @@ def output_integrity_gate_node(state: BISComplianceGraphState) -> BISComplianceG
     t0 = time.time()
     raw_payload = state.get("final_response") or {}
     raw_answer = raw_payload.get("answer", state.get("analysis_explanation", ""))
-    target_std = state.get("target_standard_number", "IS 302-2-201:2008")
+    intent_val = state.get("user_intent", OrchestratorIntent.QUERY_REQUIREMENT.value)
+    intent = OrchestratorIntent(intent_val) if intent_val in OrchestratorIntent._value2member_map_ else OrchestratorIntent.QUERY_REQUIREMENT
+    target_std = state.get("target_standard_number")
+    if not target_std and intent != OrchestratorIntent.GENERAL_BIS_INFORMATION:
+        target_std = "IS 302-2-201:2008"
 
     sanitized_answer, stripped = grounding_guard.sanitize_regulatory_assertions(raw_answer)
     sanitized_answer, firewall_stripped = compliance_firewall.sanitize_untrusted_compliance_claims(sanitized_answer)
@@ -1044,6 +1142,19 @@ def output_integrity_gate_node(state: BISComplianceGraphState) -> BISComplianceG
         target_standard=target_std,
     )
 
+    # Combine verified citations from payload and text extraction
+    payload_citations = []
+    for c in raw_payload.get("citations", []):
+        if isinstance(c, dict):
+            payload_citations.append(CitationItem(**c))
+        elif isinstance(c, CitationItem):
+            payload_citations.append(c)
+
+    all_citations = list(verified_citations)
+    for pc in payload_citations:
+        if getattr(pc, "verified", True) and not any(vc.standard_number == pc.standard_number and vc.clause_number == pc.clause_number for vc in all_citations):
+            all_citations.append(pc)
+
     intent_val = state.get("user_intent", OrchestratorIntent.QUERY_REQUIREMENT.value)
     intent = OrchestratorIntent(intent_val) if intent_val in OrchestratorIntent._value2member_map_ else OrchestratorIntent.QUERY_REQUIREMENT
     confidence = raw_payload.get("confidence_score", 0.95)
@@ -1053,13 +1164,14 @@ def output_integrity_gate_node(state: BISComplianceGraphState) -> BISComplianceG
     if stripped or suppressed or state.get("unverified_claims_blocked"):
         g_status = GroundingStatus.NOT_IN_KNOWLEDGE_BASE
         confidence = 0.0
+        all_citations = []
 
     final_resp = OrchestratedAIResponse(
         answer=sanitized_answer,
         intent=intent,
         grounding_status=g_status,
         confidence_score=confidence,
-        citations=verified_citations,
+        citations=all_citations,
         missing_information_notes=raw_payload.get("missing_information_notes"),
         expert_review_recommended=state.get("expert_review_required", False),
         deterministic_fallback_used=raw_payload.get("deterministic_fallback_used", False) or (confidence == 0.0),

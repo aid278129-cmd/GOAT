@@ -60,16 +60,51 @@ class GroundingGuard:
                 if cl_num:
                     cl_data = VERIFIED_STANDARDS_CATALOG[matched_key]["clauses"].get(cl_num)
 
-                citations.append(
-                    CitationItem(
-                        standard_number=matched_key,
-                        clause_number=cl_num,
-                        clause_title=cl_data.get("title") if cl_data else None,
-                        verified=True,
-                    )
+                item = CitationItem(
+                    standard_number=matched_key,
+                    clause_number=cl_num,
+                    clause_title=cl_data.get("title") if cl_data else None,
+                    verified=True,
                 )
+                if not any(c.standard_number == item.standard_number and c.clause_number == item.clause_number for c in citations):
+                    citations.append(item)
             else:
                 suppressed.append(f"Unverified standard citation intercepted and suppressed: '{raw_std}'")
+
+        # Check for verified BIS Scheme references in text
+        t_lower = text.lower()
+        if "scheme i" in t_lower or "scheme 1" in t_lower:
+            item = CitationItem(
+                standard_number="BIS Scheme I (ISI Mark)",
+                clause_number="Schedule II, Scheme I",
+                clause_title="Product Certification Scheme",
+                source_authority="BIS (Conformity Assessment) Regulations, 2018",
+                verified=True,
+            )
+            if not any(c.standard_number == item.standard_number for c in citations):
+                citations.append(item)
+
+        if "scheme ii" in t_lower or "scheme 2" in t_lower or "crs" in t_lower:
+            item = CitationItem(
+                standard_number="BIS Scheme II (CRS)",
+                clause_number="Schedule II, Scheme II",
+                clause_title="Compulsory Registration Scheme",
+                source_authority="BIS (Conformity Assessment) Regulations, 2018",
+                verified=True,
+            )
+            if not any(c.standard_number == item.standard_number for c in citations):
+                citations.append(item)
+
+        if "bis act 2016" in t_lower:
+            item = CitationItem(
+                standard_number="BIS Act 2016",
+                clause_number="Section 13",
+                clause_title="Grant of Licence and Certificate of Conformity",
+                source_authority="Bureau of Indian Standards",
+                verified=True,
+            )
+            if not any(c.standard_number == item.standard_number for c in citations):
+                citations.append(item)
 
         return citations, suppressed
 

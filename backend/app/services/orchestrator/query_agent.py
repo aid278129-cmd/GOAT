@@ -36,6 +36,7 @@ MAX_SUBTASKS = 8
 class RequestType(str, Enum):
     """Explicit functional category of the user query."""
     INFORMATION_REQUEST = "INFORMATION_REQUEST"
+    GENERAL_BIS_INFO = "GENERAL_BIS_INFO"
     COMPLIANCE_ASSESSMENT = "COMPLIANCE_ASSESSMENT"
     EVIDENCE_ANALYSIS = "EVIDENCE_ANALYSIS"
     GAP_ANALYSIS = "GAP_ANALYSIS"
@@ -355,8 +356,54 @@ def preprocess_query(query: str) -> PreprocessedQuery:
     missing_info: List[str] = []
     clarification_rec = False
 
+    # Check for general BIS / standard / scheme / service informational queries
+    # Examples:
+    # - "What is IS 4151?"
+    # - "What does this standard cover?"
+    # - "What is a BIS certification scheme?"
+    # - "What is the difference between Scheme I and Scheme II?"
+    # - "How does BIS certification work?"
+    # - "What BIS services are available?"
+    is_general_bis_info = False
+    has_guidance_kws = any(w in q_lower for w in ["timeline", "fees", "fee", "cost", "costs", "how much"])
+
+    # 1. Standard definition / scope inquiry
+    if not has_guidance_kws and (
+       re.search(r"\bwhat\s+(?:is|are)\s+is\s*\d+", q_lower) or \
+       re.search(r"\bwhat\s+does\s+(?:this|the|is\s*\d+)?\s*standard\s+cover\b", q_lower) or \
+       re.search(r"\bscope\s+of\s+(?:is\s*\d+|this\s+standard)\b", q_lower) or \
+       re.search(r"\btell\s+me\s+about\s+is\s*\d+\b", q_lower) or \
+       re.search(r"\bwhat\s+does\s+is\s*\d+\s+cover\b", q_lower) or \
+       (len(standards_found) > 0 and any(q_lower.startswith(w) for w in ["what is ", "tell me about ", "overview of ", "explain "]) and not any(w in q_lower for w in ["my product", "our product", "compliant", "pass", "fail", "gap", "clause"]))
+    ):
+        is_general_bis_info = True
+
+    # 2. BIS Scheme inquiry
+    elif not has_guidance_kws and (
+        any(phrase in q_lower for phrase in [
+            "certification scheme", "bis scheme", "difference between scheme", "scheme i and scheme ii",
+            "scheme 1 and scheme 2", "scheme i vs scheme ii", "scheme 1 vs scheme 2", "what is scheme i",
+            "what is scheme ii", "what is a bis certification scheme", "what is crs", "what is isi mark scheme",
+        ]) or (("scheme i" in q_lower or "scheme ii" in q_lower or "scheme 1" in q_lower or "scheme 2" in q_lower) and not any(w in q_lower for w in ["my product", "our product", "compliant", "failed"]))
+    ):
+        is_general_bis_info = True
+
+    # 3. BIS Service inquiry
+    elif not has_guidance_kws and any(phrase in q_lower for phrase in [
+        "bis service", "bis services", "services are available", "services available",
+        "what services does bis", "services offered by bis", "services provided by bis",
+    ]):
+        is_general_bis_info = True
+
+    # 4. General BIS certification process inquiry
+    elif any(phrase in q_lower for phrase in [
+        "how does bis certification work", "how does certification work", "how does bis work",
+        "what is bis certification", "how bis certification works",
+    ]):
+        is_general_bis_info = True
+
     # Check for broad / underspecified compliance queries: e.g. "Is my flask compliant?"
-    is_compliance_question = any(w in q_lower for w in ["compliant", "complies", "compliance", "pass", "certification", "isi mark"])
+    is_compliance_question = (not is_general_bis_info) and any(w in q_lower for w in ["compliant", "complies", "compliance", "pass", "certification", "isi mark"])
     if is_compliance_question and not is_safe:
         # Malicious intent takes precedence
         pass
@@ -386,6 +433,9 @@ def preprocess_query(query: str) -> PreprocessedQuery:
     elif out_of_domain:
         candidate_intent = OrchestratorIntent.UNKNOWN_INTENT
         candidate_req_type = RequestType.OUT_OF_DOMAIN_REQUEST
+    elif is_general_bis_info:
+        candidate_intent = OrchestratorIntent.GENERAL_BIS_INFORMATION
+        candidate_req_type = RequestType.GENERAL_BIS_INFO
     elif any(w in q_lower for w in ["how to fix", "remediation", "corrective action", "resolve gap"]):
         candidate_intent = OrchestratorIntent.EXPLAIN_GAP
         candidate_req_type = RequestType.REMEDIATION_REQUEST
@@ -503,6 +553,33 @@ class QueryAgent:
                     step_index=2,
                     task_type="formulate_clarification_request",
                     description="Request manufacturer or user to provide missing product parameters",
+                    authority="AI_DERIVED",
+                )
+            )
+            return tasks
+
+        if prep.candidate_intent == OrchestratorIntent.GENERAL_BIS_INFORMATION or prep.candidate_request_type == RequestType.GENERAL_BIS_INFO:
+            tasks.append(
+                SubtaskPlanItem(
+                    step_index=1,
+                    task_type="retrieve_bis_information",
+                    description="Retrieve verified BIS standard specifications, schemes, or services from authoritative catalog",
+                    authority="AI_DERIVED",
+                )
+            )
+            tasks.append(
+                SubtaskPlanItem(
+                    step_index=2,
+                    task_type="validate_sources_and_citations",
+                    description="Verify retrieved information against official BIS gazette and codified catalog",
+                    authority="AI_DERIVED",
+                )
+            )
+            tasks.append(
+                SubtaskPlanItem(
+                    step_index=3,
+                    task_type="synthesize_information_response",
+                    description="Formulate source-backed informational response with authentic citations and zero compliance claims",
                     authority="AI_DERIVED",
                 )
             )

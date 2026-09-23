@@ -87,7 +87,12 @@ class AIOrchestrator:
             target_std = assessment_context["standard_number"]
         else:
             std_match, _ = verified_knowledge_selector.match_standard_in_query(sanitized_query)
-            target_std = std_match or "IS 302-2-201:2008"
+            if std_match:
+                target_std = std_match
+            elif intent == OrchestratorIntent.GENERAL_BIS_INFORMATION:
+                target_std = None
+            else:
+                target_std = "IS 302-2-201:2008"
 
         # 3. Context Construction
         context = context_builder.build_context(
@@ -133,7 +138,7 @@ class AIOrchestrator:
         )
 
         # Combine citations
-        final_citations = raw_response.citations + [c for c in verified_citations if c not in raw_response.citations]
+        final_citations = raw_response.citations + [c for c in verified_citations if not any(rc.standard_number == c.standard_number and rc.clause_number == c.clause_number for rc in raw_response.citations)]
 
         # 7. Uncertainty & Expert Review Routing
         grounding_state = raw_response.grounding_status
@@ -144,8 +149,9 @@ class AIOrchestrator:
             grounding_state = GroundingStatus.UNCERTAIN
             expert_review = True
 
-        if suppressed_claims:
+        if suppressed_claims or raw_response.grounding_status == GroundingStatus.NOT_IN_KNOWLEDGE_BASE:
             grounding_state = GroundingStatus.NOT_IN_KNOWLEDGE_BASE
+            final_citations = []
 
         final_response = OrchestratedAIResponse(
             answer=sanitized_answer,

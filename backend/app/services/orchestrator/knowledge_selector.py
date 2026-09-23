@@ -140,6 +140,73 @@ VERIFIED_STANDARDS_CATALOG: Dict[str, Dict[str, Any]] = {
     },
 }
 
+# Canonical catalog of verified BIS Certification Schemes
+VERIFIED_SCHEMES_CATALOG: Dict[str, Dict[str, Any]] = {
+    "SCHEME_I": {
+        "scheme_code": "SCHEME_I",
+        "scheme_name": "Scheme I — Product Certification Scheme (Standard Mark / ISI)",
+        "governing_regulation": "BIS (Conformity Assessment) Regulations, 2018, Schedule II, Scheme I",
+        "mark": "ISI Mark (Standard Mark)",
+        "description": "Scheme I enables manufacturers to use the ISI Standard Mark. It requires preliminary factory inspection, independent sampling, testing against Indian Standards, and continuous factory surveillance audit.",
+        "key_features": "Preliminary factory audit required; independent testing in BIS/recognized labs; continuous surveillance audits; applicable to mandatory safety and industrial products (helmets, water heaters, steel, cement).",
+        "official_guideline_url": "https://www.services.bis.gov.in/php/BIS_2.0/bisconnect/product_certification",
+    },
+    "SCHEME_II": {
+        "scheme_code": "SCHEME_II_CRS",
+        "scheme_name": "Scheme II — Compulsory Registration Scheme (CRS)",
+        "governing_regulation": "BIS (Conformity Assessment) Regulations, 2018, Schedule II, Scheme II",
+        "mark": "Standard Mark with Registration Number (R-XXXXXXXX)",
+        "description": "Compulsory Registration Scheme for electronics and IT goods notified under MeitY and MNRE Quality Control Orders. Manufacturers register products based on self-declaration of conformity and valid test reports from BIS-recognized laboratories without preliminary factory inspection.",
+        "key_features": "Self-declaration of conformity; testing exclusively in BIS-recognized laboratories; no preliminary factory audit; product marked with unique R-number.",
+        "official_guideline_url": "https://www.crsbis.in/BIS/",
+    },
+    "HALLMARKING": {
+        "scheme_code": "HALLMARKING_SCHEME",
+        "scheme_name": "BIS Hallmarking Scheme for Precious Metals",
+        "governing_regulation": "Hallmarking of Gold and Silver Artefacts Order, 2021",
+        "mark": "BIS logo, purity/fineness mark, and 6-digit alphanumeric HUID",
+        "description": "Statutory hallmarking certifying the fineness and purity of gold and silver jewelry. Managed through BIS recognized Assaying & Hallmarking Centres (AHC) using digital HUID (Hallmark Unique Identification).",
+        "key_features": "Assay testing (XRF / Fire Assay); 3 mandatory marks (BIS logo, fineness, 6-digit HUID); verification through BIS CARE app.",
+        "official_guideline_url": "https://www.services.bis.gov.in/php/BIS_2.0/bisconnect/hallmarking",
+    },
+}
+
+# Canonical catalog of verified BIS Services
+VERIFIED_SERVICES_CATALOG: Dict[str, Dict[str, Any]] = {
+    "PRODUCT_CERTIFICATION": {
+        "service_name": "Product Certification (Grant of License under Scheme I)",
+        "service_type": "PRODUCT_CERTIFICATION",
+        "description": "Authoritative grant of license to manufacture and mark products with the standard ISI mark under Indian Standards.",
+        "step_by_step_procedure": "Step 1: Identify applicable IS standard.\nStep 2: Submit e-application via Manakonline portal with fee.\nStep 3: Factory verification by BIS officer.\nStep 4: Independent sample testing.\nStep 5: Issue of License certificate upon compliance.",
+        "portal_url": "https://www.manakonline.in",
+        "statutory_source_ref": "BIS Act 2016, Section 13",
+    },
+    "COMPULSORY_REGISTRATION": {
+        "service_name": "Compulsory Registration (CRS) for Electronic and Solar Products",
+        "service_type": "PRODUCT_CERTIFICATION",
+        "description": "Simplified self-declaration registration process for electronics and solar equipment under MeitY / MNRE CRO schedules.",
+        "step_by_step_procedure": "Step 1: Submit product sample to a BIS recognized testing laboratory.\nStep 2: Obtain valid test report within 90 days.\nStep 3: Submit online CRS application with Test Report and Affidavit.\nStep 4: Scrutiny by BIS Officers.\nStep 5: Registration granted with R-Number.",
+        "portal_url": "https://www.crsbis.in",
+        "statutory_source_ref": "Electronics and Information Technology Goods (Requirement for Compulsory Registration) Order",
+    },
+    "JEWELLER_REGISTRATION": {
+        "service_name": "Jeweller Registration for Hallmarking",
+        "service_type": "HALLMARKING",
+        "description": "Mandatory online registration for jewelers selling hallmarked gold and silver articles to consumers.",
+        "step_by_step_procedure": "Step 1: Apply online through Manakonline portal.\nStep 2: Automatic issuance of registration certificate upon successful fee submission.\nStep 3: Deliver jewelry to recognized AHC for laser hallmarking.",
+        "portal_url": "https://www.manakonline.in/MANAK/hallmarkingJewellerRegistration",
+        "statutory_source_ref": "BIS Hallmarking Regulations 2018",
+    },
+    "CONSUMER_GRIEVANCE": {
+        "service_name": "Consumer Grievance Redressal & BIS CARE Verification",
+        "service_type": "CONSUMER_AFFAIRS",
+        "description": "Public consumer service to verify genuine ISI marks, check jeweler HUID authenticity, and register formal complaints regarding substandard products.",
+        "step_by_step_procedure": "Step 1: Download official BIS CARE Mobile App or visit BIS portal.\nStep 2: Enter 6-digit alphanumeric HUID or License/Registration R-number.\nStep 3: View verified manufacturer/jeweler details and registration validity.\nStep 4: Lodge complaint with photo evidence if product or mark is counterfeit.",
+        "portal_url": "https://www.bis.gov.in/consumer-affairs/",
+        "statutory_source_ref": "Consumer Protection Act 2019 & BIS Act 2016",
+    },
+}
+
 
 class VerifiedKnowledgeSelector:
     """Validates BIS standard numbers, clauses, and retrieves codified metadata."""
@@ -185,5 +252,41 @@ class VerifiedKnowledgeSelector:
         """Retrieve verified standard metadata."""
         return VERIFIED_STANDARDS_CATALOG.get(standard_key)
 
+    @classmethod
+    def match_scheme_in_query(cls, query: str) -> Optional[Dict[str, Any]]:
+        """Detect and match BIS certification scheme in query."""
+        q_lower = query.lower()
+        if "scheme i" in q_lower or "scheme 1" in q_lower or "isi mark" in q_lower or "product certification scheme" in q_lower:
+            return VERIFIED_SCHEMES_CATALOG["SCHEME_I"]
+        if "scheme ii" in q_lower or "scheme 2" in q_lower or "crs" in q_lower or "compulsory registration scheme" in q_lower:
+            return VERIFIED_SCHEMES_CATALOG["SCHEME_II"]
+        if "hallmark" in q_lower or "huid" in q_lower:
+            return VERIFIED_SCHEMES_CATALOG["HALLMARKING"]
+        if "scheme" in q_lower:
+            # Return general schemes overview dict
+            return {
+                "general_schemes": True,
+                "schemes": VERIFIED_SCHEMES_CATALOG,
+            }
+        return None
+
+    @classmethod
+    def match_service_in_query(cls, query: str) -> Optional[Dict[str, Any]]:
+        """Detect and match BIS service in query."""
+        q_lower = query.lower()
+        if "hallmark" in q_lower or "jewel" in q_lower:
+            return VERIFIED_SERVICES_CATALOG["JEWELLER_REGISTRATION"]
+        if "crs" in q_lower or "electronic" in q_lower or "solar" in q_lower:
+            return VERIFIED_SERVICES_CATALOG["COMPULSORY_REGISTRATION"]
+        if "care" in q_lower or "grievance" in q_lower or "complaint" in q_lower:
+            return VERIFIED_SERVICES_CATALOG["CONSUMER_GRIEVANCE"]
+        if "service" in q_lower or "procedure" in q_lower or "how does" in q_lower or "process" in q_lower:
+            return {
+                "general_services": True,
+                "services": VERIFIED_SERVICES_CATALOG,
+            }
+        return None
+
 
 verified_knowledge_selector = VerifiedKnowledgeSelector()
+
