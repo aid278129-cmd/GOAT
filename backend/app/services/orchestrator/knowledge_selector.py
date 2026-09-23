@@ -441,6 +441,164 @@ class VerifiedKnowledgeSelector:
             return sch["major_testing_and_application_steps"]
         return []
 
+    @classmethod
+    def match_consumer_query_topic(cls, query: str) -> Optional[Dict[str, Any]]:
+        """Classify consumer inquiry into verified consumer assistance topic."""
+        q_lower = query.lower()
+
+        # 1. Verification of BIS / ISI / CRS / Hallmark Mark
+        if any(phrase in q_lower for phrase in [
+            "verify a bis", "verify bis", "verify isi", "verify a isi", "verify an isi",
+            "verify mark", "verify the mark", "check bis mark", "check isi mark", "how to verify",
+            "how can i verify", "verify licence details", "verify license details", "verify huid",
+            "check a bis mark", "check an isi mark",
+        ]):
+            return VERIFIED_CONSUMER_SERVICES_CATALOG["MARK_VERIFICATION"]
+
+        # 2. Check BIS Licence or Registration
+        if any(phrase in q_lower for phrase in [
+            "check a bis licence", "check a bis license", "check bis licence", "check bis license",
+            "check a registration", "check registration", "search a licence", "search license",
+            "is the licence valid", "is the license valid", "licence status", "license status",
+            "how do i check a bis licence", "how do i check a bis license", "verify licence", "verify license",
+        ]):
+            return VERIFIED_CONSUMER_SERVICES_CATALOG["LICENCE_REGISTRATION_CHECK"]
+
+        # 3. Raise a BIS Consumer Complaint
+        if any(phrase in q_lower for phrase in [
+            "raise a bis consumer complaint", "raise a complaint", "consumer complaint",
+            "file a complaint", "register a complaint", "lodge a complaint", "how to complain",
+            "how can i raise a bis consumer complaint", "report substandard", "complaint against bis",
+            "bis care complaint", "complain about product",
+        ]):
+            return VERIFIED_CONSUMER_SERVICES_CATALOG["CONSUMER_COMPLAINT"]
+
+        # 4. Suspected Non-Conforming Product
+        if any(phrase in q_lower for phrase in [
+            "suspected non-conforming", "non-conforming product", "defective product",
+            "fake isi", "fake mark", "counterfeit mark", "substandard product",
+            "suspected product", "what should a consumer do about a suspected",
+            "what should a consumer do", "found fake mark", "fake bis",
+        ]):
+            return VERIFIED_CONSUMER_SERVICES_CATALOG["SUSPECTED_NON_CONFORMING_PRODUCT"]
+
+        # 5. What does a BIS Mark indicate?
+        if any(phrase in q_lower for phrase in [
+            "what does a bis mark indicate", "what does bis mark mean", "what does isi mark indicate",
+            "meaning of bis mark", "significance of bis mark", "what does a mark indicate",
+            "why bis mark", "importance of bis mark",
+        ]):
+            return VERIFIED_CONSUMER_SERVICES_CATALOG["BIS_MARK_SIGNIFICANCE"]
+
+        return None
+
+    @classmethod
+    def check_unsupported_consumer_claim(cls, query: str) -> Optional[Dict[str, Any]]:
+        """Detect and intercept unsupported consumer assumptions (e.g. monetary refunds from BIS, informal WhatsApp complaint channels)."""
+        q_lower = query.lower()
+        if any(w in q_lower for w in ["refund from bis", "bis will refund", "bis pay compensation", "cash compensation from bis", "bis guarantee money back", "money refund from bis"]):
+            return {
+                "claim_type": "MONETARY_REFUND_GUARANTEE",
+                "explanation": (
+                    "The Bureau of Indian Standards (BIS) is a statutory conformity assessment and standards body; "
+                    "BIS does NOT provide direct cash refunds, monetary warranties, or financial compensation to consumers. "
+                    "Product refunds and financial damages must be pursued against the seller/manufacturer through Consumer "
+                    "Disputes Redressal Commissions (Consumer Courts) under the Consumer Protection Act, 2019."
+                ),
+                "statutory_authority": "Consumer Protection Act, 2019 & BIS Act 2016",
+            }
+        if any(w in q_lower for w in ["whatsapp complaint", "telegram complaint", "informal complaint", "sms complaint"]):
+            return {
+                "claim_type": "UNOFFICIAL_COMPLAINT_CHANNEL",
+                "explanation": (
+                    "BIS does not accept formal consumer complaints through WhatsApp, Telegram, or personal messaging services. "
+                    "Statutory consumer complaints must be lodged exclusively via the official 'BIS CARE' Mobile App or the "
+                    "official online portal at www.bis.gov.in per Rule 30 of the BIS Rules, 2018."
+                ),
+                "statutory_authority": "BIS Rules 2018, Rule 30",
+            }
+        return None
+
+
+# Canonical catalog of verified BIS Consumer Assistance Topics
+VERIFIED_CONSUMER_SERVICES_CATALOG: Dict[str, Dict[str, Any]] = {
+    "MARK_VERIFICATION": {
+        "topic": "MARK_VERIFICATION",
+        "title": "Verification of BIS / ISI / CRS / Hallmark Marks",
+        "instructions": (
+            "1. **ISI Mark Verification (Scheme I)**:\n"
+            "   - Genuine ISI products carry the ISI monogram with a mandatory 7 or 8 digit CM/L (Certification Marks Licence) number beneath it.\n"
+            "   - Open the official **BIS CARE** mobile app (available on Google Play & Apple App Store) and tap **'Verify Licence Details'**.\n"
+            "   - Enter the CM/L number to view the authentic licensee name, brand, factory address, valid Indian Standard, and operative status.\n\n"
+            "2. **CRS Mark Verification (Scheme II — Electronics/IT)**:\n"
+            "   - Check the Standard Mark for the unique Registration R-number (format: R-XXXXXXXX).\n"
+            "   - Verify on the BIS CARE app under **'Verify Registration No.'** or search public records at `www.crsbis.in`.\n\n"
+            "3. **Gold & Silver Hallmark Verification**:\n"
+            "   - Inspect the mandatory 3 marks: BIS Logo, Purity mark (e.g. 22K916), and the 6-digit alphanumeric **HUID** (Hallmark Unique Identification).\n"
+            "   - In the BIS CARE app, tap **'Verify HUID'** to confirm the jeweller registration, Assaying Centre (AHC) details, and article type."
+        ),
+        "official_portal": "BIS CARE Mobile App & www.manakonline.in",
+        "statutory_provenance": "BIS Act 2016, Sections 15 & 16; BIS (Conformity Assessment) Regulations, 2018",
+    },
+    "LICENCE_REGISTRATION_CHECK": {
+        "topic": "LICENCE_REGISTRATION_CHECK",
+        "title": "Checking BIS Licence or Registration Status",
+        "instructions": (
+            "To verify the operational legitimacy of a manufacturer's license or registration:\n"
+            "1. **Public Online Directory**: Access the official Manakonline portal (`www.manakonline.in`) and select **'Search a Licence'**.\n"
+            "2. **Search Parameters**: Search by CM/L number, manufacturer name, brand name, or Indian Standard (IS) number.\n"
+            "3. **Verification Details**: Confirm whether the status is **Operative**, **Expired**, **Suspended**, or **Cancelled**.\n"
+            "4. **Scope Verification**: Confirm that the exact product model and category are included within the approved scope of licence."
+        ),
+        "official_portal": "www.manakonline.in (e-BIS Portal)",
+        "statutory_provenance": "BIS Act 2016, Section 13(2); BIS Rules 2018",
+    },
+    "CONSUMER_COMPLAINT": {
+        "topic": "CONSUMER_COMPLAINT",
+        "title": "Filing a Formal BIS Consumer Complaint",
+        "instructions": (
+            "Consumers can lodge statutory grievances regarding substandard or counterfeit goods under Rule 30 of the BIS Rules, 2018:\n"
+            "1. **Channels**: Open the **BIS CARE App** and tap **'Complaints' -> 'Register Complaint'**, or visit the web portal at `www.bis.gov.in`.\n"
+            "2. **Complaint Classification**:\n"
+            "   - Quality defect in genuine ISI marked product.\n"
+            "   - Misuse or unauthorized forging of ISI Mark / CRS Mark / Hallmark.\n"
+            "   - Misleading advertisement or non-conformance.\n"
+            "3. **Evidence Required**: Upload purchase bill/cash memo, photographs showing the product label with CM/L or R-number, and a clear description of the defect.\n"
+            "4. **Tracking**: The system issues a unique Complaint Registration Number for tracking investigation and redressal."
+        ),
+        "official_portal": "BIS CARE Mobile App & www.bis.gov.in/consumer-affairs/",
+        "statutory_provenance": "BIS Rules 2018, Rule 30; BIS Act 2016, Section 30",
+    },
+    "SUSPECTED_NON_CONFORMING_PRODUCT": {
+        "topic": "SUSPECTED_NON_CONFORMING_PRODUCT",
+        "title": "Protocol for Suspected Non-Conforming or Counterfeit Products",
+        "instructions": (
+            "When encountering a product suspected of lacking genuine BIS conformity:\n"
+            "1. **Cease Use Immediately**: Discontinue using any electrical, chemical, or safety item that appears non-conforming.\n"
+            "2. **Verify on BIS CARE App**: Enter the CM/L or R-number. If the number does not exist, belongs to a different firm, or is cancelled, the product is counterfeit.\n"
+            "3. **Retain Evidence**: Preserve the original purchase tax invoice, manufacturer packaging, warranty card, and sample.\n"
+            "4. **Report to BIS**: Register a complaint on the BIS CARE app or send detailed intimation to the Head of Consumer Affairs Department (CAD) or nearest BIS Regional/Branch Office.\n"
+            "5. **Statutory Enforcement**: Under BIS Act 2016 Section 28, BIS enforcement teams possess legal powers of search and seizure to raid unauthorized premises and initiate criminal prosecution."
+        ),
+        "official_portal": "BIS Consumer Affairs Department (CAD) & BIS CARE App",
+        "statutory_provenance": "BIS Act 2016, Section 28 (Search and Seizure) & Section 30",
+    },
+    "BIS_MARK_SIGNIFICANCE": {
+        "topic": "BIS_MARK_SIGNIFICANCE",
+        "title": "What a BIS Mark Indicates",
+        "instructions": (
+            "A Bureau of Indian Standards (BIS) mark on a product signifies:\n"
+            "1. **Third-Party Conformity Guarantee**: Independent statutory assurance that the product complies with codified Indian Standards (IS) for safety, quality, and performance.\n"
+            "2. **Continuous Quality Surveillance**: The manufacturer operates an audited quality control system with factory testing and is subject to unannounced surveillance audits and market sampling by BIS.\n"
+            "3. **Statutory Traceability**: Direct accountability through an assigned, traceable licence (CM/L) or registration (R-number).\n\n"
+            "*Important Distinction*: A BIS mark indicates product conformity to standards; it is NOT a commercial manufacturer warranty, nor does it imply government manufacturing."
+        ),
+        "official_portal": "Bureau of Indian Standards Official Guidelines",
+        "statutory_provenance": "BIS Act 2016, Sections 13, 14 & 15",
+    },
+}
+
 
 verified_knowledge_selector = VerifiedKnowledgeSelector()
+
 

@@ -504,6 +504,180 @@ class SingleStructuredLLM:
                 regulatory_conclusion="NONE",
             )
 
+        # 2.5. Intent: BIS Consumer Assistance (Milestone M25.4C)
+        if intent == OrchestratorIntent.CONSUMER_ASSISTANCE:
+            NON_ISSUANCE_DISCLAIMER = (
+                "\n\n*General Guidance Disclaimer: Zyntrix is an informational compliance tool and does not issue BIS licenses, registrations, or official certifications. All certifications and consumer verifications are administered exclusively by the Bureau of Indian Standards (BIS) through official government portals (Manakonline / crsbis.in / BIS CARE app).*"
+            )
+
+            # 1. Intercept Unsupported Consumer Assumptions / False Guarantees
+            unsupported_claim = verified_knowledge_selector.check_unsupported_consumer_claim(sanitized_query)
+            if unsupported_claim:
+                citations = []
+                if unsupported_claim["claim_type"] == "UNOFFICIAL_COMPLAINT_CHANNEL":
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS Rules 2018",
+                            clause_number="Rule 30",
+                            clause_title="Redressal of Consumer Complaints",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                elif unsupported_claim["claim_type"] == "MONETARY_REFUND_GUARANTEE":
+                    citations.append(
+                        CitationItem(
+                            standard_number="Consumer Protection Act, 2019",
+                            clause_number="Section 35",
+                            clause_title="Manner in which complaint shall be made",
+                            source_authority="Central Consumer Protection Authority",
+                            verified=True,
+                        )
+                    )
+                return OrchestratedAIResponse(
+                    answer=(
+                        f"**Official Consumer Guidance — Clarification on Consumer Rights & Scope**:\n\n"
+                        f"{unsupported_claim['explanation']}\n\n"
+                        f"- **Governing Framework**: {unsupported_claim['statutory_authority']}"
+                        f"{NON_ISSUANCE_DISCLAIMER}"
+                    ),
+                    intent=intent,
+                    grounding_status=GroundingStatus.SUPPORTED,
+                    confidence_score=0.98,
+                    citations=citations,
+                    deterministic_fallback_used=False,
+                    regulatory_conclusion="NONE",
+                )
+
+            # 2. Check for foreign or unverified non-BIS marks asked in query (e.g. CE mark, FCC mark, UL mark)
+            if any(w in q_lower for w in ["ce mark", "fcc mark", "ul mark", "ccc mark", "ukca"]):
+                return OrchestratedAIResponse(
+                    answer="SOURCE_UNAVAILABLE: The query references a non-BIS / foreign conformity mark (such as CE, FCC, UL, or CCC). The Bureau of Indian Standards oversees Indian Standards (ISI, CRS, Hallmark). Verified BIS consumer procedures are not applicable to foreign certification marks.",
+                    intent=intent,
+                    grounding_status=GroundingStatus.NOT_IN_KNOWLEDGE_BASE,
+                    confidence_score=0.0,
+                    citations=[],
+                    deterministic_fallback_used=True,
+                    regulatory_conclusion="NONE",
+                )
+
+            # 3. Match Verified Consumer Service Topic
+            topic_data = verified_knowledge_selector.match_consumer_query_topic(sanitized_query)
+            if topic_data:
+                topic_id = topic_data["topic"]
+                title = topic_data["title"]
+                instructions = topic_data["instructions"]
+                portal = topic_data["official_portal"]
+                provenance = topic_data["statutory_provenance"]
+
+                answer = (
+                    f"**BIS Consumer Assistance — {title}**\n\n"
+                    f"{instructions}\n\n"
+                    f"- **Official Portal / Channel**: {portal}\n"
+                    f"- **Statutory Source**: {provenance}"
+                    f"{NON_ISSUANCE_DISCLAIMER}"
+                )
+
+                citations = []
+                if topic_id in ("MARK_VERIFICATION", "LICENCE_REGISTRATION_CHECK"):
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS Act 2016",
+                            clause_number="Section 15",
+                            clause_title="Prohibition to use certain names and marks",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS (Conformity Assessment) Regulations, 2018",
+                            clause_number="Schedule II",
+                            clause_title="Conformity Assessment Schemes",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                elif topic_id == "CONSUMER_COMPLAINT":
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS Rules 2018",
+                            clause_number="Rule 30",
+                            clause_title="Redressal of Consumer Complaints",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS Act 2016",
+                            clause_number="Section 30",
+                            clause_title="Investigation of Complaints",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                elif topic_id == "SUSPECTED_NON_CONFORMING_PRODUCT":
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS Act 2016",
+                            clause_number="Section 28",
+                            clause_title="Power of Search and Seizure",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS Act 2016",
+                            clause_number="Section 30",
+                            clause_title="Investigation of Complaints",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                elif topic_id == "BIS_MARK_SIGNIFICANCE":
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS Act 2016",
+                            clause_number="Section 13",
+                            clause_title="Grant of Licence and Certificate of Conformity",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS Act 2016",
+                            clause_number="Section 14",
+                            clause_title="Hallmarking of Precious Metals",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+
+                return OrchestratedAIResponse(
+                    answer=answer,
+                    intent=intent,
+                    grounding_status=GroundingStatus.SUPPORTED,
+                    confidence_score=0.98,
+                    citations=citations,
+                    deterministic_fallback_used=False,
+                    regulatory_conclusion="NONE",
+                )
+
+            # Fallback for unclassified consumer assistance query
+            return OrchestratedAIResponse(
+                answer="SOURCE_UNAVAILABLE / MORE_INFORMATION_REQUIRED: The query does not match any recognized official BIS consumer service or verification procedure. Available verified procedures include: BIS/ISI mark verification, licence status directory search, consumer complaint redressal under Rule 30, and reporting suspected non-conforming products." + NON_ISSUANCE_DISCLAIMER,
+                intent=intent,
+                grounding_status=GroundingStatus.NOT_IN_KNOWLEDGE_BASE,
+                confidence_score=0.0,
+                citations=[],
+                missing_information_notes="Specific consumer query (e.g. mark verification, licence check, complaint procedure) required.",
+                deterministic_fallback_used=True,
+                regulatory_conclusion="NONE",
+            )
+
         std_key = context.target_standard or "IS 302-2-201:2008"
         std_data = VERIFIED_STANDARDS_CATALOG.get(std_key, {})
         clauses_dict = std_data.get("clauses", {})

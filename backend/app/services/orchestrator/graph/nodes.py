@@ -254,7 +254,7 @@ def request_understanding_node(state: BISComplianceGraphState) -> BISComplianceG
     if understanding.explicit_standard_refs:
         state["target_standard_number"] = understanding.explicit_standard_refs[0]
     elif not state.get("target_standard_number"):
-        if understanding.intent != OrchestratorIntent.GENERAL_BIS_INFORMATION:
+        if understanding.intent not in (OrchestratorIntent.GENERAL_BIS_INFORMATION, OrchestratorIntent.CONSUMER_ASSISTANCE):
             state["target_standard_number"] = "IS 302-2-201:2008"
         else:
             state["target_standard_number"] = None
@@ -358,8 +358,8 @@ def product_dna_check_node(state: BISComplianceGraphState) -> BISComplianceGraph
     dna = state.get("product_dna")
     intent_val = state.get("user_intent")
 
-    # M25.4A: General BIS Information queries do not evaluate a product and do not require Product DNA
-    if intent_val == OrchestratorIntent.GENERAL_BIS_INFORMATION.value:
+    # M25.4A & M25.4C: General BIS Information and Consumer queries do not evaluate a product and do not require Product DNA
+    if intent_val in (OrchestratorIntent.GENERAL_BIS_INFORMATION.value, OrchestratorIntent.CONSUMER_ASSISTANCE.value):
         state["dna_sufficient"] = True
         state["missing_attributes"] = []
         contract = ProductDNAContract(
@@ -450,7 +450,7 @@ def task_router_node(state: BISComplianceGraphState) -> BISComplianceGraphState:
     # Match target standard
     target_std, _ = verified_knowledge_selector.match_standard_in_query(sanitized_q)
     target_std = target_std or state.get("target_standard_number")
-    if not target_std and intent_val != OrchestratorIntent.GENERAL_BIS_INFORMATION.value:
+    if not target_std and intent_val not in (OrchestratorIntent.GENERAL_BIS_INFORMATION.value, OrchestratorIntent.CONSUMER_ASSISTANCE.value):
         target_std = "IS 302-2-201:2008"
     state["target_standard_number"] = target_std
 
@@ -593,8 +593,8 @@ def evidence_validation_gate_node(state: BISComplianceGraphState) -> BISComplian
     avail_evs = state.get("available_evidence_ids", [])
     intent_val = state.get("user_intent")
 
-    # M25.4A: General BIS Information does not evaluate product laboratory reports
-    if intent_val == OrchestratorIntent.GENERAL_BIS_INFORMATION.value:
+    # M25.4A & M25.4C: General BIS Information and Consumer queries do not evaluate product laboratory reports
+    if intent_val in (OrchestratorIntent.GENERAL_BIS_INFORMATION.value, OrchestratorIntent.CONSUMER_ASSISTANCE.value):
         if target_std and target_std not in VERIFIED_STANDARDS_CATALOG:
             state["evidence_status"] = "NO_VERIFIED_SOURCE"
             state["unverified_claims_blocked"] = [f"Standard {target_std} is unverified"]
@@ -690,7 +690,7 @@ def analysis_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphSta
     intent = OrchestratorIntent(intent_val) if intent_val in OrchestratorIntent._value2member_map_ else OrchestratorIntent.QUERY_REQUIREMENT
     sanitized_q = state.get("sanitized_query", "")
     target_std = state.get("target_standard_number")
-    if not target_std and intent != OrchestratorIntent.GENERAL_BIS_INFORMATION:
+    if not target_std and intent not in (OrchestratorIntent.GENERAL_BIS_INFORMATION, OrchestratorIntent.CONSUMER_ASSISTANCE):
         target_std = "IS 302-2-201:2008"
 
     # M24.4.3E Agent Readiness Gate
@@ -910,14 +910,14 @@ def deterministic_compliance_gate_node(state: BISComplianceGraphState) -> BISCom
     state["llm_compliance_authority"] = 0.0
     intent_val = state.get("user_intent")
 
-    # M25.4A: General BIS Information queries do not perform product compliance evaluation
-    if intent_val == OrchestratorIntent.GENERAL_BIS_INFORMATION.value:
+    # M25.4A & M25.4C: General BIS Information and Consumer queries do not perform product compliance evaluation
+    if intent_val in (OrchestratorIntent.GENERAL_BIS_INFORMATION.value, OrchestratorIntent.CONSUMER_ASSISTANCE.value):
         state["unsatisfied_clauses"] = []
         state["gap_analysis_summary"] = {
             "total_evaluated": 0,
             "unsatisfied_count": 0,
             "authority": "Deterministic Downstream Gate (Layers 5 & 7)",
-            "compliance_evaluation": "SKIPPED_GENERAL_BIS_INFORMATION",
+            "compliance_evaluation": "SKIPPED_GENERAL_OR_CONSUMER_QUERY",
         }
         contract = DeterministicGateContract(
             total_evaluated=0,
@@ -1004,8 +1004,8 @@ def planning_agent_node(state: BISComplianceGraphState) -> BISComplianceGraphSta
     user_q = state.get("sanitized_query", "")
     intent_val = state.get("user_intent")
 
-    # M25.4A: General BIS Information does not produce product remediation plans
-    if intent_val == OrchestratorIntent.GENERAL_BIS_INFORMATION.value:
+    # M25.4A & M25.4C: General BIS Information and Consumer queries do not produce product remediation plans
+    if intent_val in (OrchestratorIntent.GENERAL_BIS_INFORMATION.value, OrchestratorIntent.CONSUMER_ASSISTANCE.value):
         state["action_plan_items"] = []
         state["structured_action_plan"] = None
         state["action_blockers"] = []
@@ -1128,7 +1128,7 @@ def output_integrity_gate_node(state: BISComplianceGraphState) -> BISComplianceG
     intent_val = state.get("user_intent", OrchestratorIntent.QUERY_REQUIREMENT.value)
     intent = OrchestratorIntent(intent_val) if intent_val in OrchestratorIntent._value2member_map_ else OrchestratorIntent.QUERY_REQUIREMENT
     target_std = state.get("target_standard_number")
-    if not target_std and intent != OrchestratorIntent.GENERAL_BIS_INFORMATION:
+    if not target_std and intent not in (OrchestratorIntent.GENERAL_BIS_INFORMATION, OrchestratorIntent.CONSUMER_ASSISTANCE):
         target_std = "IS 302-2-201:2008"
 
     sanitized_answer, stripped = grounding_guard.sanitize_regulatory_assertions(raw_answer)

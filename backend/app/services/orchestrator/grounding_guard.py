@@ -117,6 +117,28 @@ class GroundingGuard:
             if not any(c.standard_number == item.standard_number for c in citations):
                 citations.append(item)
 
+        if "bis rules 2018" in t_lower or "rule 30" in t_lower:
+            item = CitationItem(
+                standard_number="BIS Rules 2018",
+                clause_number="Rule 30",
+                clause_title="Redressal of Consumer Complaints",
+                source_authority="Bureau of Indian Standards",
+                verified=True,
+            )
+            if not any(c.standard_number == item.standard_number for c in citations):
+                citations.append(item)
+
+        if "consumer protection act" in t_lower:
+            item = CitationItem(
+                standard_number="Consumer Protection Act, 2019",
+                clause_number="Section 35",
+                clause_title="Manner in which complaint shall be made",
+                source_authority="Central Consumer Protection Authority",
+                verified=True,
+            )
+            if not any(c.standard_number == item.standard_number for c in citations):
+                citations.append(item)
+
         return citations, suppressed
 
     @classmethod

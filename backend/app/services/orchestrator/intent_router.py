@@ -62,6 +62,28 @@ class IntentRouter:
         ):
             return OrchestratorIntent.GENERAL_BIS_INFORMATION, sanitized, []
 
+        # 2.5 BIS Consumer Assistance Intent (Milestone M25.4C)
+        if any(phrase in q_lower for phrase in [
+            "verify a bis", "verify bis", "verify isi", "verify a isi", "verify an isi",
+            "verify mark", "verify the mark", "check bis mark", "check isi mark", "how to verify",
+            "how can i verify", "verify licence", "verify license", "verify registration",
+            "check a bis licence", "check a bis license", "check bis licence", "check bis license",
+            "check a registration", "check registration", "search a licence", "search license",
+            "is the licence valid", "is the license valid", "licence status", "license status",
+            "how do i check a bis licence", "how do i check a bis license",
+            "raise a bis consumer complaint", "raise a complaint", "consumer complaint",
+            "file a complaint", "register a complaint", "lodge a complaint", "how to complain",
+            "how can i raise a bis consumer complaint", "report substandard", "complaint against bis",
+            "bis care complaint", "complain about product", "suspected non-conforming",
+            "non-conforming product", "defective product", "fake isi", "fake mark", "counterfeit mark",
+            "substandard product", "suspected product", "what should a consumer do about a suspected",
+            "what should a consumer do", "found fake mark", "fake bis", "what does a bis mark indicate",
+            "what does bis mark mean", "what does isi mark indicate", "meaning of bis mark",
+            "significance of bis mark", "what does a mark indicate", "why bis mark", "importance of bis mark",
+            "bis care", "cml number", "r-number", "refund from bis", "bis cash refund", "whatsapp complaint",
+        ]):
+            return OrchestratorIntent.CONSUMER_ASSISTANCE, sanitized, []
+
         # 3. Query Requirement Intent
         if any(w in q_lower for w in ["what does clause", "requirement", "specification", "test limit", "mandate", "standard require", "permissible", "temperature rise limit", "leakage current limit"]):
             return OrchestratorIntent.QUERY_REQUIREMENT, sanitized, []
