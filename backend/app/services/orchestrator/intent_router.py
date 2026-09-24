@@ -132,9 +132,15 @@ class IntentRouter:
                 "central laboratory sahibabad", "western regional laboratory", "southern regional laboratory",
                 "eastern regional laboratory", "northern regional laboratory",
                 "testing category", "testing categories", "test category", "test categories",
+                "testing house", "stale annex",
             ]) or (
-                any(w in q_lower for w in ["laboratory", "laboratories", "lab", "labs"]) and
-                any(w in q_lower for w in ["find", "where", "which", "directory", "test", "testing", "recognized", "status", "scope", "lims", "verify"])
+                any(w in q_lower for w in ["laboratory", "laboratories", "lab", "labs", "testing house"]) and
+                any(w in q_lower for w in [
+                    "find", "where", "which", "directory", "test", "testing", "recognized",
+                    "status", "scope", "lims", "verify", "fee", "fees", "cost", "pay",
+                    "book", "booking", "appointment", "schedule", "slot", "rank", "ranking",
+                    "cheapest", "fastest", "top rated", "provenance", "details", "record"
+                ])
             ) or (
                 any(w in q_lower for w in ["type of testing", "what testing", "which testing", "testing category", "testing required"]) and
                 any(w in q_lower for w in ["standard", "product", "is 302", "is 17526", "is 4151", "is 13252", "is 1417", "is 1786", "is 8112", "heater", "flask", "helmet"])

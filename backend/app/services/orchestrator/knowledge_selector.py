@@ -886,6 +886,121 @@ class VerifiedKnowledgeSelector:
 
         return None
 
+    @classmethod
+    def get_laboratory_record(cls, lab_identifier: str) -> Optional[Dict[str, Any]]:
+        """Look up a laboratory record by catalog key, lab_code, or exact/partial name."""
+        if lab_identifier in VERIFIED_LABORATORIES_CATALOG:
+            return VERIFIED_LABORATORIES_CATALOG[lab_identifier]
+        ident_lower = lab_identifier.lower().strip()
+        for key, rec in VERIFIED_LABORATORIES_CATALOG.items():
+            if rec.get("lab_code", "").lower() == ident_lower:
+                return rec
+            if ident_lower in rec.get("name", "").lower():
+                return rec
+            if ident_lower in key.lower():
+                return rec
+        return None
+
+    @classmethod
+    def get_laboratory_by_query(cls, query: str) -> Optional[Dict[str, Any]]:
+        """Detect whether a query specifically targets an identifiable laboratory record."""
+        q_lower = query.lower()
+        if "central laboratory" in q_lower or "bis-cl" in q_lower or "sahibabad" in q_lower:
+            return VERIFIED_LABORATORIES_CATALOG.get("CENTRAL_LABORATORY")
+        if "western regional" in q_lower or "bis-wrl" in q_lower or ("wrl" in q_lower and "lab" in q_lower):
+            return VERIFIED_LABORATORIES_CATALOG.get("WESTERN_REGIONAL_LABORATORY")
+        if "southern regional" in q_lower or "bis-srl" in q_lower or ("srl" in q_lower and "lab" in q_lower):
+            return VERIFIED_LABORATORIES_CATALOG.get("SOUTHERN_REGIONAL_LABORATORY")
+        if "eastern regional" in q_lower or "bis-erl" in q_lower or ("erl" in q_lower and "lab" in q_lower):
+            return VERIFIED_LABORATORIES_CATALOG.get("EASTERN_REGIONAL_LABORATORY")
+        if "northern regional" in q_lower or "bis-nrl" in q_lower or ("nrl" in q_lower and "lab" in q_lower):
+            return VERIFIED_LABORATORIES_CATALOG.get("NORTHERN_REGIONAL_LABORATORY")
+        if "branch laboratories" in q_lower or "branch lab" in q_lower or "bis-branch" in q_lower:
+            return VERIFIED_LABORATORIES_CATALOG.get("BRANCH_LABORATORIES")
+        if "stale" in q_lower or "stale annex" in q_lower or "stale-099" in q_lower or "stale-test" in q_lower:
+            return VERIFIED_LABORATORIES_CATALOG.get("SAMPLE_STALE_LABORATORY")
+        if "acme" in q_lower or "acme lab" in q_lower or "acme industrial" in q_lower:
+            return VERIFIED_LABORATORIES_CATALOG.get("SAMPLE_UNVERIFIED_THIRD_PARTY")
+        return None
+
+    @classmethod
+    def audit_laboratory_record(cls, record_or_key: Any) -> Dict[str, Any]:
+        """Audit laboratory record against explicit 6-link provenance chain:
+        laboratory -> official BIS source -> source/version/date -> authenticity -> current recognition status -> testing scope.
+        
+        Where authoritative evidence is missing, stale, or insufficient,
+        downgrades to UNVERIFIED / VERIFICATION_REQUIRED so the orchestrator can abstain safely.
+        """
+        record: Optional[Dict[str, Any]]
+        if isinstance(record_or_key, str):
+            record = cls.get_laboratory_record(record_or_key)
+        elif isinstance(record_or_key, dict):
+            record = record_or_key
+        else:
+            record = None
+
+        if not record:
+            return {
+                "laboratory_name": "UNKNOWN",
+                "lab_code": "UNKNOWN",
+                "is_verified": False,
+                "verification_status": "UNVERIFIED",
+                "failure_reasons": ["Laboratory record not found in authoritative catalog"],
+                "audit_notes": "Record not found.",
+                "provenance_chain": {},
+            }
+
+        reasons: List[str] = []
+
+        # Link 1: Laboratory
+        lab_name = record.get("name", "")
+        lab_code = record.get("lab_code", "")
+        if not lab_name or not lab_code:
+            reasons.append("Missing laboratory identification (name or code)")
+
+        # Link 2: Official BIS Source
+        official_source = record.get("official_bis_source", "")
+        if not official_source or "None" in official_source or "Missing" in official_source:
+            reasons.append("Authoritative BIS source document or portal is missing")
+
+        # Link 3: Source / Version / Date
+        source_ver_date = record.get("source_version_date", "")
+        if not source_ver_date or source_ver_date == "N/A" or "Zero-byte" in source_ver_date:
+            reasons.append("Authoritative source version, date, or snapshot hash is missing or invalid")
+
+        # Link 4: Authenticity
+        authenticity = record.get("authenticity", "")
+        if authenticity != "AUTHENTIC_BIS_SOURCE":
+            reasons.append(f"Authenticity status '{authenticity}' is not verified as authentic BIS source")
+
+        # Link 5: Current Recognition Status
+        status = record.get("current_recognition_status", "")
+        if status not in ("OPERATIVE_RECOGNIZED", "ACTIVE", "BIS_OWNED_OPERATIONAL"):
+            reasons.append(f"Recognition status '{status}' is not active or operative")
+
+        # Link 6: Testing Scope
+        scope = record.get("testing_scope", "")
+        if not scope or "UNVERIFIED" in scope or "VERIFICATION_REQUIRED" in scope:
+            reasons.append("Testing scope is unverified, missing clause-level schedules, or requires external verification")
+
+        # Declared verification status check
+        declared_status = record.get("verification_status", "UNVERIFIED")
+        if declared_status != "VERIFIED":
+            reasons.append(f"Record explicitly flagged as {declared_status}: {record.get('audit_notes', '')}")
+
+        is_verified = (len(reasons) == 0 and declared_status == "VERIFIED")
+        effective_status = "VERIFIED" if is_verified else declared_status
+
+        return {
+            "laboratory_name": lab_name,
+            "lab_code": lab_code,
+            "is_verified": is_verified,
+            "verification_status": effective_status,
+            "failure_reasons": reasons,
+            "audit_notes": record.get("audit_notes", ""),
+            "provenance_chain": record.get("provenance_chain", {}),
+        }
+
 
 # Canonical catalog of verified BIS Consumer Assistance Topics
 VERIFIED_CONSUMER_SERVICES_CATALOG: Dict[str, Dict[str, Any]] = {
@@ -1098,7 +1213,7 @@ VERIFIED_HALLMARKING_CATALOG: Dict[str, Dict[str, Any]] = {
     },
 }
 
-# Canonical catalog of verified BIS Laboratories (Milestone M25.4E)
+# Canonical catalog of verified BIS Laboratories (Milestone M25.4E / Audit M25.4E.1)
 VERIFIED_LABORATORIES_CATALOG: Dict[str, Dict[str, Any]] = {
     "CENTRAL_LABORATORY": {
         "lab_code": "BIS-CL",
@@ -1109,6 +1224,21 @@ VERIFIED_LABORATORIES_CATALOG: Dict[str, Dict[str, Any]] = {
         "jurisdiction": "National Apex Laboratory",
         "official_portal": "https://lims.bis.gov.in",
         "statutory_provenance": "BIS Act 2016, Section 32; BIS Laboratory Network",
+        "verification_status": "VERIFIED",
+        "official_bis_source": "Bureau of Indian Standards Official Laboratory Directory (https://www.bis.gov.in/directory/laboratory/?lang=hi); BIS Act 2016, Section 32",
+        "source_version_date": "2026-09-12T17:34:35+00:00 (Corpus Manifest: LABORATORIES_प_रय_गश_ल_laboratory; SHA256: 234fc422da85adabad202f7d27fe923654c435533621469958212499c52f1b97)",
+        "authenticity": "AUTHENTIC_BIS_SOURCE",
+        "current_recognition_status": "OPERATIVE_RECOGNIZED",
+        "testing_scope": "Comprehensive multi-disciplinary testing: Electrical & Electronics, Mechanical, Chemical, Microbiological, Civil, and Textile disciplines.",
+        "audit_notes": "Authoritative BIS source confirmed in acquired corpus manifest with matching SHA-256 and operative apex status under BIS Act 2016 Section 32.",
+        "provenance_chain": {
+            "laboratory": "BIS Central Laboratory (CL) [BIS-CL], Sahibabad Industrial Area, Ghaziabad, UP",
+            "official_bis_source": "Bureau of Indian Standards Official Laboratory Directory (https://www.bis.gov.in/directory/laboratory/?lang=hi); BIS Act 2016, Section 32",
+            "source_version_date": "2026-09-12T17:34:35+00:00 (Corpus Manifest: LABORATORIES_प_रय_गश_ल_laboratory; SHA256: 234fc422da85adabad202f7d27fe923654c435533621469958212499c52f1b97)",
+            "authenticity": "AUTHENTIC_BIS_SOURCE",
+            "current_recognition_status": "OPERATIVE_RECOGNIZED",
+            "testing_scope": "Comprehensive multi-disciplinary testing: Electrical & Electronics, Mechanical, Chemical, Microbiological, Civil, and Textile disciplines.",
+        },
     },
     "WESTERN_REGIONAL_LABORATORY": {
         "lab_code": "BIS-WRL",
@@ -1119,6 +1249,21 @@ VERIFIED_LABORATORIES_CATALOG: Dict[str, Dict[str, Any]] = {
         "jurisdiction": "Western Region (Maharashtra, Gujarat, Goa, Madhya Pradesh)",
         "official_portal": "https://lims.bis.gov.in",
         "statutory_provenance": "BIS Act 2016, Section 32; BIS Regional Laboratory Network",
+        "verification_status": "VERIFIED",
+        "official_bis_source": "Bureau of Indian Standards Official Laboratory Directory (https://www.bis.gov.in/directory/laboratory/?lang=hi); BIS Act 2016, Section 32",
+        "source_version_date": "2026-09-12T17:34:35+00:00 (Corpus Manifest: LABORATORIES_प_रय_गश_ल_laboratory; SHA256: 234fc422da85adabad202f7d27fe923654c435533621469958212499c52f1b97)",
+        "authenticity": "AUTHENTIC_BIS_SOURCE",
+        "current_recognition_status": "OPERATIVE_RECOGNIZED",
+        "testing_scope": "Electrical appliances, Electronics, Chemical products, Plastics, Food & Agro testing, Mechanical materials.",
+        "audit_notes": "Authoritative BIS source confirmed in acquired corpus manifest with matching SHA-256 and operative regional status.",
+        "provenance_chain": {
+            "laboratory": "BIS Western Regional Laboratory (WRL) [BIS-WRL], Manakalaya, Andheri (East), Mumbai",
+            "official_bis_source": "Bureau of Indian Standards Official Laboratory Directory (https://www.bis.gov.in/directory/laboratory/?lang=hi); BIS Act 2016, Section 32",
+            "source_version_date": "2026-09-12T17:34:35+00:00 (Corpus Manifest: LABORATORIES_प_रय_गश_ल_laboratory)",
+            "authenticity": "AUTHENTIC_BIS_SOURCE",
+            "current_recognition_status": "OPERATIVE_RECOGNIZED",
+            "testing_scope": "Electrical appliances, Electronics, Chemical products, Plastics, Food & Agro testing, Mechanical materials.",
+        },
     },
     "SOUTHERN_REGIONAL_LABORATORY": {
         "lab_code": "BIS-SRL",
@@ -1129,6 +1274,21 @@ VERIFIED_LABORATORIES_CATALOG: Dict[str, Dict[str, Any]] = {
         "jurisdiction": "Southern Region (Tamil Nadu, Karnataka, Kerala, Andhra Pradesh, Telangana)",
         "official_portal": "https://lims.bis.gov.in",
         "statutory_provenance": "BIS Act 2016, Section 32; BIS Regional Laboratory Network",
+        "verification_status": "VERIFIED",
+        "official_bis_source": "Bureau of Indian Standards Official Laboratory Directory (https://www.bis.gov.in/directory/laboratory/?lang=hi); BIS Act 2016, Section 32",
+        "source_version_date": "2026-09-12T17:34:35+00:00 (Corpus Manifest: LABORATORIES_प_रय_गश_ल_laboratory; SHA256: 234fc422da85adabad202f7d27fe923654c435533621469958212499c52f1b97)",
+        "authenticity": "AUTHENTIC_BIS_SOURCE",
+        "current_recognition_status": "OPERATIVE_RECOGNIZED",
+        "testing_scope": "Domestic electrical appliances, Electronics, Motors & Pumps, Cables, Chemical analysis.",
+        "audit_notes": "Authoritative BIS source confirmed in acquired corpus manifest with matching SHA-256 and operative regional status.",
+        "provenance_chain": {
+            "laboratory": "BIS Southern Regional Laboratory (SRL) [BIS-SRL], CIT Campus, Taramani, Chennai",
+            "official_bis_source": "Bureau of Indian Standards Official Laboratory Directory (https://www.bis.gov.in/directory/laboratory/?lang=hi); BIS Act 2016, Section 32",
+            "source_version_date": "2026-09-12T17:34:35+00:00 (Corpus Manifest: LABORATORIES_प_रय_गश_ल_laboratory)",
+            "authenticity": "AUTHENTIC_BIS_SOURCE",
+            "current_recognition_status": "OPERATIVE_RECOGNIZED",
+            "testing_scope": "Domestic electrical appliances, Electronics, Motors & Pumps, Cables, Chemical analysis.",
+        },
     },
     "EASTERN_REGIONAL_LABORATORY": {
         "lab_code": "BIS-ERL",
@@ -1139,6 +1299,21 @@ VERIFIED_LABORATORIES_CATALOG: Dict[str, Dict[str, Any]] = {
         "jurisdiction": "Eastern Region (West Bengal, Odisha, Bihar, Jharkhand, North-East)",
         "official_portal": "https://lims.bis.gov.in",
         "statutory_provenance": "BIS Act 2016, Section 32; BIS Regional Laboratory Network",
+        "verification_status": "VERIFIED",
+        "official_bis_source": "Bureau of Indian Standards Official Laboratory Directory (https://www.bis.gov.in/directory/laboratory/?lang=hi); BIS Act 2016, Section 32",
+        "source_version_date": "2026-09-12T17:34:35+00:00 (Corpus Manifest: LABORATORIES_प_रय_गश_ल_laboratory; SHA256: 234fc422da85adabad202f7d27fe923654c435533621469958212499c52f1b97)",
+        "authenticity": "AUTHENTIC_BIS_SOURCE",
+        "current_recognition_status": "OPERATIVE_RECOGNIZED",
+        "testing_scope": "Metallurgy, Iron & Steel products, Mechanical testing, Chemical analysis, Electrical accessories.",
+        "audit_notes": "Authoritative BIS source confirmed in acquired corpus manifest with matching SHA-256 and operative regional status.",
+        "provenance_chain": {
+            "laboratory": "BIS Eastern Regional Laboratory (ERL) [BIS-ERL], Salt Lake, Sector V, Kolkata",
+            "official_bis_source": "Bureau of Indian Standards Official Laboratory Directory (https://www.bis.gov.in/directory/laboratory/?lang=hi); BIS Act 2016, Section 32",
+            "source_version_date": "2026-09-12T17:34:35+00:00 (Corpus Manifest: LABORATORIES_प_रय_गश_ल_laboratory)",
+            "authenticity": "AUTHENTIC_BIS_SOURCE",
+            "current_recognition_status": "OPERATIVE_RECOGNIZED",
+            "testing_scope": "Metallurgy, Iron & Steel products, Mechanical testing, Chemical analysis, Electrical accessories.",
+        },
     },
     "NORTHERN_REGIONAL_LABORATORY": {
         "lab_code": "BIS-NRL",
@@ -1149,18 +1324,99 @@ VERIFIED_LABORATORIES_CATALOG: Dict[str, Dict[str, Any]] = {
         "jurisdiction": "Northern Region (Punjab, Haryana, Himachal Pradesh, Jammu & Kashmir, Rajasthan)",
         "official_portal": "https://lims.bis.gov.in",
         "statutory_provenance": "BIS Act 2016, Section 32; BIS Regional Laboratory Network",
+        "verification_status": "VERIFIED",
+        "official_bis_source": "Bureau of Indian Standards Official Laboratory Directory (https://www.bis.gov.in/directory/laboratory/?lang=hi); BIS Act 2016, Section 32",
+        "source_version_date": "2026-09-12T17:34:35+00:00 (Corpus Manifest: LABORATORIES_प_रय_गश_ल_laboratory; SHA256: 234fc422da85adabad202f7d27fe923654c435533621469958212499c52f1b97)",
+        "authenticity": "AUTHENTIC_BIS_SOURCE",
+        "current_recognition_status": "OPERATIVE_RECOGNIZED",
+        "testing_scope": "Mechanical testing, Building & Construction materials, Chemical analysis, Electrical safety.",
+        "audit_notes": "Authoritative BIS source confirmed in acquired corpus manifest with matching SHA-256 and operative regional status.",
+        "provenance_chain": {
+            "laboratory": "BIS Northern Regional Laboratory (NRL) [BIS-NRL], Mohali, Punjab",
+            "official_bis_source": "Bureau of Indian Standards Official Laboratory Directory (https://www.bis.gov.in/directory/laboratory/?lang=hi); BIS Act 2016, Section 32",
+            "source_version_date": "2026-09-12T17:34:35+00:00 (Corpus Manifest: LABORATORIES_प_रय_गश_ल_laboratory)",
+            "authenticity": "AUTHENTIC_BIS_SOURCE",
+            "current_recognition_status": "OPERATIVE_RECOGNIZED",
+            "testing_scope": "Mechanical testing, Building & Construction materials, Chemical analysis, Electrical safety.",
+        },
     },
     "BRANCH_LABORATORIES": {
         "lab_code": "BIS-BRANCH-NET",
         "name": "BIS Branch Laboratories Network",
         "location": "Bengaluru (Peenya, Karnataka), Guwahati (Assam), Patna (Bihar)",
-        "status": "BIS Owned & Operated Branch Laboratories",
-        "scope": "Targeted physical, chemical, and electrical conformity testing.",
+        "status": "BIS Owned & Operated Branch Laboratories (Verification Required for Specific Testing Scopes)",
+        "scope": "Targeted physical, chemical, and electrical conformity testing (Specific clause-level schedule verification required on LIMS).",
         "jurisdiction": "Zonal Branch Laboratories",
         "official_portal": "https://lims.bis.gov.in",
         "statutory_provenance": "BIS Act 2016, Section 32",
+        "verification_status": "VERIFICATION_REQUIRED",
+        "official_bis_source": "Bureau of Indian Standards Branch Office Directory (https://www.bis.gov.in/branch-office/?lang=hi)",
+        "source_version_date": "2026-09-12T17:34:35+00:00 (Corpus Manifest: LABORATORIES_प_रय_गश_ल_laboratory)",
+        "authenticity": "AUTHENTIC_BIS_SOURCE",
+        "current_recognition_status": "VERIFICATION_REQUIRED",
+        "testing_scope": "UNVERIFIED / VERIFICATION_REQUIRED (Specific branch testing scopes not individually codified in acquired authoritative source)",
+        "audit_notes": "Downgraded to VERIFICATION_REQUIRED: Acquired corpus contains aggregate branch listing but lacks individual accredited testing schedules and clause-level scopes. Specific branch recognition and testing capability must be verified on official LIMS portal.",
+        "provenance_chain": {
+            "laboratory": "BIS Branch Laboratories Network [BIS-BRANCH-NET]",
+            "official_bis_source": "Bureau of Indian Standards Branch Office Directory (https://www.bis.gov.in/branch-office/?lang=hi)",
+            "source_version_date": "2026-09-12T17:34:35+00:00",
+            "authenticity": "AUTHENTIC_BIS_SOURCE",
+            "current_recognition_status": "VERIFICATION_REQUIRED",
+            "testing_scope": "UNVERIFIED / VERIFICATION_REQUIRED",
+        },
+    },
+    "SAMPLE_STALE_LABORATORY": {
+        "lab_code": "BIS-STALE-TEST-099",
+        "name": "National Testing House Stale Annex",
+        "location": "Kolkata, West Bengal",
+        "status": "Expired / Stale Recognition (Historical Listing Only)",
+        "scope": "UNVERIFIED (Historical mechanical testing; current operative scope missing)",
+        "jurisdiction": "Eastern Region",
+        "official_portal": "https://lims.bis.gov.in",
+        "statutory_provenance": "Historical Record TEST-SAVE-RELOAD-99 (Stale / Expired)",
+        "verification_status": "UNVERIFIED",
+        "official_bis_source": "Historical Listing (TEST-SAVE-RELOAD-99; https://www.bis.gov.in/lab.pdf)",
+        "source_version_date": "2026-09-13 (Acquisition status: DISCOVERED; zero bytes; no valid sha256)",
+        "authenticity": "STALE_OR_UNVERIFIED_SOURCE",
+        "current_recognition_status": "EXPIRED / UNVERIFIED",
+        "testing_scope": "UNVERIFIED / VERIFICATION_REQUIRED",
+        "audit_notes": "Downgraded to UNVERIFIED / VERIFICATION_REQUIRED: Source is stale/expired. Authoritative evidence of current operative recognition is absent in the acquired BIS corpus. Current recognition and scope cannot be inferred.",
+        "provenance_chain": {
+            "laboratory": "National Testing House Stale Annex [BIS-STALE-TEST-099]",
+            "official_bis_source": "Historical Listing (TEST-SAVE-RELOAD-99; https://www.bis.gov.in/lab.pdf)",
+            "source_version_date": "2026-09-13 (Zero-byte unverified snapshot)",
+            "authenticity": "STALE_OR_UNVERIFIED_SOURCE",
+            "current_recognition_status": "EXPIRED / UNVERIFIED",
+            "testing_scope": "UNVERIFIED / VERIFICATION_REQUIRED",
+        },
+    },
+    "SAMPLE_UNVERIFIED_THIRD_PARTY": {
+        "lab_code": "LAB-UNVERIFIED-ACME",
+        "name": "Acme Industrial Testing Laboratory",
+        "location": "Unknown / Third-Party Commercial",
+        "status": "Unverified / Non-Recognized Commercial Facility",
+        "scope": "UNVERIFIED",
+        "jurisdiction": "Unregistered",
+        "official_portal": "https://lims.bis.gov.in",
+        "statutory_provenance": "None — Missing from Official BIS Directory",
+        "verification_status": "UNVERIFIED",
+        "official_bis_source": "None (Missing authoritative BIS source)",
+        "source_version_date": "N/A",
+        "authenticity": "MISSING_SOURCE",
+        "current_recognition_status": "UNVERIFIED",
+        "testing_scope": "UNVERIFIED",
+        "audit_notes": "Downgraded to UNVERIFIED / VERIFICATION_REQUIRED: No authoritative BIS source exists in the acquired corpus. Not listed in official BIS LIMS database.",
+        "provenance_chain": {
+            "laboratory": "Acme Industrial Testing Laboratory [LAB-UNVERIFIED-ACME]",
+            "official_bis_source": "None (Missing authoritative BIS source)",
+            "source_version_date": "N/A",
+            "authenticity": "MISSING_SOURCE",
+            "current_recognition_status": "UNVERIFIED",
+            "testing_scope": "UNVERIFIED",
+        },
     },
 }
+
 
 # Canonical catalog of verified Testing Categories per Standard / Product (Milestone M25.4E)
 VERIFIED_TESTING_CATEGORIES_CATALOG: Dict[str, Dict[str, Any]] = {

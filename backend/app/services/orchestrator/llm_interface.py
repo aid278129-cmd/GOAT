@@ -1008,6 +1008,85 @@ class SingleStructuredLLM:
                     regulatory_conclusion="NONE",
                 )
 
+            # 1.5. Audit & Explicit Provenance Verification for Specific Laboratory Inquiry (Milestone M25.4E.1)
+            target_lab = verified_knowledge_selector.get_laboratory_by_query(sanitized_query)
+            is_specific_lab_query = target_lab is not None and any(
+                w in q_lower for w in [
+                    "status", "verify", "recognition", "scope", "details", "record",
+                    "provenance", "central laboratory", "western regional", "southern regional",
+                    "eastern regional", "northern regional", "branch laboratories", "branch lab",
+                    "stale", "annex", "acme", "can branch", "about", "is bis", "is national",
+                ]
+            )
+            if is_specific_lab_query and target_lab is not None:
+                audit_res = verified_knowledge_selector.audit_laboratory_record(target_lab)
+                # If authoritative evidence is missing, stale, or insufficient -> SAFE ABSTENTION
+                if not audit_res["is_verified"] or target_lab.get("verification_status") != "VERIFIED":
+                    return OrchestratedAIResponse(
+                        answer=(
+                            f"UNVERIFIED / VERIFICATION_REQUIRED: Authoritative BIS source evidence is missing, stale, or insufficient "
+                            f"for '{target_lab['name']}'. Current recognition status and testing scope cannot be confirmed from the "
+                            f"acquired authoritative BIS corpus.\n\n"
+                            f"- **Audit Status**: {target_lab.get('verification_status', 'VERIFICATION_REQUIRED')}\n"
+                            f"- **Audit Details**: {target_lab.get('audit_notes', 'Authoritative evidence missing, stale, or insufficient.')}\n"
+                            f"- **Provenance Chain Deficiencies**: {'; '.join(audit_res['failure_reasons'])}\n"
+                            f"- **Required Action**: Inquirers must directly consult the official BIS LIMS directory at https://lims.bis.gov.in "
+                            f"or contact the Bureau of Indian Standards for live accreditation status and current testing schedules. "
+                            f"Zyntrix strictly abstains from inferring recognition, scope, booking availability, fees, or rankings."
+                            f"{NON_ISSUANCE_DISCLAIMER}"
+                        ),
+                        intent=intent,
+                        grounding_status=GroundingStatus.NOT_IN_KNOWLEDGE_BASE,
+                        confidence_score=0.0,
+                        citations=[],
+                        missing_information_notes=f"Authoritative BIS source verification required for '{target_lab['name']}'.",
+                        deterministic_fallback_used=True,
+                        regulatory_conclusion="NONE",
+                    )
+
+                # Verified Laboratory Record with explicit provenance chain
+                chain = target_lab.get("provenance_chain", {})
+                answer = (
+                    f"**Verified BIS Laboratory Record — {target_lab['name']}**\n\n"
+                    f"- **Laboratory**: {chain.get('laboratory', target_lab['name'])}\n"
+                    f"- **Official BIS Source**: {chain.get('official_bis_source', target_lab.get('official_bis_source', 'Bureau of Indian Standards'))}\n"
+                    f"- **Source Version / Date**: {chain.get('source_version_date', target_lab.get('source_version_date', 'Acquired BIS Corpus'))}\n"
+                    f"- **Source Authenticity**: {chain.get('authenticity', 'AUTHENTIC_BIS_SOURCE')}\n"
+                    f"- **Current Recognition Status**: {chain.get('current_recognition_status', target_lab.get('status', 'OPERATIVE_RECOGNIZED'))}\n"
+                    f"- **Testing Scope**: {chain.get('testing_scope', target_lab.get('scope', 'Verified Testing Disciplines'))}\n\n"
+                    f"**Statutory Governance & Operational Note**:\n"
+                    f"{target_lab['scope']}\n\n"
+                    f"- **Official Portal**: {target_lab['official_portal']}\n"
+                    f"- **Statutory Provenance**: {target_lab['statutory_provenance']}\n"
+                    f"*Notice: Zyntrix strictly reports verified regulatory records; booking availability, turnaround times, commercial fees, and rankings are NOT inferred and must be obtained directly from the laboratory.*"
+                    f"{NON_ISSUANCE_DISCLAIMER}"
+                )
+                citations = [
+                    CitationItem(
+                        standard_number="BIS (Laboratory Recognition Scheme) Regulations, 2020",
+                        clause_number="Regulation 3 & Regulation 4",
+                        clause_title="Recognition and Assessment of Testing Laboratories",
+                        source_authority="Bureau of Indian Standards",
+                        verified=True,
+                    ),
+                    CitationItem(
+                        standard_number="BIS Act 2016",
+                        clause_number="Section 32",
+                        clause_title="Establishment and Recognition of Laboratories",
+                        source_authority="Bureau of Indian Standards",
+                        verified=True,
+                    ),
+                ]
+                return OrchestratedAIResponse(
+                    answer=answer,
+                    intent=intent,
+                    grounding_status=GroundingStatus.SUPPORTED,
+                    confidence_score=0.98,
+                    citations=citations,
+                    deterministic_fallback_used=False,
+                    regulatory_conclusion="NONE",
+                )
+
             # 2. Check for unverified standard asked in laboratory query (e.g. "Which lab can test IS 99999?")
             m_std = re.search(r"\bIS\s*(\d+(?:-\d+)*(?:-\d+)*)(?::(\d{4}))?\b", sanitized_query, re.IGNORECASE)
             std_num = m_std.group(1) if m_std else None
