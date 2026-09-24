@@ -29,6 +29,11 @@ from backend.app.services.orchestrator.knowledge_selector import (
     VERIFIED_LABORATORY_TOPICS,
     verified_knowledge_selector,
 )
+from backend.app.services.orchestrator.multilingual import (
+    detect_language,
+    normalize_multilingual_query,
+    translate_grounded_response,
+)
 
 
 class SingleStructuredLLM:
@@ -42,10 +47,30 @@ class SingleStructuredLLM:
         intent: OrchestratorIntent,
         sanitized_query: str,
         context: OrchestratorContext,
+        language: Optional[str] = None,
     ) -> OrchestratedAIResponse:
         """Generate structured, grounded response bounded by verified context."""
+        target_lang = language or detect_language(sanitized_query)
+        canonical_resp = self._generate_grounded_response_canonical(
+            intent=intent,
+            sanitized_query=sanitized_query,
+            context=context,
+        )
+        if target_lang in ("hi", "ta"):
+            return translate_grounded_response(canonical_resp, target_lang)
+        return canonical_resp
+
+    def _generate_grounded_response_canonical(
+        self,
+        intent: OrchestratorIntent,
+        sanitized_query: str,
+        context: OrchestratorContext,
+    ) -> OrchestratedAIResponse:
+        """Generate canonical grounded response bounded by verified context."""
         import re
-        q_lower = sanitized_query.lower()
+        norm_q = normalize_multilingual_query(sanitized_query)
+        sanitized_query = norm_q
+        q_lower = norm_q.lower()
 
         # 1. Intent: Adversarial Injection / Compliance Override Attempt
         if intent == OrchestratorIntent.MALICIOUS_OVERRIDE_ATTEMPT:

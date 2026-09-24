@@ -499,25 +499,16 @@ class VerifiedKnowledgeSelector:
         """Classify consumer inquiry into verified consumer assistance topic."""
         q_lower = query.lower()
 
-        # 1. Verification of BIS / ISI / CRS / Hallmark Mark
+        # 1. Suspected Non-Conforming / Fake / Counterfeit Product (Priority)
         if any(phrase in q_lower for phrase in [
-            "verify a bis", "verify bis", "verify isi", "verify a isi", "verify an isi",
-            "verify mark", "verify the mark", "check bis mark", "check isi mark", "how to verify",
-            "how can i verify", "verify licence details", "verify license details", "verify huid",
-            "check a bis mark", "check an isi mark",
+            "suspected non-conforming", "non-conforming product", "defective product",
+            "fake isi", "fake mark", "counterfeit mark", "substandard product",
+            "suspected product", "what should a consumer do about a suspected",
+            "what should a consumer do", "found fake mark", "fake bis", "counterfeit", "fake",
         ]):
-            return VERIFIED_CONSUMER_SERVICES_CATALOG["MARK_VERIFICATION"]
+            return VERIFIED_CONSUMER_SERVICES_CATALOG["SUSPECTED_NON_CONFORMING_PRODUCT"]
 
-        # 2. Check BIS Licence or Registration
-        if any(phrase in q_lower for phrase in [
-            "check a bis licence", "check a bis license", "check bis licence", "check bis license",
-            "check a registration", "check registration", "search a licence", "search license",
-            "is the licence valid", "is the license valid", "licence status", "license status",
-            "how do i check a bis licence", "how do i check a bis license", "verify licence", "verify license",
-        ]):
-            return VERIFIED_CONSUMER_SERVICES_CATALOG["LICENCE_REGISTRATION_CHECK"]
-
-        # 3. Raise a BIS Consumer Complaint
+        # 2. Raise a BIS Consumer Complaint
         if any(phrase in q_lower for phrase in [
             "raise a bis consumer complaint", "raise a complaint", "consumer complaint",
             "file a complaint", "register a complaint", "lodge a complaint", "how to complain",
@@ -526,14 +517,23 @@ class VerifiedKnowledgeSelector:
         ]):
             return VERIFIED_CONSUMER_SERVICES_CATALOG["CONSUMER_COMPLAINT"]
 
-        # 4. Suspected Non-Conforming Product
+        # 3. Check BIS Licence or Registration
         if any(phrase in q_lower for phrase in [
-            "suspected non-conforming", "non-conforming product", "defective product",
-            "fake isi", "fake mark", "counterfeit mark", "substandard product",
-            "suspected product", "what should a consumer do about a suspected",
-            "what should a consumer do", "found fake mark", "fake bis",
+            "check a bis licence", "check a bis license", "check bis licence", "check bis license",
+            "check a registration", "check registration", "search a licence", "search license",
+            "is the licence valid", "is the license valid", "licence status", "license status",
+            "how do i check a bis licence", "how do i check a bis license", "verify licence", "verify license",
         ]):
-            return VERIFIED_CONSUMER_SERVICES_CATALOG["SUSPECTED_NON_CONFORMING_PRODUCT"]
+            return VERIFIED_CONSUMER_SERVICES_CATALOG["LICENCE_REGISTRATION_CHECK"]
+
+        # 4. Verification of BIS / ISI / CRS / Hallmark Mark
+        if any(phrase in q_lower for phrase in [
+            "verify a bis", "verify bis", "verify isi", "verify a isi", "verify an isi",
+            "verify mark", "verify the mark", "check bis mark", "check isi mark", "how to verify",
+            "how can i verify", "verify licence details", "verify license details", "verify huid",
+            "check a bis mark", "check an isi mark",
+        ]):
+            return VERIFIED_CONSUMER_SERVICES_CATALOG["MARK_VERIFICATION"]
 
         # 5. What does a BIS Mark indicate?
         if any(phrase in q_lower for phrase in [
@@ -570,6 +570,8 @@ class VerifiedKnowledgeSelector:
                 ),
                 "statutory_authority": "BIS Rules 2018, Rule 30",
             }
+        return None
+
     @classmethod
     def match_hallmarking_topic(cls, query: str) -> Optional[Dict[str, Any]]:
         """Classify hallmarking inquiry into verified hallmarking assistance topic."""
@@ -583,7 +585,16 @@ class VerifiedKnowledgeSelector:
         ]):
             return VERIFIED_HALLMARKING_CATALOG["HUID_VERIFICATION"]
 
-        # 2. What is BIS Hallmarking? (Definition)
+        # 2. Gold Hallmark & Purity Grades (IS 1417) - Prioritize when purity/grades asked
+        if any(phrase in q_lower for phrase in [
+            "gold hallmark", "gold hallmarking", "hallmark gold", "gold purity",
+            "gold purity grade", "22k916", "18k750", "14k585", "24k995", "23k958", "20k833",
+            "is 1417", "gold jewellery hallmark", "gold jewelry hallmark", "gold marks",
+            "3 marks on gold", "three marks on gold", "purity grade", "purity",
+        ]) or ("gold" in q_lower and "purity" in q_lower):
+            return VERIFIED_HALLMARKING_CATALOG["GOLD_HALLMARK_VERIFICATION"]
+
+        # 3. What is BIS Hallmarking? (Definition)
         if any(phrase in q_lower for phrase in [
             "what is bis hallmarking", "what is hallmarking", "hallmarking definition",
             "define hallmarking", "explain hallmarking", "meaning of hallmarking",
@@ -917,9 +928,9 @@ class VerifiedKnowledgeSelector:
             return VERIFIED_LABORATORIES_CATALOG.get("NORTHERN_REGIONAL_LABORATORY")
         if "branch laboratories" in q_lower or "branch lab" in q_lower or "bis-branch" in q_lower:
             return VERIFIED_LABORATORIES_CATALOG.get("BRANCH_LABORATORIES")
-        if "stale" in q_lower or "stale annex" in q_lower or "stale-099" in q_lower or "stale-test" in q_lower:
+        if "stale" in q_lower or "stale annex" in q_lower or "stale-099" in q_lower or "stale-test" in q_lower or "sample_stale_laboratory" in q_lower:
             return VERIFIED_LABORATORIES_CATALOG.get("SAMPLE_STALE_LABORATORY")
-        if "acme" in q_lower or "acme lab" in q_lower or "acme industrial" in q_lower:
+        if "acme" in q_lower or "acme lab" in q_lower or "acme industrial" in q_lower or "sample_unverified_third_party" in q_lower or "unverified third-party" in q_lower:
             return VERIFIED_LABORATORIES_CATALOG.get("SAMPLE_UNVERIFIED_THIRD_PARTY")
         return None
 

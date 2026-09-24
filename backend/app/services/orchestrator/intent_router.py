@@ -9,6 +9,10 @@ import re
 from typing import Tuple, List
 from backend.app.services.orchestrator.schemas import OrchestratorIntent
 from backend.app.services.security.prompt_guard import scan_and_sanitize_untrusted_text
+from backend.app.services.orchestrator.multilingual import (
+    check_multilingual_injection,
+    normalize_multilingual_query,
+)
 
 
 class IntentRouter:
@@ -17,10 +21,19 @@ class IntentRouter:
     @classmethod
     def classify_intent(cls, query: str) -> Tuple[OrchestratorIntent, str, List[str]]:
         """Classify user intent while neutralizing prompt injection attempts."""
+        # 0. Multilingual prompt injection defense (Milestone M25.4F)
+        multi_inj = check_multilingual_injection(query)
+        if multi_inj:
+            inj_name, _ = multi_inj
+            return OrchestratorIntent.MALICIOUS_OVERRIDE_ATTEMPT, query, [inj_name]
+
         # 1. Scan for adversarial prompt injection
         scan_result = scan_and_sanitize_untrusted_text(query)
         sanitized = scan_result.sanitized_text
-        q_lower = sanitized.lower().strip()
+
+        # Multilingual query normalization: maps Indic terms to English domain keywords
+        normalized_for_intent = normalize_multilingual_query(sanitized)
+        q_lower = normalized_for_intent.lower().strip()
 
         if not scan_result.is_safe:
             return OrchestratorIntent.MALICIOUS_OVERRIDE_ATTEMPT, sanitized, scan_result.detected_patterns
@@ -38,27 +51,31 @@ class IntentRouter:
 
         # 2. General BIS Information Intent
         if (
-            re.search(r"\bwhat\s+(?:is|are)\s+is\s*\d+", q_lower)
-            or re.search(r"\bwhat\s+does\s+(?:this|the|is\s*\d+)?\s*standard\s+cover\b", q_lower)
-            or re.search(r"\bscope\s+of\s+(?:is\s*\d+|this\s+standard)\b", q_lower)
-            or re.search(r"\btell\s+me\s+about\s+is\s*\d+\b", q_lower)
-            or any(phrase in q_lower for phrase in [
-                "certification scheme", "bis scheme", "difference between scheme", "scheme i and scheme ii",
-                "scheme 1 and scheme 2", "scheme i vs scheme ii", "scheme 1 vs scheme 2", "what is scheme i",
-                "what is scheme ii", "what is a bis certification scheme", "what is crs",
-                "which bis certification scheme applies", "which scheme applies", "what scheme applies",
-                "which certification scheme applies", "which scheme", "what is scheme", "explain scheme",
-                "bis service", "bis services", "services are available", "services available",
-                "what services does bis", "how does bis certification work", "how does certification work",
-                "general bis certification process", "certification process", "certification workflow",
-                "what documents are generally required", "what documents are required", "documents required for",
-                "documents generally required", "documents needed", "what documents are needed",
-                "major testing", "application steps", "testing steps", "testing/application steps",
-                "testing and application steps", "major testing/application steps",
-                "offline paper", "physical application", "manual submission", "paper form",
-                "branch office submission", "offline submission",
-            ])
-            or (bool(re.search(r"\bscheme\s+([a-zA-Z0-9]+)\b", q_lower)) and not any(w in q_lower for w in ["my product", "our product", "compliant"]))
+            not re.search(r"\b(?:hallmark|hallmarking|huid|gold|silver|complaint|fake|counterfeit|laboratory|laboratories|lab|labs|testing house)\b", q_lower)
+            and (
+                re.search(r"\bwhat\s+(?:is|are)\s+is\s*\d+", q_lower)
+                or re.search(r"\bwhat\s+does\s+(?:this|the|is\s*\d+)?\s*standard\s+cover\b", q_lower)
+                or re.search(r"\bscope\s+of\s+(?:is\s*\d+|this\s+standard)\b", q_lower)
+                or re.search(r"\btell\s+me\s+about\s+is\s*\d+\b", q_lower)
+                or (bool(re.search(r"\bis\s*\d+\b", q_lower)) and any(w in q_lower for w in ["scope", "what is", "overview", "cover", "details", "about"]))
+                or any(phrase in q_lower for phrase in [
+                    "certification scheme", "bis scheme", "difference between scheme", "scheme i and scheme ii",
+                    "scheme 1 and scheme 2", "scheme i vs scheme ii", "scheme 1 vs scheme 2", "what is scheme i",
+                    "what is scheme ii", "what is a bis certification scheme", "what is crs",
+                    "which bis certification scheme applies", "which scheme applies", "what scheme applies",
+                    "which certification scheme applies", "which scheme", "what is scheme", "explain scheme",
+                    "bis service", "bis services", "services are available", "services available",
+                    "what services does bis", "how does bis certification work", "how does certification work",
+                    "general bis certification process", "certification process", "certification workflow",
+                    "what documents are generally required", "what documents are required", "documents required for",
+                    "documents generally required", "documents needed", "what documents are needed",
+                    "major testing", "application steps", "testing steps", "testing/application steps",
+                    "testing and application steps", "major testing/application steps",
+                    "offline paper", "physical application", "manual submission", "paper form",
+                    "branch office submission", "offline submission",
+                ])
+                or (bool(re.search(r"\bscheme\s+([a-zA-Z0-9]+)\b", q_lower)) and not any(w in q_lower for w in ["my product", "our product", "compliant"]))
+            )
         ):
             return OrchestratorIntent.GENERAL_BIS_INFORMATION, sanitized, []
 

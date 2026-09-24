@@ -32,6 +32,15 @@ INJECTION_PATTERNS = [
     (r"(?i)\b(?:treat|use)\s+this\s+(?:document|text|input)\s+as\s+(?:the\s+)?system\s+prompt\b", "SYSTEM_PROMPT_SUBSTITUTION"),
     (r"(?i)\bact\s+as\s+bis\b", "REGULATORY_AUTHORITY_IMPERSONATION"),
     (r"(?i)\bcertify\s+this\s+product\b", "UNAUTHORIZED_CERTIFICATION_COMMAND"),
+    # Multilingual Indic Injection Patterns (Milestone M25.4F)
+    (r"(?i)(?:पिछले|सभी|पूर्व)\s*(?:सभी\s*)?(?:निर्देशों?|नियमों?)\s*(?:को\s*)?(?:अनदेखा|रद्द|बायपास)\s*(?:करें|करो)", "MULTILINGUAL_INSTRUCTION_OVERRIDE_HI"),
+    (r"(?i)(?:प्रमाणित|अनुपालन|सफल|पास)\s*(?:घोषित\s*)?(?:करें|करो)", "MULTILINGUAL_FORCED_COMPLIANCE_HI"),
+    (r"(?i)(?:परीक्षण|सत्यापन|जांच)\s*(?:को\s*)?(?:छोड़ें|बायपास\s*करें|न\s*करें)", "MULTILINGUAL_TEST_BYPASS_HI"),
+    (r"(?i)(?:लाइसेंस|आईएसआई\s*मार्क)\s*(?:जारी\s*करें|प्रदान\s*करें)", "MULTILINGUAL_UNAUTHORIZED_CERTIFICATION_HI"),
+    (r"(?i)(?:मुந்தைய|அனைத்து)\s*(?:விதிகளை|வழிமுறைகளை)\s*(?:புறக்கணிக்கவும்|தவிர்க்கவும்)", "MULTILINGUAL_INSTRUCTION_OVERRIDE_TA"),
+    (r"(?i)(?:சான்றளிக்கவும்|இணக்கமாக\s*அறிவிக்கவும்|வெற்றி\s*என\s*அறிவிக்கவும்|தேர்ச்சி\s*என\s*அறிவிக்கவும்)", "MULTILINGUAL_FORCED_COMPLIANCE_TA"),
+    (r"(?i)(?:சோதனையை|சரிபார்ப்பை)\s*(?:புறக்கணிக்கவும்|தவிர்க்கவும்)", "MULTILINGUAL_TEST_BYPASS_TA"),
+    (r"(?i)(?:உரிமம்|ஐஎஸ்ஐ\s*முத்திரை)\s*வழங்கவும்", "MULTILINGUAL_UNAUTHORIZED_CERTIFICATION_TA"),
 ]
 
 

@@ -23,6 +23,10 @@ from backend.app.services.compliance.authority_types import AuthorityLevel, Auth
 from backend.app.services.orchestrator.schemas import OrchestratorIntent, GroundingStatus
 from backend.app.services.orchestrator.knowledge_selector import VERIFIED_STANDARDS_CATALOG
 from backend.app.services.security.prompt_guard import scan_and_sanitize_untrusted_text
+from backend.app.services.orchestrator.multilingual import (
+    check_multilingual_injection,
+    normalize_multilingual_query,
+)
 from backend.app.core.logging import logger
 
 
@@ -260,11 +264,18 @@ def preprocess_query(query: str) -> PreprocessedQuery:
     # 1. Whitespace & character normalization
     cleaned = re.sub(r"[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]", "", query or "")
     normalized = " ".join(cleaned.split()).strip()
-    q_lower = normalized.lower()
 
-    # 2. Security scan (PromptGuard + Extended Injection Patterns)
+    # Multilingual expansion for cross-lingual keyword matching
+    expanded_norm = normalize_multilingual_query(normalized)
+    q_lower = expanded_norm.lower()
+
+    # 2. Security scan (PromptGuard + Extended & Multilingual Injection Patterns)
+    # Multilingual injection check
+    multi_inj = check_multilingual_injection(normalized)
     pg_result = scan_and_sanitize_untrusted_text(normalized)
     security_flags: List[str] = list(pg_result.detected_patterns)
+    if multi_inj and multi_inj[0] not in security_flags:
+        security_flags.append(multi_inj[0])
 
     for pattern, flag_name in EXTENDED_INJECTION_PATTERNS:
         if re.search(pattern, normalized):

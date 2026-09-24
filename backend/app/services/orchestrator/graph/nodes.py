@@ -72,6 +72,10 @@ from backend.app.services.orchestrator.context_builder import context_builder
 from backend.app.services.orchestrator.grounding_guard import grounding_guard
 from backend.app.services.orchestrator.langchain_adapter import langchain_chat_adapter
 from backend.app.services.orchestrator.llm_interface import single_structured_llm
+from backend.app.services.orchestrator.multilingual import (
+    detect_language,
+    translate_grounded_response,
+)
 from backend.app.services.orchestrator.tools import (
     tool_registry,
     ToolSecurityError,
@@ -1185,6 +1189,11 @@ def output_integrity_gate_node(state: BISComplianceGraphState) -> BISComplianceG
         deterministic_fallback_used=raw_payload.get("deterministic_fallback_used", False) or (confidence == 0.0),
         regulatory_conclusion="NONE",
     )
+
+    # Multilingual Translation with Canonical Token Preservation (Milestone M25.4F)
+    q_lang = detect_language(state.get("user_query", ""))
+    if q_lang in ("hi", "ta"):
+        final_resp = translate_grounded_response(final_resp, q_lang)
 
     state["regulatory_conclusion"] = "NONE"
     state["llm_compliance_authority"] = 0.0

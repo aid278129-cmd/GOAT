@@ -38,6 +38,10 @@ from backend.app.services.orchestrator.llm_interface import single_structured_ll
 from backend.app.services.orchestrator.langchain_adapter import langchain_chat_adapter
 from backend.app.services.orchestrator.graph.runner import run_compliance_graph
 from backend.app.services.orchestrator.grounding_guard import grounding_guard
+from backend.app.services.orchestrator.multilingual import (
+    detect_language,
+    translate_grounded_response,
+)
 from backend.app.core.config import settings
 from backend.app.core.logging import logger
 
@@ -54,19 +58,25 @@ class AIOrchestrator:
         user_query: str,
         product_dna: Optional[Any] = None,
         assessment_context: Optional[Dict[str, Any]] = None,
+        language: Optional[str] = None,
     ) -> OrchestratedAIResponse:
         """Execute the complete 11-step orchestration workflow."""
+        target_lang = language or detect_language(user_query)
+
         # Check LangGraph feature flag (M24.2)
         if getattr(settings, "LANGGRAPH_ORCHESTRATOR_ENABLED", False):
             try:
-                return run_compliance_graph(
+                graph_res = run_compliance_graph(
                     user_query=user_query,
                     product_dna=product_dna,
                     assessment_context=assessment_context,
                 )
+                if target_lang in ("hi", "ta"):
+                    graph_res = translate_grounded_response(graph_res, target_lang)
+                return graph_res
             except Exception as exc:
                 logger.error(f"[AIOrchestrator] LangGraph execution failed: {exc}. Enforcing deterministic fallback.")
-                return OrchestratedAIResponse(
+                fallback_res = OrchestratedAIResponse(
                     answer="An unexpected error occurred during reasoning graph execution. Safe deterministic fallback enforced.",
                     intent=OrchestratorIntent.UNKNOWN_INTENT,
                     grounding_status=GroundingStatus.UNKNOWN,
@@ -75,6 +85,9 @@ class AIOrchestrator:
                     deterministic_fallback_used=True,
                     regulatory_conclusion="NONE",
                 )
+                if target_lang in ("hi", "ta"):
+                    fallback_res = translate_grounded_response(fallback_res, target_lang)
+                return fallback_res
 
         audit_id = f"AUDIT-L3-{uuid.uuid4().hex[:8].upper()}"
 
@@ -165,6 +178,10 @@ class AIOrchestrator:
             deterministic_fallback_used=raw_response.deterministic_fallback_used,
             regulatory_conclusion="NONE",  # Invariant: LLM has zero compliance authority
         )
+
+        # Multilingual Translation with Canonical Token Preservation (Milestone M25.4F)
+        if target_lang in ("hi", "ta"):
+            final_response = translate_grounded_response(final_response, target_lang)
 
         # 8. Complete Audit Logging
         audit_record = AuditLogRecord(
