@@ -161,6 +161,28 @@ class GroundingGuard:
             if not any(c.standard_number == item.standard_number for c in citations):
                 citations.append(item)
 
+        if "laboratory recognition scheme" in t_lower or "lrs regulations" in t_lower or "lrs" in t_lower:
+            item = CitationItem(
+                standard_number="BIS (Laboratory Recognition Scheme) Regulations, 2020",
+                clause_number="Regulation 3 & Regulation 4",
+                clause_title="Recognition and Assessment of Testing Laboratories",
+                source_authority="Bureau of Indian Standards",
+                verified=True,
+            )
+            if not any(c.standard_number == item.standard_number for c in citations):
+                citations.append(item)
+
+        if "17025" in t_lower or "iso/iec 17025" in t_lower:
+            item = CitationItem(
+                standard_number="ISO/IEC 17025:2017",
+                clause_number="General Requirements",
+                clause_title="Competence of Testing and Calibration Laboratories",
+                source_authority="International Organization for Standardization / NABL",
+                verified=True,
+            )
+            if not any(c.standard_number == item.standard_number for c in citations):
+                citations.append(item)
+
         return citations, suppressed
 
     @classmethod

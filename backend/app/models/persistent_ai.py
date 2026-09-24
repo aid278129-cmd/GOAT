@@ -143,4 +143,4 @@ class AIActionProposal(Base):
         String(36), ForeignKey("users.id", ondelete="SET NULL"), nullable=True
     )
     confirmed_at: Mapped[Optional[datetime]] = mapped_column(nullable=True)
-    rejection_reason: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    rejection_reason: Mapped[Optional[str]] =

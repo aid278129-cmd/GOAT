@@ -39,6 +39,7 @@ class RequestType(str, Enum):
     GENERAL_BIS_INFO = "GENERAL_BIS_INFO"
     CONSUMER_ASSISTANCE = "CONSUMER_ASSISTANCE"
     HALLMARKING = "HALLMARKING"
+    LABORATORY_GUIDANCE = "LABORATORY_GUIDANCE"
     COMPLIANCE_ASSESSMENT = "COMPLIANCE_ASSESSMENT"
     EVIDENCE_ANALYSIS = "EVIDENCE_ANALYSIS"
     GAP_ANALYSIS = "GAP_ANALYSIS"
@@ -376,7 +377,7 @@ def preprocess_query(query: str) -> PreprocessedQuery:
        re.search(r"\bscope\s+of\s+(?:is\s*\d+|this\s+standard)\b", q_lower) or \
        re.search(r"\btell\s+me\s+about\s+is\s*\d+\b", q_lower) or \
        re.search(r"\bwhat\s+does\s+is\s*\d+\s+cover\b", q_lower) or \
-       (len(standards_found) > 0 and any(q_lower.startswith(w) for w in ["what is ", "tell me about ", "overview of ", "explain "]) and not any(w in q_lower for w in ["my product", "our product", "compliant", "pass", "fail", "gap", "clause"]))
+       (len(standards_found) > 0 and any(q_lower.startswith(w) for w in ["what is ", "tell me about ", "overview of ", "explain "]) and not any(w in q_lower for w in ["my product", "our product", "compliant", "pass", "fail", "gap", "clause", "requirement", "specification", "test limit", "tolerance", "resistance"]))
     ):
         is_general_bis_info = True
 
@@ -461,8 +462,40 @@ def preprocess_query(query: str) -> PreprocessedQuery:
     ]):
         is_consumer_assistance = True
 
+    is_laboratory_guidance = False
+    if not is_hallmarking and not is_consumer_assistance and not any(w in q_lower for w in ["lab report", "test report", "nabl certificate", "report evidence"]) and (
+        any(phrase in q_lower for phrase in [
+            "recognized laboratory", "recognized lab", "recognized laboratories", "recognized labs",
+            "bis recognized", "bis-recognized", "bis laboratory", "bis lab", "bis laboratories", "bis labs",
+            "laboratory can test", "lab can test", "laboratories can test", "labs can test",
+            "which laboratory can test", "which lab can test", "who can test",
+            "where can i find bis-recognized", "where can i find bis recognized",
+            "where can i find laboratory", "where can i find lab", "find a laboratory", "find a lab",
+            "find bis-recognized", "find bis recognized",
+            "what type of testing is required", "what testing is required", "type of testing is required",
+            "testing required for", "tests required for", "testing is required",
+            "which laboratory information is available", "laboratory information is available", "lab information is available",
+            "laboratory information available", "lab information available", "which lab information",
+            "verify a laboratory", "verify a lab", "verify laboratory", "verify lab",
+            "laboratory's bis recognition status", "lab's bis recognition status", "laboratory recognition status",
+            "lab recognition status", "recognition status", "recognition of laboratory",
+            "laboratory directory", "lab directory", "directory of laboratories", "directory of labs",
+            "lims portal", "lims", "laboratory recognition scheme", "lrs", "lrs regulations",
+            "central laboratory sahibabad", "western regional laboratory", "southern regional laboratory",
+            "eastern regional laboratory", "northern regional laboratory",
+            "testing category", "testing categories", "test category", "test categories",
+        ]) or (
+            any(w in q_lower for w in ["laboratory", "laboratories", "lab", "labs"]) and
+            any(w in q_lower for w in ["find", "where", "which", "directory", "test", "testing", "recognized", "status", "scope", "lims", "verify"])
+        ) or (
+            any(w in q_lower for w in ["type of testing", "what testing", "which testing", "testing category", "testing required"]) and
+            any(w in q_lower for w in ["standard", "product", "is 302", "is 17526", "is 4151", "is 13252", "is 1417", "is 1786", "is 8112", "heater", "flask", "helmet"])
+        )
+    ):
+        is_laboratory_guidance = True
+
     # Check for broad / underspecified compliance queries: e.g. "Is my flask compliant?"
-    is_compliance_question = (not is_general_bis_info and not is_consumer_assistance and not is_hallmarking) and any(w in q_lower for w in ["compliant", "complies", "compliance", "pass", "certification", "isi mark"])
+    is_compliance_question = (not is_general_bis_info and not is_consumer_assistance and not is_hallmarking and not is_laboratory_guidance) and any(w in q_lower for w in ["compliant", "complies", "compliance", "pass", "certification", "isi mark"])
     if is_compliance_question and not is_safe:
         # Malicious intent takes precedence
         pass
@@ -492,6 +525,9 @@ def preprocess_query(query: str) -> PreprocessedQuery:
     elif out_of_domain:
         candidate_intent = OrchestratorIntent.UNKNOWN_INTENT
         candidate_req_type = RequestType.OUT_OF_DOMAIN_REQUEST
+    elif is_laboratory_guidance:
+        candidate_intent = OrchestratorIntent.LABORATORY_GUIDANCE
+        candidate_req_type = RequestType.LABORATORY_GUIDANCE
     elif is_hallmarking:
         candidate_intent = OrchestratorIntent.HALLMARKING
         candidate_req_type = RequestType.HALLMARKING
@@ -699,6 +735,33 @@ class QueryAgent:
                     step_index=3,
                     task_type="synthesize_consumer_guidance",
                     description="Synthesize source-backed guidance with authentic statutory citations and zero compliance authority",
+                    authority="AI_DERIVED",
+                )
+            )
+            return tasks
+
+        if prep.candidate_intent == OrchestratorIntent.LABORATORY_GUIDANCE or prep.candidate_request_type == RequestType.LABORATORY_GUIDANCE:
+            tasks.append(
+                SubtaskPlanItem(
+                    step_index=1,
+                    task_type="identify_laboratory_inquiry_domain",
+                    description="Identify laboratory inquiry type (laboratory discovery, recognition status check, testing category mapping, LIMS directory)",
+                    authority="AI_DERIVED",
+                )
+            )
+            tasks.append(
+                SubtaskPlanItem(
+                    step_index=2,
+                    task_type="retrieve_official_laboratory_record",
+                    description="Retrieve verified BIS laboratory directory records, LRS regulations, or standard testing categories from authoritative catalog",
+                    authority="AI_DERIVED",
+                )
+            )
+            tasks.append(
+                SubtaskPlanItem(
+                    step_index=3,
+                    task_type="synthesize_laboratory_guidance",
+                    description="Synthesize source-backed laboratory guidance with authentic statutory citations, zero compliance claims, and non-booking disclaimers",
                     authority="AI_DERIVED",
                 )
             )

@@ -89,7 +89,7 @@ class AIOrchestrator:
             std_match, _ = verified_knowledge_selector.match_standard_in_query(sanitized_query)
             if std_match:
                 target_std = std_match
-            elif intent in (OrchestratorIntent.GENERAL_BIS_INFORMATION, OrchestratorIntent.CONSUMER_ASSISTANCE, OrchestratorIntent.HALLMARKING):
+            elif intent in (OrchestratorIntent.GENERAL_BIS_INFORMATION, OrchestratorIntent.CONSUMER_ASSISTANCE, OrchestratorIntent.HALLMARKING, OrchestratorIntent.LABORATORY_GUIDANCE):
                 target_std = None
             else:
                 target_std = "IS 302-2-201:2008"

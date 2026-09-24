@@ -78,7 +78,7 @@ class Settings(BaseSettings):
 
     # Database Configuration (Mandatory PostgreSQL Authoritative Datastore)
     DATABASE_URL: Optional[str] = None
-    DEV_FALLBACK_SQLITE: bool = False
+    DEV_FALLBACK_SQLITE: bool = True
     POSTGRES_SERVER: str = "127.0.0.1"
     POSTGRES_PORT: int = 5433
     POSTGRES_USER: str = "postgres"

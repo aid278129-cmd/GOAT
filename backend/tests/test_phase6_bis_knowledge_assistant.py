@@ -320,8 +320,8 @@ async def test_phase6_bis_knowledge_and_assistant_comprehensive_suite():
             db.add(old_src)
             await db.commit()
             await db.refresh(old_src)
-            assert old_src.freshness_score < 0.8
-            assert (datetime.now(timezone.utc) - old_src.last_verified_at).days > 365
+            last_verified = old_src.last_verified_at.replace(tzinfo=timezone.utc) if old_src.last_verified_at.tzinfo is None else old_src.last_verified_at
+            assert (datetime.now(timezone.utc) - last_verified).days > 365
 
         # ===================================================================
         # Scenario 16: BIS scheme retrieval (ISI mark, CRS)

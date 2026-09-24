@@ -16,6 +16,10 @@ repo_root = Path(__file__).resolve().parent.parent.parent
 if str(repo_root) not in sys.path:
     sys.path.insert(0, str(repo_root))
 
+# Set test environment database defaults to prevent TCP socket hangs when PostgreSQL is not running locally
+os.environ.setdefault("DATABASE_URL", f"sqlite+aiosqlite:///{repo_root}/data/goat.db")
+os.environ.setdefault("DEV_FALLBACK_SQLITE", "true")
+
 from backend.app.main import app
 
 

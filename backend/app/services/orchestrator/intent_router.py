@@ -106,6 +106,42 @@ class IntentRouter:
         ]):
             return OrchestratorIntent.CONSUMER_ASSISTANCE, sanitized, []
 
+        # 2.6 Audit Trace Intent (evidence inspection, lab reports, NABL certificates)
+        if any(w in q_lower for w in ["lab report", "test report", "proof", "provenance", "source document", "nabl", "certificate"]):
+            return OrchestratorIntent.AUDIT_TRACE, sanitized, []
+
+        # 2.7 BIS Laboratory Discovery & Testing Guidance (Milestone M25.4E)
+        if not any(w in q_lower for w in ["lab report", "test report", "nabl certificate"]) and (
+            any(phrase in q_lower for phrase in [
+                "recognized laboratory", "recognized lab", "recognized laboratories", "recognized labs",
+                "bis recognized", "bis-recognized", "bis laboratory", "bis lab", "bis laboratories", "bis labs",
+                "laboratory can test", "lab can test", "laboratories can test", "labs can test",
+                "which laboratory can test", "which lab can test", "who can test",
+                "where can i find bis-recognized", "where can i find bis recognized",
+                "where can i find laboratory", "where can i find lab", "find a laboratory", "find a lab",
+                "find bis-recognized", "find bis recognized",
+                "what type of testing is required", "what testing is required", "type of testing is required",
+                "testing required for", "tests required for", "testing is required",
+                "which laboratory information is available", "laboratory information is available", "lab information is available",
+                "laboratory information available", "lab information available", "which lab information",
+                "verify a laboratory", "verify a lab", "verify laboratory", "verify lab",
+                "laboratory's bis recognition status", "lab's bis recognition status", "laboratory recognition status",
+                "lab recognition status", "recognition status", "recognition of laboratory",
+                "laboratory directory", "lab directory", "directory of laboratories", "directory of labs",
+                "lims portal", "lims", "laboratory recognition scheme", "lrs", "lrs regulations",
+                "central laboratory sahibabad", "western regional laboratory", "southern regional laboratory",
+                "eastern regional laboratory", "northern regional laboratory",
+                "testing category", "testing categories", "test category", "test categories",
+            ]) or (
+                any(w in q_lower for w in ["laboratory", "laboratories", "lab", "labs"]) and
+                any(w in q_lower for w in ["find", "where", "which", "directory", "test", "testing", "recognized", "status", "scope", "lims", "verify"])
+            ) or (
+                any(w in q_lower for w in ["type of testing", "what testing", "which testing", "testing category", "testing required"]) and
+                any(w in q_lower for w in ["standard", "product", "is 302", "is 17526", "is 4151", "is 13252", "is 1417", "is 1786", "is 8112", "heater", "flask", "helmet"])
+            )
+        ):
+            return OrchestratorIntent.LABORATORY_GUIDANCE, sanitized, []
+
         # 3. Query Requirement Intent
         if any(w in q_lower for w in ["what does clause", "requirement", "specification", "test limit", "mandate", "standard require", "permissible", "temperature rise limit", "leakage current limit"]):
             return OrchestratorIntent.QUERY_REQUIREMENT, sanitized, []
@@ -118,11 +154,7 @@ class IntentRouter:
         if any(w in q_lower for w in ["what is the rated", "wattage", "voltage", "material", "capacity", "clarification", "parameter", "sheath", "handle"]):
             return OrchestratorIntent.CLARIFY_PRODUCT, sanitized, []
 
-        # 6. Audit Trace Intent
-        if any(w in q_lower for w in ["evidence", "lab report", "test report", "proof", "provenance", "source document", "nabl", "certificate"]):
-            return OrchestratorIntent.AUDIT_TRACE, sanitized, []
-
-        # 7. General Guidance Intent
+        # 6. General Guidance Intent
         if any(w in q_lower for w in ["how to apply", "process", "timeline", "fees", "gazette", "qco"]):
             return OrchestratorIntent.GENERAL_GUIDANCE, sanitized, []
 

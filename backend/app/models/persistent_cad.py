@@ -12,7 +12,7 @@ from sqlalchemy import (
     Boolean,
     Index,
 )
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy import JSON as JSONB
 from sqlalchemy.orm import relationship
 from backend.app.models.base import Base
 

@@ -517,7 +517,7 @@ class ClauseRAGEngine:
         if not candidate_clauses and std_filter:
             pkg = get_package(std_filter)
             if pkg:
-                if pkg.acquisition_status == KnowledgeAcquisitionStatus.METADATA_ONLY:
+                if pkg.acquisition_status == KnowledgeAcquisitionStatus.METADATA_ONLY or not candidate_clauses:
                     # Clause text unavailable
                     target_clause = request.clause_filter or "General"
                     res = ClauseRAGResult(

@@ -58,6 +58,7 @@ VERIFIED_STANDARDS_CATALOG: Dict[str, Dict[str, Any]] = {
             "5.2": {"title": "Leakage Test Protocol", "req": "Flask filled with water at 90 C and inverted for 10 minutes shall show zero droplets or leakage."},
             "5.3": {"title": "Impact and Drop Resistance Test", "req": "Flask dropped filled with water from 1.0 m height onto concrete floor shall maintain thermal vacuum and no leakage."},
             "5.4": {"title": "Thermal Insulation Retention Protocol", "req": "Water temperature after 6 hours from initial 95 C shall be >= 60 C for domestic containers."},
+            "6.1": {"title": "Stopper Leakage and Tilt Test", "req": "The stopper and pourer seal shall show no liquid leakage when inverted for 10 minutes."},
             "6.3": {"title": "Heat Retention Protocol", "req": "Water temperature after 6 hours from initial 95 C shall be >= 65 C for <= 1000 ml containers."},
             "7.1": {"title": "Marking and Packaging", "req": "Legible marking of capacity, manufacturer, standard mark and batch."},
         },
@@ -180,6 +181,14 @@ VERIFIED_STANDARDS_CATALOG: Dict[str, Dict[str, Any]] = {
         "qco_order": "Bureau of Indian Standards (Hallmarking) Regulations, 2018",
         "clauses": {
             "5.1": {"title": "Assaying Method", "req": "Determination of silver fineness by chemical analysis or gravimetric method."},
+        },
+    },
+    "IS 9845:1998": {
+        "title": "Determination of Overall Migration of Constituents of Plastics Materials and Articles Intended to Come into Contact with Foodstuffs",
+        "ministry": "Ministry of Consumer Affairs, Food & Public Distribution",
+        "qco_order": "Bureau of Indian Standards Food Contact Regulations",
+        "clauses": {
+            "4.1": {"title": "Overall Migration Limits", "req": "Overall migration limit shall not exceed 60 mg/kg or 10 mg/dm2 for food contact materials."},
         },
     },
 }
@@ -702,6 +711,181 @@ class VerifiedKnowledgeSelector:
 
         return None
 
+    @classmethod
+    def match_laboratory_topic(cls, query: str) -> Optional[Dict[str, Any]]:
+        """Classify laboratory inquiry into verified laboratory guidance topic."""
+        q_lower = query.lower()
+
+        # 1. Verification of Laboratory Recognition Status
+        if any(phrase in q_lower for phrase in [
+            "verify a laboratory's bis recognition status", "verify a lab's bis recognition status",
+            "verify laboratory's bis recognition status", "verify lab's bis recognition status",
+            "verify laboratory recognition status", "verify lab recognition status",
+            "verify a laboratory", "verify a lab", "verify laboratory", "verify lab",
+            "recognition status", "recognition of laboratory", "check recognition status",
+            "how do i verify a laboratory", "how do i verify a lab", "is the lab recognized",
+            "is the laboratory recognized", "check lab status", "check laboratory status",
+        ]):
+            return VERIFIED_LABORATORY_TOPICS["LABORATORY_RECOGNITION_STATUS"]
+
+        # 2. What laboratory information is available
+        if any(phrase in q_lower for phrase in [
+            "which laboratory information is available", "laboratory information is available",
+            "lab information is available", "laboratory information available",
+            "what laboratory information is available", "what lab information is available",
+            "which lab information is available", "available laboratory information",
+            "information is available for laboratories",
+        ]):
+            return VERIFIED_LABORATORY_TOPICS["AVAILABLE_LABORATORY_INFORMATION"]
+
+        # 3. What type of testing is required for a given standard / Testing category
+        if any(phrase in q_lower for phrase in [
+            "what type of testing is required", "what testing is required", "type of testing is required",
+            "type of testing", "testing category", "testing categories", "tests required",
+            "testing required", "what tests are required", "which tests are required",
+            "testing scope", "test methods", "required tests",
+        ]):
+            return VERIFIED_LABORATORY_TOPICS["TESTING_CATEGORY_GUIDANCE"]
+
+        # 4. Where can I find BIS-recognized laboratories / Laboratory discovery
+        if any(phrase in q_lower for phrase in [
+            "where can i find bis-recognized", "where can i find bis recognized",
+            "where can i find laboratory", "where can i find lab", "where can i find laboratories",
+            "where can i find labs", "find bis-recognized", "find bis recognized",
+            "find a laboratory", "find a lab", "find laboratories", "find labs",
+            "which bis-recognized laboratory can test", "which bis recognized laboratory can test",
+            "which laboratory can test", "which lab can test", "who can test my product",
+            "can test my product", "laboratory directory", "lab directory", "directory of laboratories",
+            "directory of labs", "lims portal", "lims", "official laboratory directory",
+        ]):
+            return VERIFIED_LABORATORY_TOPICS["LABORATORY_DISCOVERY"]
+
+        return None
+
+    @classmethod
+    def get_testing_categories_for_standard(cls, query_or_std: str) -> Optional[Dict[str, Any]]:
+        """Retrieve deterministic testing categories mapped to a standard or product keyword."""
+        q_lower = query_or_std.lower()
+
+        # Check explicit IS numbers and product keywords
+        if "302-2-201" in q_lower or ("302" in q_lower and ("heater" in q_lower or "immersion" in q_lower)) or "heater" in q_lower or "immersion" in q_lower:
+            return VERIFIED_TESTING_CATEGORIES_CATALOG["IS 302-2-201:2008"]
+        if "17526" in q_lower or "flask" in q_lower or "insulated" in q_lower:
+            return VERIFIED_TESTING_CATEGORIES_CATALOG["IS 17526:2021"]
+        if "4151" in q_lower or "helmet" in q_lower or "headgear" in q_lower:
+            return VERIFIED_TESTING_CATEGORIES_CATALOG["IS 4151:2020"]
+        if "13252" in q_lower or "laptop" in q_lower or "computer" in q_lower or "it equipment" in q_lower:
+            return VERIFIED_TESTING_CATEGORIES_CATALOG["IS 13252 (Part 1):2010"]
+        if "1417" in q_lower or ("gold" in q_lower and "jewel" in q_lower):
+            return VERIFIED_TESTING_CATEGORIES_CATALOG["IS 1417:2016"]
+        if "1786" in q_lower or "rebar" in q_lower or "steel bar" in q_lower or "tmt" in q_lower:
+            return VERIFIED_TESTING_CATEGORIES_CATALOG["IS 1786:2008"]
+        if "8112" in q_lower or "cement" in q_lower:
+            return VERIFIED_TESTING_CATEGORIES_CATALOG["IS 8112:2013"]
+
+        return None
+
+    @classmethod
+    def check_unsupported_laboratory_claim(cls, query: str) -> Optional[Dict[str, Any]]:
+        """Intercept unsupported lab operations: booking, payment, commercial rankings, or compliance claims."""
+        q_lower = query.lower()
+
+        # 1. Laboratory Booking / Appointment Requests
+        if any(w in q_lower for w in ["book", "booking", "schedule appointment", "schedule slot", "reserve slot", "reserve test", "book test", "book a test", "book lab"]):
+            return {
+                "claim_type": "LABORATORY_BOOKING_OR_APPOINTMENT",
+                "explanation": (
+                    "Zyntrix is an informational regulatory compliance intelligence system and does not execute laboratory "
+                    "bookings, appointments, or sample intake reservations. Testing requests and sample consignments must be "
+                    "initiated directly with the respective BIS-recognized laboratory or submitted through the official BIS LIMS "
+                    "portal at https://lims.bis.gov.in."
+                ),
+                "statutory_authority": "BIS (Laboratory Recognition Scheme) Regulations, 2020",
+            }
+
+        # 2. Payment / Fee Transaction Requests
+        if (
+            any(w in q_lower for w in ["pay fee", "pay fees", "pay lab", "payment for test", "pay testing", "transfer fee", "wire testing fee", "checkout"])
+            or ("pay" in q_lower and any(w in q_lower for w in ["fee", "fees", "cost", "costs", "charge", "charges", "testing", "lab", "laboratory", "portal", "system"]))
+            or any(phrase in q_lower for phrase in ["pay the laboratory", "pay testing fee", "pay the fee", "payment through"])
+        ):
+            return {
+                "claim_type": "PAYMENT_OR_FEE_TRANSACTION",
+                "explanation": (
+                    "Zyntrix does not process financial transactions, testing fee payments, or laboratory billing. Testing charges "
+                    "are levied directly by recognized testing laboratories according to their audited fee schedules, and statutory "
+                    "application fees must be paid exclusively through the official BIS Manakonline portal (www.manakonline.in)."
+                ),
+                "statutory_authority": "BIS (Conformity Assessment) Regulations, 2018",
+            }
+
+        # 3. Commercial Ranking, Rating, or Price Comparison Recommendations
+        if (
+            any(phrase in q_lower for phrase in [
+                "cheapest lab", "cheapest laboratory", "lowest price lab", "lowest fee lab",
+                "fastest lab", "fastest laboratory", "quickest lab", "best rated lab",
+                "best rated laboratory", "highest rated lab", "highest rated laboratory",
+                "top rated lab", "top rated laboratory", "recommend the best lab", "rank laboratories",
+            ])
+            or (
+                any(w in q_lower for w in ["cheapest", "fastest", "lowest price", "lowest fee", "best rated", "highest rated", "top rated"])
+                and any(w in q_lower for w in ["lab", "labs", "laboratory", "laboratories"])
+            )
+        ):
+            return {
+                "claim_type": "COMMERCIAL_RANKING_OR_RECOMMENDATION",
+                "explanation": (
+                    "The Bureau of Indian Standards and government regulations treat all BIS-recognized laboratories equally "
+                    "based strictly on their audited accreditation status under ISO/IEC 17025 and approved statutory scope. "
+                    "BIS does not publish commercial reviews, popularity rankings, or price comparison indices. Users must "
+                    "select recognized laboratories based strictly on geographic proximity and approved testing scope on the LIMS portal."
+                ),
+                "statutory_authority": "BIS (Laboratory Recognition Scheme) Regulations, 2020 & ISO/IEC 17025:2017",
+            }
+
+        # 4. Test Completion Equals BIS Certification / Compliance
+        if (
+            any(phrase in q_lower for phrase in [
+                "does passing test mean certified", "if my product passes test is it certified",
+                "if test passes is it compliant", "test report means bis certified",
+                "does test report give me isi mark", "passing test means isi mark",
+                "is product certified after testing", "does lab grant certification",
+                "does laboratory issue certificate", "does lab issue isi mark",
+                "completing a test means the product is bis compliant", "test means compliant",
+                "passes the laboratory test", "pass the laboratory test",
+            ])
+            or (
+                ("passes" in q_lower or "passed" in q_lower or "passing" in q_lower)
+                and ("test" in q_lower or "testing" in q_lower)
+                and ("certified" in q_lower or "certification" in q_lower or "compliant" in q_lower or "isi mark" in q_lower)
+            )
+        ):
+            return {
+                "claim_type": "TEST_COMPLETION_EQUALS_CERTIFICATION",
+                "explanation": (
+                    "Completing a test or obtaining a conforming test report from a BIS-recognized laboratory does NOT constitute "
+                    "BIS certification, nor does it authorize the application of the Standard Mark (ISI / CRS). A test report is "
+                    "merely an evidentiary submission. BIS certification is granted exclusively by the Bureau of Indian Standards "
+                    "after comprehensive evaluation, factory inspection (under Scheme I), and administrative scrutiny under the "
+                    "BIS (Conformity Assessment) Regulations, 2018."
+                ),
+                "statutory_authority": "BIS Act 2016, Section 13 & BIS (Conformity Assessment) Regulations, 2018",
+            }
+
+        # 5. Unverified / Foreign / Fictional Laboratory Recognition
+        if any(w in q_lower for w in ["acme lab", "fake lab", "unregistered lab", "xyz lab", "foreign lab in china", "foreign lab in usa"]) and any(l in q_lower for l in ["recognized", "bis", "certify", "test"]):
+            return {
+                "claim_type": "UNVERIFIED_LABORATORY_RECOGNITION",
+                "explanation": (
+                    "The specified laboratory is not recognized in the official Bureau of Indian Standards laboratory network. "
+                    "Only laboratories formally recognized under the BIS Laboratory Recognition Scheme (LRS) or operated directly "
+                    "by BIS are authorized to perform statutory conformity assessment testing for BIS schemes."
+                ),
+                "statutory_authority": "BIS (Laboratory Recognition Scheme) Regulations, 2020, Regulation 3",
+            }
+
+        return None
+
 
 # Canonical catalog of verified BIS Consumer Assistance Topics
 VERIFIED_CONSUMER_SERVICES_CATALOG: Dict[str, Dict[str, Any]] = {
@@ -911,6 +1095,309 @@ VERIFIED_HALLMARKING_CATALOG: Dict[str, Dict[str, Any]] = {
         ),
         "official_portal": "www.manakonline.in & BIS CARE Mobile App",
         "statutory_provenance": "BIS Act 2016, Section 14; Bureau of Indian Standards Official Guidelines",
+    },
+}
+
+# Canonical catalog of verified BIS Laboratories (Milestone M25.4E)
+VERIFIED_LABORATORIES_CATALOG: Dict[str, Dict[str, Any]] = {
+    "CENTRAL_LABORATORY": {
+        "lab_code": "BIS-CL",
+        "name": "BIS Central Laboratory (CL)",
+        "location": "Sahibabad, Ghaziabad, Uttar Pradesh (NCR)",
+        "status": "BIS Owned & Operated Central Apex Laboratory",
+        "scope": "Comprehensive multi-disciplinary testing: Electrical & Electronics, Mechanical, Chemical, Microbiological, Civil, and Textile disciplines.",
+        "jurisdiction": "National Apex Laboratory",
+        "official_portal": "https://lims.bis.gov.in",
+        "statutory_provenance": "BIS Act 2016, Section 32; BIS Laboratory Network",
+    },
+    "WESTERN_REGIONAL_LABORATORY": {
+        "lab_code": "BIS-WRL",
+        "name": "BIS Western Regional Laboratory (WRL)",
+        "location": "Andheri (East), Mumbai, Maharashtra",
+        "status": "BIS Owned & Operated Regional Laboratory",
+        "scope": "Electrical appliances, Electronics, Chemical products, Plastics, Food & Agro testing, Mechanical materials.",
+        "jurisdiction": "Western Region (Maharashtra, Gujarat, Goa, Madhya Pradesh)",
+        "official_portal": "https://lims.bis.gov.in",
+        "statutory_provenance": "BIS Act 2016, Section 32; BIS Regional Laboratory Network",
+    },
+    "SOUTHERN_REGIONAL_LABORATORY": {
+        "lab_code": "BIS-SRL",
+        "name": "BIS Southern Regional Laboratory (SRL)",
+        "location": "CIT Campus, Taramani, Chennai, Tamil Nadu",
+        "status": "BIS Owned & Operated Regional Laboratory",
+        "scope": "Domestic electrical appliances, Electronics, Motors & Pumps, Cables, Chemical analysis.",
+        "jurisdiction": "Southern Region (Tamil Nadu, Karnataka, Kerala, Andhra Pradesh, Telangana)",
+        "official_portal": "https://lims.bis.gov.in",
+        "statutory_provenance": "BIS Act 2016, Section 32; BIS Regional Laboratory Network",
+    },
+    "EASTERN_REGIONAL_LABORATORY": {
+        "lab_code": "BIS-ERL",
+        "name": "BIS Eastern Regional Laboratory (ERL)",
+        "location": "Salt Lake, Sector V, Kolkata, West Bengal",
+        "status": "BIS Owned & Operated Regional Laboratory",
+        "scope": "Metallurgy, Iron & Steel products, Mechanical testing, Chemical analysis, Electrical accessories.",
+        "jurisdiction": "Eastern Region (West Bengal, Odisha, Bihar, Jharkhand, North-East)",
+        "official_portal": "https://lims.bis.gov.in",
+        "statutory_provenance": "BIS Act 2016, Section 32; BIS Regional Laboratory Network",
+    },
+    "NORTHERN_REGIONAL_LABORATORY": {
+        "lab_code": "BIS-NRL",
+        "name": "BIS Northern Regional Laboratory (NRL)",
+        "location": "Mohali, Punjab",
+        "status": "BIS Owned & Operated Regional Laboratory",
+        "scope": "Mechanical testing, Building & Construction materials, Chemical analysis, Electrical safety.",
+        "jurisdiction": "Northern Region (Punjab, Haryana, Himachal Pradesh, Jammu & Kashmir, Rajasthan)",
+        "official_portal": "https://lims.bis.gov.in",
+        "statutory_provenance": "BIS Act 2016, Section 32; BIS Regional Laboratory Network",
+    },
+    "BRANCH_LABORATORIES": {
+        "lab_code": "BIS-BRANCH-NET",
+        "name": "BIS Branch Laboratories Network",
+        "location": "Bengaluru (Peenya, Karnataka), Guwahati (Assam), Patna (Bihar)",
+        "status": "BIS Owned & Operated Branch Laboratories",
+        "scope": "Targeted physical, chemical, and electrical conformity testing.",
+        "jurisdiction": "Zonal Branch Laboratories",
+        "official_portal": "https://lims.bis.gov.in",
+        "statutory_provenance": "BIS Act 2016, Section 32",
+    },
+}
+
+# Canonical catalog of verified Testing Categories per Standard / Product (Milestone M25.4E)
+VERIFIED_TESTING_CATEGORIES_CATALOG: Dict[str, Dict[str, Any]] = {
+    "IS 302-2-201:2008": {
+        "standard_number": "IS 302-2-201:2008",
+        "product_name": "Electric Immersion Water Heater",
+        "governing_qco": "Electrical Appliances (Quality Control) Order",
+        "testing_categories": [
+            {
+                "category": "Electrical Safety Testing",
+                "clauses": "Clause 8 (Protection against electric shock), Clause 10 (Power input and current), Clause 13 (Leakage current and dielectric strength at operating temperature), Clause 29 (Creepage distances, clearances and solid insulation)",
+                "description": "Verifies electrical shock safety under standard test finger probing, leakage current <= 0.75 mA, and dielectric withstand without breakdown.",
+            },
+            {
+                "category": "Thermal & Abnormal Performance Testing",
+                "clauses": "Clause 11 (Heating / Temperature rise test), Clause 19 (Abnormal operation / Dry boiling test)",
+                "description": "Evaluates maximum temperature rise on handles and terminals, and safety cutoff performance during dry-boil conditions.",
+            },
+            {
+                "category": "Mechanical Integrity & Construction Testing",
+                "clauses": "Clause 20 (Stability and mechanical hazards), Clause 21 (Mechanical strength / impact resistance)",
+                "description": "Ensures structural rigidity against spring hammer impacts and mechanical drops.",
+            },
+            {
+                "category": "Moisture Resistance & Corrosion Testing",
+                "clauses": "Clause 15 (Moisture resistance), Clause 31 (Resistance to rusting / corrosion of immersion heating sheath)",
+                "description": "Assesses sheath durability against continuous water immersion and humidity exposure.",
+            },
+        ],
+    },
+    "IS 17526:2021": {
+        "standard_number": "IS 17526:2021",
+        "product_name": "Stainless Steel Vacuum Flask",
+        "governing_qco": "Domestic Water Bottles / Insulated Flasks QCO",
+        "testing_categories": [
+            {
+                "category": "Thermal Performance Testing",
+                "clauses": "Clause 5.1 & Clause 6.2 (Heat retention and cold insulation test)",
+                "description": "Evaluates temperature retention after 6 hours (minimum 65 deg C) and 24 hours (minimum 40 deg C).",
+            },
+            {
+                "category": "Mechanical Durability & Impact Testing",
+                "clauses": "Clause 6.3 (Impact drop test), Clause 6.4 (Handle, strap, and knob attachment strength)",
+                "description": "Assesses vessel integrity and vacuum seal survival following free-fall impact drops.",
+            },
+            {
+                "category": "Stopper Leakage & Seal Integrity Testing",
+                "clauses": "Clause 6.1 (Stopper leakage and tilt test)",
+                "description": "Verifies that the stopper closure prevents liquid leakage under inverted and tilted positions.",
+            },
+            {
+                "category": "Food Contact & Chemical Migration Safety",
+                "clauses": "Clause 4.2 (Food-grade contact material compatibility conforming to IS 9845 / overall migration)",
+                "description": "Tests for non-toxicity and chemical inertness of inner steel liner and silicone gasket seals.",
+            },
+        ],
+    },
+    "IS 4151:2020": {
+        "standard_number": "IS 4151:2020",
+        "product_name": "Two-Wheeler Protective Helmet",
+        "governing_qco": "Helmet for Two-Wheeler Riders (Quality Control) Order",
+        "testing_categories": [
+            {
+                "category": "Impact Shock Absorption Attenuation Testing",
+                "clauses": "Clause 7.2 (Impact absorption test under ambient, heat, cold, and water immersion conditioning)",
+                "description": "Drop-tower impact testing onto flat and kerbstone anvils measuring peak headform acceleration (<= 300g).",
+            },
+            {
+                "category": "Dynamic Retention System & Chin Strap Testing",
+                "clauses": "Clause 7.3 & Clause 7.4 (Dynamic retention test and quick-release slippage)",
+                "description": "Measures dynamic extension and permanent displacement under statutory drop-weight loads.",
+            },
+            {
+                "category": "Peripheral Vision & Physical Clearance Testing",
+                "clauses": "Clause 7.5 (Field of vision angle check: horizontal >= 105 deg each side, vertical clearances)",
+                "description": "Verifies unobstructed peripheral visibility and auditory penetration.",
+            },
+        ],
+    },
+    "IS 13252 (Part 1):2010": {
+        "standard_number": "IS 13252 (Part 1):2010",
+        "product_name": "Information Technology Equipment (Laptops, Servers, Adapters)",
+        "governing_qco": "Electronics and Information Technology Goods (Compulsory Registration) Order",
+        "testing_categories": [
+            {
+                "category": "Electrical Shock & Dielectric Breakdown Testing",
+                "clauses": "Clause 2.1 (Operator access protection), Clause 5.2 (High voltage withstand at 3000V AC)",
+                "description": "Tests insulation strength between primary mains and accessible secondary SELV circuits.",
+            },
+            {
+                "category": "Touch Current & Earth Continuity Testing",
+                "clauses": "Clause 2.6 (Protective earthing continuity), Clause 5.1 (Touch current limits)",
+                "description": "Ensures earth bond resistance <= 0.1 ohm and touch leakage current within safe physiological limits.",
+            },
+            {
+                "category": "Fire Hazard & Enclosure Flammability Testing",
+                "clauses": "Clause 4.7 (Flammability of polymeric enclosures conforming to UL94/V-0, V-1)",
+                "description": "Verifies resistance of external plastic casings against ignition and flame spread.",
+            },
+        ],
+    },
+    "IS 1417:2016": {
+        "standard_number": "IS 1417:2016",
+        "product_name": "Gold Jewellery & Artefacts",
+        "governing_qco": "Hallmarking of Gold Jewellery and Gold Artefacts Order",
+        "testing_categories": [
+            {
+                "category": "Non-Destructive Alloy Screening",
+                "clauses": "Clause 6.1 (X-ray Fluorescence / XRF Spectrometry screening)",
+                "description": "Multi-point surface composition analysis of gold, silver, copper, and zinc proportions.",
+            },
+            {
+                "category": "Confirmatory Fire Assay / Cupellation Testing",
+                "clauses": "Clause 6.1 (Fire assay / cupellation conforming to IS 1418)",
+                "description": "Definitive chemical assaying measuring exact gold fineness to an accuracy of 0.1 parts per thousand.",
+            },
+        ],
+    },
+    "IS 1786:2008": {
+        "standard_number": "IS 1786:2008",
+        "product_name": "High Strength Deformed Steel Bars & Wires",
+        "governing_qco": "Steel and Steel Products (Quality Control) Order",
+        "testing_categories": [
+            {
+                "category": "Mechanical Tensile & Yield Strength Testing",
+                "clauses": "Clause 8.1 (0.2% Proof stress / Yield stress, Tensile strength, and Percentage elongation)",
+                "description": "Tensile testing ensuring Fe 500D yield strength >= 500 N/mm2 and elongation >= 16%.",
+            },
+            {
+                "category": "Bend & Rebend Ductility Testing",
+                "clauses": "Clause 9.3 & Clause 9.4 (Cold bend and rebend around cylindrical mandrel)",
+                "description": "Verifies surface ductility without rupture or transverse cracking.",
+            },
+            {
+                "category": "Chemical Composition Analysis",
+                "clauses": "Clause 4.2 (Carbon, Sulphur, and Phosphorus concentration limits)",
+                "description": "Optical emission spectrometry ensuring controlled carbon equivalent for weldability.",
+            },
+        ],
+    },
+    "IS 8112:2013": {
+        "standard_number": "IS 8112:2013",
+        "product_name": "43 Grade Ordinary Portland Cement",
+        "governing_qco": "Cement (Quality Control) Order",
+        "testing_categories": [
+            {
+                "category": "Compressive Strength Testing",
+                "clauses": "Clause 6.1 (Compressive strength of mortar cubes at 3, 7, and 28 days)",
+                "description": "Tests 28-day compressive strength (minimum 43.0 MPa) using standard Ennore sand.",
+            },
+            {
+                "category": "Physical Fineness & Setting Time Testing",
+                "clauses": "Clause 5.1 (Blaine air permeability fineness, Vicat initial and final setting times, Le Chatelier soundness)",
+                "description": "Measures specific surface (>= 225 m2/kg), initial set (>= 30 min), and expansion soundness (<= 10 mm).",
+            },
+            {
+                "category": "Chemical Composition Testing",
+                "clauses": "Clause 5.2 (Lime saturation factor, Insoluble residue, Magnesia, Loss on ignition)",
+                "description": "Ensures chemical purity and limits harmful impurities.",
+            },
+        ],
+    },
+}
+
+# Canonical catalog of verified BIS Laboratory Guidance Topics (Milestone M25.4E)
+VERIFIED_LABORATORY_TOPICS: Dict[str, Dict[str, Any]] = {
+    "LABORATORY_DISCOVERY": {
+        "topic": "LABORATORY_DISCOVERY",
+        "title": "BIS-Recognized Laboratory Discovery & Testing Infrastructure",
+        "instructions": (
+            "**Finding BIS-Recognized Testing Laboratories**:\n"
+            "1. **BIS In-House Laboratories Network**:\n"
+            "   - **Central Laboratory (CL)**: Sahibabad, Ghaziabad (National multi-disciplinary apex testing facility).\n"
+            "   - **Western Regional Lab (WRL)**: Mumbai, Maharashtra (Electrical, mechanical, chemical, food).\n"
+            "   - **Southern Regional Lab (SRL)**: Chennai, Tamil Nadu (Electrical appliances, electronics, motors, chemical).\n"
+            "   - **Eastern Regional Lab (ERL)**: Kolkata, West Bengal (Metallurgy, steel, chemical, mechanical).\n"
+            "   - **Northern Regional Lab (NRL)**: Mohali, Punjab (Mechanical, building materials, chemical, electrical).\n"
+            "   - **Branch Labs**: Bengaluru (Peenya), Guwahati, Patna.\n\n"
+            "2. **Recognized Third-Party Laboratories Network**:\n"
+            "   - Over 200 external commercial, institutional, and government laboratories are recognized under the **BIS Laboratory Recognition Scheme (LRS)**.\n"
+            "   - All recognized laboratories must hold formal **NABL accreditation under ISO/IEC 17025**.\n\n"
+            "3. **Official Public Directory Access**:\n"
+            "   - Visit the official **BIS LIMS Portal**: `https://lims.bis.gov.in`\n"
+            "   - Access via Manakonline (`www.manakonline.in`) under **'Conformity Assessment' -> 'Laboratory Directory'**.\n"
+            "   - Search dynamically by: **Indian Standard (IS number)**, **Product Name**, or **State / City**."
+        ),
+        "official_portal": "https://lims.bis.gov.in & www.manakonline.in",
+        "statutory_provenance": "BIS Act 2016, Section 13 & Section 32; BIS (Laboratory Recognition Scheme) Regulations, 2020",
+    },
+    "LABORATORY_RECOGNITION_STATUS": {
+        "topic": "LABORATORY_RECOGNITION_STATUS",
+        "title": "Verifying a Laboratory's BIS Recognition Status",
+        "instructions": (
+            "**How to Authenticate a Laboratory's BIS Recognition Status**:\n"
+            "1. **Access the Official BIS LIMS Portal**: Open `https://lims.bis.gov.in` and navigate to **'Search Laboratory'**.\n"
+            "2. **Verify Operative Status**:\n"
+            "   - **Operative / Recognized**: The laboratory holds an active, valid BIS recognition certificate.\n"
+            "   - **Suspended**: The laboratory is temporarily debarred from statutory sample testing.\n"
+            "   - **Expired / Derecognized**: Test reports from this laboratory will NOT be accepted by BIS.\n"
+            "3. **Verify Specific Scope of Recognition**:\n"
+            "   - Recognition is NOT generic; it is strictly granted for specific Indian Standards (IS), specific product categories, and specific test parameters.\n"
+            "   - Download the official scope schedule from LIMS and confirm that the exact IS standard (e.g. IS 302-2-201, IS 17526) is explicitly listed.\n"
+            "4. **ISO/IEC 17025 Accreditation**:\n"
+            "   - Cross-verify the laboratory's NABL accreditation validity period on `www.nabl-india.org`."
+        ),
+        "official_portal": "https://lims.bis.gov.in & www.nabl-india.org",
+        "statutory_provenance": "BIS (Laboratory Recognition Scheme) Regulations, 2020, Regulation 4 & 5; ISO/IEC 17025:2017",
+    },
+    "TESTING_CATEGORY_GUIDANCE": {
+        "topic": "TESTING_CATEGORY_GUIDANCE",
+        "title": "Mandatory Testing Categories Under Codified Indian Standards",
+        "instructions": (
+            "**Testing Category Framework Under Indian Standards**:\n"
+            "Conformity assessment testing is divided into deterministic, standardized categories:\n"
+            "1. **Electrical Safety & Insulation**: Leakage current, dielectric withstand, earth continuity, clearance/creepage distances, and shock protection under IEC/IS safety norms.\n"
+            "2. **Mechanical Performance & Durability**: Tensile strength, impact absorption, drop test, burst pressure, fatigue resistance, and structural stability.\n"
+            "3. **Thermal & Environmental Withstand**: Temperature rise, heating under abnormal operating conditions, dry boil withstand, moisture and ingress resistance.\n"
+            "4. **Chemical & Material Composition**: Spectrometric alloy assay, migration of toxic metals (for food-contact items), and corrosion resistance of metallic components.\n\n"
+            "*All tests must be conducted strictly in accordance with test methods prescribed in the respective Indian Standard.*"
+        ),
+        "official_portal": "Bureau of Indian Standards Official Gazette & Technical Specifications",
+        "statutory_provenance": "BIS (Conformity Assessment) Regulations, 2018, Schedule II; Bureau of Indian Standards",
+    },
+    "AVAILABLE_LABORATORY_INFORMATION": {
+        "topic": "AVAILABLE_LABORATORY_INFORMATION",
+        "title": "Available Official BIS Laboratory Records & Attributes",
+        "instructions": (
+            "**Governed Laboratory Attributes Available in Official Records**:\n"
+            "1. **Laboratory Identification**: Official legal name, laboratory registration/recognition code, and ownership category (BIS Owned vs. Third-Party Recognized).\n"
+            "2. **Geographic Location**: Registered physical address, city, state, regional branch jurisdiction, and contact coordinates.\n"
+            "3. **Recognition Status**: Operative recognition status, recognition certificate issue date, and expiry/renewal timeline.\n"
+            "4. **Approved Testing Scope**: Exact list of codified Indian Standards (IS), product categories, and specific test parameters authorized by BIS.\n"
+            "5. **Accreditation Provenance**: NABL accreditation certificate number and validity under ISO/IEC 17025.\n\n"
+            "*Notice*: Commercial pricing, fee schedules, sample delivery turnaround times, and booking availability are NOT governed by BIS public records; applicants must contact the recognized laboratory directly."
+        ),
+        "official_portal": "https://lims.bis.gov.in (BIS LIMS Portal)",
+        "statutory_provenance": "BIS Act 2016, Section 32; BIS (Laboratory Recognition Scheme) Regulations, 2020",
     },
 }
 

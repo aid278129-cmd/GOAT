@@ -23,7 +23,7 @@ def create_resilient_engine(url: str):
         pool_pre_ping=True,
         pool_size=10,
         max_overflow=20,
-        connect_args={"client_encoding": "utf8"},
+        connect_args={"client_encoding": "utf8", "connect_timeout": 3},
     )
 
 

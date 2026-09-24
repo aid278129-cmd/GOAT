@@ -24,6 +24,9 @@ from backend.app.services.orchestrator.knowledge_selector import (
     VERIFIED_STANDARDS_CATALOG,
     VERIFIED_SCHEMES_CATALOG,
     VERIFIED_SERVICES_CATALOG,
+    VERIFIED_LABORATORIES_CATALOG,
+    VERIFIED_TESTING_CATEGORIES_CATALOG,
+    VERIFIED_LABORATORY_TOPICS,
     verified_knowledge_selector,
 )
 
@@ -936,6 +939,226 @@ class SingleStructuredLLM:
                 confidence_score=0.0,
                 citations=[],
                 missing_information_notes="Specific hallmarking query (e.g. HUID verification, gold purity, jeweller registration, consumer testing) required.",
+                deterministic_fallback_used=True,
+                regulatory_conclusion="NONE",
+            )
+
+        # 2.7. Intent: BIS Laboratory Discovery & Testing Guidance (Milestone M25.4E)
+        if intent == OrchestratorIntent.LABORATORY_GUIDANCE:
+            NON_ISSUANCE_DISCLAIMER = (
+                "\n\n*General Guidance Disclaimer: Zyntrix is an informational compliance tool and does not conduct laboratory tests, book laboratory appointments, or issue BIS certifications. All official laboratory recognition, accreditation monitoring, and sample test assignments are administered exclusively by the Bureau of Indian Standards (BIS) and recognized testing laboratories via official portals (https://lims.bis.gov.in / www.manakonline.in).*"
+            )
+
+            # 1. Intercept Unsupported Laboratory Operations / False Guarantees
+            unsupported_claim = verified_knowledge_selector.check_unsupported_laboratory_claim(sanitized_query)
+            if unsupported_claim:
+                citations = []
+                if unsupported_claim["claim_type"] in ("LABORATORY_BOOKING_OR_APPOINTMENT", "COMMERCIAL_RANKING_OR_RECOMMENDATION", "UNVERIFIED_LABORATORY_RECOGNITION"):
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS (Laboratory Recognition Scheme) Regulations, 2020",
+                            clause_number="Regulation 3 & Regulation 4",
+                            clause_title="Recognition and Assessment of Testing Laboratories",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                elif unsupported_claim["claim_type"] == "PAYMENT_OR_FEE_TRANSACTION":
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS (Conformity Assessment) Regulations, 2018",
+                            clause_number="Schedule II",
+                            clause_title="Conformity Assessment Schemes",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                elif unsupported_claim["claim_type"] == "TEST_COMPLETION_EQUALS_CERTIFICATION":
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS Act 2016",
+                            clause_number="Section 13",
+                            clause_title="Grant of Licence and Certificate of Conformity",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+                    citations.append(
+                        CitationItem(
+                            standard_number="BIS (Conformity Assessment) Regulations, 2018",
+                            clause_number="Schedule II",
+                            clause_title="Conformity Assessment Schemes",
+                            source_authority="Bureau of Indian Standards",
+                            verified=True,
+                        )
+                    )
+
+                return OrchestratedAIResponse(
+                    answer=(
+                        f"**Official Laboratory Guidance — Clarification on Operations & Governance**:\n\n"
+                        f"{unsupported_claim['explanation']}\n\n"
+                        f"- **Governing Framework**: {unsupported_claim['statutory_authority']}"
+                        f"{NON_ISSUANCE_DISCLAIMER}"
+                    ),
+                    intent=intent,
+                    grounding_status=GroundingStatus.SUPPORTED,
+                    confidence_score=0.98,
+                    citations=citations,
+                    deterministic_fallback_used=False,
+                    regulatory_conclusion="NONE",
+                )
+
+            # 2. Check for unverified standard asked in laboratory query (e.g. "Which lab can test IS 99999?")
+            m_std = re.search(r"\bIS\s*(\d+(?:-\d+)*(?:-\d+)*)(?::(\d{4}))?\b", sanitized_query, re.IGNORECASE)
+            std_num = m_std.group(1) if m_std else None
+            if std_num:
+                matched_std = False
+                for cat_std in list(VERIFIED_STANDARDS_CATALOG.keys()) + list(VERIFIED_TESTING_CATEGORIES_CATALOG.keys()):
+                    if std_num in cat_std:
+                        matched_std = True
+                        break
+                if not matched_std:
+                    return OrchestratedAIResponse(
+                        answer=f"SOURCE_UNAVAILABLE: Verified laboratory information and testing category data for 'IS {std_num}' is not available in the Bureau of Indian Standards verified knowledge base. The system strictly refuses to speculate or invent unverified laboratory testing capabilities.",
+                        intent=intent,
+                        grounding_status=GroundingStatus.NOT_IN_KNOWLEDGE_BASE,
+                        confidence_score=0.0,
+                        citations=[],
+                        deterministic_fallback_used=True,
+                        regulatory_conclusion="NONE",
+                    )
+
+            # 3. Check for specific testing categories mapping (Product / Standard to Testing Category)
+            test_cat_data = verified_knowledge_selector.get_testing_categories_for_standard(sanitized_query)
+            is_testing_type_query = any(phrase in q_lower for phrase in [
+                "what type of testing is required", "what testing is required", "type of testing is required",
+                "type of testing", "testing category", "testing categories", "tests required",
+                "testing required", "what tests are required", "which tests are required",
+            ])
+
+            if test_cat_data and (is_testing_type_query or any(w in q_lower for w in ["testing", "test", "tests"])):
+                cat_blocks = []
+                for idx, c in enumerate(test_cat_data["testing_categories"], start=1):
+                    cat_blocks.append(
+                        f"### {idx}. {c['category']}\n"
+                        f"- **Governing Clauses**: {c['clauses']}\n"
+                        f"- **Testing Scope & Methodology**: {c['description']}"
+                    )
+                cat_summary = "\n\n".join(cat_blocks)
+
+                answer = (
+                    f"**Testing Category Guidance — {test_cat_data['product_name']} ({test_cat_data['standard_number']})**\n\n"
+                    f"Under the official {test_cat_data['governing_qco']}, the mandatory testing categories include:\n\n"
+                    f"{cat_summary}\n\n"
+                    f"**Official Laboratory Recognition Requirement**:\n"
+                    f"All statutory conformity tests must be performed either by a BIS In-House Laboratory (Central/Regional) "
+                    f"or a recognized third-party laboratory holding valid ISO/IEC 17025 accreditation under the BIS Laboratory "
+                    f"Recognition Scheme (LRS) for the exact standard {test_cat_data['standard_number']}.\n\n"
+                    f"- **Statutory Source**: {test_cat_data['standard_number']} Official Gazette Specification; BIS (Conformity Assessment) Regulations, 2018"
+                    f"{NON_ISSUANCE_DISCLAIMER}"
+                )
+                citations = [
+                    CitationItem(
+                        standard_number=test_cat_data["standard_number"],
+                        clause_number="Schedule of Tests",
+                        clause_title=f"{test_cat_data['product_name']} Testing Specifications",
+                        source_authority=f"Bureau of Indian Standards ({test_cat_data['governing_qco']})",
+                        verified=True,
+                    ),
+                    CitationItem(
+                        standard_number="BIS (Laboratory Recognition Scheme) Regulations, 2020",
+                        clause_number="Regulation 3 & Regulation 4",
+                        clause_title="Recognition and Assessment of Testing Laboratories",
+                        source_authority="Bureau of Indian Standards",
+                        verified=True,
+                    ),
+                ]
+                return OrchestratedAIResponse(
+                    answer=answer,
+                    intent=intent,
+                    grounding_status=GroundingStatus.SUPPORTED,
+                    confidence_score=0.98,
+                    citations=citations,
+                    deterministic_fallback_used=False,
+                    regulatory_conclusion="NONE",
+                )
+
+            # 4. Match Verified Laboratory Guidance Topic
+            topic_data = verified_knowledge_selector.match_laboratory_topic(sanitized_query)
+            if topic_data:
+                topic_id = topic_data["topic"]
+                title = topic_data["title"]
+                instructions = topic_data["instructions"]
+                portal = topic_data["official_portal"]
+                provenance = topic_data["statutory_provenance"]
+
+                # If laboratory discovery is requested, also append verified BIS in-house regional laboratory directory
+                extra_directory = ""
+                if topic_id == "LABORATORY_DISCOVERY":
+                    extra_directory = (
+                        "\n\n**Official BIS Laboratory Network Directory Records**:\n"
+                        "- **Central Laboratory (Sahibabad, Ghaziabad)**: National Apex Facility for Electrical, Mechanical, Chemical, and Civil testing.\n"
+                        "- **Western Regional Laboratory (Mumbai)**: Electrical appliances, chemical, food, plastics, and mechanical testing.\n"
+                        "- **Southern Regional Laboratory (Chennai)**: Domestic electrical appliances, electronics, pumps, cables, and chemical.\n"
+                        "- **Eastern Regional Laboratory (Kolkata)**: Metallurgy, steel and iron, mechanical, chemical, and electrical testing.\n"
+                        "- **Northern Regional Laboratory (Mohali)**: Mechanical, building materials, chemical, and electrical safety.\n"
+                        "- **Branch Laboratories**: Bengaluru (Peenya), Guwahati, Patna."
+                    )
+
+                answer = (
+                    f"**BIS Laboratory Guidance — {title}**\n\n"
+                    f"{instructions}"
+                    f"{extra_directory}\n\n"
+                    f"- **Official Portal / Search Directory**: {portal}\n"
+                    f"- **Statutory Source**: {provenance}"
+                    f"{NON_ISSUANCE_DISCLAIMER}"
+                )
+
+                citations = [
+                    CitationItem(
+                        standard_number="BIS (Laboratory Recognition Scheme) Regulations, 2020",
+                        clause_number="Regulation 3 & Regulation 4",
+                        clause_title="Recognition and Directory of Laboratories",
+                        source_authority="Bureau of Indian Standards",
+                        verified=True,
+                    ),
+                    CitationItem(
+                        standard_number="BIS Act 2016",
+                        clause_number="Section 32",
+                        clause_title="Establishment and Recognition of Laboratories",
+                        source_authority="Bureau of Indian Standards",
+                        verified=True,
+                    ),
+                ]
+                if topic_id in ("LABORATORY_RECOGNITION_STATUS", "AVAILABLE_LABORATORY_INFORMATION"):
+                    citations.append(
+                        CitationItem(
+                            standard_number="ISO/IEC 17025:2017",
+                            clause_number="General Requirements",
+                            clause_title="Competence of Testing and Calibration Laboratories",
+                            source_authority="International Organization for Standardization / NABL",
+                            verified=True,
+                        )
+                    )
+
+                return OrchestratedAIResponse(
+                    answer=answer,
+                    intent=intent,
+                    grounding_status=GroundingStatus.SUPPORTED,
+                    confidence_score=0.98,
+                    citations=citations,
+                    deterministic_fallback_used=False,
+                    regulatory_conclusion="NONE",
+                )
+
+            # Fallback for unclassified laboratory guidance query
+            return OrchestratedAIResponse(
+                answer="SOURCE_UNAVAILABLE / MORE_INFORMATION_REQUIRED: The query does not match any recognized official BIS laboratory or testing guidance topic. Available verified services include: BIS-recognized laboratory discovery, laboratory recognition status verification, testing category mapping by standard (e.g. IS 302-2-201, IS 17526, IS 4151), and official LIMS directory search." + NON_ISSUANCE_DISCLAIMER,
+                intent=intent,
+                grounding_status=GroundingStatus.NOT_IN_KNOWLEDGE_BASE,
+                confidence_score=0.0,
+                citations=[],
+                missing_information_notes="Specific laboratory query (e.g. laboratory discovery, recognition status check, testing category mapping, LIMS portal) required.",
                 deterministic_fallback_used=True,
                 regulatory_conclusion="NONE",
             )
