@@ -278,7 +278,7 @@ class DeterministicComplianceEvaluator:
                 ev_status = EvidenceMatrixStatus.UNVERIFIED
                 gap = eligibility.reason
                 action = RecommendedAction.REQUIRES_TESTING if eligibility.requirement_class == RequirementClass.LAB_TEST_REQUIREMENT else RecommendedAction.UPLOAD_EVIDENCE
-            elif matching_ev and matching_ev.evidence_type == EvidenceType.USER_PROVIDED_CLAIM:
+            elif matching_ev and matching_ev.evidence_type in (EvidenceType.USER_PROVIDED_CLAIM, EvidenceType.USER_CLAIM):
                 result = DeterministicVerdict.MISSING_EVIDENCE
                 ev_status = EvidenceMatrixStatus.UNVERIFIED
                 gap = f"User claim for '{attr}' is not authoritative regulatory evidence."
@@ -318,7 +318,7 @@ class DeterministicComplianceEvaluator:
 
         # Also add test report requirements from evidence_records if not in declared_facts
         for ev in evidence_records:
-            if ev.evidence_type == EvidenceType.TEST_REPORT and not any(r.requirement == f"REQ-{ev.attribute.upper()}" for r in rows):
+            if ev.evidence_type in (EvidenceType.TEST_REPORT, EvidenceType.LABORATORY_TEST_REPORT) and not any(r.requirement == f"REQ-{ev.attribute.upper()}" for r in rows):
                 req_id = f"REQ-{ev.attribute.upper()}"
                 eligibility = EvidenceEligibilityEngine.check_eligibility(
                     requirement_id=req_id,

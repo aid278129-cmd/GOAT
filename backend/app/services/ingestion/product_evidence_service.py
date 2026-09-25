@@ -95,6 +95,21 @@ def normalize_fact_value(attribute: str, raw_str: str) -> Dict[str, Any]:
         if m_bar:
             return {"normalized": float(m_bar.group(1)) * 0.1, "unit": "MPa", "raw": raw}
 
+    # 6. Current / Leakage normalization
+    if "current" in attr_lower or "leakage" in attr_lower:
+        m_ma = re.search(r"(\d+(?:\.\d+)?)\s*mA\b", raw, re.IGNORECASE)
+        if m_ma:
+            return {"normalized": float(m_ma.group(1)), "unit": "mA", "raw": raw}
+        m_a = re.search(r"(\d+(?:\.\d+)?)\s*A\b", raw, re.IGNORECASE)
+        if m_a:
+            return {"normalized": float(m_a.group(1)) * 1000.0, "unit": "mA", "raw": raw}
+
+    # 7. Temperature normalization
+    if "temp" in attr_lower or "thermal" in attr_lower:
+        m_c = re.search(r"(\d+(?:\.\d+)?)\s*(?:°\s*C|deg\s*C|C\b)", raw, re.IGNORECASE)
+        if m_c:
+            return {"normalized": float(m_c.group(1)), "unit": "°C", "raw": raw}
+
     # Default fallback
     return {"normalized": raw, "unit": None, "raw": raw}
 
@@ -124,16 +139,22 @@ def create_evidence_record(
     source_url: Optional[str] = None,
     canonical_url: Optional[str] = None,
     notes: Optional[str] = None,
+    applicable_requirement: Optional[str] = None,
+    applicable_standard: Optional[str] = None,
+    applicable_clause: Optional[str] = None,
+    ontology_tier: Optional[Any] = None,
 ) -> ProductEvidenceRecord:
     """Create a strictly typed ProductEvidenceRecord enforcing hierarchy and authenticity invariants."""
-    # Enforce non-negotiable: USER_PROVIDED_CLAIM is always UNTRUSTED_USER_CLAIM and unverified
-    if evidence_type == EvidenceType.USER_PROVIDED_CLAIM:
+    # Enforce non-negotiable: USER_PROVIDED_CLAIM / USER_CLAIM is always UNTRUSTED_USER_CLAIM and unverified
+    if evidence_type in (EvidenceType.USER_PROVIDED_CLAIM, EvidenceType.USER_CLAIM):
         hierarchy = EvidenceHierarchyLevel.UNTRUSTED_USER_CLAIM
         verified = False
         verification_status = EvidenceVerificationStatus.UNVERIFIED
         source_authenticity = SourceAuthenticity.UNVERIFIED
+        tier = "USER_CLAIM"
     else:
         hierarchy = get_hierarchy_for_evidence_type(evidence_type)
+        tier = "VERIFIED_EVIDENCE" if (verified and verification_status == EvidenceVerificationStatus.VERIFIED) else "DOCUMENT"
         if source_authenticity is None:
             if verified and verification_status == EvidenceVerificationStatus.VERIFIED:
                 source_authenticity = SourceAuthenticity.REAL_AUTHORITATIVE
@@ -175,6 +196,11 @@ def create_evidence_record(
         verifier=verifier,
         source_url=source_url,
         canonical_url=canonical_url,
+        applicable_requirement=applicable_requirement,
+        applicable_standard=applicable_standard,
+        applicable_clause=applicable_clause,
+        ontology_tier=ontology_tier or tier,
+        regulatory_conclusion="NONE",
         notes=notes,
     )
 

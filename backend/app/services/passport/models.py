@@ -175,6 +175,26 @@ class ProductionCompliancePassport(BaseModel):
     disclaimers: List[str] = Field(default_factory=list)
     snapshot_hash: str = ""
 
+    # Milestone M26.3: Authority, Provenance & UI Integration Fields
+    product_id: Optional[str] = None
+    product_name: Optional[str] = None
+    category: Optional[str] = None
+    compliance_authority: str = Field(default="LAYER_7_ONLY", description="Layer 7 sole compliance authority")
+    evidence_authority: str = Field(default="LAYER_8_ONLY", description="Layer 8 sole evidence authority")
+    output_integrity_authority: str = Field(default="LAYER_9_PASSPORT_COMPILER", description="Layer 9 output authority")
+    llm_compliance_authority: float = Field(default=0.0, description="LLM has exactly 0.0% compliance authority")
+    regulatory_conclusion: str = Field(default="NONE", description="Must always be NONE")
+    overall_verdict: str = Field(default="UNVERIFIED", description="Layer 7 projected verdict")
+    integrity_seal: str = Field(default="", description="Cryptographic SHA-256 seal")
+    compliance_evaluations: List[Dict[str, Any]] = Field(default_factory=list)
+    source_index: List[Dict[str, Any]] = Field(default_factory=list)
+    trust_basis: Dict[str, Any] = Field(default_factory=dict)
+    claim_statement: str = Field(default="Evidence-Backed Pre-Certification Compliance Evaluation Roadmap")
+    mode: str = Field(default="AUTHORITATIVE_MODE")
+    limitations: List[str] = Field(default_factory=list)
+    ruleset_version: str = Field(default="2026.03-gazette")
+    source_snapshot_version: str = Field(default="v1.2.0-gazette-verified")
+
 
 class DownloadableReportData(BaseModel):
     """Export-ready payload for PDF, HTML, and JSON representations."""
@@ -182,3 +202,20 @@ class DownloadableReportData(BaseModel):
     html_printable: str
     json_metadata: Dict[str, Any]
     exported_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+# =========================================================================
+# Milestone M26.3: Evidence-Backed Compliance Passport Re-Exports
+# =========================================================================
+from backend.app.schemas.compliance_passport import (
+    PASSPORT_DOCUMENT_TITLE,
+    PASSPORT_PROHIBITED_LABELS,
+    STATUTORY_DISCLAIMER_TEXT,
+    PassportProductIdentity,
+    PassportStandardReference,
+    PassportRequirementItem,
+    PassportNextActionItem,
+    PassportExpertReviewItem,
+    PassportSourceReference,
+    EvidenceBackedCompliancePassport,
+)

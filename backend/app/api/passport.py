@@ -6,7 +6,7 @@ the official Evidence-Backed Pre-Certification Compliance Assessment.
 
 from typing import Dict, Any, List, Optional
 from fastapi import APIRouter, HTTPException, Query, Response
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from backend.app.services.passport.models import (
     ProductionCompliancePassport,
@@ -118,6 +118,60 @@ def get_layer9_invariants() -> Dict[str, Any]:
             "CONFLICT -> EXPERT REVIEW",
             "UNKNOWN -> UNKNOWN",
             "LLM COMPLIANCE AUTHORITY = 0.0%",
+            "COMPLIANCE PASSPORT != BIS CERTIFICATION",
         ],
         "compliance_score_gaming": "PROHIBITED (Honest Counts Only)",
     }
+
+
+class GenerateEvidenceBackedPassportPayload(BaseModel):
+    product_id: str
+    product_name: str
+    category: str
+    target_standard: str
+    gap_result: Any
+    evidence_records: List[Any] = Field(default_factory=list)
+    product_dna: Optional[Dict[str, Any]] = None
+    source_snapshot_version: str = "v1.2.0-gazette-verified"
+    knowledge_version: str = "v1.2.0-gazette-verified"
+    ruleset_version: str = "2026.03-gazette"
+    assessment_id: Optional[str] = None
+    assessment_number: Optional[str] = None
+    output_version: int = 1
+    strict_gate: bool = False
+
+
+@passport_router.post("/generate-evidence-backed")
+def generate_evidence_backed_passport_endpoint(payload: GenerateEvidenceBackedPassportPayload) -> Dict[str, Any]:
+    """Milestone M26.3: Generate Evidence-Backed Compliance Passport directly from verified results."""
+    from backend.app.services.compliance.passport_generator_service import compliance_passport_generator
+    from backend.app.schemas.compliance import DeterministicGapAggregationResult
+    from backend.app.schemas.product_evidence import ProductEvidenceRecord
+
+    gap_res = (
+        DeterministicGapAggregationResult(**payload.gap_result)
+        if isinstance(payload.gap_result, dict)
+        else payload.gap_result
+    )
+    ev_records = [
+        (ProductEvidenceRecord(**e) if isinstance(e, dict) else e)
+        for e in payload.evidence_records
+    ]
+
+    passport = compliance_passport_generator.generate_compliance_passport(
+        product_id=payload.product_id,
+        product_name=payload.product_name,
+        category=payload.category,
+        target_standard=payload.target_standard,
+        gap_result=gap_res,
+        evidence_records=ev_records,
+        product_dna=payload.product_dna,
+        source_snapshot_version=payload.source_snapshot_version,
+        knowledge_version=payload.knowledge_version,
+        ruleset_version=payload.ruleset_version,
+        assessment_id=payload.assessment_id,
+        assessment_number=payload.assessment_number,
+        output_version=payload.output_version,
+        strict_gate=payload.strict_gate,
+    )
+    return passport.model_dump(mode="json")

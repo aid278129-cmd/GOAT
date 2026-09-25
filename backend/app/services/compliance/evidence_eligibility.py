@@ -39,6 +39,8 @@ class RequirementClass(str, Enum):
     CERTIFICATION_RECORD = "CERTIFICATION_RECORD"         # BIS license, ISO cert, CRS registration
     PHYSICAL_MARKING = "PHYSICAL_MARKING"                 # Rating plate, ISI mark label, safety warnings
     BILL_OF_MATERIALS = "BILL_OF_MATERIALS"               # Component specs, subcomponent standards
+    DECLARATION_REQUIREMENT = "DECLARATION_REQUIREMENT"   # Declaration of conformity, food-grade affidavit
+    VISUAL_CONSTRUCTION = "VISUAL_CONSTRUCTION"           # Visual inspection, workmanship, physical finish
 
 
 # Permissible evidence type matrix
@@ -46,29 +48,46 @@ PERMITTED_EVIDENCE_TYPES: Dict[RequirementClass, Set[EvidenceType]] = {
     RequirementClass.TECHNICAL_SPECIFICATION: {
         EvidenceType.PRODUCT_SPECIFICATION,
         EvidenceType.DATASHEET,
+        EvidenceType.MANUFACTURER_DATASHEET,
         EvidenceType.USER_MANUAL,
         EvidenceType.TECHNICAL_DRAWING,
         EvidenceType.BOM,
         EvidenceType.MANUFACTURER_DOCUMENT,
         EvidenceType.DECLARATION,
         EvidenceType.TEST_REPORT,  # Test reports can corroborate specifications
+        EvidenceType.LABORATORY_TEST_REPORT,
     },
     RequirementClass.LAB_TEST_REQUIREMENT: {
-        EvidenceType.TEST_REPORT,  # Strictly requires accredited or manufacturer test report
+        EvidenceType.TEST_REPORT,  # Strictly requires accredited or certified lab test report
+        EvidenceType.LABORATORY_TEST_REPORT,
     },
     RequirementClass.CERTIFICATION_RECORD: {
         EvidenceType.CERTIFICATE_REFERENCE,
+        EvidenceType.CERTIFICATE,
         EvidenceType.DECLARATION,
     },
     RequirementClass.PHYSICAL_MARKING: {
         EvidenceType.LABEL_PHOTO,
         EvidenceType.RATING_PLATE_PHOTO,
+        EvidenceType.LABEL_MARKING_EVIDENCE,
+        EvidenceType.PRODUCT_PHOTOGRAPH,
         EvidenceType.TECHNICAL_DRAWING,
     },
     RequirementClass.BILL_OF_MATERIALS: {
         EvidenceType.BOM,
         EvidenceType.TECHNICAL_DRAWING,
         EvidenceType.PRODUCT_SPECIFICATION,
+    },
+    RequirementClass.DECLARATION_REQUIREMENT: {
+        EvidenceType.DECLARATION,
+        EvidenceType.MANUFACTURER_DOCUMENT,
+    },
+    RequirementClass.VISUAL_CONSTRUCTION: {
+        EvidenceType.PRODUCT_PHOTOGRAPH,
+        EvidenceType.LABEL_MARKING_EVIDENCE,
+        EvidenceType.TECHNICAL_DRAWING,
+        EvidenceType.LABEL_PHOTO,
+        EvidenceType.RATING_PLATE_PHOTO,
     },
 }
 
@@ -99,12 +118,21 @@ class EvidenceEligibilityEngine:
             "test", "leakage", "resistance", "hydrostatic", "pressure_proof", "proof_pressure",
             "dielectric", "withstand", "flame", "impact_test", "temperature_rise",
             "earthing_continuity", "conductor_resistance", "insulation_resistance",
+            "thermal_performance", "hot_water_retention", "thermal", "drop_test",
         )):
             return RequirementClass.LAB_TEST_REQUIREMENT
 
         # Marking / Rating plate indicators
         if any(kw in combined for kw in ("marking", "label", "plate", "nameplate", "rating_plate")):
             return RequirementClass.PHYSICAL_MARKING
+
+        # Visual / Workmanship / Photograph indicators
+        if any(kw in combined for kw in ("visual", "photo", "photograph", "workmanship", "finish", "construction")):
+            return RequirementClass.VISUAL_CONSTRUCTION
+
+        # Declaration indicators
+        if any(kw in combined for kw in ("declaration", "affidavit", "self_declaration", "doc_conformity")):
+            return RequirementClass.DECLARATION_REQUIREMENT
 
         # Certification indicators
         if any(kw in combined for kw in ("certificate", "license", "licence", "registration", "crs_no")):
@@ -134,21 +162,21 @@ class EvidenceEligibilityEngine:
         permitted_names = [t.value for t in permitted]
 
         # Case 1: Missing evidence
-        if evidence is None:
+        if evidence is None or evidence.evidence_type == EvidenceType.MISSING_EVIDENCE:
             return EligibilityEvaluationResult(
                 requirement_id=requirement_id,
                 requirement_class=req_class,
                 required_evidence_type=req_class.value,
                 provided_evidence_id=None,
-                provided_evidence_type=None,
+                provided_evidence_type=EvidenceType.MISSING_EVIDENCE if evidence else None,
                 status=EligibilityStatus.MISSING_REQUIRED_EVIDENCE,
                 is_eligible=False,
                 reason=f"No evidence artifact provided for requirement '{requirement_id}'.",
                 permitted_types=permitted_names,
             )
 
-        # Case 2: Untrusted user claim
-        if evidence.evidence_type == EvidenceType.USER_PROVIDED_CLAIM:
+        # Case 2: Untrusted user claim (USER CLAIM != DOCUMENT != VERIFIED EVIDENCE)
+        if evidence.evidence_type in (EvidenceType.USER_PROVIDED_CLAIM, EvidenceType.USER_CLAIM):
             return EligibilityEvaluationResult(
                 requirement_id=requirement_id,
                 requirement_class=req_class,
@@ -162,7 +190,10 @@ class EvidenceEligibilityEngine:
             )
 
         # Case 3: Conflicting evidence
-        if evidence.verification_status == EvidenceVerificationStatus.CONFLICTING:
+        if (
+            evidence.evidence_type == EvidenceType.CONFLICTING_EVIDENCE
+            or evidence.verification_status == EvidenceVerificationStatus.CONFLICTING
+        ):
             return EligibilityEvaluationResult(
                 requirement_id=requirement_id,
                 requirement_class=req_class,
@@ -175,7 +206,48 @@ class EvidenceEligibilityEngine:
                 permitted_types=permitted_names,
             )
 
-        # Case 4: Incompatible evidence class (e.g. Datasheet provided for Lab Test)
+        # Case 4: Unsupported / unverified artifact
+        if evidence.evidence_type == EvidenceType.UNSUPPORTED_ARTIFACT:
+            return EligibilityEvaluationResult(
+                requirement_id=requirement_id,
+                requirement_class=req_class,
+                required_evidence_type=req_class.value,
+                provided_evidence_id=evidence.evidence_id,
+                provided_evidence_type=evidence.evidence_type,
+                status=EligibilityStatus.UNVERIFIED_EVIDENCE,
+                is_eligible=False,
+                reason=f"Unsupported or unverified artifact '{evidence.evidence_id}' cannot satisfy requirement.",
+                permitted_types=permitted_names,
+            )
+
+        # Case 5: Strict Lab Test Gating
+        # Invariant: A manufacturer datasheet CANNOT satisfy an empirical laboratory-test requirement
+        # unless an existing deterministic evidence rule explicitly permits it.
+        if req_class == RequirementClass.LAB_TEST_REQUIREMENT and evidence.evidence_type in (
+            EvidenceType.MANUFACTURER_DATASHEET,
+            EvidenceType.DATASHEET,
+            EvidenceType.PRODUCT_SPECIFICATION,
+            EvidenceType.DECLARATION,
+            EvidenceType.MANUFACTURER_DOCUMENT,
+            EvidenceType.USER_MANUAL,
+        ):
+            return EligibilityEvaluationResult(
+                requirement_id=requirement_id,
+                requirement_class=req_class,
+                required_evidence_type=req_class.value,
+                provided_evidence_id=evidence.evidence_id,
+                provided_evidence_type=evidence.evidence_type,
+                status=EligibilityStatus.NOT_ELIGIBLE,
+                is_eligible=False,
+                reason=(
+                    f"Evidence type '{evidence.evidence_type.value}' is NOT eligible for requirement class '{req_class.value}'. "
+                    f"Manufacturer datasheet/document cannot satisfy empirical laboratory-test requirement '{requirement_id}' "
+                    f"unless an existing deterministic evidence rule explicitly permits it. Accredited laboratory test report required."
+                ),
+                permitted_types=permitted_names,
+            )
+
+        # Case 6: Incompatible evidence class
         if evidence.evidence_type not in permitted:
             return EligibilityEvaluationResult(
                 requirement_id=requirement_id,
@@ -192,7 +264,7 @@ class EvidenceEligibilityEngine:
                 permitted_types=permitted_names,
             )
 
-        # Case 5: Unverified evidence
+        # Case 7: Unverified evidence
         if not evidence.verified or evidence.verification_status != EvidenceVerificationStatus.VERIFIED:
             return EligibilityEvaluationResult(
                 requirement_id=requirement_id,
@@ -206,7 +278,7 @@ class EvidenceEligibilityEngine:
                 permitted_types=permitted_names,
             )
 
-        # Case 6: Fully eligible
+        # Case 8: Fully eligible
         return EligibilityEvaluationResult(
             requirement_id=requirement_id,
             requirement_class=req_class,
@@ -218,3 +290,4 @@ class EvidenceEligibilityEngine:
             reason=f"Evidence artifact '{evidence.evidence_id}' ({evidence.evidence_type.value}) is eligible for requirement evaluation.",
             permitted_types=permitted_names,
         )
+

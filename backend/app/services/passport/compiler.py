@@ -373,6 +373,14 @@ class Layer9PassportCompiler:
             "Any alteration to product bill of materials or specifications invalidates this assessment snapshot.",
         ]
 
+        # Milestone M26.3 overall verdict projection
+        if lifecycle == OutputLifecycleState.FINALIZED and len(gap_report) == 0:
+            m26_verdict = "COMPLIANT"
+        elif any(r.deterministic_result == "FAIL" for r in req_rows):
+            m26_verdict = "NON_COMPLIANT"
+        else:
+            m26_verdict = "GAPS_IDENTIFIED"
+
         return ProductionCompliancePassport(
             passport_id=f"PASSPORT-{assessment_number}-v{output_version}",
             assessment_id=assessment_id,
@@ -396,6 +404,42 @@ class Layer9PassportCompiler:
             evidence_hashes=evidence_hashes,
             disclaimers=disclaimers,
             snapshot_hash=snap_hash,
+            # Milestone M26.3 Properties
+            product_id=assessment_id,
+            product_name=product_name,
+            category=category,
+            overall_verdict=m26_verdict,
+            integrity_seal=snap_hash,
+            compliance_authority="LAYER_7_ONLY",
+            evidence_authority="LAYER_8_ONLY",
+            output_integrity_authority="LAYER_9_PASSPORT_COMPILER",
+            llm_compliance_authority=0.0,
+            regulatory_conclusion="NONE",
+            source_snapshot_version=knowledge_version,
+            ruleset_version="2026.03-gazette",
+        )
+
+    @classmethod
+    def generate_evidence_backed_passport(
+        cls,
+        product_id: str,
+        product_name: str,
+        category: str,
+        target_standard: str,
+        gap_result: Any,
+        evidence_records: List[Any],
+        **kwargs,
+    ) -> Any:
+        """Milestone M26.3: Generate Evidence-Backed Compliance Passport directly from verified results."""
+        from backend.app.services.compliance.passport_generator_service import compliance_passport_generator
+        return compliance_passport_generator.generate_compliance_passport(
+            product_id=product_id,
+            product_name=product_name,
+            category=category,
+            target_standard=target_standard,
+            gap_result=gap_result,
+            evidence_records=evidence_records,
+            **kwargs,
         )
 
 
