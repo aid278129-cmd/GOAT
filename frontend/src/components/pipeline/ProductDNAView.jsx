@@ -53,12 +53,12 @@ export function ProductDNAView({ assessment, onClarify, onNavigate }) {
     { key: 'product_name', label: 'Product Model / Trade Name', defaultVal: assessment.product_name || dna.product_name },
     { key: 'category', label: 'Product Category', defaultVal: assessment.category || dna.category },
     { key: 'intended_use', label: 'Intended Use & Environment', defaultVal: dna.intended_use },
-    { key: 'material', label: 'Primary Materials & Grades', defaultVal: dna.material || attributes.material },
-    { key: 'capacity_ml', label: 'Nominal Capacity / Volume', defaultVal: dna.capacity_ml || attributes.capacity_ml ? `${dna.capacity_ml || attributes.capacity_ml} mL` : null },
+    { key: 'material', label: 'Primary Materials & Grades', defaultVal: Array.isArray(dna.materials) ? dna.materials.join(', ') : (dna.material || attributes.material) },
+    { key: 'capacity_ml', label: 'Nominal Capacity / Volume', defaultVal: dna.capacity_ml || attributes.capacity_ml ? `${dna.capacity_ml || attributes.capacity_ml} mL` : (attributes.capacity || attributes.volume || null) },
     { key: 'rated_voltage', label: 'Rated Voltage (AC/DC)', defaultVal: dna.rated_voltage || attributes.rated_voltage ? `${dna.rated_voltage || attributes.rated_voltage} V` : null },
     { key: 'rated_power_w', label: 'Rated Power / Wattage', defaultVal: dna.rated_power_w || attributes.rated_power_w ? `${dna.rated_power_w || attributes.rated_power_w} W` : null },
     { key: 'construction', label: 'Construction & Wall Type', defaultVal: dna.construction || attributes.construction },
-    { key: 'insulation', label: 'Thermal / Electrical Insulation', defaultVal: dna.insulation || attributes.insulation },
+    { key: 'insulation', label: 'Thermal / Electrical Insulation', defaultVal: dna.insulated !== undefined ? (dna.insulated ? 'Vacuum Double Wall Insulation' : 'Non-Insulated') : (dna.insulation || attributes.insulation) },
     { key: 'food_contact', label: 'Food Contact Surface', defaultVal: dna.food_contact !== undefined ? (dna.food_contact ? 'Yes' : 'No') : null },
     { key: 'standards_claimed', label: 'Manufacturer Claimed Standards', defaultVal: dna.standards_claimed?.length ? dna.standards_claimed.join(', ') : null },
   ];
@@ -183,7 +183,7 @@ export function ProductDNAView({ assessment, onClarify, onNavigate }) {
                 const val = field.defaultVal;
                 const isPresent = val !== null && val !== undefined && val !== '';
                 const isClarified = !clarifications.some((c) => (c.attribute_name || c.attribute) === field.key);
-                const state = isPresent ? (isClarified ? 'USER_CONFIRMED' : 'EXTRACTED') : 'MISSING';
+                const state = isPresent ? (isClarified ? 'ACCEPTED_EVIDENCE_BACKED' : 'AI_ASSISTED / PROPOSED') : 'MISSING_EVIDENCE';
 
                 return (
                   <tr key={field.key} className="hover:bg-slate-50 transition">
@@ -199,22 +199,22 @@ export function ProductDNAView({ assessment, onClarify, onNavigate }) {
                       )}
                     </td>
                     <td className="py-3 px-4">
-                      {state === 'USER_CONFIRMED' && (
+                      {state === 'ACCEPTED_EVIDENCE_BACKED' && (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                          CONFIRMED
+                          ACCEPTED_EVIDENCE_BACKED
                         </span>
                       )}
-                      {state === 'EXTRACTED' && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-sky-50 text-sky-700 border border-sky-200">
-                          <span className="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
-                          EXTRACTED
+                      {state === 'AI_ASSISTED / PROPOSED' && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-50 text-amber-700 border border-amber-200" title="AI suggestion - candidate until verified">
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                          AI_ASSISTED / PROPOSED
                         </span>
                       )}
-                      {state === 'MISSING' && (
+                      {state === 'MISSING_EVIDENCE' && (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-slate-100 text-slate-500 border border-slate-200">
                           <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
-                          MISSING
+                          MISSING_EVIDENCE
                         </span>
                       )}
                     </td>

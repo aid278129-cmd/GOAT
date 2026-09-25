@@ -28,7 +28,9 @@ export function ComplianceGapsView({ assessment, onNavigate }) {
     );
   }
 
-  const gaps = assessment.gaps || [];
+  const gaps = (assessment.gaps && assessment.gaps.length > 0)
+    ? assessment.gaps
+    : (assessment.compliance?.gap_register || assessment.compliance?.gaps || []);
   const primaryStandard = assessment.target_standard || (assessment.applicability?.[0]?.standard_number) || 'IS 17526:2021';
 
   // Counts

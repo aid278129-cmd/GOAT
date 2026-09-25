@@ -8,7 +8,7 @@ const SAMPLE_STANDARDS = [
   { code: 'IS 10322-5:2013', name: 'Luminaires - Particular Requirements - Floodlights & General' },
 ];
 
-export function ComplianceJobsView({ jobs = [], onCreateJob, modalOpen, setModalOpen }) {
+export function ComplianceJobsView({ jobs = [], onSelectJob, onCreateJob, modalOpen, setModalOpen }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [formData, setFormData] = useState({
     title: '',
@@ -126,14 +126,19 @@ export function ComplianceJobsView({ jobs = [], onCreateJob, modalOpen, setModal
             </thead>
             <tbody>
               {jobs.map((job) => (
-                <tr key={job.id} className="border-b border-[#E2E8F0] hover:bg-[#F8F9FA] transition-colors">
-                  <td className="py-3 px-4 font-mono font-semibold text-[#1D4ED8]">{job.id}</td>
-                  <td className="py-3 px-4 font-medium text-[#0F172A]">{job.title}</td>
+                <tr
+                  key={job.id}
+                  onClick={() => onSelectJob?.(job.id)}
+                  className="border-b border-[#E2E8F0] hover:bg-[#F8F9FA] transition-colors cursor-pointer"
+                  title="Click to activate compliance job"
+                >
+                  <td className="py-3 px-4 font-mono font-semibold text-[#1D4ED8]">{job.jobNumber || job.id}</td>
+                  <td className="py-3 px-4 font-medium text-[#0F172A]">{job.productName || job.title}</td>
                   <td className="py-3 px-4 text-[#64748B]">{job.manufacturer}</td>
-                  <td className="py-3 px-4 font-mono text-[11px] text-[#0F172A]">{job.standard}</td>
+                  <td className="py-3 px-4 font-mono text-[11px] text-[#0F172A]">{job.standard || 'IS 17526:2021'}</td>
                   <td className="py-3 px-4">
-                    <span className="inline-block px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-amber-50 text-amber-700 border border-amber-200">
-                      {job.status}
+                    <span className="inline-block px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+                      {job.stage || job.status}
                     </span>
                   </td>
                   <td className="py-3 px-4 text-right font-mono text-[#64748B]">{job.createdAt}</td>

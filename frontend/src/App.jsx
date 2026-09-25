@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { SideNav, NAV_ITEMS } from './components/common/SideNav';
 import { TopBar } from './components/common/TopBar';
+import { GoldenPathStepper } from './components/common/GoldenPathStepper';
 import { WorkstationView } from './components/WorkstationView';
 import { WorkspaceView } from './components/WorkspaceView';
 import { ComplianceJobsView } from './components/ComplianceJobsView';
@@ -11,6 +12,15 @@ import { SettingsView } from './components/SettingsView';
 import { StandardsIntelligenceView } from './components/StandardsIntelligenceView';
 import { ReviewWorkspaceView } from './components/ReviewWorkspaceView';
 import BISAssistantView from './components/BISAssistantView';
+import { AnalyzeView } from './components/AnalyzeView';
+import { ProductDNAView } from './components/pipeline/ProductDNAView';
+import { BISApplicabilityView } from './components/pipeline/BISApplicabilityView';
+import { StandardsClausesView } from './components/pipeline/StandardsClausesView';
+import { EvidenceMatrixView } from './components/pipeline/EvidenceMatrixView';
+import { ComplianceGapsView } from './components/pipeline/ComplianceGapsView';
+import { LabActionsView } from './components/pipeline/LabActionsView';
+import { CompliancePassportView } from './components/CompliancePassportView';
+
 import { AddEvidenceModal } from './components/evidence/AddEvidenceModal';
 import { EvidenceDetailDrawer } from './components/evidence/EvidenceDetailDrawer';
 import { ExtractParameterModal } from './components/dna/ExtractParameterModal';
@@ -101,11 +111,23 @@ function mapBackendResult(res, standard) {
 }
 
 export default function App() {
-  // Navigation active tab (Layer A: BIS Intelligent Assistant is the Front Door)
-  const [activeTab, setActiveTab] = useState('assistant');
+  // Navigation active tab (recovers from localStorage on refresh)
+  const [activeTab, setActiveTab] = useState(() => {
+    return localStorage.getItem('zyntrix_active_tab') || 'assistant';
+  });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Active Context & State
+  // Canonical Unified Assessment Pipeline State (recovers from localStorage on refresh)
+  const [activeAssessment, setActiveAssessment] = useState(null);
+  const [activeAssessmentId, setActiveAssessmentId] = useState(() => {
+    return localStorage.getItem('zyntrix_active_assessment_id') || null;
+  });
+  const [assessmentsList, setAssessmentsList] = useState([]);
+  const [passportData, setPassportData] = useState(null);
+  const [isAssessmentLoading, setIsAssessmentLoading] = useState(false);
+  const [isResettingDemo, setIsResettingDemo] = useState(false);
+
+  // Active Context & State for Workstation / CAD / Reviews
   const [activeJobId, setActiveJobId] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [backendReady, setBackendReady] = useState(false);
@@ -129,19 +151,130 @@ export default function App() {
   const [conflictsList, setConflictsList] = useState([]);
   const [auditLog, setAuditLog] = useState([]);
 
-  // Stage 03 Standards & Clause Intelligence State
+  // Standards & Clause Intelligence State
   const [standardsList, setStandardsList] = useState([]);
   const [activeStandardId, setActiveStandardId] = useState(null);
   const [requirementsList, setRequirementsList] = useState([]);
   const [assessmentResults, setAssessmentResults] = useState({});
-  const [assessmentAuditLog, setAssessmentAuditLog] = useState([]);
 
   const showToast = (msg) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3500);
   };
 
-  // Load Job Details (Evidence, DNA, Standards, Requirements, Audit)
+  // Sync activeTab to localStorage
+  const handleSelectTab = (newTab) => {
+    setActiveTab(newTab);
+    localStorage.setItem('zyntrix_active_tab', newTab);
+  };
+
+  // Sync activeAssessmentId to localStorage
+  useEffect(() => {
+    if (activeAssessmentId) {
+      localStorage.setItem('zyntrix_active_assessment_id', activeAssessmentId);
+    }
+  }, [activeAssessmentId]);
+
+  // Load Full Unified Assessment and its Passport
+  const loadAssessmentData = useCallback(async (assessmentId) => {
+    if (!assessmentId) return;
+    setIsAssessmentLoading(true);
+    try {
+      const detail = await assessmentApi.getAssessment(assessmentId);
+      setActiveAssessment(detail);
+
+      // Load passport from authoritative backend
+      try {
+        const passport = await assessmentApi.getPassport(assessmentId);
+        setPassportData(passport);
+      } catch (pErr) {
+        console.warn('Passport fetch notice:', pErr);
+      }
+    } catch (err) {
+      console.warn('Failed to load assessment data:', err);
+    } finally {
+      setIsAssessmentLoading(false);
+    }
+  }, []);
+
+  // Reset or Seed the Golden SIH Demo Assessment
+  const handleResetDemo = async () => {
+    setIsResettingDemo(true);
+    try {
+      const resetAsm = await assessmentApi.resetGoldenDemo();
+      const newId = resetAsm.id || resetAsm.assessment_id;
+      setActiveAssessmentId(newId);
+      setActiveAssessment(resetAsm);
+
+      try {
+        const p = await assessmentApi.getPassport(newId);
+        setPassportData(p);
+      } catch (pErr) {
+        console.warn('Passport initial fetch notice:', pErr);
+      }
+
+      showToast('Golden SIH Demo Assessment reset (IS 17526:2021).');
+    } catch (err) {
+      showToast(`Reset error: ${err.message}`);
+    } finally {
+      setIsResettingDemo(false);
+    }
+  };
+
+  // Start Compliance Assessment from BIS Assistant
+  const handleStartComplianceAssessment = async (mode = 'golden') => {
+    if (mode === 'golden') {
+      await handleResetDemo();
+      handleSelectTab('dna');
+      showToast('Step 02: Product DNA & Technical Attributes loaded');
+    } else {
+      handleSelectTab('input');
+      showToast('Step 01: Product Information Input');
+    }
+  };
+
+  // Answer Technical Clarification
+  const handleAnswerClarification = async (attribute, value) => {
+    if (!activeAssessmentId) return;
+    try {
+      const updated = await assessmentApi.answerClarification(activeAssessmentId, attribute, value);
+      setActiveAssessment(updated);
+      try {
+        const p = await assessmentApi.getPassport(activeAssessmentId);
+        setPassportData(p);
+      } catch (pErr) {
+        console.warn('Passport refresh notice:', pErr);
+      }
+      showToast(`Clarified attribute "${attribute}" — deterministic scope updated.`);
+    } catch (err) {
+      alert(`Clarification update error: ${err.message}`);
+    }
+  };
+
+  // Ingest Evidence Artifact into Assessment
+  const handleAddEvidencePipeline = async (snippet, type, authority, page) => {
+    if (!activeAssessmentId) return;
+    try {
+      const updated = await assessmentApi.addEvidence(activeAssessmentId, {
+        snippet,
+        evidence_type: type,
+        authority,
+        page,
+      });
+      setActiveAssessment(updated);
+      try {
+        const p = await assessmentApi.getPassport(activeAssessmentId);
+        setPassportData(p);
+      } catch (pErr) {
+        console.warn('Passport refresh notice:', pErr);
+      }
+      showToast('Evidence artifact registered — gaps deterministically recalculated.');
+    } catch (err) {
+      alert(`Evidence ingestion error: ${err.message}`);
+    }
+  };
+
+  // Load Job Details (Workstation / CAD / Evidence / Standards)
   const loadJobData = useCallback(async (jobId) => {
     if (!jobId) return;
     try {
@@ -239,7 +372,7 @@ export default function App() {
         setRequirementsList([]);
       }
 
-      // 4. Latest Assessment Run & Results from PostgreSQL
+      // 4. Latest Assessment Run & Results
       try {
         const latestRun = await assessmentApi.getLatestAssessment(jobId);
         if (latestRun?.results) {
@@ -254,7 +387,6 @@ export default function App() {
           setAssessmentResults({});
         }
       } catch (err) {
-        // No assessment runs yet for this job
         setAssessmentResults({});
       }
 
@@ -276,7 +408,7 @@ export default function App() {
     }
   }, []);
 
-  // Initialize Auth & Authoritative Workspace on Mount
+  // Initialize Auth, Jobs, and Unified Assessment on Mount
   useEffect(() => {
     async function initWorkspace() {
       try {
@@ -286,6 +418,7 @@ export default function App() {
         }
         setBackendReady(true);
 
+        // 1. Load existing compliance jobs
         const loadedJobs = await jobsApi.listJobs();
         const mappedJobs = loadedJobs.map((j) => ({
           id: j.id,
@@ -305,12 +438,40 @@ export default function App() {
           setActiveJobId(firstId);
           await loadJobData(firstId);
         }
+
+        // 2. Load unified pipeline assessments
+        try {
+          const asms = await assessmentApi.listAssessments();
+          setAssessmentsList(asms || []);
+
+          const savedAsmId = localStorage.getItem('zyntrix_active_assessment_id');
+          if (asms && asms.length > 0) {
+            const targetAsm = (savedAsmId && asms.find((a) => (a.id === savedAsmId || a.assessment_id === savedAsmId))) || asms[0];
+            const targetId = targetAsm.id || targetAsm.assessment_id;
+            setActiveAssessmentId(targetId);
+            await loadAssessmentData(targetId);
+          } else {
+            // Auto-seed Golden SIH Demo if none exists
+            const seeded = await assessmentApi.resetGoldenDemo();
+            const targetId = seeded.id || seeded.assessment_id;
+            setActiveAssessmentId(targetId);
+            setActiveAssessment(seeded);
+            try {
+              const p = await assessmentApi.getPassport(targetId);
+              setPassportData(p);
+            } catch (pErr) {
+              console.warn('Passport initial fetch notice:', pErr);
+            }
+          }
+        } catch (asmErr) {
+          console.warn('Assessments init notice:', asmErr);
+        }
       } catch (err) {
         console.warn('Backend connection notice:', err);
       }
     }
     initWorkspace();
-  }, [loadJobData]);
+  }, [loadJobData, loadAssessmentData]);
 
   // Create Job Handler
   const handleCreateJob = async (newJobData) => {
@@ -352,7 +513,6 @@ export default function App() {
         targetJobId = jobs[0].id;
         setActiveJobId(targetJobId);
       } else {
-        // Auto-initialize first job if none exists
         try {
           const newJob = await jobsApi.createJob({
             title: 'Initial Product Compliance Assessment',
@@ -407,7 +567,7 @@ export default function App() {
     }
   };
 
-  // Extract Parameter into Product DNA with Strict Backend Evidence Gating
+  // Extract Parameter into Product DNA with Strict Evidence Gating
   const handleExtractParameter = async (payload) => {
     if (!activeJobId) {
       alert('Active compliance job required.');
@@ -437,7 +597,7 @@ export default function App() {
     showToast('Parameter conflict resolved and recorded to audit log.');
   };
 
-  // Stage 03 Standards Handlers
+  // Standards Handlers
   const handleAddStandard = async (newStandard) => {
     if (!activeJobId) {
       alert('Please select or create a Compliance Job first.');
@@ -506,7 +666,6 @@ export default function App() {
 
       setAssessmentResults((prev) => ({ ...prev, ...newResults }));
 
-      // Refresh append-only audit trail from PostgreSQL
       const audits = await auditApi.getJobAuditTrail(activeJobId);
       setAuditLog(
         audits.map((a) => ({
@@ -546,7 +705,6 @@ export default function App() {
 
       setAssessmentResults((prev) => ({ ...prev, ...newResults }));
 
-      // Refresh append-only audit trail
       const audits = await auditApi.getJobAuditTrail(activeJobId);
       setAuditLog(
         audits.map((a) => ({
@@ -571,20 +729,49 @@ export default function App() {
     setActiveTraceReq(req);
   };
 
-  // Trigger Anime.js entrance motion on tab switch
+  const handleSelectJob = async (jobId) => {
+    setActiveJobId(jobId);
+    await loadJobData(jobId);
+    handleSelectTab('workstation');
+    showToast(`Switched active compliance job context to ${jobId}`);
+  };
+
+  const handleNavigateWorkstationStage = (stageId) => {
+    if (stageId === 'scope' || stageId === 'clauses') handleSelectTab('standards');
+    else if (stageId === 'dna') handleSelectTab('dna');
+    else if (stageId === 'vector') handleSelectTab('workstation');
+    else if (stageId === 'evidence') handleSelectTab('evidence');
+    else if (stageId === 'gaps') handleSelectTab('gaps');
+    else if (stageId === 'lab') handleSelectTab('lab');
+    else if (stageId === 'passport') handleSelectTab('passport');
+  };
+
+  // Entrance motion on tab switch
   useEffect(() => {
     triggerEntrance('.animate-view-stage', 20);
   }, [activeTab]);
 
   const currentTabObj = NAV_ITEMS.find((n) => n.id === activeTab);
-  const currentTabTitle = currentTabObj ? currentTabObj.title : 'Workstation';
+  const currentTabTitle = currentTabObj
+    ? currentTabObj.title
+    : activeTab === 'input'
+    ? 'Product Input'
+    : activeTab === 'applicability'
+    ? 'BIS Applicability'
+    : activeTab === 'gaps'
+    ? 'Compliance Gaps'
+    : activeTab === 'lab'
+    ? 'Lab & Actions'
+    : activeTab === 'passport'
+    ? 'Compliance Passport'
+    : 'Compliance Compiler';
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] text-[#0F172A] flex">
-      {/* SideNav Component */}
+      {/* SideNav Component: Preserves all 10 major stations */}
       <SideNav
         activeTab={activeTab}
-        onSelectTab={setActiveTab}
+        onSelectTab={handleSelectTab}
         mobileOpen={mobileMenuOpen}
         onCloseMobile={() => setMobileMenuOpen(false)}
       />
@@ -597,8 +784,20 @@ export default function App() {
           onToggleMobile={() => setMobileMenuOpen(!mobileMenuOpen)}
         />
 
+        {/* Golden Path Workflow Stepper Bar */}
+        <div className="pt-14">
+          <GoldenPathStepper
+            activeTab={activeTab}
+            onSelectStep={handleSelectTab}
+            assessment={activeAssessment}
+            onResetDemo={handleResetDemo}
+            isResetting={isResettingDemo}
+          />
+        </div>
+
         {/* Page View Container */}
-        <main className="flex-1 pt-14 animate-view-stage">
+        <main className="flex-1 animate-view-stage">
+          {/* STEP 01 — BIS AI ASSISTANT */}
           {activeTab === 'assistant' && (
             <BISAssistantView
               onNavigateWorkstation={(newJobId) => {
@@ -606,24 +805,137 @@ export default function App() {
                   setActiveJobId(newJobId);
                   loadJobData(newJobId);
                 }
-                setActiveTab('workstation');
+                handleSelectTab('workstation');
                 showToast('Navigated to Engineering Workstation');
               }}
               onJobCreated={(newJobId) => {
                 setActiveJobId(newJobId);
                 loadJobData(newJobId);
               }}
+              onStartComplianceAssessment={handleStartComplianceAssessment}
             />
           )}
 
+          {/* STEP 01 (ALTERNATIVE) — MULTI-MODAL PRODUCT INPUT */}
+          {activeTab === 'input' && (
+            <AnalyzeView
+              onAssessmentCreated={(newAsm) => {
+                const newId = newAsm.id || newAsm.assessment_id;
+                setActiveAssessmentId(newId);
+                setActiveAssessment(newAsm);
+                assessmentApi.getPassport(newId).then((p) => setPassportData(p)).catch(() => {});
+                showToast(`Assessment ${newAsm.assessment_number || newId} created`);
+              }}
+              onNavigate={(target) => handleSelectTab(target)}
+            />
+          )}
+
+          {/* STEP 02 — PRODUCT INPUT / PRODUCT DNA */}
+          {activeTab === 'dna' && (
+            <ProductDNAView
+              assessment={activeAssessment}
+              onClarify={handleAnswerClarification}
+              onNavigate={(target) => {
+                if (target === 'input') handleSelectTab('input');
+                else if (target === 'applicability') handleSelectTab('applicability');
+                else handleSelectTab(target);
+              }}
+            />
+          )}
+
+          {/* STEP 03 — BIS APPLICABILITY */}
+          {activeTab === 'applicability' && (
+            <BISApplicabilityView
+              assessment={activeAssessment}
+              onNavigate={(target) => {
+                if (target === 'clauses' || target === 'standards') handleSelectTab('standards');
+                else if (target === 'dna') handleSelectTab('dna');
+                else if (target === 'input') handleSelectTab('input');
+                else handleSelectTab(target);
+              }}
+            />
+          )}
+
+          {/* STEP 04 — STANDARDS & CLAUSES */}
+          {activeTab === 'standards' && (
+            <StandardsClausesView
+              assessment={activeAssessment}
+              onNavigate={(target) => {
+                if (target === 'evidence') handleSelectTab('evidence');
+                else if (target === 'gaps') handleSelectTab('gaps');
+                else if (target === 'dna') handleSelectTab('dna');
+                else if (target === 'input') handleSelectTab('input');
+                else handleSelectTab(target);
+              }}
+            />
+          )}
+
+          {/* STEP 05 — EVIDENCE MATRIX */}
+          {activeTab === 'evidence' && (
+            <EvidenceMatrixView
+              assessment={activeAssessment}
+              onUploadEvidence={handleAddEvidencePipeline}
+              onNavigate={(target) => {
+                if (target === 'gaps') handleSelectTab('gaps');
+                else if (target === 'input') handleSelectTab('input');
+                else handleSelectTab(target);
+              }}
+            />
+          )}
+
+          {/* STEP 06 — COMPLIANCE GAPS */}
+          {activeTab === 'gaps' && (
+            <ComplianceGapsView
+              assessment={activeAssessment}
+              onNavigate={(target) => {
+                if (target === 'actions' || target === 'lab') handleSelectTab('lab');
+                else if (target === 'input') handleSelectTab('input');
+                else handleSelectTab(target);
+              }}
+            />
+          )}
+
+          {/* STEP 07 — LAB & ACTIONS */}
+          {activeTab === 'lab' && (
+            <LabActionsView
+              assessment={activeAssessment}
+              onNavigate={(target) => {
+                if (target === 'passport') {
+                  if (activeAssessmentId && !passportData) {
+                    assessmentApi.getPassport(activeAssessmentId).then((p) => setPassportData(p)).catch(() => {});
+                  }
+                  handleSelectTab('passport');
+                } else if (target === 'input') {
+                  handleSelectTab('input');
+                } else {
+                  handleSelectTab(target);
+                }
+              }}
+            />
+          )}
+
+          {/* STEP 08 — COMPLIANCE PASSPORT / DOSSIERS */}
+          {(activeTab === 'passport' || activeTab === 'reports') && (
+            <div className="p-4 sm:p-6 lg:p-8">
+              <CompliancePassportView
+                passport={passportData}
+                onClose={() => handleSelectTab('lab')}
+              />
+            </div>
+          )}
+
+          {/* SECONDARY STATION: ENGINEERING WORKSTATION */}
           {activeTab === 'workstation' && (
             <WorkstationView
               jobId={activeJobId}
+              jobs={jobs}
+              onSelectJob={handleSelectJob}
               onCreateJobClick={() => setJobModalOpen(true)}
               onUploadClick={() => setAddEvidenceModalOpen(true)}
-              onNavigateEvidence={() => setActiveTab('evidence')}
-              onNavigateDNA={() => setActiveTab('dna')}
-              onNavigateStandards={() => setActiveTab('standards')}
+              onNavigateEvidence={() => handleSelectTab('evidence')}
+              onNavigateDNA={() => handleSelectTab('dna')}
+              onNavigateStandards={() => handleSelectTab('standards')}
+              onNavigateStage={handleNavigateWorkstationStage}
               evidenceCount={evidenceList.length}
               onMapToDNASuccess={() => {
                 if (activeJobId) loadJobData(activeJobId);
@@ -632,97 +944,28 @@ export default function App() {
             />
           )}
 
+          {/* SECONDARY STATION: WORKSPACE */}
           {activeTab === 'workspace' && (
             <WorkspaceView
               onCreateJobClick={() => setJobModalOpen(true)}
+              jobsCount={jobs.length}
               evidenceCount={evidenceList.length}
+              openFindingsCount={conflictsList.length}
             />
           )}
 
+          {/* SECONDARY STATION: COMPLIANCE JOBS */}
           {activeTab === 'jobs' && (
             <ComplianceJobsView
               jobs={jobs}
+              onSelectJob={handleSelectJob}
               onCreateJob={handleCreateJob}
               modalOpen={jobModalOpen}
               setModalOpen={setJobModalOpen}
             />
           )}
 
-          {activeTab === 'evidence' && (
-            <EvidenceIngestionView
-              evidenceList={evidenceList}
-              onOpenAddModal={() => setAddEvidenceModalOpen(true)}
-              onInspectEvidence={(item) => setInspectingEvidence(item)}
-            />
-          )}
-
-          {activeTab === 'dna' && (
-            <ProductDNAWorkspaceView
-              productDnaFacts={productDnaFacts}
-              conflictsList={conflictsList}
-              auditLog={auditLog}
-              onOpenExtractModal={() => setExtractModalOpen(true)}
-              onOpenConflictModal={(conf) => setActiveConflictModal(conf)}
-            />
-          )}
-
-          {activeTab === 'standards' && (
-            <StandardsIntelligenceView
-              standards={standardsList}
-              activeStandardId={activeStandardId}
-              onSelectActiveStandard={(id) => {
-                setActiveStandardId(id);
-                if (activeJobId) {
-                  standardsApi.listRequirements(activeJobId, id).then((reqs) => {
-                    setRequirementsList(
-                      reqs.map((r) => ({
-                        id: r.id,
-                        reqId: r.requirement_id || `REQ-${r.clause_number}`,
-                        clauseRef: r.clause_reference || r.clause_number,
-                        standardId: r.standard_id,
-                        title: r.title || r.clause_reference,
-                        type: r.requirement_type,
-                        requirementType: r.requirement_type,
-                        description: r.description || r.requirement_text,
-                        requirementText: r.requirement_text || r.description || '',
-                        requiredParameterKey: r.parameter_key,
-                        parameterKey: r.parameter_key,
-                        comparisonType: r.comparison_operator,
-                        comparisonOperator: r.comparison_operator,
-                        expectedUnit: r.expected_unit,
-                        targetValue: r.expected_value,
-                        minValue: r.threshold_min,
-                        maxValue: r.threshold_max,
-                        allowedValues: r.allowed_values ? (Array.isArray(r.allowed_values) ? r.allowed_values.join(', ') : r.allowed_values) : '',
-                        applicabilityCondition: r.applicability_condition,
-                        evidenceRequirement: r.evidence_requirement,
-                        verificationMethod: r.verification_method,
-                        status: r.status,
-                      }))
-                    );
-                  });
-                }
-              }}
-              onAddStandardClick={() => setAddStandardModalOpen(true)}
-              onRemoveStandard={handleRemoveStandard}
-              requirements={requirementsList}
-              onAddRequirementClick={() => setAddRequirementModalOpen(true)}
-              productDnaFacts={productDnaFacts}
-              conflictsList={conflictsList}
-              evidenceList={evidenceList}
-              assessmentResults={assessmentResults}
-              onEvaluateRequirement={handleEvaluateRequirement}
-              onEvaluateAllRequirements={handleEvaluateAllRequirements}
-              onInspectTraceChain={handleInspectTraceChain}
-              onNavigateDNA={() => setActiveTab('dna')}
-              onNavigateEvidence={() => setActiveTab('evidence')}
-              onNavigateSpatialCAD={(req) => {
-                setActiveTab('workstation');
-                showToast(`Viewing CAD telemetry for ${req.reqId}`);
-              }}
-            />
-          )}
-
+          {/* SECONDARY STATION: REVIEW & ATTESTATION */}
           {activeTab === 'reviews' && (
             <ReviewWorkspaceView
               jobId={activeJobId}
@@ -733,14 +976,7 @@ export default function App() {
             />
           )}
 
-          {activeTab === 'reports' && (
-            <DossiersReportsView
-              jobId={activeJobId}
-              onNavigateJobs={() => setActiveTab('jobs')}
-              evidenceCount={evidenceList.length}
-            />
-          )}
-
+          {/* SECONDARY STATION: SETTINGS */}
           {activeTab === 'settings' && (
             <SettingsView onSaveNotification={showToast} />
           )}
@@ -803,7 +1039,7 @@ export default function App() {
         result={activeTraceResult}
         requirement={activeTraceReq}
         onSpatialInspect={(req) => {
-          setActiveTab('workstation');
+          handleSelectTab('workstation');
           showToast(`Spatial CAD view focused for ${req.reqId}`);
         }}
       />
@@ -812,8 +1048,8 @@ export default function App() {
       <EngineeringCopilotDrawer
         jobId={activeJobId}
         activeStandardId={activeStandardId}
-        onOpenReview={() => setActiveTab('review')}
-        onOpenEvidence={() => setActiveTab('evidence')}
+        onOpenReview={() => handleSelectTab('reviews')}
+        onOpenEvidence={() => handleSelectTab('evidence')}
       />
 
       {/* Toast Notification */}

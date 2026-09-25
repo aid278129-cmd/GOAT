@@ -156,7 +156,7 @@ export function LabActionsView({ assessment, onNavigate }) {
                   </div>
                   <div className="text-right sm:border-l sm:border-indigo-100 sm:pl-4 space-y-0.5">
                     <span className="text-[10px] font-mono uppercase text-indigo-800 font-bold">Target Test Facilities:</span>
-                    <p className="text-indigo-900 font-mono text-[11px]">{targetLabs.join(' &bull; ')}</p>
+                    <p className="text-indigo-900 font-mono text-[11px]">{Array.isArray(targetLabs) ? targetLabs.join(' • ') : String(targetLabs)}</p>
                   </div>
                 </div>
               </div>

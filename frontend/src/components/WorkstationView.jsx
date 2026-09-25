@@ -14,11 +14,14 @@ const WORKFLOW_STAGES = [
 
 export function WorkstationView({
   jobId,
+  jobs = [],
+  onSelectJob,
   onCreateJobClick,
   onUploadClick,
   onNavigateEvidence,
   onNavigateDNA,
   onNavigateStandards,
+  onNavigateStage,
   evidenceCount = 0,
   onMapToDNASuccess,
 }) {
@@ -27,7 +30,9 @@ export function WorkstationView({
 
   const handleStageClick = (stageId) => {
     setActiveStage(stageId);
-    if (stageId === 'evidence' && onNavigateEvidence) {
+    if (onNavigateStage) {
+      onNavigateStage(stageId);
+    } else if (stageId === 'evidence' && onNavigateEvidence) {
       onNavigateEvidence();
     } else if (stageId === 'dna' && onNavigateDNA) {
       onNavigateDNA();
@@ -355,28 +360,63 @@ export function WorkstationView({
               </tr>
             </thead>
             <tbody>
-              {/* Clean Empty State */}
-              <tr>
-                <td colSpan={6} className="py-12 px-4 text-center">
-                  <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-[#94A3B8] mx-auto mb-3">
-                    <span className="material-symbols-outlined text-2xl">rule_folder</span>
-                  </div>
-                  <h3 className="text-sm font-semibold text-[#0F172A] mb-1">
-                    No compliance jobs registered yet
-                  </h3>
-                  <p className="text-xs text-[#64748B] max-w-sm mx-auto mb-4">
-                    Initiate your first compliance job or upload product documentation to begin deterministic statutory evaluation.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={onCreateJobClick}
-                    className="px-3.5 py-2 text-xs font-medium text-white bg-[#1D4ED8] hover:bg-[#1E40AF] rounded transition-colors inline-flex items-center gap-1.5 shadow-sm"
-                  >
-                    <span className="material-symbols-outlined text-sm">add</span>
-                    Create Your First Compliance Job
-                  </button>
-                </td>
-              </tr>
+              {jobs && jobs.length > 0 ? (
+                jobs.map((job) => (
+                  <tr key={job.id} className="border-b border-[#E2E8F0] hover:bg-[#F8F9FA] transition-colors">
+                    <td className="py-3 px-4 font-mono font-semibold text-[#1D4ED8]">
+                      {job.jobNumber || job.id}
+                    </td>
+                    <td className="py-3 px-4 font-medium text-[#0F172A]">
+                      {job.productName || job.title}
+                    </td>
+                    <td className="py-3 px-4 font-mono text-[11px] text-[#0F172A]">
+                      {job.standard || 'IS 17526:2021'}
+                    </td>
+                    <td className="py-3 px-4">
+                      <span className="inline-block px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        {job.stage || 'STAGE_EVALUATED'}
+                      </span>
+                    </td>
+                    <td className="py-3 px-4">
+                      <span className="inline-block px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                        {job.status || 'ACTIVE'}
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 text-right">
+                      <button
+                        type="button"
+                        onClick={() => onSelectJob?.(job.id)}
+                        className="px-2.5 py-1 text-xs font-semibold text-[#1D4ED8] hover:bg-blue-50 rounded border border-blue-200 transition-colors cursor-pointer"
+                      >
+                        Open Job
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                /* Clean Empty State */
+                <tr>
+                  <td colSpan={6} className="py-12 px-4 text-center">
+                    <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-[#94A3B8] mx-auto mb-3">
+                      <span className="material-symbols-outlined text-2xl">rule_folder</span>
+                    </div>
+                    <h3 className="text-sm font-semibold text-[#0F172A] mb-1">
+                      No compliance jobs registered yet
+                    </h3>
+                    <p className="text-xs text-[#64748B] max-w-sm mx-auto mb-4">
+                      Initiate your first compliance job or upload product documentation to begin deterministic statutory evaluation.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={onCreateJobClick}
+                      className="px-3.5 py-2 text-xs font-medium text-white bg-[#1D4ED8] hover:bg-[#1E40AF] rounded transition-colors inline-flex items-center gap-1.5 shadow-sm"
+                    >
+                      <span className="material-symbols-outlined text-sm">add</span>
+                      Create Your First Compliance Job
+                    </button>
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

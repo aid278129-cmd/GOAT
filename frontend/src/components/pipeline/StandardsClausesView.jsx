@@ -60,7 +60,7 @@ export function StandardsClausesView({ assessment, onNavigate }) {
   }));
 
   // Real Requirements / Clauses Matrix
-  const rawRequirements = assessment.compliance?.evaluated_requirements || assessment.requirements || assessment.clauses || [];
+  const rawRequirements = assessment.compliance?.evaluations || assessment.compliance?.evaluated_requirements || assessment.requirements || assessment.clauses || [];
   const matrixClauses = rawRequirements.map((r, idx) => {
     const isSatisfied = r.status === 'SATISFIED' || r.status === 'VERIFIED';
     return {
@@ -79,7 +79,9 @@ export function StandardsClausesView({ assessment, onNavigate }) {
   });
 
   // Real Compliance Gaps
-  const rawGaps = assessment.compliance?.gaps || assessment.gaps || [];
+  const rawGaps = (assessment.compliance?.gap_register && assessment.compliance.gap_register.length > 0)
+    ? assessment.compliance.gap_register
+    : (assessment.compliance?.gaps || assessment.gaps || []);
   const complianceGaps = rawGaps.map((g, idx) => ({
     id: g.id || `GAP-${idx + 1}`,
     clause: g.clause || g.clause_number || `Cl. ${idx + 1}`,
@@ -106,7 +108,7 @@ export function StandardsClausesView({ assessment, onNavigate }) {
   const userProvided = matrixClauses.filter((c) => c.status === 'USER_PROVIDED').length;
   const deficienciesGaps = complianceGaps.length;
   const labTestsReq = complianceGaps.filter((g) => g.prescribedAction === 'LAB_TEST_REQUIRED').length;
-  const complianceIndex = totalClauses > 0 ? `${((evidenceVerified / totalClauses) * 100).toFixed(1)}%` : '0%';
+  const satisfiedCount = `${evidenceVerified} / ${totalClauses}`;
 
   const handleCopyHash = () => {
     if (sha256Seal && sha256Seal !== 'SHA-256 Pending Verification') {
@@ -259,8 +261,8 @@ export function StandardsClausesView({ assessment, onNavigate }) {
                 <span className="text-lg font-bold text-sky-600 mt-0.5 block">{labTestsReq}</span>
               </div>
               <div className="p-2.5 rounded bg-slate-50 border border-slate-200">
-                <span className="text-[9px] uppercase tracking-wider text-slate-400 font-bold block">COMPLIANCE INDEX</span>
-                <span className="text-lg font-bold text-emerald-600 mt-0.5 block">{complianceIndex}</span>
+                <span className="text-[9px] uppercase tracking-wider text-slate-400 font-bold block">SATISFIED CLAUSES</span>
+                <span className="text-lg font-bold text-emerald-600 mt-0.5 block">{satisfiedCount}</span>
               </div>
             </div>
           </div>

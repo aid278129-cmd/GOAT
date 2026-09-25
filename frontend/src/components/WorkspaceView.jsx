@@ -1,6 +1,12 @@
 import React from 'react';
 
-export function WorkspaceView({ onCreateJobClick, evidenceCount = 0 }) {
+export function WorkspaceView({
+  onCreateJobClick,
+  jobsCount = 0,
+  evidenceCount = 0,
+  openFindingsCount = 0,
+  attestationCount = 0,
+}) {
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-6">
       {/* Header */}
@@ -24,7 +30,7 @@ export function WorkspaceView({ onCreateJobClick, evidenceCount = 0 }) {
         </button>
       </div>
 
-      {/* 4 KPI Stat Cards (Pure Production Zero State) */}
+      {/* 4 KPI Stat Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white border border-[#E2E8F0] rounded-lg p-4 shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between">
@@ -34,8 +40,10 @@ export function WorkspaceView({ onCreateJobClick, evidenceCount = 0 }) {
             </span>
           </div>
           <div className="mt-3">
-            <span className="font-mono text-2xl font-bold text-[#0F172A]">0</span>
-            <span className="text-[11px] text-[#94A3B8] block mt-0.5">No active jobs</span>
+            <span className="font-mono text-2xl font-bold text-[#0F172A]">{jobsCount}</span>
+            <span className="text-[11px] text-[#94A3B8] block mt-0.5">
+              {jobsCount === 0 ? 'No active jobs' : `${jobsCount} job(s) in registry`}
+            </span>
           </div>
         </div>
 
@@ -47,8 +55,10 @@ export function WorkspaceView({ onCreateJobClick, evidenceCount = 0 }) {
             </span>
           </div>
           <div className="mt-3">
-            <span className="font-mono text-2xl font-bold text-[#0F172A]">0</span>
-            <span className="text-[11px] text-[#94A3B8] block mt-0.5">No open gaps</span>
+            <span className="font-mono text-2xl font-bold text-[#0F172A]">{openFindingsCount}</span>
+            <span className="text-[11px] text-[#94A3B8] block mt-0.5">
+              {openFindingsCount === 0 ? 'No open gaps' : `${openFindingsCount} item(s) pending`}
+            </span>
           </div>
         </div>
 
@@ -75,8 +85,10 @@ export function WorkspaceView({ onCreateJobClick, evidenceCount = 0 }) {
             </span>
           </div>
           <div className="mt-3">
-            <span className="font-mono text-2xl font-bold text-[#0F172A]">0</span>
-            <span className="text-[11px] text-[#94A3B8] block mt-0.5">No attestations signed</span>
+            <span className="font-mono text-2xl font-bold text-[#0F172A]">{attestationCount}</span>
+            <span className="text-[11px] text-[#94A3B8] block mt-0.5">
+              {attestationCount === 0 ? 'No attestations signed' : `${attestationCount} signed attestations`}
+            </span>
           </div>
         </div>
       </div>

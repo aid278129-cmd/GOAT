@@ -37,7 +37,7 @@ export function EvidenceMatrixView({ assessment, onUploadEvidence, onNavigate })
   }
 
   const evidenceList = assessment.evidence_items || assessment.evidence || [];
-  const requirements = assessment.compliance?.evaluated_requirements || assessment.requirements || assessment.clauses || [];
+  const requirements = assessment.compliance?.evaluations || assessment.compliance?.evaluated_requirements || assessment.requirements || assessment.clauses || [];
   const standardNumber = assessment.target_standard || assessment.standard_number || assessment.primary_standard || (assessment.applicability?.[0]?.standard_number) || '—';
   const standardRevision = assessment.standard_revision || assessment.applicability?.[0]?.edition || 'Consolidated Active';
 

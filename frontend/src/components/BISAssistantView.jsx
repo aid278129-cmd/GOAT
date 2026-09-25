@@ -3,7 +3,7 @@ import { assistantApi } from '../api/assistant';
 import { authApi } from '../api/auth';
 import ProductInvestigationModal from './ProductInvestigationModal';
 
-export default function BISAssistantView({ onNavigateWorkstation, onJobCreated }) {
+export default function BISAssistantView({ onNavigateWorkstation, onJobCreated, onStartComplianceAssessment }) {
   const [conversations, setConversations] = useState([]);
   const [activeConversationId, setActiveConversationId] = useState(null);
   const [messages, setMessages] = useState([
@@ -183,10 +183,21 @@ export default function BISAssistantView({ onNavigateWorkstation, onJobCreated }
       {/* LEFT SIDEBAR: Conversations & Quick Prompts                  */}
       {/* ------------------------------------------------------------- */}
       <aside className="w-72 border-r border-slate-200 bg-white flex flex-col flex-shrink-0">
-        <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+        <div className="p-3 pb-1 border-b border-slate-100 flex flex-col gap-2">
+          <button
+            type="button"
+            onClick={() => onStartComplianceAssessment ? onStartComplianceAssessment('golden') : onNavigateWorkstation()}
+            className="w-full flex items-center justify-between px-3 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer"
+          >
+            <span className="flex items-center gap-2">
+              <span className="material-symbols-outlined text-base">verified_user</span>
+              <span>Start Assessment</span>
+            </span>
+            <span className="text-[10px] bg-white/20 px-1.5 py-0.5 rounded font-mono">IS 17526</span>
+          </button>
           <button
             onClick={handleStartNewConversation}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs font-bold transition-all border border-indigo-200 shadow-sm"
+            className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs font-bold transition-all border border-indigo-200 shadow-sm cursor-pointer"
           >
             <span>✨</span> New Investigation
           </button>
@@ -276,32 +287,44 @@ export default function BISAssistantView({ onNavigateWorkstation, onJobCreated }
             </p>
           </div>
 
-          {/* Multilingual Selector */}
-          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs">
+          <div className="flex items-center gap-3">
             <button
-              onClick={() => setSelectedLanguage('en')}
-              className={`px-2.5 py-1 rounded-lg font-semibold transition-colors ${
-                selectedLanguage === 'en' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'
-              }`}
+              type="button"
+              onClick={() => onStartComplianceAssessment ? onStartComplianceAssessment('golden') : onNavigateWorkstation()}
+              className="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
             >
-              English
+              <span className="material-symbols-outlined text-sm">rocket_launch</span>
+              <span>Start Compliance Assessment</span>
+              <span className="material-symbols-outlined text-xs">arrow_forward</span>
             </button>
-            <button
-              onClick={() => setSelectedLanguage('hi')}
-              className={`px-2.5 py-1 rounded-lg font-semibold transition-colors ${
-                selectedLanguage === 'hi' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              हिन्दी (Hindi)
-            </button>
-            <button
-              onClick={() => setSelectedLanguage('ta')}
-              className={`px-2.5 py-1 rounded-lg font-semibold transition-colors ${
-                selectedLanguage === 'ta' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              தமிழ் (Tamil)
-            </button>
+
+            {/* Multilingual Selector */}
+            <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs">
+              <button
+                onClick={() => setSelectedLanguage('en')}
+                className={`px-2.5 py-1 rounded-lg font-semibold transition-colors ${
+                  selectedLanguage === 'en' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                English
+              </button>
+              <button
+                onClick={() => setSelectedLanguage('hi')}
+                className={`px-2.5 py-1 rounded-lg font-semibold transition-colors ${
+                  selectedLanguage === 'hi' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                हिन्दी (Hindi)
+              </button>
+              <button
+                onClick={() => setSelectedLanguage('ta')}
+                className={`px-2.5 py-1 rounded-lg font-semibold transition-colors ${
+                  selectedLanguage === 'ta' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                தமிழ் (Tamil)
+              </button>
+            </div>
           </div>
         </header>
 
@@ -328,9 +351,31 @@ export default function BISAssistantView({ onNavigateWorkstation, onJobCreated }
                 {/* Assistant Answer Body */}
                 <div className="whitespace-pre-wrap font-sans">{m.content}</div>
 
+                {/* Initial Welcome Action Cards */}
+                {idx === 0 && (
+                  <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={() => onStartComplianceAssessment ? onStartComplianceAssessment('golden') : onNavigateWorkstation()}
+                      className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+                    >
+                      <span className="material-symbols-outlined text-sm">rocket_launch</span>
+                      <span>Start Compliance Assessment (IS 17526 Vacuum Flask Demo)</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onStartComplianceAssessment ? onStartComplianceAssessment('input') : onNavigateWorkstation()}
+                      className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs font-semibold flex items-center gap-1.5 border border-slate-200 transition-all cursor-pointer"
+                    >
+                      <span className="material-symbols-outlined text-sm">edit_note</span>
+                      <span>Input New Product Details</span>
+                    </button>
+                  </div>
+                )}
+
                 {/* Handoff Button (Layer A -> Layer B) */}
                 {m.handoff && (
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between bg-indigo-50/50 p-3 rounded-xl border border-indigo-100">
+                  <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 bg-indigo-50/50 p-3 rounded-xl border border-indigo-100">
                     <div>
                       <div className="text-xs font-bold text-indigo-900">
                         {m.handoff.suggested_title}
@@ -339,12 +384,21 @@ export default function BISAssistantView({ onNavigateWorkstation, onJobCreated }
                         Standard: {m.handoff.target_standard}
                       </div>
                     </div>
-                    <button
-                      onClick={() => handleHandoffToWorkstation(m.handoff)}
-                      className="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm transition-colors"
-                    >
-                      <span>⚡</span> Open in Engineering Workstation
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => onStartComplianceAssessment ? onStartComplianceAssessment('golden') : handleHandoffToWorkstation(m.handoff)}
+                        className="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm transition-colors cursor-pointer"
+                      >
+                        <span className="material-symbols-outlined text-xs">rocket_launch</span>
+                        <span>Start Compliance Assessment</span>
+                      </button>
+                      <button
+                        onClick={() => handleHandoffToWorkstation(m.handoff)}
+                        className="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-lg text-xs font-semibold flex items-center gap-1 shadow-2xs transition-colors cursor-pointer"
+                      >
+                        <span>⚡ Workstation</span>
+                      </button>
+                    </div>
                   </div>
                 )}
 

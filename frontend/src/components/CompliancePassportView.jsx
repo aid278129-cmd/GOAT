@@ -135,15 +135,19 @@ export function CompliancePassportView({ passport, onClose }) {
             </div>
             <div>
               <span className="text-slate-500 text-[10px] block">Materials:</span>
-              <strong className="text-slate-900">{passport.product_dna.materials.join(', ') || 'Declared SS 304'}</strong>
+              <strong className="text-slate-900">
+                {Array.isArray(passport.product_dna?.materials)
+                  ? passport.product_dna.materials.join(', ')
+                  : (passport.product_dna?.materials || 'Declared Stainless Steel 304')}
+              </strong>
             </div>
             <div>
               <span className="text-slate-500 text-[10px] block">Thermal Insulation:</span>
-              <strong className="text-slate-900">{passport.product_dna.insulated ? 'Vacuum Double Wall' : 'Single Wall'}</strong>
+              <strong className="text-slate-900">{passport.product_dna?.insulated ? 'Vacuum Double Wall' : 'Single Wall'}</strong>
             </div>
             <div>
               <span className="text-slate-500 text-[10px] block">Intended Use:</span>
-              <strong className="text-slate-900">{passport.product_dna.intended_use || 'Domestic Drinking'}</strong>
+              <strong className="text-slate-900">{passport.product_dna?.intended_use || 'Domestic Food/Liquid Storage'}</strong>
             </div>
           </div>
         </div>
@@ -524,7 +528,7 @@ export function CompliancePassportView({ passport, onClose }) {
           Platform Limitations & Legal Boundaries:
         </strong>
         <ul className="list-disc list-inside space-y-1">
-          {passport.limitations.map((lim, idx) => (
+          {(passport.limitations || []).map((lim, idx) => (
             <li key={idx}>{lim}</li>
           ))}
         </ul>

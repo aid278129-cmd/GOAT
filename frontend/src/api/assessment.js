@@ -69,4 +69,75 @@ export const assessmentApi = {
       review_notes: reviewNotes,
     });
   },
+
+  // -------------------------------------------------------------
+  // Layer 1-9 Unified Assessment & Compliance Passport Endpoints
+  // -------------------------------------------------------------
+
+  /**
+   * Creates a new assessment via Layer 1 ingestion.
+   */
+  async createAssessment(payload) {
+    return await apiClient.post('/assessments', payload);
+  },
+
+  /**
+   * Lists all assessments with summary counts.
+   */
+  async listAssessments() {
+    return await apiClient.get('/assessments');
+  },
+
+  /**
+   * Retrieves full assessment workspace by ID.
+   */
+  async getAssessment(assessmentId) {
+    return await apiClient.get(`/assessments/${assessmentId}`);
+  },
+
+  /**
+   * Compiles or retrieves the official evidence-backed compliance passport.
+   */
+  async getPassport(assessmentId) {
+    return await apiClient.get(`/assessments/${assessmentId}/passport`);
+  },
+
+  /**
+   * Resets or seeds the deterministic Golden SIH Demo Assessment.
+   */
+  async resetGoldenDemo() {
+    return await apiClient.post('/assessments/demo/reset');
+  },
+
+  /**
+   * Ingests verified evidence document / lab report snippet into assessment.
+   */
+  async addEvidence(assessmentId, { snippet, evidence_type = 'TEST_REPORT', authority = 'LAB_REPORT', page = null }) {
+    return await apiClient.post(`/assessments/${assessmentId}/evidence`, {
+      snippet,
+      evidence_type,
+      authority,
+      page,
+    });
+  },
+
+  /**
+   * Answers a technical clarification attribute to resolve scope or requirements.
+   */
+  async answerClarification(assessmentId, attribute, value) {
+    return await apiClient.post(`/assessments/${assessmentId}/clarify`, {
+      attribute,
+      value,
+    });
+  },
+
+  /**
+   * Context-aware chat with active assessment.
+   */
+  async chatWithAssessment(assessmentId, message) {
+    return await apiClient.post(`/assessments/${assessmentId}/chat`, {
+      message,
+    });
+  },
 };
+
