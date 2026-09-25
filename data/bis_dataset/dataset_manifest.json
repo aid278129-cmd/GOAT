@@ -1,7 +1,7 @@
 {
   "dataset_name": "BIS Compliance Compiler Knowledge Dataset",
   "version": "v1.2.0",
-  "created_at": "2026-09-25T15:32:39.279999+00:00",
+  "created_at": "2026-09-25T16:56:17.996870+00:00",
   "standards_count": 51,
   "qco_count": 49,
   "documents_count": 52,

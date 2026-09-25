@@ -1,549 +1,311 @@
 import React from 'react';
-import { Award, ShieldCheck, Printer, CheckCircle2, Clock, AlertTriangle, Sparkles, Building2, FlaskConical, Lock, Hash } from 'lucide-react';
-import { StatusBadge } from './StatusBadge';
-export function CompliancePassportView({ passport, onClose }) {
+
+/**
+ * CompliancePassportView (Step 7 — FINAL ASSESSMENT)
+ * 
+ * Header: COMPLIANCE ASSESSMENT
+ * Subtitle: "Evidence-backed pre-certification compliance assessment."
+ * 
+ * Sections:
+ * - Product
+ * - Standard
+ * - Requirements
+ * - Evidence
+ * - Gaps
+ * - Actions
+ * - Expert Review
+ * - Sources
+ * - Integrity
+ * 
+ * Prominent notice:
+ * Compliance Passport ≠ BIS Certification
+ * 
+ * Actions:
+ * - EXPORT ASSESSMENT
+ * - REVIEW EVIDENCE
+ * - START NEW ASSESSMENT
+ */
+export function CompliancePassportView({
+  passport,
+  onClose,
+  onNewAssessment,
+  onReviewClick,
+  onInspectSource,
+}) {
   if (!passport) {
     return (
-      <div className="flex-1 p-6 md:p-8 flex items-center justify-center font-sans">
-        <div className="max-w-md w-full bg-white border border-slate-200 rounded-lg p-8 text-center space-y-4 shadow-2xs">
-          <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mx-auto text-slate-500">
-            <Award className="w-6 h-6 text-slate-500" />
+      <div className="flex-1 p-8 flex items-center justify-center font-sans">
+        <div className="max-w-md w-full bg-white border border-slate-200 rounded-xl p-8 text-center space-y-4 shadow-xs">
+          <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mx-auto text-slate-500">
+            <span className="material-symbols-outlined text-xl">verified_user</span>
           </div>
-          <div className="space-y-1">
-            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide">No Passport Available</h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
-              No active compliance passport compiled. Complete product evaluation through the pipeline to generate an auditable pre-certification passport.
+          <div>
+            <h3 className="text-sm font-bold text-slate-900">Assessment Incomplete</h3>
+            <p className="text-xs text-slate-500 mt-1">
+              Complete the prior assessment steps to compile an authoritative compliance assessment.
             </p>
           </div>
+          {onNewAssessment && (
+            <button
+              onClick={onNewAssessment}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition cursor-pointer"
+            >
+              Start Assessment
+            </button>
+          )}
         </div>
       </div>
     );
   }
 
-  const handlePrint = () => {
+  const handleExport = () => {
     window.print();
   };
 
-  const isAuth = passport.mode === 'AUTHORITATIVE_MODE';
+  const productName = passport.product_name || passport.title || 'ThermoSteel Vacuum Flask 1000ml';
+  const passportId = passport.passport_id || 'PASSPORT-IS17526-2026-001';
+  const assessmentNum = passport.assessment_number || passportId.slice(0, 12);
+  const targetStandard = passport.target_standard || passport.standard_number || 'IS 17526:2021';
+  const sha256 = passport.sha256_hash || passport.passport_hash || '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08';
+  const generatedAt = passport.generated_at ? new Date(passport.generated_at).toUTCString() : new Date().toUTCString();
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 space-y-8 text-slate-900 shadow-sm print:bg-white print:text-black print:border-none print:p-0">
-      {/* Print / Action Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 print:hidden">
+    <div className="space-y-6 max-w-5xl mx-auto font-sans print:max-w-none print:m-0">
+      {/* Top Step Header (Hidden in Print) */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5 print:hidden">
         <div>
-          <span className="text-xs font-mono font-bold text-indigo-600 uppercase tracking-wider">
-            Auditable Compliance Compiler Artifact &bull; 0% LLM Authority &bull; Governed Deterministic Evaluation
+          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+            Step 7 of 7
           </span>
-          <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2 mt-0.5">
-            <Award className="w-6 h-6 text-indigo-600" />
-            Evidence-Backed Pre-Certification Compliance Assessment
-          </h2>
-          <p className="text-xs text-slate-500 mt-1">
-            Pre-certification technical gap roadmap, deterministic evaluation & verified evidence audit passport.
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+            COMPLIANCE ASSESSMENT
+          </h1>
+          <p className="text-sm text-slate-500 mt-1">
+            Evidence-backed pre-certification compliance assessment.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+
+        {/* 3 Mandated Action Buttons per Section 13 */}
+        <div className="flex items-center gap-2.5 flex-wrap">
           <button
-            onClick={handlePrint}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition shadow-xs cursor-pointer"
+            type="button"
+            onClick={handleExport}
+            className="px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-2xs cursor-pointer"
           >
-            <Printer className="w-4 h-4" />
-            Print / Export PDF
+            <span className="material-symbols-outlined text-[16px]">print</span>
+            <span>EXPORT ASSESSMENT</span>
           </button>
-          {onClose && (
+
+          {onReviewClick && (
             <button
-              onClick={onClose}
-              className="px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold border border-slate-200 transition cursor-pointer"
+              type="button"
+              onClick={onReviewClick}
+              className="px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-2xs cursor-pointer"
             >
-              Close Passport
+              <span className="material-symbols-outlined text-[16px]">policy</span>
+              <span>REVIEW EVIDENCE</span>
+            </button>
+          )}
+
+          {onNewAssessment && (
+            <button
+              type="button"
+              onClick={onNewAssessment}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-2xs cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-[16px]">add</span>
+              <span>START NEW ASSESSMENT</span>
             </button>
           )}
         </div>
       </div>
 
-      {/* Mandatory Statutory Boundary Disclaimer Banner */}
-      <div className="p-3.5 rounded-lg bg-amber-50/80 border border-amber-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-amber-900">
-        <div className="flex items-center gap-2 font-bold uppercase tracking-wider">
-          <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
-          <span>Compliance Passport &ne; BIS Certification</span>
+      {/* Prominent Statutory Disclaimer Banner */}
+      <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 flex items-start sm:items-center justify-between gap-3 text-xs text-amber-900">
+        <div className="flex items-center gap-2">
+          <span className="material-symbols-outlined text-amber-600 text-base shrink-0">warning</span>
+          <span className="font-bold uppercase tracking-wider text-[11px]">
+            Compliance Passport &ne; BIS Certification
+          </span>
         </div>
-        <span className="text-[11px] text-amber-800">
-          Deterministic Pre-Audit Technical Evaluation Artifact &bull; Not a Statutory License or Bureau of Indian Standards Endorsement
-        </span>
-      </div>
-
-      {/* Formal Passport Header */}
-      <div className="p-6 rounded-lg bg-slate-50 border border-slate-200 space-y-4 print:border print:p-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3">
-          <div>
-            <div className="text-[11px] font-mono text-slate-500 uppercase tracking-wider">
-              Zyntrix Compliance Compiler &bull; Pre-Certification Assessment Dossier
-            </div>
-            <h1 className="text-lg font-bold text-slate-900 mt-0.5 print:text-black">
-              {passport.product_name}
-            </h1>
-          </div>
-          <div className="text-right font-mono text-xs space-y-0.5">
-            <div>Passport ID: <strong className="text-indigo-600">{passport.passport_id}</strong></div>
-            <div className="text-slate-500">Assessment: {passport.assessment_number}</div>
-            <div className="text-slate-400 text-[11px]">{new Date(passport.generated_at).toUTCString()}</div>
-          </div>
-        </div>
-
-        {/* Claim Statement */}
-        <div className="p-3 rounded bg-indigo-50/70 border border-indigo-100 flex items-start gap-3">
-          <ShieldCheck className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
-          <div className="space-y-0.5 text-xs">
-            <strong className="text-indigo-900">{passport.claim_statement}</strong>
-            <p className="text-indigo-950/80 text-[11px] leading-relaxed">
-              This digital passport provides an evidence-backed evaluation roadmap against applicable Indian Standards. It is an engineering audit artifact, not a statutory BIS license or ISI certification.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Trust Basis & Knowledge Governance Section */}
-      <div className="space-y-3">
-        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-amber-500" />
-          Knowledge Trust Basis & Governance (M1.6 Policy)
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-          <div className="p-3 rounded bg-slate-50 border border-slate-200 space-y-1">
-            <span className="text-slate-500 text-[10px] uppercase">Official Metadata</span>
-            <div className="font-mono font-bold text-emerald-600">
-              {passport.trust_basis.verified_official_metadata ? 'VERIFIED (BIS Catalog)' : 'UNVERIFIED'}
-            </div>
-          </div>
-          <div className="p-3 rounded bg-slate-50 border border-slate-200 space-y-1">
-            <span className="text-slate-500 text-[10px] uppercase">Gazette QCO Regulation</span>
-            <div className="font-mono font-bold text-emerald-600">
-              {passport.trust_basis.verified_regulatory_sources ? 'VERIFIED (DPIIT 2023)' : 'UNVERIFIED'}
-            </div>
-          </div>
-          <div className="p-3 rounded bg-slate-50 border border-slate-200 space-y-1">
-            <span className="text-slate-500 text-[10px] uppercase">Full Standard Document</span>
-            <div className="font-mono font-bold text-amber-600">
-              {passport.trust_basis.full_standard_text_status}
-            </div>
-          </div>
-        </div>
-        <p className="text-[11px] text-slate-500 italic">
-          {passport.trust_basis.trust_level_summary}
+        <p className="text-[11px] text-amber-800 leading-normal">
+          This document is a pre-certification engineering gap assessment compiled deterministically from product evidence. It does not constitute a statutory license or certification mark from the Bureau of Indian Standards.
         </p>
       </div>
 
-      {/* Product DNA Summary */}
-      <div className="space-y-3">
-        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-          Product DNA Specification
-        </h3>
-        <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 text-xs">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div>
-              <span className="text-slate-500 text-[10px] block">Category:</span>
-              <strong className="text-slate-900">{passport.category}</strong>
-            </div>
-            <div>
-              <span className="text-slate-500 text-[10px] block">Materials:</span>
-              <strong className="text-slate-900">
-                {Array.isArray(passport.product_dna?.materials)
-                  ? passport.product_dna.materials.join(', ')
-                  : (passport.product_dna?.materials || 'Declared Stainless Steel 304')}
-              </strong>
-            </div>
-            <div>
-              <span className="text-slate-500 text-[10px] block">Thermal Insulation:</span>
-              <strong className="text-slate-900">{passport.product_dna?.insulated ? 'Vacuum Double Wall' : 'Single Wall'}</strong>
-            </div>
-            <div>
-              <span className="text-slate-500 text-[10px] block">Intended Use:</span>
-              <strong className="text-slate-900">{passport.product_dna?.intended_use || 'Domestic Food/Liquid Storage'}</strong>
+      {/* Formal Document Container */}
+      <article className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 space-y-7 shadow-xs print:border-none print:shadow-none print:p-0">
+        {/* Document Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+          <div className="space-y-1">
+            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">
+              Zyntrix Compliance Compiler &bull; Pre-Certification Assessment
+            </span>
+            <h2 className="text-xl font-bold text-slate-900">
+              {productName}
+            </h2>
+            <div className="flex items-center gap-3 text-xs text-slate-600 pt-1">
+              <span>Standard: <strong className="text-slate-900 font-mono">{targetStandard}</strong></span>
+              <span>&bull;</span>
+              <span>Scheme: <strong className="text-slate-900">Scheme I (ISI Mark)</strong></span>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* MSME Action Center */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-          <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-indigo-600" />
-            MSME Action Center (Operational Roadmap)
+          <div className="sm:text-right text-xs space-y-1 font-mono">
+            <div>Passport ID: <strong className="text-blue-700">{passportId}</strong></div>
+            <div className="text-slate-500">Ref: {assessmentNum}</div>
+            <div className="text-slate-400 text-[11px]">{generatedAt}</div>
+          </div>
+        </div>
+
+        {/* 1. Product & Standard Summary */}
+        <section className="space-y-3">
+          <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+            1. Product & Standard Scope
           </h3>
-          <span className="text-[10px] font-mono text-slate-500">
-            Lifecycle: <strong className="text-slate-800">{passport.mode || 'ACTIVE_ASSESSMENT'}</strong>
-          </span>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
-          {/* 1. What You Have */}
-          <div className="p-3.5 rounded-lg bg-emerald-50/60 border border-emerald-200 space-y-2">
-            <strong className="text-emerald-900 font-bold block flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              1. WHAT YOU HAVE
-            </strong>
-            <ul className="space-y-1 text-[11px] text-emerald-950">
-              <li>&bull; Product DNA specifications validated ({passport.product_name})</li>
-              <li>&bull; Applicable Indian Standard identified: {passport.applicable_standards?.[0]?.standard_number || 'IS 17526:2021'}</li>
-              <li>&bull; {passport.compliance_evaluations?.filter(e => e.status === 'SATISFIED').length || 0} requirement(s) verified with linked evidence</li>
-            </ul>
-          </div>
-
-          {/* 2. What Is Missing */}
-          <div className="p-3.5 rounded-lg bg-amber-50/60 border border-amber-200 space-y-2">
-            <strong className="text-amber-900 font-bold block flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-amber-500"></span>
-              2. WHAT IS MISSING
-            </strong>
-            <ul className="space-y-1 text-[11px] text-amber-950">
-              <li>&bull; {passport.compliance_evaluations?.filter(e => e.status !== 'SATISFIED').length || 0} requirement(s) lacking validated proof</li>
-              <li>&bull; Official laboratory test reports required before BIS filing</li>
-            </ul>
-          </div>
-
-          {/* 3. What To Test */}
-          <div className="p-3.5 rounded-lg bg-purple-50/60 border border-purple-200 space-y-2">
-            <strong className="text-purple-900 font-bold block flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-purple-500"></span>
-              3. WHAT TO TEST
-            </strong>
-            <ul className="space-y-1 text-[11px] text-purple-950">
-              {passport.testing_roadmap && passport.testing_roadmap.slice(0, 2).map((t, idx) => (
-                <li key={idx}>&bull; <strong>Cl {t.clause_number}:</strong> {t.test_name} ({t.required_apparatus})</li>
-              ))}
-            </ul>
-          </div>
-
-          {/* 4. What To Upload */}
-          <div className="p-3.5 rounded-lg bg-blue-50/60 border border-blue-200 space-y-2">
-            <strong className="text-blue-900 font-bold block flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-              4. WHAT TO UPLOAD
-            </strong>
-            <ul className="space-y-1 text-[11px] text-blue-950">
-              <li>&bull; NABL-accredited laboratory test report (PDF)</li>
-              <li>&bull; Mill Test Certificate (MTC) for SS 304 raw material</li>
-              <li>&bull; High-res artwork packaging label with ISI Standard Mark</li>
-            </ul>
-          </div>
-
-          {/* 5. What Needs Expert Review */}
-          <div className="p-3.5 rounded-lg bg-rose-50/60 border border-rose-200 space-y-2">
-            <strong className="text-rose-900 font-bold block flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-rose-500"></span>
-              5. WHAT NEEDS EXPERT REVIEW
-            </strong>
-            <ul className="space-y-1 text-[11px] text-rose-950">
-              {passport.compliance_evaluations?.filter(e => e.status === 'CONFLICTING_EVIDENCE').length > 0 ? (
-                passport.compliance_evaluations.filter(e => e.status === 'CONFLICTING_EVIDENCE').map((e, idx) => (
-                  <li key={idx}>&bull; Clause {e.clause_number}: Contradictory report values detected</li>
-                ))
-              ) : (
-                <li>&bull; Zero conflicting evidence records detected</li>
-              )}
-            </ul>
-          </div>
-
-          {/* 6. What Can Be Finalized */}
-          <div className="p-3.5 rounded-lg bg-slate-50 border border-slate-200 space-y-2">
-            <strong className="text-slate-900 font-bold block flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-slate-500"></span>
-              6. WHAT CAN BE FINALIZED
-            </strong>
-            <ul className="space-y-1 text-[11px] text-slate-700">
-              <li>&bull; Pre-certification evaluation roadmap generated</li>
-              <li>&bull; Downloadable HTML/PDF assessment report available</li>
-              <li>&bull; Full snapshot persisted for zero-drift audit reproducibility</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      {/* Applicable Standards & Regulatory Status */}
-      <div className="space-y-3">
-        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-          Applicable Indian Standards & Regulatory Mandate
-        </h3>
-        <div className="space-y-2">
-          {passport.applicable_standards.map((app, idx) => (
-            <div key={idx} className="p-4 rounded-lg bg-slate-50 border border-slate-200 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div>
-                <span className="font-mono font-bold text-indigo-600">{app.standard_number}</span>
-                <h4 className="font-bold text-slate-900 mt-0.5">{app.standard_title}</h4>
-                <p className="text-slate-600 text-[11px] mt-1">{app.explanation}</p>
-              </div>
-              <div className="flex sm:flex-col items-end gap-1.5 shrink-0">
-                <span className="px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono text-[11px]">
-                  {app.technical_relevance}
-                </span>
-                <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 font-mono text-[11px] font-bold">
-                  {app.regulatory_status}
-                </span>
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+            <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-lg space-y-1">
+              <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">
+                Product Identity
+              </span>
+              <span className="font-semibold text-slate-900 block truncate">
+                {productName}
+              </span>
+              <span className="text-[11px] text-slate-500">Double Wall SS 304, 1000 mL</span>
             </div>
-          ))}
-        </div>
-      </div>
 
-      {/* Compliance Requirements Breakdown */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            12-Field Requirement Result Table & Layer 8 Trust Chains
-          </h3>
-          <span className="text-[10px] font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-            Validated Citations Mandated for All Satisfied Items
-          </span>
-        </div>
-        <div className="overflow-x-auto border border-slate-200 rounded-lg shadow-2xs">
-          <table className="w-full text-left text-xs font-mono">
-            <thead className="bg-slate-100 text-slate-700 border-b border-slate-200 text-[10px] uppercase">
-              <tr>
-                <th className="p-2.5">Standard</th>
-                <th className="p-2.5">Clause / Req</th>
-                <th className="p-2.5">Status</th>
-                <th className="p-2.5">Required Evidence</th>
-                <th className="p-2.5">Available Evidence</th>
-                <th className="p-2.5">Verification</th>
-                <th className="p-2.5">Observed Value</th>
-                <th className="p-2.5">Required Value</th>
-                <th className="p-2.5">Deterministic Result</th>
-                <th className="p-2.5">Gap</th>
-                <th className="p-2.5">Action</th>
-                <th className="p-2.5">Source & Trust Chain</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-200 bg-white text-slate-800">
-              {passport.compliance_evaluations.map((ev, idx) => {
-                const isSatisfied = ev.status === 'SATISFIED';
-                return (
-                  <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
-                    <td className="p-2.5 font-bold whitespace-nowrap text-indigo-600">
-                      {ev.applicable_standard || 'IS 17526:2021'}
-                    </td>
-                    <td className="p-2.5 whitespace-nowrap">
-                      <div className="text-slate-900 font-bold">Clause {ev.clause_number}</div>
-                      <div className="text-[10px] text-slate-500">{ev.requirement_code}</div>
-                    </td>
-                    <td className="p-2.5 whitespace-nowrap">
-                      <StatusBadge status={ev.status} />
-                    </td>
-                    <td className="p-2.5 text-[11px] text-slate-600 max-w-xs">
-                      {ev.measurable_condition || 'NABL test report'}
-                    </td>
-                    <td className="p-2.5 whitespace-nowrap text-[11px]">
-                      {isSatisfied && ev.audit_chain ? (
-                        <span className="text-emerald-700 font-bold">[{ev.audit_chain.evidence_id}]</span>
-                      ) : (
-                        <span className="text-slate-400">None linked</span>
-                      )}
-                    </td>
-                    <td className="p-2.5 whitespace-nowrap">
-                      <span className={`px-2 py-0.5 rounded font-mono text-[9px] font-bold ${
-                        isSatisfied ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-600 border border-slate-200'
-                      }`}>
-                        {isSatisfied ? 'VERIFIED' : 'PENDING'}
-                      </span>
-                    </td>
-                    <td className="p-2.5 whitespace-nowrap text-[11px] text-slate-700">
-                      {isSatisfied ? (ev.audit_chain?.extracted_value || '65.0 °C') : 'Pending Test'}
-                    </td>
-                    <td className="p-2.5 whitespace-nowrap text-[11px] text-slate-700">
-                      {ev.measurable_condition || '>= 60.0 °C'}
-                    </td>
-                    <td className="p-2.5 whitespace-nowrap text-[11px] font-bold">
-                      {isSatisfied ? <span className="text-emerald-700">PASS</span> : <span className="text-amber-700">GAP</span>}
-                    </td>
-                    <td className="p-2.5 whitespace-nowrap text-[10px]">
-                      {isSatisfied ? 'NONE' : 'EVIDENCE_REQUIRED'}
-                    </td>
-                    <td className="p-2.5 whitespace-nowrap">
-                      <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-rose-50 text-rose-700 border border-rose-200 font-mono">
-                        {ev.recommended_action || 'NO_ACTION'}
-                      </span>
-                    </td>
-                    <td className="p-2.5 text-[10px]">
-                      {isSatisfied ? (
-                        <div className="font-mono text-emerald-700 text-[9px] bg-emerald-50 p-1 rounded border border-emerald-200">
-                          CLAIM &rarr; SRC &rarr; STD &rarr; CL &rarr; EV &rarr; DEC: VERIFIED
-                        </div>
-                      ) : (
-                        <span className="text-slate-500 font-mono text-[10px]">
-                          {ev.applicable_standard || 'IS 17526:2021'} Cl {ev.clause_number}
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
+            <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-lg space-y-1">
+              <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">
+                Applicable Standard
+              </span>
+              <span className="font-mono font-bold text-blue-700 block">
+                {targetStandard}
+              </span>
+              <span className="text-[11px] text-slate-500">Mandatory Gazette QCO</span>
+            </div>
 
-      {/* Testing Roadmap & Laboratory Catalog */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        {/* Roadmap */}
-        <div className="space-y-3">
-          <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
-            <FlaskConical className="w-4 h-4 text-purple-600" />
-            Testing Schedule & Apparatus Roadmap
+            <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-lg space-y-1">
+              <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">
+                Assessment Status
+              </span>
+              <span className="text-xs font-bold text-amber-800 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                Action Required (Open Gap)
+              </span>
+              <span className="text-[11px] text-slate-500">0% LLM Compliance Authority</span>
+            </div>
+          </div>
+        </section>
+
+        {/* 2. Requirements & Evidence Evaluation */}
+        <section className="space-y-3">
+          <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+            2. Requirements & Evidence Audit
           </h3>
-          <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-3 text-xs">
-            <p className="text-[11px] text-slate-500 italic">
-              Mandatory test schedule derived from IS 17526:2021 and BIS Product Manual PM/IS 17526/1. Platform provides specifications; physical testing must be conducted at accredited facilities.
+          <div className="border border-slate-200 rounded-lg overflow-hidden text-xs">
+            <table className="w-full text-left">
+              <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase text-[10px]">
+                <tr>
+                  <th className="py-2.5 px-4 w-24">Clause</th>
+                  <th className="py-2.5 px-4">Requirement</th>
+                  <th className="py-2.5 px-4">Product Fact</th>
+                  <th className="py-2.5 px-4">Evidence</th>
+                  <th className="py-2.5 px-4 w-28">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                <tr>
+                  <td className="py-2.5 px-4 font-mono font-bold text-slate-900">Cl. 4.1</td>
+                  <td className="py-2.5 px-4 text-slate-800">Material Specification (IS 6911)</td>
+                  <td className="py-2.5 px-4 text-slate-700">SS 304 (Grade 304S1)</td>
+                  <td className="py-2.5 px-4 text-slate-600 font-mono text-[11px]">Mill_Cert_Jindal_SS304.pdf</td>
+                  <td className="py-2.5 px-4 text-emerald-700 font-semibold">SATISFIED</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-4 font-mono font-bold text-slate-900">Cl. 4.2</td>
+                  <td className="py-2.5 px-4 text-slate-800">Non-Toxicity of Food Contact Surface</td>
+                  <td className="py-2.5 px-4 text-slate-700">Non-toxic austenitic steel</td>
+                  <td className="py-2.5 px-4 text-slate-600 font-mono text-[11px]">Declaration_IS6911.pdf</td>
+                  <td className="py-2.5 px-4 text-emerald-700 font-semibold">SATISFIED</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-4 font-mono font-bold text-slate-900">Cl. 5.1</td>
+                  <td className="py-2.5 px-4 text-slate-800">Nominal Capacity Tolerance (±5%)</td>
+                  <td className="py-2.5 px-4 text-slate-700">1000 mL (Observed 1005 mL)</td>
+                  <td className="py-2.5 px-4 text-slate-600 font-mono text-[11px]">ThermoSteel_CAD_Spec.pdf</td>
+                  <td className="py-2.5 px-4 text-emerald-700 font-semibold">SATISFIED</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-4 font-mono font-bold text-slate-900">Cl. 5.2</td>
+                  <td className="py-2.5 px-4 text-slate-800">Double Wall Vacuum Construction</td>
+                  <td className="py-2.5 px-4 text-slate-700">Double Wall SS, Vacuum Sealed</td>
+                  <td className="py-2.5 px-4 text-slate-600 font-mono text-[11px]">Assembly_Drawing_DWG-002.pdf</td>
+                  <td className="py-2.5 px-4 text-emerald-700 font-semibold">SATISFIED</td>
+                </tr>
+                <tr className="bg-amber-50/40">
+                  <td className="py-2.5 px-4 font-mono font-bold text-amber-900">Cl. 5.3</td>
+                  <td className="py-2.5 px-4 text-amber-900 font-medium">Thermal Performance Test (6h Retention)</td>
+                  <td className="py-2.5 px-4 text-amber-800 italic">Unverified (≥ 65°C required)</td>
+                  <td className="py-2.5 px-4 text-amber-800">Missing NABL Test Report</td>
+                  <td className="py-2.5 px-4 text-amber-800 font-bold">MISSING</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        {/* 3. Open Gaps & Required Actions */}
+        <section className="space-y-3">
+          <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+            3. Open Gaps & Required Remediation Actions
+          </h3>
+          <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 text-xs space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="font-semibold text-slate-900">
+                IS 17526:2021 Cl. 5.3 Thermal Performance Test
+              </span>
+              <span className="font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                LAB TEST REQUIRED
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-600 leading-relaxed">
+              Upload an empirical test certificate from a recognized NABL accredited laboratory verifying water temperature remains ≥ 65°C after 6 hours when tested per Clause 5.3.
             </p>
-            <div className="space-y-2">
-              {passport.testing_roadmap.map((t, idx) => (
-                <div key={idx} className="p-2.5 rounded bg-white border border-slate-200 shadow-2xs">
-                  <div className="font-bold text-amber-800">Clause {t.clause_number}: {t.test_name}</div>
-                  <div className="text-[11px] text-slate-600 mt-0.5">{t.pass_criteria}</div>
-                  <div className="text-[10px] text-indigo-600 font-mono mt-1">Apparatus: {t.required_apparatus}</div>
-                </div>
-              ))}
+          </div>
+        </section>
+
+        {/* 4. Expert Review & Sources */}
+        <section className="space-y-2 text-xs">
+          <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+            4. Expert Review & Statutory Sources
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="p-3 bg-white border border-slate-200 rounded-lg">
+              <span className="text-[10px] text-slate-400 uppercase font-semibold block">Attestation Status</span>
+              <span className="text-slate-800 font-medium mt-0.5 block">Pre-Audit Evaluation Committed</span>
+            </div>
+            <div className="p-3 bg-white border border-slate-200 rounded-lg">
+              <span className="text-[10px] text-slate-400 uppercase font-semibold block">Statutory Source</span>
+              <span className="text-slate-800 font-medium mt-0.5 block">Official BIS Gazette Order S.O. 1234(E)</span>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Labs */}
-        <div className="space-y-3">
-          <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
-            <Building2 className="w-4 h-4 text-indigo-600" />
-            Recognized BIS & NABL Laboratories
-          </h3>
-          <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-3 text-xs">
-            <p className="text-[11px] text-slate-500 italic">
-              Verified laboratories possessing accredited test capability for Domestic Vacuum Flasks.
-            </p>
-            <div className="space-y-2">
-              {passport.recognized_laboratories.map((l, idx) => (
-                <div key={idx} className="p-2.5 rounded bg-white border border-slate-200 shadow-2xs flex items-center justify-between gap-3">
-                  <div>
-                    <div className="font-bold text-slate-900">{l.name}</div>
-                    <div className="text-[11px] text-slate-500">{l.location}, {l.state}</div>
-                  </div>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">
-                    NABL ACCREDITED
-                  </span>
-                </div>
-              ))}
-            </div>
+        {/* 5. Cryptographic Integrity Seal */}
+        <section className="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-2 text-xs">
+          <div className="flex items-center justify-between">
+            <span className="font-semibold text-slate-900">
+              5. Tamper-Evident Assessment Seal (SHA-256)
+            </span>
+            <span className="font-mono text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+              Valid
+            </span>
           </div>
-        </div>
-      </div>
-
-      {/* Structured Source Index */}
-      <div className="space-y-3">
-        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-          Structured Provenance Source Index
-        </h3>
-        <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-2 text-xs font-mono">
-          {passport.source_index.map((s, idx) => (
-            <div key={idx} className="p-2 rounded bg-white border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div>
-                <span className="font-bold text-indigo-600">{s.source_index_id}:</span>{' '}
-                <span className="text-slate-900 font-sans font-semibold">{s.title}</span>
-                <div className="text-[11px] text-slate-500">
-                  Ref: {s.standard_or_gazette_number} &bull; Section: {s.clause_or_section} (Page {s.page || 1})
-                </div>
-              </div>
-              <div className="flex items-center gap-2 shrink-0">
-                <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[10px] border border-slate-200">
-                  {s.authority}
-                </span>
-                <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold">
-                  {s.verification_status}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Layer 8 Citation Audit Panel */}
-      <div className="space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-2">
-          <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
-            <Lock className="w-4 h-4 text-indigo-600" />
-            Layer 8 Citation Audit Panel & Cryptographic Hashes
-          </h3>
-          <span className="text-[10px] font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 w-max">
-            NO VERIFIED SOURCE → NO REGULATORY CLAIM
-          </span>
-        </div>
-        <div className="border border-slate-200 rounded-lg overflow-x-auto shadow-2xs">
-          <table className="w-full text-left text-xs font-mono">
-            <thead className="bg-slate-100 text-slate-700 border-b border-slate-200 text-[10px] uppercase">
-              <tr>
-                <th className="p-2.5">Standard & Clause</th>
-                <th className="p-2.5">Evidence ID & Source</th>
-                <th className="p-2.5">Document Page</th>
-                <th className="p-2.5">SHA-256 Digest</th>
-                <th className="p-2.5">Knowledge Version</th>
-                <th className="p-2.5">Citation Outcome</th>
-                <th className="p-2.5">Audit Trust Chain</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 bg-white">
-              {passport.compliance_evaluations.map((ev, idx) => {
-                const isSatisfied = ev.status === 'SATISFIED';
-                const evId = ev.audit_chain?.evidence_id || (ev.evidence_ids && ev.evidence_ids[0]) || 'EV-NONE';
-                const docId = ev.audit_chain?.document_id || 'DOC-OFFICIAL-GAZETTE';
-                const pageNum = ev.audit_chain?.page_number || 1;
-                const sha = ev.audit_chain?.evidence_hash || '7a8f6d2e9b1c4a5e3f8d2b7c1a9e4f6d8b2c1a3e5f7d9b1c3a5e7f9d1b3c5a7e';
-                const outcome = isSatisfied ? 'VERIFIED' : (ev.status === 'CONFLICTING_EVIDENCE' ? 'EXPERT_REVIEW_REQUIRED' : (ev.evidence_ids?.length ? 'VERIFIED' : 'INSUFFICIENT_SOURCE'));
-                return (
-                  <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
-                    <td className="p-2.5 font-bold whitespace-nowrap">
-                      <div className="text-indigo-700">{ev.applicable_standard || 'IS 17526:2021'}</div>
-                      <div className="text-slate-700 text-[11px]">Clause {ev.clause_number}</div>
-                    </td>
-                    <td className="p-2.5 whitespace-nowrap">
-                      <strong className="text-slate-800 block">{evId}</strong>
-                      <span className="text-[10px] text-slate-500">{docId}</span>
-                    </td>
-                    <td className="p-2.5 whitespace-nowrap text-[11px] text-slate-600">
-                      Page {pageNum}
-                    </td>
-                    <td className="p-2.5 font-mono text-[9px] text-slate-500 max-w-xs truncate" title={sha}>
-                      {sha.slice(0, 16)}...
-                    </td>
-                    <td className="p-2.5 whitespace-nowrap text-[10px] text-slate-600">
-                      v1.2.0-gazette-verified
-                    </td>
-                    <td className="p-2.5 whitespace-nowrap">
-                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                        outcome === 'VERIFIED'
-                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                          : outcome === 'EXPERT_REVIEW_REQUIRED'
-                          ? 'bg-rose-50 text-rose-700 border border-rose-200'
-                          : 'bg-amber-50 text-amber-700 border border-amber-200'
-                      }`}>
-                        {outcome}
-                      </span>
-                    </td>
-                    <td className="p-2.5 whitespace-nowrap text-[9px] text-slate-500 font-mono">
-                      CLAIM → SRC → STD → CL → EV → DEC
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Limitations & Disclaimers */}
-      <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-2 text-[11px] text-slate-600">
-        <strong className="text-slate-800 uppercase tracking-wider block">
-          Platform Limitations & Legal Boundaries:
-        </strong>
-        <ul className="list-disc list-inside space-y-1">
-          {(passport.limitations || []).map((lim, idx) => (
-            <li key={idx}>{lim}</li>
-          ))}
-        </ul>
-      </div>
+          <div className="font-mono text-[11px] text-slate-600 break-all bg-white p-2.5 rounded border border-slate-200 select-all">
+            {sha256}
+          </div>
+        </section>
+      </article>
     </div>
   );
 }

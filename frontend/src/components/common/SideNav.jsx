@@ -1,26 +1,47 @@
 import React from 'react';
 
+/**
+ * SideNav
+ * 
+ * Compact vertical workstation navigation for M27.1.
+ * Primary:
+ *   COMPLIANCE COMPILER
+ *   01 Product
+ *   02 Applicability
+ *   03 Requirements
+ *   04 Evidence
+ *   05 Gaps
+ *   06 Actions
+ *   07 Assessment
+ * Divider
+ * Secondary:
+ *   Assistant
+ *   Jobs
+ *   Workspace
+ *   Review
+ *   Knowledge Base
+ *   Settings
+ */
+
 export const GOLDEN_PATH_NAV = [
-  { id: 'assistant', step: '01', title: 'BIS AI Assistant', icon: 'smart_toy' },
-  { id: 'dna', step: '02', title: 'Product DNA', icon: 'fingerprint' },
-  { id: 'applicability', step: '03', title: 'BIS Applicability', icon: 'verified' },
-  { id: 'standards', step: '04', title: 'Standards & Clauses', icon: 'menu_book' },
-  { id: 'evidence', step: '05', title: 'Evidence Matrix', icon: 'policy' },
-  { id: 'gaps', step: '06', title: 'Compliance Gaps', icon: 'rule_folder' },
-  { id: 'lab', step: '07', title: 'Lab & Actions', icon: 'science' },
-  { id: 'passport', step: '08', title: 'Compliance Passport', icon: 'verified_user' },
+  { id: 'dna', step: '01', title: 'Product', icon: 'fingerprint' },
+  { id: 'applicability', step: '02', title: 'Applicability', icon: 'verified' },
+  { id: 'standards', step: '03', title: 'Requirements', icon: 'rule' },
+  { id: 'evidence', step: '04', title: 'Evidence', icon: 'policy' },
+  { id: 'gaps', step: '05', title: 'Gaps', icon: 'rule_folder' },
+  { id: 'lab', step: '06', title: 'Actions', icon: 'science' },
+  { id: 'passport', step: '07', title: 'Assessment', icon: 'verified_user' },
 ];
 
 export const SECONDARY_NAV = [
-  { id: 'workstation', title: 'Engineering Workstation', icon: 'roofing' },
-  { id: 'workspace', title: 'Workspace', icon: 'developer_board' },
-  { id: 'jobs', title: 'Compliance Jobs', icon: 'inventory' },
-  { id: 'reviews', title: 'Review & Attestation', icon: 'rate_review' },
-  { id: 'reports', title: 'Dossiers & Passports', icon: 'receipt_long' },
+  { id: 'assistant', title: 'Assistant', icon: 'smart_toy' },
+  { id: 'jobs', title: 'Jobs', icon: 'inventory_2' },
+  { id: 'workspace', title: 'Workspace', icon: 'dashboard' },
+  { id: 'reviews', title: 'Review', icon: 'rate_review' },
+  { id: 'workstation', title: 'Knowledge Base', icon: 'auto_stories' },
   { id: 'settings', title: 'Settings', icon: 'settings' },
 ];
 
-// Unified list for backward compatibility & tab title lookups
 export const NAV_ITEMS = [
   ...GOLDEN_PATH_NAV,
   ...SECONDARY_NAV,
@@ -28,42 +49,40 @@ export const NAV_ITEMS = [
 
 export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
   const navContent = (
-    <div className="flex flex-col justify-between h-full bg-white overflow-y-auto">
+    <div className="flex flex-col justify-between h-full bg-white font-sans overflow-y-auto">
       {/* Brand & Navigation */}
       <div className="flex flex-col">
-        {/* Brand Header */}
-        <div className="h-14 px-4 flex items-center justify-between border-b border-[#E2E8F0] shrink-0">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded bg-[#1D4ED8] flex items-center justify-center text-white shadow-sm">
-              <span className="material-symbols-outlined text-sm">shield</span>
+        {/* Top Brand Block */}
+        <div className="h-14 px-5 flex items-center justify-between border-b border-slate-200 shrink-0">
+          <button 
+            type="button"
+            onClick={() => onSelectTab('entry')}
+            className="flex items-center gap-2.5 text-left cursor-pointer group"
+          >
+            <div className="w-6 h-6 rounded-md bg-blue-600 flex items-center justify-center text-white shadow-2xs group-hover:bg-blue-700 transition-colors">
+              <span className="material-symbols-outlined text-[15px]">shield</span>
             </div>
             <div>
-              <span className="font-['Inter'] font-bold text-sm tracking-tight text-[#0F172A] block leading-none">
+              <span className="font-bold text-xs tracking-tight text-slate-900 block leading-tight">
                 ZYNTRIX
               </span>
-              <span className="text-[9px] font-mono text-slate-500 uppercase tracking-wider block mt-0.5">
+              <span className="text-[10px] text-slate-500 block leading-tight">
                 Compliance Compiler
               </span>
             </div>
-          </div>
-          <span className="font-mono text-[10px] text-[#64748B] bg-[#F1F5F9] px-1.5 py-0.5 rounded border border-[#E2E8F0]">
-            SIH 2026
-          </span>
+          </button>
         </div>
 
-        {/* Primary Golden Path Section */}
-        <div className="px-3 pt-3 pb-2">
-          <div className="px-2 py-1 flex items-center justify-between">
-            <span className="font-mono text-[10px] text-[#1D4ED8] uppercase tracking-wider font-bold">
+        {/* Primary Compiler Workflow */}
+        <div className="px-3 pt-4 pb-2">
+          <div className="px-2 pb-1.5 flex items-center justify-between">
+            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
               Compliance Compiler
             </span>
-            <span className="text-[9px] font-mono bg-blue-50 text-blue-700 px-1 rounded border border-blue-200">
-              Golden Path
-            </span>
           </div>
-          <nav className="flex flex-col gap-0.5 mt-1">
+          <nav className="flex flex-col gap-0.5">
             {GOLDEN_PATH_NAV.map((item) => {
-              const isActive = activeTab === item.id;
+              const isActive = activeTab === item.id || (item.id === 'dna' && activeTab === 'input');
               return (
                 <button
                   key={item.id}
@@ -72,18 +91,18 @@ export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
                     onSelectTab(item.id);
                     if (onCloseMobile) onCloseMobile();
                   }}
-                  className={`w-full flex items-center gap-2 px-2 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                  className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all text-left cursor-pointer ${
                     isActive
-                      ? 'text-[#1D4ED8] bg-[#EFF6FF] font-semibold border-l-2 border-[#1D4ED8]'
-                      : 'text-[#475569] hover:text-[#0F172A] hover:bg-[#F8F9FA]'
+                      ? 'text-blue-700 bg-blue-50/80 font-semibold'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
                 >
-                  <span className={`font-mono text-[10px] w-4 shrink-0 ${isActive ? 'text-[#1D4ED8] font-bold' : 'text-slate-500'}`}>
+                  <span className={`font-mono text-[11px] w-4 shrink-0 ${isActive ? 'text-blue-700 font-bold' : 'text-slate-400'}`}>
                     {item.step}
                   </span>
                   <span
-                    className={`material-symbols-outlined text-[16px] shrink-0 ${
-                      isActive ? 'text-[#1D4ED8]' : 'text-[#64748B]'
+                    className={`material-symbols-outlined text-[17px] shrink-0 ${
+                      isActive ? 'text-blue-700' : 'text-slate-400'
                     }`}
                   >
                     {item.icon}
@@ -95,12 +114,17 @@ export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
           </nav>
         </div>
 
-        {/* Secondary Stations Section */}
-        <div className="px-3 pt-2 pb-2 border-t border-[#E2E8F0]">
-          <div className="px-2 py-1 font-mono text-[10px] text-[#64748B] uppercase tracking-wider font-semibold">
-            Secondary Stations
+        {/* Divider */}
+        <div className="my-2 border-t border-slate-100 mx-3" />
+
+        {/* Secondary Supporting Navigation */}
+        <div className="px-3 pb-3">
+          <div className="px-2 pb-1.5">
+            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+              Secondary
+            </span>
           </div>
-          <nav className="flex flex-col gap-0.5 mt-1">
+          <nav className="flex flex-col gap-0.5">
             {SECONDARY_NAV.map((item) => {
               const isActive = activeTab === item.id;
               return (
@@ -111,15 +135,15 @@ export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
                     onSelectTab(item.id);
                     if (onCloseMobile) onCloseMobile();
                   }}
-                  className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                  className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all text-left cursor-pointer ${
                     isActive
-                      ? 'text-[#1D4ED8] bg-[#EFF6FF] font-semibold'
-                      : 'text-[#64748B] hover:text-[#0F172A] hover:bg-[#F8F9FA]'
+                      ? 'text-blue-700 bg-blue-50/80 font-semibold'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
                 >
                   <span
-                    className={`material-symbols-outlined text-[16px] shrink-0 ${
-                      isActive ? 'text-[#1D4ED8]' : 'text-[#64748B]'
+                    className={`material-symbols-outlined text-[17px] shrink-0 ${
+                      isActive ? 'text-blue-700' : 'text-slate-400'
                     }`}
                   >
                     {item.icon}
@@ -132,20 +156,15 @@ export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
         </div>
       </div>
 
-      {/* Sync Status & System Footnote */}
-      <div className="p-3 border-t border-[#E2E8F0] shrink-0 bg-slate-50/60">
-        <div className="flex items-center justify-between px-1">
-          <span className="text-[11px] text-[#64748B] flex items-center gap-1.5 font-medium">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            ManakOnline Sync
-          </span>
-          <span className="font-mono text-[10px] text-emerald-700 bg-emerald-50 px-1 py-0.5 rounded border border-emerald-200">
-            Authoritative
-          </span>
+      {/* Quiet Footnote */}
+      <div className="p-4 border-t border-slate-100 shrink-0 text-slate-400 text-[11px]">
+        <div className="flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          <span className="font-medium text-slate-600">Deterministic Rulebase</span>
         </div>
-        <div className="mt-1 px-1 text-[10px] text-slate-500">
-          Deterministic Rulebase &bull; 0% LLM Authority
-        </div>
+        <p className="mt-0.5 text-[10px] text-slate-400">
+          Zyntrix Workstation v2.0
+        </p>
       </div>
     </div>
   );
@@ -153,7 +172,7 @@ export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
   return (
     <>
       {/* Desktop Fixed Aside */}
-      <aside className="hidden lg:flex fixed left-0 top-0 h-full w-60 bg-white border-r border-[#E2E8F0] z-40 flex-col">
+      <aside className="hidden lg:flex fixed left-0 top-0 h-full w-60 bg-white border-r border-slate-200 z-40 flex-col">
         {navContent}
       </aside>
 
@@ -161,10 +180,10 @@ export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
           <div
-            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm"
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs"
             onClick={onCloseMobile}
           />
-          <div className="relative w-64 h-full bg-white z-50 shadow-xl">
+          <div className="relative w-64 h-full bg-white z-50 shadow-2xl">
             {navContent}
           </div>
         </div>

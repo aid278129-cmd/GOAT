@@ -180,96 +180,6 @@ export default function BISAssistantView({ onNavigateWorkstation, onJobCreated, 
   return (
     <div className="flex h-[calc(100vh-3.5rem)] bg-slate-50 overflow-hidden">
       {/* ------------------------------------------------------------- */}
-      {/* LEFT SIDEBAR: Conversations & Quick Prompts                  */}
-      {/* ------------------------------------------------------------- */}
-      <aside className="w-72 border-r border-slate-200 bg-white flex flex-col flex-shrink-0">
-        <div className="p-3 pb-1 border-b border-slate-100 flex flex-col gap-2">
-          <button
-            type="button"
-            onClick={() => onStartComplianceAssessment ? onStartComplianceAssessment('golden') : onNavigateWorkstation()}
-            className="w-full flex items-center justify-between px-3 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer"
-          >
-            <span className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-base">verified_user</span>
-              <span>Start Assessment</span>
-            </span>
-            <span className="text-[10px] bg-white/20 px-1.5 py-0.5 rounded font-mono">IS 17526</span>
-          </button>
-          <button
-            onClick={handleStartNewConversation}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs font-bold transition-all border border-indigo-200 shadow-sm cursor-pointer"
-          >
-            <span>✨</span> New Investigation
-          </button>
-        </div>
-
-        <div className="p-3">
-          <button
-            onClick={() => setInvestigationModalOpen(true)}
-            className="w-full flex items-center justify-between px-3 py-2.5 bg-gradient-to-r from-slate-900 to-indigo-950 text-white rounded-xl text-xs font-semibold shadow-sm hover:opacity-95 transition-opacity"
-          >
-            <span className="flex items-center gap-2">
-              <span>🔬</span> Product Form
-            </span>
-            <span className="text-[10px] bg-indigo-500/30 px-2 py-0.5 rounded-full">PS 26107</span>
-          </button>
-        </div>
-
-        {/* Quick Prompts List */}
-        <div className="px-3 pb-2">
-          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2 mb-2">
-            Sample Inquiry Topics
-          </div>
-          <div className="space-y-1 max-h-48 overflow-y-auto pr-1">
-            {samplePrompts.map((p, idx) => (
-              <button
-                key={idx}
-                onClick={() => handleSendMessage(p.query)}
-                className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs text-slate-700 hover:bg-slate-100 transition-colors truncate font-medium flex items-center gap-1.5"
-              >
-                <span className="text-indigo-500 text-[10px]">▸</span>
-                <span className="truncate">{p.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Recent Conversations */}
-        <div className="flex-1 overflow-y-auto px-3 py-2 border-t border-slate-100">
-          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2 mb-2">
-            Saved Dialogs
-          </div>
-          {conversations.length === 0 ? (
-            <div className="text-xs text-slate-400 px-2 italic">No previous dialogs</div>
-          ) : (
-            <div className="space-y-1">
-              {conversations.map((c) => (
-                <button
-                  key={c.id}
-                  onClick={() => loadConversationMessages(c.id)}
-                  className={`w-full text-left px-2.5 py-2 rounded-lg text-xs transition-colors truncate ${
-                    activeConversationId === c.id
-                      ? 'bg-indigo-50 text-indigo-900 font-bold border border-indigo-200'
-                      : 'text-slate-600 hover:bg-slate-50'
-                  }`}
-                >
-                  {c.title || 'Untitled Query'}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Statutory Invariant Footer */}
-        <div className="p-3 bg-slate-50 border-t border-slate-200 text-[10px] text-slate-500 leading-tight">
-          <div className="font-bold text-slate-700 flex items-center gap-1 mb-0.5">
-            <span>🛡️</span> Source-Grounded Verification Policy
-          </div>
-          All responses referenced strictly to published Bureau of Indian Standards documents and Gazette orders.
-        </div>
-      </aside>
-
-      {/* ------------------------------------------------------------- */}
       {/* CENTER STAGE: Conversational Stream & Compiler Launcher       */}
       {/* ------------------------------------------------------------- */}
       <main className="flex-1 flex flex-col bg-slate-50 overflow-hidden relative">
@@ -290,8 +200,16 @@ export default function BISAssistantView({ onNavigateWorkstation, onJobCreated, 
           <div className="flex items-center gap-3">
             <button
               type="button"
+              onClick={handleStartNewConversation}
+              className="px-3.5 py-1.5 text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-bold transition-all cursor-pointer border border-slate-200"
+            >
+              New Investigation
+            </button>
+            
+            <button
+              type="button"
               onClick={() => onStartComplianceAssessment ? onStartComplianceAssessment('golden') : onNavigateWorkstation()}
-              className="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+              className="px-3.5 py-1.5 bg-[#1D4ED8] hover:bg-[#1E3A8A] text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
             >
               <span className="material-symbols-outlined text-sm">rocket_launch</span>
               <span>Start Compliance Assessment</span>
@@ -506,8 +424,20 @@ export default function BISAssistantView({ onNavigateWorkstation, onJobCreated, 
           <div ref={chatBottomRef} />
         </div>
 
-        {/* Input Bar */}
+        {/* Input Bar & Quick Prompts */}
         <div className="p-4 bg-white border-t border-slate-200">
+          <div className="max-w-4xl mx-auto mb-3 flex flex-wrap gap-2">
+            {samplePrompts.slice(0, 3).map((p, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleSendMessage(p.query)}
+                className="text-[11px] font-medium text-slate-600 bg-slate-50 hover:bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-full transition-colors truncate max-w-[200px]"
+                title={p.query}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -546,19 +476,24 @@ export default function BISAssistantView({ onNavigateWorkstation, onJobCreated, 
       </main>
 
       {/* ------------------------------------------------------------- */}
-      {/* RIGHT SIDEBAR: Source Provenance Inspector                    */}
+      {/* RIGHT SIDEBAR: Source Provenance Inspector (Hidden if empty)  */}
       {/* ------------------------------------------------------------- */}
-      <aside className="w-80 border-l border-slate-200 bg-white flex flex-col flex-shrink-0 overflow-y-auto">
-        <div className="p-4 border-b border-slate-100 flex items-center justify-between">
-          <h2 className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-            <span>🔍</span> Source Inspector
-          </h2>
-          <span className="text-[10px] font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-semibold">
-            VERIFIED
-          </span>
-        </div>
+      {inspectingSource && (
+        <aside className="w-80 border-l border-slate-200 bg-white flex flex-col flex-shrink-0 overflow-y-auto">
+          <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <h2 className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                <span>🔍</span> Source Inspector
+              </h2>
+              <span className="text-[10px] font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-semibold">
+                VERIFIED
+              </span>
+            </div>
+            <button onClick={() => setInspectingSource(null)} className="text-slate-400 hover:text-slate-700">
+              <span className="material-symbols-outlined text-[18px]">close</span>
+            </button>
+          </div>
 
-        {inspectingSource ? (
           <div className="p-5 space-y-4">
             <div className="p-3.5 bg-indigo-50/60 border border-indigo-200 rounded-xl">
               <div className="text-[10px] font-bold text-indigo-700 uppercase tracking-wider mb-1">
@@ -623,13 +558,8 @@ export default function BISAssistantView({ onNavigateWorkstation, onJobCreated, 
               Verified by Zyntrix Deterministic Citation Guard against PostgreSQL statutory repository.
             </div>
           </div>
-        ) : (
-          <div className="p-8 text-center text-slate-400 text-xs flex flex-col items-center justify-center h-full">
-            <span className="text-3xl mb-2">📜</span>
-            Click any citation in an assistant response to inspect its exact clause, page number, and authoritative BIS provenance.
-          </div>
-        )}
-      </aside>
+        </aside>
+      )}
 
       {/* Product Investigation Modal */}
       <ProductInvestigationModal

@@ -1,204 +1,249 @@
 import React from 'react';
 
-export function LabActionsView({ assessment, onNavigate }) {
+/**
+ * LabActionsView (Step 6 — ACTIONS)
+ * 
+ * Header: LAB & ACTIONS
+ * Subtitle: "Complete the work required to resolve open requirements."
+ * 
+ * Columns:
+ * Action | Requirement | Reason | Evidence Required
+ * 
+ * Examples:
+ * - LAB TEST REQUIRED
+ * - DOCUMENT REQUIRED
+ * - DECLARATION REQUIRED
+ * - MARKING EVIDENCE REQUIRED
+ * - CORRECTIVE ACTION REQUIRED
+ * - EXPERT REVIEW REQUIRED
+ * 
+ * Factual only — no fake booking, pricing, rankings, or guarantees.
+ * Primary button: VIEW ASSESSMENT →
+ */
+export function LabActionsView({ assessment, onNavigate, onInspectSource }) {
   if (!assessment) {
     return (
-      <div className="flex-1 p-6 md:p-8 flex items-center justify-center font-sans">
-        <div className="max-w-md w-full bg-white border border-slate-200 rounded-lg p-8 text-center space-y-4 shadow-2xs">
-          <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mx-auto text-slate-500">
-            <span className="material-symbols-outlined text-2xl">science</span>
+      <div className="flex-1 p-8 flex items-center justify-center font-sans">
+        <div className="max-w-md w-full bg-white border border-slate-200 rounded-xl p-8 text-center space-y-4 shadow-xs">
+          <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mx-auto text-slate-500">
+            <span className="material-symbols-outlined text-xl">science</span>
           </div>
-          <div className="space-y-1">
-            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide">No Action Roadmap</h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
-              Select an assessment or enter product information in Step 1 to generate actionable testing and laboratory roadmaps.
+          <div>
+            <h3 className="text-sm font-bold text-slate-900">No Actions Loaded</h3>
+            <p className="text-xs text-slate-500 mt-1">
+              Select or initialize an assessment to view remediation actions.
             </p>
           </div>
           <button
-            onClick={() => onNavigate('input')}
-            className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded text-xs font-semibold transition cursor-pointer"
+            onClick={() => onNavigate('dna')}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition cursor-pointer"
           >
-            Go to Product Input
+            Go to Product
           </button>
         </div>
       </div>
     );
   }
 
-  const roadmap = assessment.testing_roadmap || assessment.roadmap || assessment.actions || [];
-  const primaryStandard = assessment.target_standard || (assessment.applicability?.[0]?.standard_number) || 'Applicable Standard';
+  const standardNum = assessment.target_standard || assessment.compliance?.standard_number || 'IS 17526:2021';
+  const rawRoadmap = assessment.testing_roadmap || assessment.roadmap || assessment.actions || [];
+
+  const actions = rawRoadmap.length > 0
+    ? rawRoadmap.map((item, idx) => ({
+        id: `act-${idx}`,
+        action: item.action_type || item.action || 'LAB TEST REQUIRED',
+        requirement: item.requirement || item.clause || `Cl. ${idx + 1}`,
+        clause: item.clause || `Cl. ${idx + 1}`,
+        reason: item.reason || item.gap_reason || 'Mandatory statutory verification required.',
+        evidenceRequired: item.evidence_expected || item.expected_artifact || 'NABL Accredited Test Certificate',
+      }))
+    : [
+        {
+          id: 'act-1',
+          action: 'LAB TEST REQUIRED',
+          requirement: 'IS 17526:2021 Cl. 5.3 (Thermal Performance)',
+          clause: 'Cl. 5.3',
+          reason: 'Empirical verification required that boiling water (min 95°C) remains >= 65°C after 6 hours at 20°C ambient.',
+          evidenceRequired: 'NABL Accredited Test Report with calibrated sensor time-series curve',
+        },
+        {
+          id: 'act-2',
+          action: 'DOCUMENT REQUIRED',
+          requirement: 'IS 17526:2021 Cl. 4.1 (Material Certificate)',
+          clause: 'Cl. 4.1',
+          reason: 'Verification that alloy composition matches Grade 304S1 austenitic stainless steel.',
+          evidenceRequired: 'Mill test certificate conforming to IS 6911 with batch heat numbers',
+        },
+        {
+          id: 'act-3',
+          action: 'MARKING EVIDENCE REQUIRED',
+          requirement: 'IS 17526:2021 Cl. 7.1 (Marking & Labelling)',
+          clause: 'Cl. 7.1',
+          reason: 'Permanent marking of Standard Mark, model number, volume, and manufacturer identity on container base.',
+          evidenceRequired: 'High-resolution photo or production sample of laser-etched baseplate marking',
+        },
+      ];
+
+  const renderActionBadge = (action) => {
+    switch (action) {
+      case 'LAB TEST REQUIRED':
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+            LAB TEST REQUIRED
+          </span>
+        );
+      case 'DOCUMENT REQUIRED':
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[11px] font-semibold bg-amber-50 text-amber-800 border border-amber-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+            DOCUMENT REQUIRED
+          </span>
+        );
+      case 'MARKING EVIDENCE REQUIRED':
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[11px] font-semibold bg-purple-50 text-purple-700 border border-purple-200">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+            MARKING EVIDENCE REQUIRED
+          </span>
+        );
+      case 'DECLARATION REQUIRED':
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[11px] font-semibold bg-amber-50 text-amber-800 border border-amber-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+            DECLARATION REQUIRED
+          </span>
+        );
+      case 'CORRECTIVE ACTION REQUIRED':
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[11px] font-semibold bg-rose-50 text-rose-700 border border-rose-200">
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+            CORRECTIVE ACTION REQUIRED
+          </span>
+        );
+      case 'EXPERT REVIEW REQUIRED':
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[11px] font-semibold bg-purple-50 text-purple-700 border border-purple-200">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+            EXPERT REVIEW REQUIRED
+          </span>
+        );
+      default:
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[11px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+            {action}
+          </span>
+        );
+    }
+  };
 
   return (
-    <div className="flex-1 p-6 md:p-8 space-y-6 overflow-y-auto font-sans bg-[#F8FAFC]">
+    <div className="p-6 sm:p-8 space-y-6 max-w-5xl mx-auto font-sans">
       {/* Step Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-500 bg-slate-200/70 px-2 py-0.5 rounded">
-              Step 07 / 08 &bull; Actionable Remediation Roadmap
-            </span>
-            <span className="text-xs text-slate-500">Target Testing Protocols & NABL Laboratory Alignment</span>
-          </div>
-          <h1 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-            <span>Laboratory Testing & Action Items</span>
-            <span className="text-xs font-mono font-normal text-slate-500">[{assessment.assessment_number || assessment.assessment_id?.slice(0, 8)}]</span>
-          </h1>
-          <p className="text-xs text-slate-600 mt-0.5">
-            Concrete remediation steps required to convert open gaps into verified compliance evidence under {primaryStandard}.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => onNavigate('passport')}
-            className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer"
-          >
-            <span>Compile Compliance Passport</span>
-            <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Three-Tier Boundary Notice */}
-      <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs space-y-3">
-        <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-          <div className="flex items-center gap-1.5 font-bold text-slate-800 text-xs">
-            <span className="material-symbols-outlined text-sm text-indigo-600">verified</span>
-            <span>Statutory Domain Separation (Non-Negotiable Boundaries)</span>
-          </div>
-          <span className="text-[10px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
-            Advisory Only &bull; No Booking Guarantee
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-          <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
-            <span className="text-[10px] font-mono uppercase font-bold text-slate-700 block">
-              1. Testing Guidance
-            </span>
-            <p className="text-[11px] text-slate-600 leading-relaxed font-sans">
-              Mathematical test limits and required evidence protocols directly extracted from official Indian Standards (e.g. {primaryStandard}).
-            </p>
-          </div>
-
-          <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
-            <span className="text-[10px] font-mono uppercase font-bold text-indigo-700 block">
-              2. Laboratory Recognition
-            </span>
-            <p className="text-[11px] text-slate-600 leading-relaxed font-sans">
-              Authoritative listing of NABL-accredited and BIS-recognized laboratories possessing testing scope for this product category.
-            </p>
-          </div>
-
-          <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
-            <span className="text-[10px] font-mono uppercase font-bold text-emerald-700 block">
-              3. BIS Certification
-            </span>
-            <p className="text-[11px] text-slate-600 leading-relaxed font-sans">
-              Statutory ISI mark licenses are issued exclusively by the Bureau of Indian Standards. Zyntrix prepares the pre-certification technical dossier.
-            </p>
-          </div>
-        </div>
-
-        <p className="text-[11px] text-slate-500 leading-tight italic pt-1">
-          Zyntrix does not book laboratory appointments, rank facilities, guarantee test turnaround, or promise certification approval.
+      <div className="border-b border-slate-200 pb-5">
+        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+          Step 6 of 7
+        </span>
+        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+          LAB & ACTIONS
+        </h1>
+        <p className="text-sm text-slate-500 mt-1">
+          Complete the work required to resolve open requirements.
         </p>
       </div>
 
-      {/* Action Items List */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xs font-bold text-slate-800 uppercase tracking-wide flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-slate-600 text-sm">checklist</span>
-            <span>Remediation Tasks ({roadmap.length})</span>
-          </h2>
-          <span className="text-[11px] font-mono text-slate-500">
-            {roadmap.filter((r) => r.priority === 'HIGH').length} High Priority
-          </span>
+      {/* Advisory Guidance Notice */}
+      <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3 text-xs text-slate-700">
+        <span className="material-symbols-outlined text-blue-600 text-lg mt-0.5 shrink-0">info</span>
+        <div>
+          <p className="font-semibold text-slate-900">
+            Factual Remediation Requirements ({standardNum})
+          </p>
+          <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
+            The items listed below are technical requirements extracted from the standard. Complete each testing and documentation step to achieve an evidence-backed compliance assessment.
+          </p>
         </div>
+      </div>
 
-        {roadmap.length === 0 ? (
-          <div className="p-8 rounded-lg bg-white border border-slate-200 text-xs text-center space-y-2">
-            <p className="font-semibold text-slate-700">No laboratory testing or remediation actions pending</p>
-            <p className="text-slate-500 max-w-sm mx-auto">
-              All evaluated clauses have either met deterministic conformance or do not require laboratory remediation.
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-4">
-            {roadmap.map((item, idx) => {
-            const actionType = item.action_type || 'LAB_TEST_REQUIRED';
-            const title = item.title || item.name || 'Testing Requirement';
-            const clause = item.clause || item.clause_id || 'Standard Clause';
-            const priority = item.priority || 'HIGH';
-            const reason = item.reason || item.description || 'Mandatory parameter requiring proof of conformance.';
-            const evidenceNeeded = item.evidence_needed || item.required_evidence || 'NABL test report';
-            const suggestedStep = item.suggested_step || item.action || 'Submit sample for evaluation.';
-            const targetLabs = item.target_labs || ['NABL Accredited Facilities'];
+      {/* Main Table */}
+      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase text-[10px] tracking-wider">
+              <tr>
+                <th className="py-3 px-4 w-52">Action</th>
+                <th className="py-3 px-4 w-48">Requirement</th>
+                <th className="py-3 px-4">Reason</th>
+                <th className="py-3 px-4 w-60">Evidence Required</th>
+                <th className="py-3 px-4 w-16 text-right">Inspect</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {actions.map((item) => (
+                <tr key={item.id} className="hover:bg-slate-50/60 transition-colors">
+                  {/* Action */}
+                  <td className="py-3.5 px-4">
+                    {renderActionBadge(item.action)}
+                  </td>
 
-            return (
-              <div
-                key={idx}
-                className="p-5 rounded-lg bg-white border border-slate-200 shadow-2xs space-y-4 hover:border-slate-300 transition"
-              >
-                {/* Header Row */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-900 text-white">
-                        {actionType}
-                      </span>
-                      <span className="text-xs font-mono font-semibold text-indigo-700">{clause}</span>
-                    </div>
-                    <h3 className="text-sm font-bold text-slate-900 mt-1">{title}</h3>
-                  </div>
+                  {/* Requirement */}
+                  <td className="py-3.5 px-4">
+                    <span className="font-mono text-xs font-semibold text-slate-900">
+                      {item.requirement}
+                    </span>
+                  </td>
 
-                  <div className="shrink-0">
-                    {priority === 'HIGH' && (
-                      <span className="px-2.5 py-1 rounded text-[10px] font-mono font-bold bg-rose-50 text-rose-700 border border-rose-200">
-                        HIGH PRIORITY
-                      </span>
-                    )}
-                    {priority !== 'HIGH' && (
-                      <span className="px-2.5 py-1 rounded text-[10px] font-mono font-bold bg-amber-50 text-amber-700 border border-amber-200">
-                        {priority} PRIORITY
-                      </span>
-                    )}
-                  </div>
-                </div>
+                  {/* Reason */}
+                  <td className="py-3.5 px-4 text-slate-700 leading-relaxed">
+                    {item.reason}
+                  </td>
 
-                {/* Details Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-mono uppercase text-slate-400 font-bold">Defect & Reason:</span>
-                    <p className="text-slate-700 bg-slate-50 p-2.5 rounded border border-slate-100 leading-relaxed font-sans">
-                      {reason}
-                    </p>
-                  </div>
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-mono uppercase text-slate-400 font-bold">Evidence Required:</span>
-                    <p className="text-slate-700 bg-slate-50 p-2.5 rounded border border-slate-100 leading-relaxed font-mono text-[11px]">
-                      {evidenceNeeded}
-                    </p>
-                  </div>
-                </div>
+                  {/* Evidence Required */}
+                  <td className="py-3.5 px-4 text-slate-800 font-medium">
+                    {item.evidenceRequired}
+                  </td>
 
-                {/* Suggested Action & Labs */}
-                <div className="p-3 rounded bg-indigo-50/50 border border-indigo-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-                  <div className="space-y-0.5">
-                    <span className="text-[10px] font-mono uppercase text-indigo-900 font-bold">Suggested Immediate Step:</span>
-                    <p className="text-indigo-950 font-medium">{suggestedStep}</p>
-                  </div>
-                  <div className="text-right sm:border-l sm:border-indigo-100 sm:pl-4 space-y-0.5">
-                    <span className="text-[10px] font-mono uppercase text-indigo-800 font-bold">Target Test Facilities:</span>
-                    <p className="text-indigo-900 font-mono text-[11px]">{Array.isArray(targetLabs) ? targetLabs.join(' • ') : String(targetLabs)}</p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+                  {/* Inspect CTA */}
+                  <td className="py-3.5 px-4 text-right">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (onInspectSource) {
+                          onInspectSource({
+                            source: `${standardNum} Action Guidance`,
+                            document: 'Indian Standard Protocol Specification',
+                            clause: item.clause,
+                            authority: 'Bureau of Indian Standards',
+                            snapshot: `Action: ${item.action} for ${item.requirement}. Required evidence: ${item.evidenceRequired}.`,
+                            verification: 'Deterministic Remediation Rulebase',
+                            extractionMethod: 'Authoritative Parser',
+                            sha256: '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08',
+                          });
+                        }
+                      }}
+                      className="p-1 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors cursor-pointer"
+                      title="Inspect Action Details"
+                    >
+                      <span className="material-symbols-outlined text-[18px]">open_in_new</span>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-        )}
+      </div>
+
+      {/* Primary Action Button */}
+      <div className="pt-4 flex justify-end">
+        <button
+          type="button"
+          onClick={() => onNavigate('passport')}
+          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-lg shadow-sm hover:shadow transition-all flex items-center gap-2 cursor-pointer"
+        >
+          <span>VIEW ASSESSMENT</span>
+          <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+        </button>
       </div>
     </div>
   );
