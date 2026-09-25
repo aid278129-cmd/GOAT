@@ -6,6 +6,7 @@ Product Input -> Product DNA -> Clarification -> Applicability -> Hybrid Retriev
 -> Evidence Graph -> Compliance Passport -> Point-in-time Snapshots.
 """
 import uuid
+import json
 import asyncio
 from datetime import datetime, timezone
 from typing import Dict, Any, List, Optional
@@ -227,20 +228,21 @@ class AssessmentService:
     ) -> AssessmentSnapshot:
         """Create an immutable point-in-time assessment snapshot recording exact inputs, rules, and outcomes."""
         summary = cls.compute_summary(assessment)
+        to_json = lambda val: json.loads(json.dumps(val, default=str)) if val is not None else {}
         snapshot = AssessmentSnapshot(
             id=f"SNAP-{uuid.uuid4().hex[:8].upper()}",
             assessment_id=assessment.id,
             version=assessment.current_version,
             trigger_event=trigger_event,
-            product_dna_state=assessment.product_dna_snapshot,
+            product_dna_state=to_json(assessment.product_dna_snapshot or {}),
             knowledge_version="M4.0-OFFICIAL-2023",
             rule_versions={
                 "APP_DRINKWARE_001": "1.0.0",
                 "IS_17526_2021": "First Edition 2021 + Amend 1-2",
             },
-            decision_records_snapshot=assessment.compliance_summary_snapshot.get("evaluations", []),
-            evidence_ids=assessment.evidence_ids,
-            summary_counts=summary.model_dump(),
+            decision_records_snapshot=to_json(assessment.compliance_summary_snapshot.get("evaluations", [])),
+            evidence_ids=list(assessment.evidence_ids or []),
+            summary_counts=to_json(summary.model_dump()),
         )
         if db is not None:
             try:
@@ -251,6 +253,10 @@ class AssessmentService:
                 await db.refresh(snapshot)
             except Exception as exc:
                 logger.warning(f"DB snapshot persist skipped, continuing in memory: {exc}")
+                try:
+                    await db.rollback()
+                except Exception:
+                    pass
         save_snapshot_mem(snapshot)
         return snapshot
 
@@ -461,6 +467,10 @@ class AssessmentService:
                 await db.refresh(assessment)
             except Exception as exc:
                 logger.warning(f"DB evidence commit skipped: {exc}")
+                try:
+                    await db.rollback()
+                except Exception:
+                    pass
         save_assessment_mem(assessment)
 
         # Snapshot the new decision state

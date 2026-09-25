@@ -11,11 +11,11 @@ export default function BISAssistantView({ onNavigateWorkstation, onJobCreated, 
       id: 'init-1',
       role: 'assistant',
       content: (
-        "Welcome to the **Zyntrix BIS Intelligent Assistant** (SIH PS 26107).\n\n" +
-        "I provide accurate, source-grounded regulatory intelligence on **Indian Standards (IS)**, " +
-        "**BIS Conformity Schemes (ISI Mark, CRS)**, **Testing Protocols**, **Recognized Laboratories**, " +
-        "and **Hallmarking**. Every response references authorized BIS regulatory sources.\n\n" +
-        "Ask a question below or choose a sample investigation to begin."
+        "Welcome to the **Zyntrix Product-to-Clause Compliance Compiler** (SIH PS 26107).\n\n" +
+        "**What do you want to compile or verify?**\n\n" +
+        "Click **Start Compliance Assessment** above to evaluate your product against statutory Indian Standards via our 8-stage deterministic compiler.\n\n" +
+        "You can also use this assistant to explore **Indian Standards (IS)**, **Quality Control Orders (QCOs)**, **Testing Protocols**, and **Recognized Laboratories**.\n\n" +
+        "*AI-assisted guidance. Compliance conclusions are determined by governed, deterministic evaluation.*"
       ),
       citations: [],
       sources: [{ name: 'Bureau of Indian Standards Act 2016', type: 'AUTHORITATIVE_BIS' }],
@@ -263,14 +263,14 @@ export default function BISAssistantView({ onNavigateWorkstation, onJobCreated, 
         {/* Statutory Invariant Footer */}
         <div className="p-3 bg-slate-50 border-t border-slate-200 text-[10px] text-slate-500 leading-tight">
           <div className="font-bold text-slate-700 flex items-center gap-1 mb-0.5">
-            <span>🛡️</span> Zero Hallucination Policy
+            <span>🛡️</span> Source-Grounded Verification Policy
           </div>
-          All responses grounded strictly in published Bureau of Indian Standards documents.
+          All responses referenced strictly to published Bureau of Indian Standards documents and Gazette orders.
         </div>
       </aside>
 
       {/* ------------------------------------------------------------- */}
-      {/* CENTER STAGE: Conversational Stream                           */}
+      {/* CENTER STAGE: Conversational Stream & Compiler Launcher       */}
       {/* ------------------------------------------------------------- */}
       <main className="flex-1 flex flex-col bg-slate-50 overflow-hidden relative">
         {/* Banner */}
@@ -283,7 +283,7 @@ export default function BISAssistantView({ onNavigateWorkstation, onJobCreated, 
               </span>
             </h1>
             <p className="text-xs text-slate-500">
-              Source-backed regulatory intelligence for industries, MSMEs, startups, and consumers.
+              Source-backed regulatory intelligence &bull; AI-assisted guidance &bull; 0% LLM Authority
             </p>
           </div>
 
@@ -327,6 +327,66 @@ export default function BISAssistantView({ onNavigateWorkstation, onJobCreated, 
             </div>
           </div>
         </header>
+
+        {/* Compiler Entry Prompt Banner */}
+        <div className="bg-white border-b border-slate-200 px-6 py-4 flex-shrink-0 shadow-2xs">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded">
+                  Compliance Compiler Entry Point
+                </span>
+                <span className="text-[11px] text-slate-500 font-mono">Governed Deterministic Pipeline</span>
+              </div>
+              <h2 className="text-base font-bold text-slate-900">
+                What do you want to compile or verify?
+              </h2>
+              <p className="text-xs text-slate-600 max-w-2xl">
+                AI-assisted guidance. Compliance conclusions are determined exclusively by governed, deterministic evaluation.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2.5 shrink-0">
+              <button
+                type="button"
+                onClick={() => onStartComplianceAssessment ? onStartComplianceAssessment('golden') : onNavigateWorkstation()}
+                className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm transition-all cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-sm">play_circle</span>
+                <span>Start Compliance Assessment</span>
+                <span className="text-[10px] font-mono bg-white/20 px-1.5 py-0.5 rounded">IS 17526</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => onStartComplianceAssessment ? onStartComplianceAssessment('input') : setInvestigationModalOpen(true)}
+                className="px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-semibold flex items-center gap-1.5 border border-slate-200 transition-all cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-sm">upload_file</span>
+                <span>Custom Spec Intake</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Compiler Flow Visualization Strip */}
+          <div className="mt-3 pt-3 border-t border-slate-100 flex items-center gap-2 overflow-x-auto text-[11px] font-mono text-slate-500 whitespace-nowrap">
+            <span className="text-slate-400 font-bold text-[10px] uppercase">Workflow:</span>
+            <span className="text-slate-700">Product Artifact</span>
+            <span className="text-slate-400">&rarr;</span>
+            <span className="text-slate-700">Product DNA</span>
+            <span className="text-slate-400">&rarr;</span>
+            <span className="text-slate-700">BIS Applicability</span>
+            <span className="text-slate-400">&rarr;</span>
+            <span className="text-slate-700">Standards & Clauses</span>
+            <span className="text-slate-400">&rarr;</span>
+            <span className="text-slate-700">Evidence Audit</span>
+            <span className="text-slate-400">&rarr;</span>
+            <span className="text-slate-700">Gaps</span>
+            <span className="text-slate-400">&rarr;</span>
+            <span className="text-slate-700">Lab Actions</span>
+            <span className="text-slate-400">&rarr;</span>
+            <span className="text-indigo-700 font-bold">Compliance Passport</span>
+          </div>
+        </div>
 
         {/* Message Stream */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6">

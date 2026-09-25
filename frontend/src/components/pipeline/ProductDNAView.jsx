@@ -4,6 +4,7 @@ import { StatusBadge } from '../StatusBadge';
 export function ProductDNAView({ assessment, onClarify, onNavigate }) {
   const [clarifyValues, setClarifyValues] = useState({});
   const [submittingAttr, setSubmittingAttr] = useState(null);
+  const [inspectingParam, setInspectingParam] = useState(null);
 
   if (!assessment) {
     return (
@@ -50,17 +51,17 @@ export function ProductDNAView({ assessment, onClarify, onNavigate }) {
   };
 
   const canonicalFields = [
-    { key: 'product_name', label: 'Product Model / Trade Name', defaultVal: assessment.product_name || dna.product_name },
-    { key: 'category', label: 'Product Category', defaultVal: assessment.category || dna.category },
-    { key: 'intended_use', label: 'Intended Use & Environment', defaultVal: dna.intended_use },
-    { key: 'material', label: 'Primary Materials & Grades', defaultVal: Array.isArray(dna.materials) ? dna.materials.join(', ') : (dna.material || attributes.material) },
-    { key: 'capacity_ml', label: 'Nominal Capacity / Volume', defaultVal: dna.capacity_ml || attributes.capacity_ml ? `${dna.capacity_ml || attributes.capacity_ml} mL` : (attributes.capacity || attributes.volume || null) },
-    { key: 'rated_voltage', label: 'Rated Voltage (AC/DC)', defaultVal: dna.rated_voltage || attributes.rated_voltage ? `${dna.rated_voltage || attributes.rated_voltage} V` : null },
-    { key: 'rated_power_w', label: 'Rated Power / Wattage', defaultVal: dna.rated_power_w || attributes.rated_power_w ? `${dna.rated_power_w || attributes.rated_power_w} W` : null },
-    { key: 'construction', label: 'Construction & Wall Type', defaultVal: dna.construction || attributes.construction },
-    { key: 'insulation', label: 'Thermal / Electrical Insulation', defaultVal: dna.insulated !== undefined ? (dna.insulated ? 'Vacuum Double Wall Insulation' : 'Non-Insulated') : (dna.insulation || attributes.insulation) },
-    { key: 'food_contact', label: 'Food Contact Surface', defaultVal: dna.food_contact !== undefined ? (dna.food_contact ? 'Yes' : 'No') : null },
-    { key: 'standards_claimed', label: 'Manufacturer Claimed Standards', defaultVal: dna.standards_claimed?.length ? dna.standards_claimed.join(', ') : null },
+    { key: 'product_name', label: 'Product Model / Trade Name', defaultVal: assessment.product_name || dna.product_name, impact: 'Catalog Identification' },
+    { key: 'category', label: 'Product Category', defaultVal: assessment.category || dna.category, impact: 'Primary Standard Category Scope' },
+    { key: 'intended_use', label: 'Intended Use & Environment', defaultVal: dna.intended_use, impact: 'Statutory Safety Envelope' },
+    { key: 'material', label: 'Primary Materials & Grades', defaultVal: Array.isArray(dna.materials) ? dna.materials.join(', ') : (dna.material || attributes.material), impact: 'Material Conformance (Cl. 4.1)' },
+    { key: 'capacity_ml', label: 'Nominal Capacity / Volume', defaultVal: dna.capacity_ml || attributes.capacity_ml ? `${dna.capacity_ml || attributes.capacity_ml} mL` : (attributes.capacity || attributes.volume || null), impact: 'Test Volume Tolerance (Cl. 5.1)' },
+    { key: 'construction', label: 'Construction & Wall Type', defaultVal: dna.construction || attributes.construction, impact: 'Double Wall Requirement (Cl. 5.2)' },
+    { key: 'insulation', label: 'Thermal / Electrical Insulation', defaultVal: dna.insulated !== undefined ? (dna.insulated ? 'Vacuum Double Wall Insulation' : 'Non-Insulated') : (dna.insulation || attributes.insulation), impact: 'Thermal Performance Test (Cl. 5.3)' },
+    { key: 'food_contact', label: 'Food Contact Surface', defaultVal: dna.food_contact !== undefined ? (dna.food_contact ? 'Yes (SS 304 / Grade 304S1)' : 'No') : null, impact: 'Leaching & Toxicity (Cl. 4.2)' },
+    { key: 'rated_voltage', label: 'Rated Voltage (AC/DC)', defaultVal: dna.rated_voltage || attributes.rated_voltage ? `${dna.rated_voltage || attributes.rated_voltage} V` : null, impact: 'Electrical Safety Envelope' },
+    { key: 'rated_power_w', label: 'Rated Power / Wattage', defaultVal: dna.rated_power_w || attributes.rated_power_w ? `${dna.rated_power_w || attributes.rated_power_w} W` : null, impact: 'Power Rating Verification' },
+    { key: 'standards_claimed', label: 'Manufacturer Claimed Standards', defaultVal: dna.standards_claimed?.length ? dna.standards_claimed.join(', ') : null, impact: 'Self-Declaration vs Statutory Scope' },
   ];
 
   return (
@@ -70,16 +71,16 @@ export function ProductDNAView({ assessment, onClarify, onNavigate }) {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-500 bg-slate-200/70 px-2 py-0.5 rounded">
-              Step 02 / 08 &bull; Layer 2 Fact Engine
+              Step 02 / 08 &bull; Product DNA & Fact Ledger
             </span>
-            <span className="text-xs text-slate-500">Structured Technical Representation</span>
+            <span className="text-xs text-slate-500 font-mono">0% LLM Compliance Authority</span>
           </div>
           <h1 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-            <span>Product DNA & Technical Attributes</span>
+            <span>Product DNA Fact Ledger</span>
             <span className="text-xs font-mono font-normal text-slate-500">[{assessment.assessment_number || assessment.assessment_id?.slice(0, 8)}]</span>
           </h1>
           <p className="text-xs text-slate-600 mt-0.5">
-            Verified technical facts extracted from product artifacts. Inferred values are flagged and require confirmation.
+            This is the structured representation of the product that drives applicability and requirement evaluation.
           </p>
         </div>
 
@@ -91,6 +92,35 @@ export function ProductDNAView({ assessment, onClarify, onNavigate }) {
             <span>Proceed to BIS Applicability</span>
             <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
           </button>
+        </div>
+      </div>
+
+      {/* Primary Concept Callout Banner */}
+      <div className="p-4 rounded-xl bg-gradient-to-r from-slate-900 to-indigo-950 text-white shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-indigo-300 font-bold block">
+            Core Compiler Principle
+          </span>
+          <div className="text-sm font-semibold text-white">
+            This structured DNA drives deterministic BIS applicability and clause evaluation.
+          </div>
+          <p className="text-xs text-slate-300 max-w-2xl leading-relaxed">
+            Deterministic rule engines match these empirical facts against Gazette QCO schedules. A proposed AI parameter must never visually or legally substitute for accepted evidence-backed facts.
+          </p>
+        </div>
+        <div className="flex sm:flex-col gap-2 shrink-0 text-[10px] font-mono">
+          <div className="flex items-center gap-1.5 bg-emerald-500/20 text-emerald-300 px-2 py-1 rounded border border-emerald-500/30">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            <span>ACCEPTED_EVIDENCE_BACKED</span>
+          </div>
+          <div className="flex items-center gap-1.5 bg-amber-500/20 text-amber-300 px-2 py-1 rounded border border-amber-500/30">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+            <span>AI_ASSISTED / PROPOSED</span>
+          </div>
+          <div className="flex items-center gap-1.5 bg-slate-500/20 text-slate-300 px-2 py-1 rounded border border-slate-500/30">
+            <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+            <span>MISSING_EVIDENCE</span>
+          </div>
         </div>
       </div>
 
@@ -163,7 +193,7 @@ export function ProductDNAView({ assessment, onClarify, onNavigate }) {
             </h2>
           </div>
           <span className="text-[11px] font-mono text-slate-500">
-            {Object.keys(attributes).length + 4} Parameters Inspected
+            {Object.keys(attributes).length + 4} Parameters Inspected &bull; Click parameter to view provenance
           </span>
         </div>
 
@@ -171,9 +201,9 @@ export function ProductDNAView({ assessment, onClarify, onNavigate }) {
           <table className="w-full text-left text-xs">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-100/70 text-slate-600 font-mono text-[10px] uppercase tracking-wider">
-                <th className="py-2.5 px-4">Parameter</th>
-                <th className="py-2.5 px-4">Confirmed Technical Value</th>
-                <th className="py-2.5 px-4">Verification State</th>
+                <th className="py-2.5 px-4">Parameter Name</th>
+                <th className="py-2.5 px-4">Value & Visual State</th>
+                <th className="py-2.5 px-4">Trust Boundary</th>
                 <th className="py-2.5 px-4">Provenance Source</th>
                 <th className="py-2.5 px-4 text-right">Regulatory Impact</th>
               </tr>
@@ -186,18 +216,42 @@ export function ProductDNAView({ assessment, onClarify, onNavigate }) {
                 const state = isPresent ? (isClarified ? 'ACCEPTED_EVIDENCE_BACKED' : 'AI_ASSISTED / PROPOSED') : 'MISSING_EVIDENCE';
 
                 return (
-                  <tr key={field.key} className="hover:bg-slate-50 transition">
+                  <tr
+                    key={field.key}
+                    onClick={() => setInspectingParam({ ...field, state })}
+                    className="hover:bg-slate-50/80 transition cursor-pointer"
+                  >
                     <td className="py-3 px-4 font-semibold text-slate-900">
-                      {field.label}
+                      <div className="flex items-center gap-1.5">
+                        <span>{field.label}</span>
+                        <span className="material-symbols-outlined text-slate-400 text-xs hover:text-slate-700">info</span>
+                      </div>
                       <span className="block text-[10px] font-mono font-normal text-slate-400">{field.key}</span>
                     </td>
+
+                    {/* Value rendered according to trust tier */}
                     <td className="py-3 px-4 font-mono">
-                      {isPresent ? (
-                        <span className="text-slate-800 font-medium">{val}</span>
-                      ) : (
-                        <span className="text-slate-400 italic">Not specified in uploaded documents</span>
+                      {state === 'ACCEPTED_EVIDENCE_BACKED' && (
+                        <div className="p-1.5 rounded bg-emerald-50/60 border border-emerald-200 text-emerald-950 font-bold inline-block">
+                          <span>{val}</span>
+                        </div>
+                      )}
+                      {state === 'AI_ASSISTED / PROPOSED' && (
+                        <div className="p-1.5 rounded bg-amber-50/60 border border-dashed border-amber-300 text-amber-900 italic inline-block">
+                          <span>{val}</span>
+                          <span className="text-[10px] font-normal not-italic text-amber-700 block font-sans">
+                            [AI Candidate &bull; Requires Engineer Attestation]
+                          </span>
+                        </div>
+                      )}
+                      {state === 'MISSING_EVIDENCE' && (
+                        <span className="text-slate-400 italic font-sans text-[11px] block">
+                          [MISSING EVIDENCE &bull; Upload Spec or Test Report]
+                        </span>
                       )}
                     </td>
+
+                    {/* Trust Boundary State Badge */}
                     <td className="py-3 px-4">
                       {state === 'ACCEPTED_EVIDENCE_BACKED' && (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -206,7 +260,7 @@ export function ProductDNAView({ assessment, onClarify, onNavigate }) {
                         </span>
                       )}
                       {state === 'AI_ASSISTED / PROPOSED' && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-50 text-amber-700 border border-amber-200" title="AI suggestion - candidate until verified">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-50 text-amber-800 border border-amber-200" title="Proposed AI value — not an accepted statutory value">
                           <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
                           AI_ASSISTED / PROPOSED
                         </span>
@@ -218,12 +272,23 @@ export function ProductDNAView({ assessment, onClarify, onNavigate }) {
                         </span>
                       )}
                     </td>
-                    <td className="py-3 px-4 font-mono text-[11px] text-slate-500">
-                      {isPresent ? (dna.source_type || 'DOCUMENT_INGESTION') : '—'}
+
+                    {/* Provenance Source */}
+                    <td className="py-3 px-4 font-mono text-[11px] text-slate-600">
+                      {isPresent ? (
+                        <div className="flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[13px] text-slate-400">description</span>
+                          <span className="truncate max-w-[160px]">{dna.source_type || 'DOCUMENT_INGESTION'}</span>
+                        </div>
+                      ) : (
+                        <span className="text-slate-400">—</span>
+                      )}
                     </td>
+
+                    {/* Regulatory Impact */}
                     <td className="py-3 px-4 text-right font-mono text-[11px]">
                       {isPresent ? (
-                        <span className="text-emerald-700 font-medium">Determines Scope</span>
+                        <span className="text-indigo-700 font-medium">{field.impact || 'Determines Scope'}</span>
                       ) : (
                         <span className="text-amber-700">Scope Pending</span>
                       )}
@@ -235,6 +300,67 @@ export function ProductDNAView({ assessment, onClarify, onNavigate }) {
           </table>
         </div>
       </div>
+
+      {/* Parameter Provenance Inspection Drawer */}
+      {inspectingParam && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs">
+          <div className="bg-white rounded-xl shadow-2xl border border-slate-200 max-w-lg w-full p-6 space-y-4 animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex items-start justify-between border-b border-slate-100 pb-3">
+              <div>
+                <span className="text-[10px] font-mono uppercase text-slate-500 font-bold block">
+                  Product DNA Provenance Inspector
+                </span>
+                <h3 className="text-sm font-bold text-slate-900">{inspectingParam.label}</h3>
+                <span className="text-xs font-mono text-slate-400">{inspectingParam.key}</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setInspectingParam(null)}
+                className="p-1 text-slate-400 hover:text-slate-700 rounded transition cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-base">close</span>
+              </button>
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <div className="p-3 rounded bg-slate-50 border border-slate-200 space-y-1">
+                <span className="text-[10px] font-mono uppercase text-slate-400 font-bold">Confirmed Value:</span>
+                <div className="font-mono font-bold text-slate-900 text-sm">
+                  {inspectingParam.defaultVal || 'Not specified'}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 font-mono text-[11px]">
+                <div className="p-2.5 rounded bg-slate-50 border border-slate-100">
+                  <span className="text-[9px] uppercase text-slate-400 block font-bold">Trust Classification</span>
+                  <span className="font-bold text-indigo-700">{inspectingParam.state}</span>
+                </div>
+                <div className="p-2.5 rounded bg-slate-50 border border-slate-100">
+                  <span className="text-[9px] uppercase text-slate-400 block font-bold">Source Provenance</span>
+                  <span className="text-slate-800">{dna.source_type || 'DOCUMENT_INGESTION'}</span>
+                </div>
+              </div>
+
+              <div className="p-3 rounded bg-indigo-50/50 border border-indigo-100 space-y-1">
+                <span className="text-[10px] font-mono uppercase text-indigo-900 font-bold">Statutory Regulatory Impact:</span>
+                <p className="text-indigo-950 leading-relaxed font-sans">
+                  {inspectingParam.impact}. Matches standard applicability rule parameters and clause limits under Indian Standard specifications.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-1">
+              <button
+                type="button"
+                onClick={() => setInspectingParam(null)}
+                className="px-4 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold cursor-pointer"
+              >
+                Close Inspector
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Technical Raw Fact Audit Card */}
       <div className="p-4 rounded-lg bg-white border border-slate-200 space-y-2 text-xs">

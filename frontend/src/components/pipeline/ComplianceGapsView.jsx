@@ -84,7 +84,7 @@ export function ComplianceGapsView({ assessment, onNavigate }) {
       {/* Real Count Summary Cards (Zero fake percentages) */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
         <div className="p-3 bg-white border border-slate-200 rounded-lg shadow-2xs">
-          <span className="text-[10px] font-mono uppercase text-slate-400 font-bold">Total Requirements</span>
+          <span className="text-[10px] font-mono uppercase text-slate-400 font-bold">Total Clauses</span>
           <div className="text-2xl font-mono font-bold text-slate-900 mt-1">{gaps.length}</div>
           <span className="text-[10px] text-slate-500">Evaluated Under {primaryStandard}</span>
         </div>
@@ -98,20 +98,33 @@ export function ComplianceGapsView({ assessment, onNavigate }) {
         <div className="p-3 bg-white border border-slate-200 rounded-lg shadow-2xs">
           <span className="text-[10px] font-mono uppercase text-amber-600 font-bold">Missing Evidence</span>
           <div className="text-2xl font-mono font-bold text-amber-700 mt-1">{missingCount}</div>
-          <span className="text-[10px] text-amber-600">Requires Lab Test / Cert</span>
+          <span className="text-[10px] text-amber-600">Pending Lab Test / Cert</span>
         </div>
 
         <div className="p-3 bg-white border border-slate-200 rounded-lg shadow-2xs">
-          <span className="text-[10px] font-mono uppercase text-rose-600 font-bold">Failed / Gaps</span>
+          <span className="text-[10px] font-mono uppercase text-rose-600 font-bold">Deficiencies</span>
           <div className="text-2xl font-mono font-bold text-rose-700 mt-1">{failedCount + partialCount}</div>
-          <span className="text-[10px] text-rose-600">Specification Deficiencies</span>
+          <span className="text-[10px] text-rose-600">Non-Compliant Tolerances</span>
         </div>
 
         <div className="p-3 bg-white border border-slate-200 rounded-lg shadow-2xs">
           <span className="text-[10px] font-mono uppercase text-purple-600 font-bold">Expert Review</span>
           <div className="text-2xl font-mono font-bold text-purple-700 mt-1">{expertCount}</div>
-          <span className="text-[10px] text-purple-600">Regulatory Ambiguity</span>
+          <span className="text-[10px] text-purple-600">Engineering Ambiguity</span>
         </div>
+      </div>
+
+      {/* Safe Abstention Principle Callout */}
+      <div className="p-3.5 rounded-lg bg-amber-50/70 border border-amber-200 text-xs text-amber-950 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+        <div className="flex items-center gap-2 font-medium">
+          <span className="material-symbols-outlined text-amber-700 text-base shrink-0">shield</span>
+          <span>
+            <strong>Safe Abstention Invariant:</strong> The compiler does not declare failure simply because proof is absent. It identifies the requirement, identifies the evidence needed, preserves the unresolved state, and generates the next engineering action.
+          </span>
+        </div>
+        <span className="text-[10px] font-mono text-amber-800 bg-amber-100 px-2 py-0.5 rounded shrink-0 font-bold">
+          Zero Fabricated Results
+        </span>
       </div>
 
       {/* Filter Tabs */}
@@ -138,18 +151,17 @@ export function ComplianceGapsView({ assessment, onNavigate }) {
         </div>
       </div>
 
-      {/* Gaps Table */}
+      {/* Gaps Table — Structured to Answer the 4 Cardinal Questions */}
       <div className="bg-white border border-slate-200 rounded-lg shadow-2xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-100/70 text-slate-600 font-mono text-[10px] uppercase tracking-wider">
-                <th className="py-2.5 px-4">Clause #</th>
-                <th className="py-2.5 px-4">Requirement</th>
-                <th className="py-2.5 px-4">Attached Evidence</th>
-                <th className="py-2.5 px-4">Deterministic Result</th>
-                <th className="py-2.5 px-4">Evaluation Rationale</th>
-                <th className="py-2.5 px-4 text-right">Required Action</th>
+                <th className="py-2.5 px-4">1. Affected Requirement</th>
+                <th className="py-2.5 px-4">2. Missing / Unverified Evidence</th>
+                <th className="py-2.5 px-4">Deterministic State</th>
+                <th className="py-2.5 px-4">3. Why Unresolved?</th>
+                <th className="py-2.5 px-4 text-right">4. What Should Happen Next?</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -157,36 +169,79 @@ export function ComplianceGapsView({ assessment, onNavigate }) {
                 const clauseId = g.clause_id || g.clause || `Cl. ${idx + 1}`;
                 const title = g.requirement || g.title || 'Standard Test Limit';
                 const evidence = g.evidence || g.evidence_snippet || g.attached_evidence || 'No evidence attached';
-                const result = g.status || g.result || 'MISSING';
+                let rawResult = g.status || g.result || 'MISSING_EVIDENCE';
+                if (rawResult === 'MISSING') rawResult = 'MISSING_EVIDENCE';
+                if (rawResult === 'VERIFIED') rawResult = 'SATISFIED';
+                if (rawResult === 'FAILED') rawResult = 'NOT_SATISFIED';
+                if (rawResult === 'REQUIRES_EXPERT_REVIEW') rawResult = 'EXPERT_REVIEW_REQUIRED';
+
                 const reason = g.reason || g.evaluation_reason || 'Evidence missing or below statutory tolerance.';
-                const action = g.required_action || g.suggested_action || (result === 'SATISFIED' ? 'None (Conformity Documented)' : 'LAB_TEST_REQUIRED');
+
+                // Canonical Action Categories
+                let action = g.required_action || g.suggested_action;
+                if (!action || rawResult === 'SATISFIED') {
+                  action = rawResult === 'SATISFIED' ? 'NO_ACTION_REQUIRED' : 'LAB_TEST_REQUIRED';
+                }
 
                 return (
                   <tr key={idx} className="hover:bg-slate-50 transition">
-                    <td className="py-3 px-4 font-mono font-bold text-slate-900 whitespace-nowrap">
-                      {clauseId}
+                    {/* 1. Affected Requirement */}
+                    <td className="py-3 px-4 max-w-xs">
+                      <span className="font-mono font-bold text-slate-900 block">{clauseId}</span>
+                      <p className="font-semibold text-slate-800 text-[11px] mt-0.5">{title}</p>
                     </td>
-                    <td className="py-3 px-4 font-semibold text-slate-800 max-w-xs">
-                      {title}
-                    </td>
+
+                    {/* 2. Evidence Status */}
                     <td className="py-3 px-4 font-mono text-[11px] text-slate-600 max-w-xs">
                       <span className="line-clamp-2" title={evidence}>
                         {evidence}
                       </span>
                     </td>
+
+                    {/* Deterministic State */}
                     <td className="py-3 px-4 whitespace-nowrap">
-                      <StatusBadge status={result} />
+                      {rawResult === 'SATISFIED' && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                          SATISFIED
+                        </span>
+                      )}
+                      {rawResult === 'MISSING_EVIDENCE' && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-50 text-amber-900 border border-amber-300" title="Missing evidence artifact — requires lab test report">
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                          MISSING_EVIDENCE
+                        </span>
+                      )}
+                      {rawResult === 'NOT_SATISFIED' && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-50 text-rose-700 border border-rose-200">
+                          <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+                          NOT_SATISFIED
+                        </span>
+                      )}
+                      {rawResult === 'EXPERT_REVIEW_REQUIRED' && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-purple-50 text-purple-700 border border-purple-200">
+                          <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+                          EXPERT_REVIEW_REQUIRED
+                        </span>
+                      )}
+                      {rawResult !== 'SATISFIED' && rawResult !== 'MISSING_EVIDENCE' && rawResult !== 'NOT_SATISFIED' && rawResult !== 'EXPERT_REVIEW_REQUIRED' && (
+                        <StatusBadge status={rawResult} />
+                      )}
                     </td>
-                    <td className="py-3 px-4 text-slate-600 max-w-xs">
+
+                    {/* 3. Why Unresolved? */}
+                    <td className="py-3 px-4 text-slate-600 max-w-xs text-[11px]">
                       <p className="line-clamp-2 leading-relaxed" title={reason}>
                         {reason}
                       </p>
                     </td>
-                    <td className="py-3 px-4 text-right whitespace-nowrap font-mono text-[11px]">
-                      {result === 'SATISFIED' ? (
-                        <span className="text-slate-400 font-normal">—</span>
+
+                    {/* 4. What Happens Next? */}
+                    <td className="py-3 px-4 text-right whitespace-nowrap font-mono text-[10px]">
+                      {action === 'NO_ACTION_REQUIRED' ? (
+                        <span className="text-slate-400 font-normal">NO_ACTION_REQUIRED</span>
                       ) : (
-                        <span className="px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200 font-semibold">
+                        <span className="px-2 py-1 rounded bg-slate-900 text-white font-bold tracking-tight">
                           {action}
                         </span>
                       )}

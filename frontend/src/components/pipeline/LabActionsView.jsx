@@ -59,14 +59,49 @@ export function LabActionsView({ assessment, onNavigate }) {
         </div>
       </div>
 
-      {/* Action Disclaimer Notice */}
-      <div className="p-3 bg-white border border-slate-200 rounded-lg text-xs text-slate-600 space-y-1 shadow-2xs">
-        <div className="flex items-center gap-1.5 font-bold text-slate-800 text-xs">
-          <span className="material-symbols-outlined text-sm text-indigo-600">info</span>
-          <span>Pre-Certification Advisory Scope</span>
+      {/* Three-Tier Boundary Notice */}
+      <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs space-y-3">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+          <div className="flex items-center gap-1.5 font-bold text-slate-800 text-xs">
+            <span className="material-symbols-outlined text-sm text-indigo-600">verified</span>
+            <span>Statutory Domain Separation (Non-Negotiable Boundaries)</span>
+          </div>
+          <span className="text-[10px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+            Advisory Only &bull; No Booking Guarantee
+          </span>
         </div>
-        <p className="text-[11px] leading-relaxed">
-          GOAT provides actionable guidance for laboratory test parameters and documentation requirements. GOAT does not book laboratories, issue testing tokens, or communicate with the Bureau of Indian Standards on the manufacturer's behalf.
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+          <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
+            <span className="text-[10px] font-mono uppercase font-bold text-slate-700 block">
+              1. Testing Guidance
+            </span>
+            <p className="text-[11px] text-slate-600 leading-relaxed font-sans">
+              Mathematical test limits and required evidence protocols directly extracted from official Indian Standards (e.g. {primaryStandard}).
+            </p>
+          </div>
+
+          <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
+            <span className="text-[10px] font-mono uppercase font-bold text-indigo-700 block">
+              2. Laboratory Recognition
+            </span>
+            <p className="text-[11px] text-slate-600 leading-relaxed font-sans">
+              Authoritative listing of NABL-accredited and BIS-recognized laboratories possessing testing scope for this product category.
+            </p>
+          </div>
+
+          <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
+            <span className="text-[10px] font-mono uppercase font-bold text-emerald-700 block">
+              3. BIS Certification
+            </span>
+            <p className="text-[11px] text-slate-600 leading-relaxed font-sans">
+              Statutory ISI mark licenses are issued exclusively by the Bureau of Indian Standards. Zyntrix prepares the pre-certification technical dossier.
+            </p>
+          </div>
+        </div>
+
+        <p className="text-[11px] text-slate-500 leading-tight italic pt-1">
+          Zyntrix does not book laboratory appointments, rank facilities, guarantee test turnaround, or promise certification approval.
         </p>
       </div>
 

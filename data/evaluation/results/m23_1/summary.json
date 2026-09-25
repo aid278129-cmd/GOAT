@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-13T12:31:37.417651+00:00",
+  "timestamp": "2026-09-25T15:09:34.778905+00:00",
   "dataset_version": "v1.2.0-gazette-verified",
   "audit_summary": {
     "VERIFIED": 0,
@@ -9,7 +9,7 @@
     "TOTAL_AUDITED_METRICS": 9
   },
   "summary_findings": {
-    "retrieval_audit": "Measured on N=21 authentic scorable queries: Neural Cross-Encoder Reranker achieves R@1=0.905, R@3=0.905, R@5=0.905, MRR=0.905, P50=4.73ms, P95=6.77ms. Audit status: PARTIALLY_VERIFIED (N=21 < 30).",
+    "retrieval_audit": "Measured on N=21 authentic scorable queries: Neural Cross-Encoder Reranker achieves R@1=0.905, R@3=0.905, R@5=0.905, MRR=0.905, P50=4.79ms, P95=42.74ms. Audit status: PARTIALLY_VERIFIED (N=21 < 30).",
     "extraction_audit": "Reported M23 extraction metrics (P=0.97, R=0.95, F1=0.96) were simulated estimates. Audited against N=3 approved positive cases (14 fields), classification is STATISTICALLY_INSUFFICIENT.",
     "evidence_matching_audit": "Reported M23 evidence matching (0.96) was simulated. Audited against N=5 requirements and N=4 evidence records, classification is STATISTICALLY_INSUFFICIENT.",
     "anomaly_detection_audit": "Cross-source conflict detection correctly identifies heat-retention discrepancy (100%), with zero false positives on clean cases. N=1 conflict case in repository; classification is STATISTICALLY_INSUFFICIENT.",
@@ -23,11 +23,11 @@
       "recall_at_3": 0.9048,
       "recall_at_5": 0.9048,
       "mrr": 0.881,
-      "latency_p50_ms": 4.83,
-      "latency_p95_ms": 38.1,
+      "latency_p50_ms": 4.5,
+      "latency_p95_ms": 4.91,
       "dataset_n": 21,
       "audit_status": "PARTIALLY_VERIFIED",
-      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=4.83ms, P95=38.1ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=4.5ms, P95=4.91ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
     },
     {
       "mode": "Dense Vector",
@@ -35,11 +35,11 @@
       "recall_at_3": 0.8095,
       "recall_at_5": 0.8571,
       "mrr": 0.7976,
-      "latency_p50_ms": 4.66,
-      "latency_p95_ms": 6.16,
+      "latency_p50_ms": 4.43,
+      "latency_p95_ms": 4.86,
       "dataset_n": 21,
       "audit_status": "PARTIALLY_VERIFIED",
-      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=4.66ms, P95=6.16ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=4.43ms, P95=4.86ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
     },
     {
       "mode": "Hybrid (BM25 + Dense)",
@@ -47,11 +47,11 @@
       "recall_at_3": 0.9048,
       "recall_at_5": 0.9048,
       "mrr": 0.9048,
-      "latency_p50_ms": 5.08,
-      "latency_p95_ms": 6.73,
+      "latency_p50_ms": 4.41,
+      "latency_p95_ms": 4.63,
       "dataset_n": 21,
       "audit_status": "PARTIALLY_VERIFIED",
-      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=5.08ms, P95=6.73ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=4.41ms, P95=4.63ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
     },
     {
       "mode": "Hybrid + Existing Deterministic Reranker",
@@ -59,11 +59,11 @@
       "recall_at_3": 0.9048,
       "recall_at_5": 0.9048,
       "mrr": 0.9048,
-      "latency_p50_ms": 4.68,
-      "latency_p95_ms": 6.58,
+      "latency_p50_ms": 4.56,
+      "latency_p95_ms": 4.87,
       "dataset_n": 21,
       "audit_status": "PARTIALLY_VERIFIED",
-      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=4.68ms, P95=6.58ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=4.56ms, P95=4.87ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
     },
     {
       "mode": "Hybrid + Neural Cross-Encoder Reranker",
@@ -71,11 +71,11 @@
       "recall_at_3": 0.9048,
       "recall_at_5": 0.9048,
       "mrr": 0.9048,
-      "latency_p50_ms": 4.73,
-      "latency_p95_ms": 6.77,
+      "latency_p50_ms": 4.79,
+      "latency_p95_ms": 42.74,
       "dataset_n": 21,
       "audit_status": "PARTIALLY_VERIFIED",
-      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=4.73ms, P95=6.77ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
+      "audit_notes": "Evaluated on N=21 authentic BIS benchmark queries. P50=4.79ms, P95=42.74ms on CPU. Sample count < 30 gives PARTIALLY_VERIFIED."
     }
   ],
   "audited_metrics": [
@@ -102,7 +102,7 @@
       "dataset": "Approved Golden Cases",
       "num_approved_cases": 3,
       "model_version": "1.0.0",
-      "evaluation_date": "2026-09-13",
+      "evaluation_date": "2026-09-25",
       "test_split": "TEST"
     },
     {
@@ -128,7 +128,7 @@
       "dataset": "Approved Golden Cases",
       "num_approved_cases": 3,
       "model_version": "1.0.0",
-      "evaluation_date": "2026-09-13",
+      "evaluation_date": "2026-09-25",
       "test_split": "TEST"
     },
     {
@@ -154,7 +154,7 @@
       "dataset": "Approved Golden Cases",
       "num_approved_cases": 3,
       "model_version": "1.0.0",
-      "evaluation_date": "2026-09-13",
+      "evaluation_date": "2026-09-25",
       "test_split": "TEST"
     },
     {
@@ -180,7 +180,7 @@
       "dataset": "Approved Requirements Matrix",
       "num_approved_cases": 5,
       "model_version": "1.0.0",
-      "evaluation_date": "2026-09-13",
+      "evaluation_date": "2026-09-25",
       "test_split": "TEST"
     },
     {
@@ -206,7 +206,7 @@
       "dataset": "Synthetic & Official Conflict Suite",
       "num_approved_cases": 1,
       "model_version": "1.0.0",
-      "evaluation_date": "2026-09-13",
+      "evaluation_date": "2026-09-25",
       "test_split": "CONFLICT"
     },
     {
@@ -232,7 +232,7 @@
       "dataset": "Approved Harmonized Cases",
       "num_approved_cases": 5,
       "model_version": "1.0.0",
-      "evaluation_date": "2026-09-13",
+      "evaluation_date": "2026-09-25",
       "test_split": "VALIDATION"
     },
     {
@@ -258,7 +258,7 @@
       "dataset": "Adversarial Zero-Hallucination Suite",
       "num_approved_cases": 12,
       "model_version": "1.0.0",
-      "evaluation_date": "2026-09-13",
+      "evaluation_date": "2026-09-25",
       "test_split": "OUT_OF_DOMAIN"
     },
     {
@@ -284,7 +284,7 @@
       "dataset": "Cross-Standard Adversarial Probes",
       "num_approved_cases": 5,
       "model_version": "1.0.0",
-      "evaluation_date": "2026-09-13",
+      "evaluation_date": "2026-09-25",
       "test_split": "TEST"
     },
     {
@@ -310,7 +310,7 @@
       "dataset": "evaluation_benchmarks.json (out_of_scope queries)",
       "num_approved_cases": 4,
       "model_version": "1.0.0",
-      "evaluation_date": "2026-09-13",
+      "evaluation_date": "2026-09-25",
       "test_split": "OUT_OF_DOMAIN"
     }
   ]

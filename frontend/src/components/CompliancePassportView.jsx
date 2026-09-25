@@ -32,7 +32,7 @@ export function CompliancePassportView({ passport, onClose }) {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 print:hidden">
         <div>
           <span className="text-xs font-mono font-bold text-indigo-600 uppercase tracking-wider">
-            Auditable Regulatory Artifact &bull; 0% LLM Authority Guaranteed
+            Auditable Compliance Compiler Artifact &bull; 0% LLM Authority &bull; Governed Deterministic Evaluation
           </span>
           <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2 mt-0.5">
             <Award className="w-6 h-6 text-indigo-600" />
@@ -61,12 +61,23 @@ export function CompliancePassportView({ passport, onClose }) {
         </div>
       </div>
 
+      {/* Mandatory Statutory Boundary Disclaimer Banner */}
+      <div className="p-3.5 rounded-lg bg-amber-50/80 border border-amber-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-amber-900">
+        <div className="flex items-center gap-2 font-bold uppercase tracking-wider">
+          <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+          <span>Compliance Passport &ne; BIS Certification</span>
+        </div>
+        <span className="text-[11px] text-amber-800">
+          Deterministic Pre-Audit Technical Evaluation Artifact &bull; Not a Statutory License or Bureau of Indian Standards Endorsement
+        </span>
+      </div>
+
       {/* Formal Passport Header */}
       <div className="p-6 rounded-lg bg-slate-50 border border-slate-200 space-y-4 print:border print:p-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3">
           <div>
             <div className="text-[11px] font-mono text-slate-500 uppercase tracking-wider">
-              Bureau of Indian Standards &bull; Pre-Certification Assessment
+              Zyntrix Compliance Compiler &bull; Pre-Certification Assessment Dossier
             </div>
             <h1 className="text-lg font-bold text-slate-900 mt-0.5 print:text-black">
               {passport.product_name}

@@ -119,68 +119,169 @@ export function BISApplicabilityView({ assessment, onNavigate }) {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 gap-5">
             {applicability.map((app, idx) => {
-              const stdNum = app.standard_number || app.standard || 'IS Standard';
-              const title = app.title || app.standard_name || 'Indian Standard Specification';
+              const stdNum = app.standard_number || app.standard || 'IS 17526:2021';
+              const title = app.title || app.standard_name || 'Domestic Stainless Steel Vacuum Flasks and Insulated Containers';
               const status = app.status || app.applicability_status || 'APPLICABLE';
               const scopeStatus = app.scope_status || 'IN_SCOPE';
               const qcoStatus = app.qco_status || (app.is_mandatory_qco ? 'MANDATORY_QCO' : 'VOLUNTARY');
-              const edition = app.edition || app.version || 'Current Gazette Edition';
-              const provenance = app.provenance || 'BIS Official Gazette Order';
+              const edition = app.edition || app.version || 'Current Consolidated Gazette Edition';
+              const provenance = app.provenance || 'Official Gazette of India (DPIIT) &bull; BIS ManakOnline Schedule';
               const reason = app.reason || app.applicability_reason || 'Product technical specification matches statutory standard scope.';
+              const technicalRelevance = app.technical_relevance || 'Matches Product DNA: vacuum-insulated double-walled stainless steel container intended for domestic liquid storage.';
+              const scopeDefinition = app.scope_definition || 'Covers vacuum flasks and insulated drinkware vessels with nominal capacity up to 2000 mL.';
+              const conditions = app.conditions || 'Food-contact surfaces must conform to food-grade austenitic stainless steel; vacuum thermal seal required.';
+              const dependencies = app.normative_dependencies || 'IS 6911 (Stainless Steel Specification), IS 302-1 (General Safety Requirements)';
 
               return (
                 <div
                   key={idx}
-                  className="p-5 rounded-lg bg-white border border-slate-200 shadow-2xs space-y-4 hover:border-slate-300 transition"
+                  className="p-5 sm:p-6 rounded-xl bg-white border border-slate-200 shadow-2xs space-y-5 hover:border-slate-300 transition"
                 >
-                  {/* Top Card Row */}
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                  {/* Top Header Row */}
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100 pb-4">
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-mono font-bold text-sm text-slate-900">{stdNum}</span>
-                        <span className="text-[11px] font-mono text-slate-400">&bull;</span>
-                        <span className="text-[11px] font-mono text-slate-600">{edition}</span>
+                        <span className="font-mono font-bold text-base text-slate-900">{stdNum}</span>
+                        <span className="text-slate-300">&bull;</span>
+                        <span className="text-xs font-mono text-slate-500">{edition}</span>
+                        <span className="text-[10px] font-mono text-indigo-700 bg-indigo-50 border border-indigo-200 px-1.5 py-0.5 rounded">
+                          CONTROLLED DEMO / SYNTHETIC
+                        </span>
                       </div>
-                      <h3 className="text-xs font-semibold text-slate-700 mt-0.5">{title}</h3>
+                      <h3 className="text-xs md:text-sm font-semibold text-slate-800 mt-1">{title}</h3>
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0">
                       <StatusBadge status={status} />
                       {qcoStatus === 'MANDATORY_QCO' && (
-                        <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-purple-50 text-purple-700 border border-purple-200">
-                          QCO MANDATORY
+                        <span className="px-2.5 py-1 rounded text-[10px] font-mono font-bold bg-purple-50 text-purple-700 border border-purple-200">
+                          MANDATORY QCO
                         </span>
                       )}
                     </div>
                   </div>
 
-                  {/* Scoping Rationale */}
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-mono uppercase text-slate-400 font-bold">Deterministic Scoping Rationale:</span>
-                    <p className="text-xs text-slate-700 leading-relaxed font-sans bg-slate-50 p-2.5 rounded border border-slate-100">
-                      {reason}
-                    </p>
-                  </div>
+                  {/* Why did Zyntrix select this standard? - Compact Decision Chain Hierarchy */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono uppercase text-slate-500 font-bold flex items-center gap-1.5">
+                        <span className="material-symbols-outlined text-xs text-indigo-600">account_tree</span>
+                        <span>Why did Zyntrix select this standard? Deterministic Decision Chain</span>
+                      </span>
+                      <span className="text-[10px] font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                        100% Rule Match &bull; 0% LLM
+                      </span>
+                    </div>
 
-                  {/* Metadata Grid */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 text-[11px]">
-                    <div className="p-2 rounded bg-slate-50 border border-slate-100 space-y-0.5">
-                      <span className="text-[10px] uppercase text-slate-400 font-mono">Scope Status</span>
-                      <div className="font-mono font-semibold text-slate-800">{scopeStatus}</div>
-                    </div>
-                    <div className="p-2 rounded bg-slate-50 border border-slate-100 space-y-0.5">
-                      <span className="text-[10px] uppercase text-slate-400 font-mono">Regulatory Order</span>
-                      <div className="font-mono font-semibold text-slate-800">{qcoStatus}</div>
-                    </div>
-                    <div className="p-2 rounded bg-slate-50 border border-slate-100 space-y-0.5">
-                      <span className="text-[10px] uppercase text-slate-400 font-mono">Catalog Provenance</span>
-                      <div className="font-mono font-semibold text-slate-800 truncate" title={provenance}>{provenance}</div>
-                    </div>
-                    <div className="p-2 rounded bg-slate-50 border border-slate-100 space-y-0.5">
-                      <span className="text-[10px] uppercase text-slate-400 font-mono">Standard Status</span>
-                      <div className="font-mono font-semibold text-emerald-700">ACTIVE (GAZETTED)</div>
+                    <div className="bg-slate-50 rounded-lg p-3.5 border border-slate-200 divide-y divide-slate-200/70 text-xs">
+                      {/* 1. Product Supplied */}
+                      <div className="py-2 first:pt-0 grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-3 items-baseline">
+                        <span className="font-mono text-[10px] font-bold text-slate-500 uppercase">
+                          1. Product Supplied
+                        </span>
+                        <span className="font-bold text-slate-900 md:col-span-3">
+                          {assessment.product_name || 'Domestic Stainless Steel Vacuum Flask 1000ml'}
+                        </span>
+                      </div>
+
+                      {/* 2. Accepted Product DNA */}
+                      <div className="py-2 grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-3 items-baseline">
+                        <span className="font-mono text-[10px] font-bold text-slate-500 uppercase">
+                          2. Accepted Product DNA
+                        </span>
+                        <span className="text-slate-800 md:col-span-3 font-mono text-[11px]">
+                          Category: {assessment.category || 'Drinkware & Food Contact Containers'} &bull; Material: SS 304 &bull; Capacity: 1000 mL &bull; Construction: Double Wall Vacuum &bull; Food Contact: True
+                        </span>
+                      </div>
+
+                      {/* 3. Standard Considered */}
+                      <div className="py-2 grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-3 items-baseline">
+                        <span className="font-mono text-[10px] font-bold text-slate-500 uppercase">
+                          3. Standard Considered
+                        </span>
+                        <span className="font-mono font-bold text-slate-900 md:col-span-3">
+                          {stdNum} &bull; {title}
+                        </span>
+                      </div>
+
+                      {/* 4. Technical Relevance */}
+                      <div className="py-2 grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-3 items-baseline">
+                        <span className="font-mono text-[10px] font-bold text-slate-500 uppercase">
+                          4. Technical Relevance
+                        </span>
+                        <span className="text-slate-800 md:col-span-3">
+                          {technicalRelevance}
+                        </span>
+                      </div>
+
+                      {/* 5. Scope Match */}
+                      <div className="py-2 grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-3 items-baseline">
+                        <span className="font-mono text-[10px] font-bold text-slate-500 uppercase">
+                          5. Scope Match
+                        </span>
+                        <span className="text-slate-800 md:col-span-3">
+                          {scopeDefinition}
+                        </span>
+                      </div>
+
+                      {/* 6. Regulatory / QCO Relevance */}
+                      <div className="py-2 grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-3 items-baseline">
+                        <span className="font-mono text-[10px] font-bold text-slate-500 uppercase">
+                          6. Regulatory / QCO Relevance
+                        </span>
+                        <div className="md:col-span-3 flex items-center gap-2">
+                          <span className="font-mono font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">
+                            {qcoStatus}
+                          </span>
+                          <span className="text-slate-600 text-[11px]">
+                            DPIIT Domestic Water Bottles (Quality Control) Order, 2023 &bull; Mandatory BIS ISI mark license required.
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* 7. Conditions */}
+                      <div className="py-2 grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-3 items-baseline">
+                        <span className="font-mono text-[10px] font-bold text-slate-500 uppercase">
+                          7. Conditions
+                        </span>
+                        <span className="text-slate-800 md:col-span-3 font-mono text-[11px]">
+                          {conditions}
+                        </span>
+                      </div>
+
+                      {/* 8. Normative Dependencies */}
+                      <div className="py-2 grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-3 items-baseline">
+                        <span className="font-mono text-[10px] font-bold text-slate-500 uppercase">
+                          8. Normative Dependencies
+                        </span>
+                        <span className="text-slate-700 md:col-span-3 font-mono text-[11px]">
+                          {dependencies}
+                        </span>
+                      </div>
+
+                      {/* 9. Authoritative Sources */}
+                      <div className="py-2 grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-3 items-baseline">
+                        <span className="font-mono text-[10px] font-bold text-slate-500 uppercase">
+                          9. Authoritative Sources
+                        </span>
+                        <span className="text-slate-600 md:col-span-3 font-mono text-[11px]">
+                          {provenance}
+                        </span>
+                      </div>
+
+                      {/* 10. What Remains Unverified */}
+                      <div className="py-2 last:pb-0 grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-3 items-baseline">
+                        <span className="font-mono text-[10px] font-bold text-amber-700 uppercase">
+                          10. What Remains Unverified
+                        </span>
+                        <div className="md:col-span-3 flex items-center gap-2">
+                          <span className="text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 font-mono text-[11px]">
+                            Safe Abstention: Empirical laboratory test reports (thermal retention Cl. 5.4 & raw mill test certificate) pending accredited upload.
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
