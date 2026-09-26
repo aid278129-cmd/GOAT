@@ -1,5 +1,5 @@
 /**
- * Zyntrix Regulatory Compliance Engineering Workstation
+ * GOAT Regulatory Compliance Engineering Workstation
  * Stage 03 — Standards & Clause Intelligence Types & Schemas
  *
  * REGULATORY MANDATE:

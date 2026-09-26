@@ -11,7 +11,7 @@ export class ApiError extends Error {
 
 async function request(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
-  const token = localStorage.getItem('zyntrix_auth_token');
+  const token = localStorage.getItem('goat_auth_token');
 
   const headers = {
     Accept: 'application/json',

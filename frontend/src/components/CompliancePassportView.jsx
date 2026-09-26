@@ -139,7 +139,7 @@ export function CompliancePassportView({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
           <div className="space-y-1">
             <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">
-              Zyntrix Compliance Compiler &bull; Pre-Certification Assessment
+              GOAT Compliance Compiler &bull; Pre-Certification Assessment
             </span>
             <h2 className="text-xl font-bold text-slate-900">
               {productName}

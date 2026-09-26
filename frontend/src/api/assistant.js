@@ -1,5 +1,5 @@
 /**
- * Zyntrix Phase 6: BIS Intelligent Assistant & Knowledge API Client
+ * GOAT Phase 6: BIS Intelligent Assistant & Knowledge API Client
  * SIH Problem Statement 26107
  */
 

@@ -1,7 +1,7 @@
 import { apiClient } from './client';
 
-const TOKEN_KEY = 'zyntrix_auth_token';
-const USER_KEY = 'zyntrix_current_user';
+const TOKEN_KEY = 'goat_auth_token';
+const USER_KEY = 'goat_current_user';
 
 export const authApi = {
   async bootstrap() {

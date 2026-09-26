@@ -1,5 +1,5 @@
 /**
- * Zyntrix Deterministic Standards & Clause Assessment Engine
+ * GOAT Deterministic Standards & Clause Assessment Engine
  *
  * Traceability Path:
  * Standard -> Clause -> Requirement -> Product DNA Parameter -> Accepted Evidence -> Deterministic Rule -> Engineering Assessment

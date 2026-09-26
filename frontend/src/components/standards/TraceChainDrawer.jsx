@@ -91,11 +91,11 @@ export function TraceChainDrawer({ isOpen, onClose, result, requirement, onSpati
             </div>
           </div>
 
-          {/* Question: Why did Zyntrix produce this result? */}
+          {/* Question: Why did GOAT produce this result? */}
           <div className="p-3.5 bg-blue-50/50 border border-blue-200 rounded-lg">
             <div className="text-[11px] font-mono font-bold text-blue-900 uppercase tracking-wider mb-1 flex items-center gap-1.5">
               <span className="material-symbols-outlined text-sm text-blue-600">help</span>
-              Why did Zyntrix produce this result?
+              Why did GOAT produce this result?
             </div>
             <p className="text-xs text-slate-700 leading-relaxed font-sans">{explanation}</p>
           </div>
@@ -337,7 +337,7 @@ export function TraceChainDrawer({ isOpen, onClose, result, requirement, onSpati
         {/* Footer */}
         <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
           <span className="font-mono text-[10px] text-slate-400">
-            Zyntrix Deterministic Compiler • Non-destructive Evaluation
+            GOAT Deterministic Compiler • Non-destructive Evaluation
           </span>
           <button
             type="button"

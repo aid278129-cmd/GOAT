@@ -202,7 +202,7 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
             Statutory Regulatory Notice
           </span>
           <p className="text-amber-950/80 leading-relaxed text-[11px]">
-            Zyntrix provides deterministic engineering assessment, evidence traceability, and technical documentation.
+            GOAT provides deterministic engineering assessment, evidence traceability, and technical documentation.
             This workstation does <strong>NOT</strong> grant BIS certification, statutory licenses, or laboratory approvals.
             Conformity must be submitted directly to the Bureau of Indian Standards through official statutory channels.
           </p>

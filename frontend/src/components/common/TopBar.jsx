@@ -5,7 +5,7 @@ import { MorphingInfinity } from '../loading-ui/morphing-infinity';
  * TopBar (M27.2 Assistant-First & Context-Driven)
  * 
  * Clean, compact top bar:
- * - Left: ZYNTRIX (or "← Back to Assistant" when inside an active assessment)
+ * - Left: GOAT (or "← Back to Assistant" when inside an active assessment)
  * - Center: Contextual assessment header or clean search/status
  * - Right: Multilingual selector, Sources, Assistant, Help, More menu, User avatar
  */
@@ -84,7 +84,7 @@ export function TopBar({
           </div>
           <div>
             <span className="font-bold text-xs tracking-tight text-slate-900 block leading-tight">
-              ZYNTRIX
+              GOAT
             </span>
             {!isAssessmentMode && (
               <span className="text-[10px] text-slate-500 block leading-tight hidden xs:inline">

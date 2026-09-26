@@ -14,7 +14,7 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error('Zyntrix React Application Error:', error, errorInfo);
+    console.error('GOAT React Application Error:', error, errorInfo);
   }
 
   render() {
@@ -38,8 +38,8 @@ class ErrorBoundary extends React.Component {
               <button
                 type="button"
                 onClick={() => {
-                  localStorage.removeItem('zyntrix_active_tab');
-                  localStorage.removeItem('zyntrix_active_assessment_id');
+                  localStorage.removeItem('goat_active_tab');
+                  localStorage.removeItem('goat_active_assessment_id');
                   window.location.reload();
                 }}
                 className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-sm transition cursor-pointer"

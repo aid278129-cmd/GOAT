@@ -1,5 +1,5 @@
 /**
- * Zyntrix Universal Evidence Ingestion Domain Types & Constants.
+ * GOAT Universal Evidence Ingestion Domain Types & Constants.
  * 
  * Enforces the Cardinal Regulatory Rule:
  * File Processing != Evidence Acceptance != Engineering Assessment != Human Attestation != BIS Certification

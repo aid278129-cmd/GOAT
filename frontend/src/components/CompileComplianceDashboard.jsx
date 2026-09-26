@@ -6,7 +6,7 @@ import { TextShimmer } from './loading-ui/text-shimmer';
 /**
  * CompileComplianceDashboard
  * 
- * The primary dashboard landing view for Zyntrix.
+ * The primary dashboard landing view for GOAT.
  * Centers around "Compile Compliance":
  * 1. User inputs or uploads product specifications / document
  * 2. Compiles deterministically through:
@@ -580,7 +580,7 @@ export function CompileComplianceDashboard({
       {/* ------------------------------------------------------------- */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 shadow-2xs">
         <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-3">
-          Zyntrix Deterministic Regulatory Execution Pipeline
+          GOAT Deterministic Regulatory Execution Pipeline
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 text-xs font-sans">
           {[

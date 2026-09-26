@@ -73,7 +73,7 @@ export default function LandingHomeView({ onEnterMainPage }) {
           </div>
           <div>
             <span className="font-space-grotesk text-xs font-bold tracking-wider text-white uppercase block">
-              ZYNTRIX <span className="text-cyan-400 font-mono text-[10px]">v2.6</span>
+              GOAT <span className="text-cyan-400 font-mono text-[10px]">v2.6</span>
             </span>
             <span className="font-footnote text-[10px] text-cyan-300/70 tracking-tight block">
               Statutory BIS Conformity Architecture

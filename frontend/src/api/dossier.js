@@ -32,7 +32,7 @@ export const dossierApi = {
 
   async downloadDossierPdf(jobId, dossierId, filename) {
     const url = this.getDownloadUrl(jobId, dossierId);
-    const token = localStorage.getItem('zyntrix_auth_token');
+    const token = localStorage.getItem('goat_auth_token');
     const headers = {};
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;

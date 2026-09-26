@@ -119,7 +119,7 @@ function mapBackendResult(res, standard) {
 export default function App() {
   // Default landing screen is 'home' (ai-based-bis-compiler homepage per specification)
   const [activeTab, setActiveTab] = useState(() => {
-    const saved = localStorage.getItem('zyntrix_active_tab');
+    const saved = localStorage.getItem('goat_active_tab');
     if (!saved || saved === 'entry') return 'home';
     return saved;
   });
@@ -129,7 +129,7 @@ export default function App() {
   // Canonical Unified Assessment Pipeline State (recovers from localStorage on refresh)
   const [activeAssessment, setActiveAssessment] = useState(null);
   const [activeAssessmentId, setActiveAssessmentId] = useState(() => {
-    return localStorage.getItem('zyntrix_active_assessment_id') || null;
+    return localStorage.getItem('goat_active_assessment_id') || null;
   });
   const [assessmentsList, setAssessmentsList] = useState([]);
   const [passportData, setPassportData] = useState(null);
@@ -195,13 +195,13 @@ export default function App() {
   // Sync activeTab to localStorage
   const handleSelectTab = (newTab) => {
     setActiveTab(newTab);
-    localStorage.setItem('zyntrix_active_tab', newTab);
+    localStorage.setItem('goat_active_tab', newTab);
   };
 
   // Sync activeAssessmentId to localStorage
   useEffect(() => {
     if (activeAssessmentId) {
-      localStorage.setItem('zyntrix_active_assessment_id', activeAssessmentId);
+      localStorage.setItem('goat_active_assessment_id', activeAssessmentId);
     }
   }, [activeAssessmentId]);
 
@@ -526,7 +526,7 @@ export default function App() {
           const asms = await assessmentApi.listAssessments();
           setAssessmentsList(asms || []);
 
-          const savedAsmId = localStorage.getItem('zyntrix_active_assessment_id');
+          const savedAsmId = localStorage.getItem('goat_active_assessment_id');
           if (asms && asms.length > 0) {
             const targetAsm = (savedAsmId && asms.find((a) => (a.id === savedAsmId || a.assessment_id === savedAsmId))) || asms[0];
             const targetId = targetAsm.id || targetAsm.assessment_id;

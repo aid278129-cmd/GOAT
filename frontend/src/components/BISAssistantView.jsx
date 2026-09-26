@@ -249,7 +249,7 @@ export default function BISAssistantView({
               </div>
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-blue-700 block mb-1">
-                  ZYNTRIX
+                  GOAT
                 </span>
                 <span className="text-xs font-medium text-slate-500 uppercase tracking-widest block">
                   Compliance Assistant
@@ -402,7 +402,7 @@ export default function BISAssistantView({
                           <div className="w-5 h-5 rounded bg-blue-600 text-white flex items-center justify-center">
                             <span className="material-symbols-outlined text-[13px]">shield</span>
                           </div>
-                          <span className="text-xs font-bold text-slate-900">Zyntrix Assistant</span>
+                          <span className="text-xs font-bold text-slate-900">GOAT Assistant</span>
                         </div>
                         <span className="text-[10px] text-slate-400 font-mono">
                           0% LLM Compliance Authority

@@ -65,7 +65,7 @@ export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
             </div>
             <div>
               <span className="font-bold text-xs tracking-tight text-slate-900 block leading-tight">
-                ZYNTRIX
+                GOAT
               </span>
               <span className="text-[10px] text-slate-500 block leading-tight">
                 Compliance Compiler
@@ -208,7 +208,7 @@ export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
           <span className="font-medium text-slate-600">Deterministic Rulebase</span>
         </div>
         <p className="mt-0.5 text-[10px] text-slate-400">
-          Zyntrix Workstation v2.0
+          GOAT Workstation v2.0
         </p>
       </div>
     </div>

@@ -1,5 +1,5 @@
 /**
- * Zyntrix Product DNA Domain Types & Section Definitions.
+ * GOAT Product DNA Domain Types & Section Definitions.
  * 
  * Enforces Cardinal Non-Negotiables:
  * 1. ONLY Accepted Evidence may contribute to Product DNA.
