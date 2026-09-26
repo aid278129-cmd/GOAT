@@ -272,7 +272,7 @@ export function EvidenceDetailDrawer({ evidence, isOpen, onClose, onUpdateStatus
               </div>
 
               <div className="p-3 bg-blue-50/70 border border-blue-200 rounded text-xs text-blue-900 leading-relaxed">
-                Physical dimensions and surface boundary contours are mapped to the coordinate grid for downstream Babylon.js Digital Twin spatial clearance checks.
+                Physical dimensions and surface boundary contours are mapped to the coordinate grid for downstream Compile Compliance spatial clearance checks.
               </div>
             </div>
           )}

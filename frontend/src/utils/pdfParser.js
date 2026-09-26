@@ -1,8 +1,14 @@
 import * as pdfjsLib from 'pdfjs-dist';
 
-// Configure pdfjs worker using cdn or unpkg fallback
-if (typeof window !== 'undefined') {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version || '3.11.174'}/pdf.worker.min.js`;
+const pdfLib = (pdfjsLib && pdfjsLib.default) ? pdfjsLib.default : pdfjsLib;
+
+// Configure pdfjs worker using cdn or unpkg fallback safely
+if (typeof window !== 'undefined' && pdfLib && pdfLib.GlobalWorkerOptions) {
+  try {
+    pdfLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfLib.version || '3.11.174'}/pdf.worker.min.js`;
+  } catch (err) {
+    console.warn('PDF.js worker configuration notice:', err);
+  }
 }
 
 /**
@@ -11,7 +17,12 @@ if (typeof window !== 'undefined') {
 export async function extractTextFromPDF(file) {
   try {
     const arrayBuffer = await file.arrayBuffer();
-    const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+    const getDoc = pdfLib?.getDocument || pdfjsLib?.getDocument;
+    if (!getDoc) {
+      console.warn('PDF getDocument not available');
+      return '';
+    }
+    const loadingTask = getDoc({ data: arrayBuffer });
     const pdf = await loadingTask.promise;
     let fullText = '';
 

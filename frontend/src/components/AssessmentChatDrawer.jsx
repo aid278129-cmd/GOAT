@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Send, Bot, User, Sparkles, ShieldCheck, AlertCircle, FileText, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { TextShimmer } from './loading-ui/text-shimmer';
+import { MorphingInfinity } from './loading-ui/morphing-infinity';
 
 export function AssessmentChatDrawer({ assessmentId, assessmentNumber }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -161,9 +163,11 @@ export function AssessmentChatDrawer({ assessmentId, assessmentNumber }) {
           </div>
         ))}
         {isLoading && (
-          <div className="flex items-center gap-2 p-3 bg-white border border-slate-200 rounded-xl text-xs text-slate-500 shadow-2xs w-fit">
-            <span className="w-3.5 h-3.5 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></span>
-            <span>Orchestrating Grounded Answer...</span>
+          <div className="flex items-center gap-2.5 p-3 bg-white border border-slate-200 rounded-xl text-xs shadow-2xs w-fit">
+            <MorphingInfinity className="w-4 h-4 text-indigo-600 shrink-0" />
+            <TextShimmer baseColor="#64748b" shimmerColor="#4f46e5" duration={2}>
+              Orchestrating Grounded Answer...
+            </TextShimmer>
           </div>
         )}
       </div>

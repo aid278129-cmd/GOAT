@@ -1,14 +1,25 @@
 import React from 'react';
+import { MorphingInfinity } from '../loading-ui/morphing-infinity';
+import { TextShimmer } from '../loading-ui/text-shimmer';
 
 /**
  * ViewSkeleton
  * 
  * Clean workstation skeleton loader matching the product's layout.
- * Avoids empty white screens or distracting animations during data retrieval.
+ * Features MorphingInfinity and TextShimmer animations (loading.md & Thinking.md).
  */
 export function ViewSkeleton({ type = 'table' }) {
   return (
-    <div className="p-6 sm:p-8 space-y-6 max-w-7xl mx-auto font-sans animate-pulse">
+    <div className="p-6 sm:p-8 space-y-6 max-w-7xl mx-auto font-sans">
+      {/* Top Morphing Infinity Loading Indicator */}
+      <div className="flex items-center gap-3 px-4 py-2.5 bg-blue-50/80 border border-blue-200/80 rounded-xl w-fit shadow-2xs">
+        <MorphingInfinity className="w-5 h-5 text-blue-600 shrink-0" />
+        <TextShimmer baseColor="#1d4ed8" shimmerColor="#60a5fa" duration={2} className="text-xs font-semibold">
+          Synchronizing Statutory Assessment Data...
+        </TextShimmer>
+      </div>
+
+      <div className="space-y-6 animate-pulse">
       {/* Header Skeleton */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
         <div className="space-y-2">
@@ -47,6 +58,7 @@ export function ViewSkeleton({ type = 'table' }) {
           ))}
         </div>
       )}
+      </div>
     </div>
   );
 }

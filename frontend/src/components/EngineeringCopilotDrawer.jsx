@@ -18,6 +18,8 @@ import {
   RefreshCw,
   X,
 } from 'lucide-react';
+import { TextShimmer } from './loading-ui/text-shimmer';
+import { MorphingInfinity } from './loading-ui/morphing-infinity';
 import { aiApi } from '../api';
 
 export function EngineeringCopilotDrawer({ jobId, activeStandardId, onOpenReview, onOpenEvidence }) {
@@ -381,9 +383,11 @@ export function EngineeringCopilotDrawer({ jobId, activeStandardId, onOpenReview
         ))}
 
         {isLoading && (
-          <div className="flex items-center gap-2 text-slate-400 font-mono text-[11px] p-2">
-            <RefreshCw className="w-3.5 h-3.5 animate-spin text-indigo-400" />
-            <span>Orchestrating specialist agent reasoning...</span>
+          <div className="flex items-center gap-2.5 text-slate-300 font-mono text-[11px] p-2 bg-slate-900/60 rounded-lg border border-slate-800">
+            <MorphingInfinity className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+            <TextShimmer baseColor="#94a3b8" shimmerColor="#818cf8" duration={2}>
+              Orchestrating specialist agent reasoning...
+            </TextShimmer>
           </div>
         )}
         <div ref={messagesEndRef} />
@@ -397,16 +401,4 @@ export function EngineeringCopilotDrawer({ jobId, activeStandardId, onOpenReview
           onChange={(e) => setInput(e.target.value)}
           placeholder={providerConfigured ? "Ask engineering copilot..." : "Configure LLM provider in environment..."}
           disabled={!providerConfigured || isLoading}
-          className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition disabled:opacity-50"
-        />
-        <button
-          type="submit"
-          disabled={!providerConfigured || isLoading || !input.trim()}
-          className="px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 text-white font-mono text-xs font-bold transition flex items-center gap-1 cursor-pointer disabled:cursor-not-allowed"
-        >
-          <Send className="w-3.5 h-3.5" />
-        </button>
-      </form>
-    </div>
-  );
-}
+          className="flex-1 bg-slate-900 bord

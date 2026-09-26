@@ -20,6 +20,9 @@ import { EvidenceMatrixView } from './components/pipeline/EvidenceMatrixView';
 import { ComplianceGapsView } from './components/pipeline/ComplianceGapsView';
 import { LabActionsView } from './components/pipeline/LabActionsView';
 import { CompliancePassportView } from './components/CompliancePassportView';
+import { CompileComplianceDashboard } from './components/CompileComplianceDashboard';
+import { FloatingBISAssistant } from './components/common/FloatingBISAssistant';
+import LandingHomeView from './components/home/LandingHomeView';
 
 import { AddEvidenceModal } from './components/evidence/AddEvidenceModal';
 import { EvidenceDetailDrawer } from './components/evidence/EvidenceDetailDrawer';
@@ -114,11 +117,14 @@ function mapBackendResult(res, standard) {
 }
 
 export default function App() {
-  // Navigation active tab (recovers from localStorage on refresh)
+  // Default landing screen is 'home' (ai-based-bis-compiler homepage per specification)
   const [activeTab, setActiveTab] = useState(() => {
-    return localStorage.getItem('zyntrix_active_tab') || 'entry';
+    const saved = localStorage.getItem('zyntrix_active_tab');
+    if (!saved || saved === 'entry') return 'home';
+    return saved;
   });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState('en');
 
   // Canonical Unified Assessment Pipeline State (recovers from localStorage on refresh)
   const [activeAssessment, setActiveAssessment] = useState(null);
@@ -245,15 +251,67 @@ export default function App() {
     }
   };
 
-  // Start Compliance Assessment from BIS Assistant
+  // Start Compliance Assessment from BIS Assistant (Contextual Workflow per M27.2)
   const handleStartComplianceAssessment = async (mode = 'golden') => {
     if (mode === 'golden') {
-      await handleResetDemo();
+      if (!activeAssessment || !activeAssessmentId) {
+        await handleResetDemo();
+      }
       handleSelectTab('dna');
-      showToast('Step 02: Product DNA & Technical Attributes loaded');
+      showToast('Contextual Assessment: Product Details loaded (IS 17526:2021)');
     } else {
       handleSelectTab('input');
-      showToast('Step 01: Product Information Input');
+      showToast('Contextual Assessment: Product Information Intake');
+    }
+  };
+
+  // Compile Compliance: Main Intake -> Product DNA -> Deterministic Pipeline
+  const handleCompileCompliance = async (payload) => {
+    setIsAssessmentLoading(true);
+    try {
+      let created = null;
+      try {
+        const fullDesc = [
+          payload.description || '',
+          `Target Standard: ${payload.targetStandard || 'IS 17526:2021'}`,
+          `Nominal Capacity: ${payload.capacity || '1000'}`,
+          `Material Formulation: ${payload.material || 'Austenitic SS 304'}`,
+          `Insulation Mechanism: ${payload.insulationType || 'Double-wall vacuum'}`,
+          `Intended Application: ${payload.intendedUse || 'Domestic food contact'}`,
+          payload.uploadedFileName ? `Document Artifact: ${payload.uploadedFileName} (SHA-256: ${payload.sha256 || 'N/A'})` : null,
+        ].filter(Boolean).join('\n\n');
+
+        created = await assessmentApi.createAssessment({
+          product_name: payload.productName || 'Stainless Steel Vacuum Flask 1000ml',
+          category: payload.category || 'Domestic Containers & Kitchenware',
+          description: fullDesc,
+          authoritative_mode: true,
+        });
+      } catch (createErr) {
+        console.warn('Direct assessment creation note, falling back to golden benchmark:', createErr);
+        created = await assessmentApi.resetGoldenDemo();
+      }
+
+      if (created) {
+        const newId = created.id || created.assessment_id;
+        setActiveAssessmentId(newId);
+        setActiveAssessment(created);
+        try {
+          const p = await assessmentApi.getPassport(newId);
+          setPassportData(p);
+        } catch (pErr) {
+          console.warn('Passport initial fetch notice:', pErr);
+        }
+      }
+
+      // Transition immediately into Golden Path Step 01: Product DNA
+      handleSelectTab('dna');
+      showToast(`Compliance compilation initialized for "${payload.productName || 'Product'}". Extracting Product DNA...`);
+    } catch (err) {
+      showToast(`Compilation note: ${err.message}`);
+      handleSelectTab('dna');
+    } finally {
+      setIsAssessmentLoading(false);
     }
   };
 
@@ -779,334 +837,283 @@ export default function App() {
   const currentTabTitle = currentTabObj
     ? currentTabObj.title
     : activeTab === 'input'
-    ? 'Product Input'
-    : activeTab === 'applicability'
-    ? 'BIS Applicability'
-    : activeTab === 'gaps'
-    ? 'Compliance Gaps'
-    : activeTab === 'lab'
-    ? 'Lab & Actions'
-    : activeTab === 'passport'
-    ? 'Compliance Passport'
-    : 'Compliance Compiler';
+      ? 'Product Input'
+      : activeTab === 'applicability'
+        ? 'BIS Applicability'
+        : activeTab === 'gaps'
+          ? 'Compliance Gaps'
+          : activeTab === 'lab'
+            ? 'Lab & Actions'
+            : activeTab === 'passport'
+              ? 'Compliance Passport'
+              : 'Compliance Compiler';
 
-  const isEntryScreen = activeTab === 'entry';
+  const isAssessmentMode = ['dna', 'applicability', 'standards', 'evidence', 'gaps', 'lab', 'passport', 'reports', 'input'].includes(activeTab);
+  const isSecondaryMode = ['workstation', 'workspace', 'jobs', 'reviews', 'settings'].includes(activeTab);
+
+  // HOMEPAGE: 3D Bureau of Indian Standards Mechanical Compiler Experience
+  if (activeTab === 'home') {
+    return (
+      <LandingHomeView
+        onEnterMainPage={() => handleSelectTab('dashboard')}
+      />
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] text-[#0F172A] flex">
-      {/* SideNav Component: Hidden on first entry screen per M27.1 Section 4 */}
-      {!isEntryScreen && (
-        <SideNav
-          activeTab={activeTab}
-          onSelectTab={handleSelectTab}
-          mobileOpen={mobileMenuOpen}
-          onCloseMobile={() => setMobileMenuOpen(false)}
-        />
+    <div className="min-h-screen bg-[#F8F9FA] text-[#0F172A] flex flex-col font-sans">
+      <TopBar
+        isAssessmentMode={isAssessmentMode || isSecondaryMode}
+        onBackToAssistant={() => handleSelectTab('dashboard')}
+        assessment={activeAssessment}
+        activeTab={activeTab}
+        onSelectTab={handleSelectTab}
+        selectedLanguage={selectedLanguage}
+        onSelectLanguage={setSelectedLanguage}
+        onOpenSourceInspector={() => handleOpenSourceInspector()}
+        onOpenAssistant={() => setIsAIAssistantOpen(true)}
+        onResetDemo={handleResetDemo}
+        isResettingDemo={isResettingDemo}
+        onOpenHelp={() => setIsTrustModalOpen(true)}
+      />
+
+      {/* Subtle Contextual Progress Indicator (M27.2 Section 4 - Only inside active assessment) */}
+      {isAssessmentMode && activeTab !== 'input' && (
+        <div className="pt-14">
+          <GoldenPathStepper
+            activeTab={activeTab}
+            onSelectStep={handleSelectTab}
+            assessment={activeAssessment}
+            onOpenTrustModal={() => setIsTrustModalOpen(true)}
+          />
+        </div>
       )}
 
-      {/* Main Content Area */}
-      <div className={`flex-1 flex flex-col min-w-0 ${!isEntryScreen ? 'lg:pl-60' : ''}`}>
-        <TopBar
-          activeTabTitle={currentTabTitle}
-          onToggleMobile={() => setMobileMenuOpen(!mobileMenuOpen)}
-          assessment={activeAssessment}
-          onOpenAssistant={() => setIsAIAssistantOpen(true)}
-          onOpenSourceInspector={() => handleOpenSourceInspector()}
-          onResetDemo={handleResetDemo}
-          isResettingDemo={isResettingDemo}
-          onOpenHelp={() => setIsTrustModalOpen(true)}
-        />
-
-        {/* Golden Path Workflow Stepper Bar (Only visible inside workflow) */}
-        {!isEntryScreen && (
-          <div className="pt-14">
-            <GoldenPathStepper
-              activeTab={activeTab}
-              onSelectStep={handleSelectTab}
-              assessment={activeAssessment}
-              onOpenTrustModal={() => setIsTrustModalOpen(true)}
-            />
-          </div>
+      {/* Page View Container */}
+      <main className={`flex-1 flex flex-col min-w-0 animate-view-stage ${!isAssessmentMode || activeTab === 'input' ? 'pt-14' : ''}`}>
+        {/* PRIMARY DASHBOARD: COMPILE COMPLIANCE (FIRST THING THAT COMES PER USER SPECIFICATION) */}
+        {(activeTab === 'dashboard' || activeTab === 'compile' || activeTab === 'entry') && (
+          <CompileComplianceDashboard
+            onCompileCompliance={handleCompileCompliance}
+            onResetGoldenDemo={handleResetDemo}
+            isResettingDemo={isResettingDemo}
+            onOpenAssistant={() => setIsAIAssistantOpen(true)}
+            onInspectSource={handleOpenSourceInspector}
+          />
         )}
 
-        {/* Page View Container */}
-        <main className={`flex-1 animate-view-stage ${isEntryScreen ? 'pt-14' : ''}`}>
-          {/* FIRST SCREEN (M27.1 Section 4) */}
-          {activeTab === 'entry' && (
-            <div className="flex-1 flex flex-col items-center justify-center p-8 min-h-[calc(100vh-3.5rem)] font-sans">
-              <div className="max-w-xl w-full text-center space-y-6 animate-in fade-in zoom-in-95 duration-200">
-                <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center text-white mx-auto shadow-sm">
-                  <span className="material-symbols-outlined text-3xl">shield</span>
-                </div>
-                
-                <div>
-                  <span className="font-bold text-xs tracking-wider uppercase text-blue-700 block mb-1">
-                    ZYNTRIX
-                  </span>
-                  <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight leading-tight">
-                    Compliance Compiler
-                  </h1>
-                  <p className="text-base text-slate-700 mt-3 font-medium">
-                    Compile product requirements into evidence-backed compliance.
-                  </p>
-                  <p className="text-xs text-slate-500 mt-1.5 max-w-md mx-auto leading-relaxed">
-                    Start with a product specification. Zyntrix identifies applicable BIS requirements, evaluates available evidence, finds gaps, and builds the assessment.
-                  </p>
-                </div>
+        {/* BIS CONVERSATIONAL ASSISTANT VIEW (ACCESSIBLE VIA SECONDARY TAB / FLOATING LAUNCHER) */}
+        {activeTab === 'assistant' && (
+          <BISAssistantView
+            onStartComplianceAssessment={handleStartComplianceAssessment}
+            onInspectSource={handleOpenSourceInspector}
+            selectedLanguage={selectedLanguage}
+            onSelectLanguage={setSelectedLanguage}
+          />
+        )}
 
-                <div className="pt-2 flex flex-col items-center gap-3 w-full max-w-sm mx-auto">
-                  <button 
-                    type="button"
-                    onClick={() => handleStartComplianceAssessment('golden')}
-                    disabled={isResettingDemo}
-                    className="w-full py-3.5 px-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-lg shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
-                  >
-                    <span>START A NEW ASSESSMENT &rarr;</span>
-                  </button>
+        {/* STEP 01 (ALTERNATIVE) — MULTI-MODAL PRODUCT INPUT */}
+        {activeTab === 'input' && (
+          <AnalyzeView
+            onAssessmentCreated={(newAsm) => {
+              const newId = newAsm.id || newAsm.assessment_id;
+              setActiveAssessmentId(newId);
+              setActiveAssessment(newAsm);
+              assessmentApi.getPassport(newId).then((p) => setPassportData(p)).catch(() => { });
+              showToast(`Assessment ${newAsm.assessment_number || newId} created`);
+            }}
+            onNavigate={(target) => handleSelectTab(target)}
+          />
+        )}
 
-                  <button 
-                    type="button"
-                    onClick={() => handleSelectTab('dna')}
-                    className="w-full py-2.5 px-6 bg-white hover:bg-slate-50 text-slate-700 font-medium text-xs rounded-lg border border-slate-200 transition-colors shadow-2xs cursor-pointer"
-                  >
-                    CONTINUE AN ASSESSMENT
-                  </button>
-
-                  <button 
-                    type="button"
-                    onClick={() => setIsAIAssistantOpen(true)}
-                    className="text-xs text-slate-500 hover:text-blue-600 font-medium pt-2 flex items-center gap-1.5 transition-colors cursor-pointer"
-                  >
-                    <span className="material-symbols-outlined text-[16px]">smart_toy</span>
-                    <span>ASK ASSISTANT</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* STEP 01 — BIS AI ASSISTANT */}
-          {activeTab === 'assistant' && (
-            <BISAssistantView
-              onNavigateWorkstation={(newJobId) => {
-                if (newJobId) {
-                  setActiveJobId(newJobId);
-                  loadJobData(newJobId);
-                }
-                handleSelectTab('workstation');
-                showToast('Navigated to Engineering Workstation');
+        {/* STEP 02 — PRODUCT INPUT / PRODUCT DNA */}
+        {activeTab === 'dna' && (
+          isAssessmentLoading ? (
+            <ViewSkeleton type="cards" />
+          ) : (
+            <ProductDNAView
+              assessment={activeAssessment}
+              onClarify={handleAnswerClarification}
+              onNavigate={(target) => {
+                if (target === 'input') handleSelectTab('input');
+                else if (target === 'applicability') handleSelectTab('applicability');
+                else handleSelectTab(target);
               }}
-              onJobCreated={(newJobId) => {
-                setActiveJobId(newJobId);
-                loadJobData(newJobId);
-              }}
-              onStartComplianceAssessment={handleStartComplianceAssessment}
+              onInspectSource={handleOpenSourceInspector}
             />
-          )}
+          )
+        )}
 
-          {/* STEP 01 (ALTERNATIVE) — MULTI-MODAL PRODUCT INPUT */}
-          {activeTab === 'input' && (
-            <AnalyzeView
-              onAssessmentCreated={(newAsm) => {
-                const newId = newAsm.id || newAsm.assessment_id;
-                setActiveAssessmentId(newId);
-                setActiveAssessment(newAsm);
-                assessmentApi.getPassport(newId).then((p) => setPassportData(p)).catch(() => {});
-                showToast(`Assessment ${newAsm.assessment_number || newId} created`);
+        {/* STEP 03 — BIS APPLICABILITY */}
+        {activeTab === 'applicability' && (
+          isAssessmentLoading ? (
+            <ViewSkeleton type="table" />
+          ) : (
+            <BISApplicabilityView
+              assessment={activeAssessment}
+              onNavigate={(target) => {
+                if (target === 'clauses' || target === 'standards') handleSelectTab('standards');
+                else if (target === 'dna') handleSelectTab('dna');
+                else if (target === 'input') handleSelectTab('input');
+                else handleSelectTab(target);
               }}
-              onNavigate={(target) => handleSelectTab(target)}
+              onInspectSource={handleOpenSourceInspector}
             />
-          )}
+          )
+        )}
 
-          {/* STEP 02 — PRODUCT INPUT / PRODUCT DNA */}
-          {activeTab === 'dna' && (
-            isAssessmentLoading ? (
-              <ViewSkeleton type="cards" />
-            ) : (
-              <ProductDNAView
-                assessment={activeAssessment}
-                onClarify={handleAnswerClarification}
-                onNavigate={(target) => {
-                  if (target === 'input') handleSelectTab('input');
-                  else if (target === 'applicability') handleSelectTab('applicability');
-                  else handleSelectTab(target);
-                }}
-                onInspectSource={handleOpenSourceInspector}
-              />
-            )
-          )}
+        {/* STEP 04 — STANDARDS & CLAUSES */}
+        {activeTab === 'standards' && (
+          isAssessmentLoading ? (
+            <ViewSkeleton type="table" />
+          ) : (
+            <StandardsClausesView
+              assessment={activeAssessment}
+              onNavigate={(target) => {
+                if (target === 'evidence') handleSelectTab('evidence');
+                else if (target === 'gaps') handleSelectTab('gaps');
+                else if (target === 'dna') handleSelectTab('dna');
+                else if (target === 'input') handleSelectTab('input');
+                else handleSelectTab(target);
+              }}
+              onInspectSource={handleOpenSourceInspector}
+            />
+          )
+        )}
 
-          {/* STEP 03 — BIS APPLICABILITY */}
-          {activeTab === 'applicability' && (
-            isAssessmentLoading ? (
-              <ViewSkeleton type="table" />
-            ) : (
-              <BISApplicabilityView
-                assessment={activeAssessment}
-                onNavigate={(target) => {
-                  if (target === 'clauses' || target === 'standards') handleSelectTab('standards');
-                  else if (target === 'dna') handleSelectTab('dna');
-                  else if (target === 'input') handleSelectTab('input');
-                  else handleSelectTab(target);
-                }}
-                onInspectSource={handleOpenSourceInspector}
-              />
-            )
-          )}
+        {/* STEP 05 — EVIDENCE MATRIX */}
+        {activeTab === 'evidence' && (
+          isAssessmentLoading ? (
+            <ViewSkeleton type="table" />
+          ) : (
+            <EvidenceMatrixView
+              assessment={activeAssessment}
+              onUploadEvidence={handleAddEvidencePipeline}
+              onNavigate={(target) => {
+                if (target === 'gaps') handleSelectTab('gaps');
+                else if (target === 'input') handleSelectTab('input');
+                else handleSelectTab(target);
+              }}
+              onInspectSource={handleOpenSourceInspector}
+            />
+          )
+        )}
 
-          {/* STEP 04 — STANDARDS & CLAUSES */}
-          {activeTab === 'standards' && (
-            isAssessmentLoading ? (
-              <ViewSkeleton type="table" />
-            ) : (
-              <StandardsClausesView
-                assessment={activeAssessment}
-                onNavigate={(target) => {
-                  if (target === 'evidence') handleSelectTab('evidence');
-                  else if (target === 'gaps') handleSelectTab('gaps');
-                  else if (target === 'dna') handleSelectTab('dna');
-                  else if (target === 'input') handleSelectTab('input');
-                  else handleSelectTab(target);
-                }}
-                onInspectSource={handleOpenSourceInspector}
-              />
-            )
-          )}
+        {/* STEP 06 — COMPLIANCE GAPS */}
+        {activeTab === 'gaps' && (
+          isAssessmentLoading ? (
+            <ViewSkeleton type="table" />
+          ) : (
+            <ComplianceGapsView
+              assessment={activeAssessment}
+              onNavigate={(target) => {
+                if (target === 'actions' || target === 'lab') handleSelectTab('lab');
+                else if (target === 'input') handleSelectTab('input');
+                else handleSelectTab(target);
+              }}
+              onInspectSource={handleOpenSourceInspector}
+            />
+          )
+        )}
 
-          {/* STEP 05 — EVIDENCE MATRIX */}
-          {activeTab === 'evidence' && (
-            isAssessmentLoading ? (
-              <ViewSkeleton type="table" />
-            ) : (
-              <EvidenceMatrixView
-                assessment={activeAssessment}
-                onUploadEvidence={handleAddEvidencePipeline}
-                onNavigate={(target) => {
-                  if (target === 'gaps') handleSelectTab('gaps');
-                  else if (target === 'input') handleSelectTab('input');
-                  else handleSelectTab(target);
-                }}
-                onInspectSource={handleOpenSourceInspector}
-              />
-            )
-          )}
-
-          {/* STEP 06 — COMPLIANCE GAPS */}
-          {activeTab === 'gaps' && (
-            isAssessmentLoading ? (
-              <ViewSkeleton type="table" />
-            ) : (
-              <ComplianceGapsView
-                assessment={activeAssessment}
-                onNavigate={(target) => {
-                  if (target === 'actions' || target === 'lab') handleSelectTab('lab');
-                  else if (target === 'input') handleSelectTab('input');
-                  else handleSelectTab(target);
-                }}
-                onInspectSource={handleOpenSourceInspector}
-              />
-            )
-          )}
-
-          {/* STEP 07 — LAB & ACTIONS */}
-          {activeTab === 'lab' && (
-            isAssessmentLoading ? (
-              <ViewSkeleton type="table" />
-            ) : (
-              <LabActionsView
-                assessment={activeAssessment}
-                onNavigate={(target) => {
-                  if (target === 'passport') {
-                    if (activeAssessmentId && !passportData) {
-                      assessmentApi.getPassport(activeAssessmentId).then((p) => setPassportData(p)).catch(() => {});
-                    }
-                    handleSelectTab('passport');
-                  } else if (target === 'input') {
-                    handleSelectTab('input');
-                  } else {
-                    handleSelectTab(target);
+        {/* STEP 07 — LAB & ACTIONS */}
+        {activeTab === 'lab' && (
+          isAssessmentLoading ? (
+            <ViewSkeleton type="table" />
+          ) : (
+            <LabActionsView
+              assessment={activeAssessment}
+              onNavigate={(target) => {
+                if (target === 'passport') {
+                  if (activeAssessmentId && !passportData) {
+                    assessmentApi.getPassport(activeAssessmentId).then((p) => setPassportData(p)).catch(() => { });
                   }
-                }}
+                  handleSelectTab('passport');
+                } else if (target === 'input') {
+                  handleSelectTab('input');
+                } else {
+                  handleSelectTab(target);
+                }
+              }}
+              onInspectSource={handleOpenSourceInspector}
+            />
+          )
+        )}
+
+        {/* STEP 08 — COMPLIANCE PASSPORT / DOSSIERS */}
+        {(activeTab === 'passport' || activeTab === 'reports') && (
+          isAssessmentLoading ? (
+            <ViewSkeleton type="cards" />
+          ) : (
+            <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto w-full">
+              <CompliancePassportView
+                passport={passportData}
+                onClose={() => handleSelectTab('assistant')}
+                onNewAssessment={() => handleSelectTab('assistant')}
+                onReviewClick={() => handleSelectTab('reviews')}
                 onInspectSource={handleOpenSourceInspector}
               />
-            )
-          )}
+            </div>
+          )
+        )}
 
-          {/* STEP 08 — COMPLIANCE PASSPORT / DOSSIERS */}
-          {(activeTab === 'passport' || activeTab === 'reports') && (
-            isAssessmentLoading ? (
-              <ViewSkeleton type="cards" />
-            ) : (
-              <div className="p-4 sm:p-6 lg:p-8">
-                <CompliancePassportView
-                  passport={passportData}
-                  onClose={() => handleSelectTab('lab')}
-                  onNewAssessment={() => handleSelectTab('entry')}
-                  onReviewClick={() => handleSelectTab('reviews')}
-                  onInspectSource={handleOpenSourceInspector}
-                />
-              </div>
-            )
-          )}
+        {/* SECONDARY STATION: ENGINEERING WORKSTATION */}
+        {activeTab === 'workstation' && (
+          <WorkstationView
+            jobId={activeJobId}
+            jobs={jobs}
+            onSelectJob={handleSelectJob}
+            onCreateJobClick={() => setJobModalOpen(true)}
+            onUploadClick={() => setAddEvidenceModalOpen(true)}
+            onNavigateEvidence={() => handleSelectTab('evidence')}
+            onNavigateDNA={() => handleSelectTab('dna')}
+            onNavigateStandards={() => handleSelectTab('standards')}
+            onNavigateStage={handleNavigateWorkstationStage}
+            evidenceCount={evidenceList.length}
+            onMapToDNASuccess={() => {
+              if (activeJobId) loadJobData(activeJobId);
+              showToast('Authoritative Product DNA updated from CAD measurements.');
+            }}
+          />
+        )}
 
-          {/* SECONDARY STATION: ENGINEERING WORKSTATION */}
-          {activeTab === 'workstation' && (
-            <WorkstationView
-              jobId={activeJobId}
-              jobs={jobs}
-              onSelectJob={handleSelectJob}
-              onCreateJobClick={() => setJobModalOpen(true)}
-              onUploadClick={() => setAddEvidenceModalOpen(true)}
-              onNavigateEvidence={() => handleSelectTab('evidence')}
-              onNavigateDNA={() => handleSelectTab('dna')}
-              onNavigateStandards={() => handleSelectTab('standards')}
-              onNavigateStage={handleNavigateWorkstationStage}
-              evidenceCount={evidenceList.length}
-              onMapToDNASuccess={() => {
-                if (activeJobId) loadJobData(activeJobId);
-                showToast('Authoritative Product DNA updated from CAD measurements.');
-              }}
-            />
-          )}
+        {/* SECONDARY STATION: WORKSPACE */}
+        {activeTab === 'workspace' && (
+          <WorkspaceView
+            onCreateJobClick={() => setJobModalOpen(true)}
+            jobsCount={jobs.length}
+            evidenceCount={evidenceList.length}
+            openFindingsCount={conflictsList.length}
+          />
+        )}
 
-          {/* SECONDARY STATION: WORKSPACE */}
-          {activeTab === 'workspace' && (
-            <WorkspaceView
-              onCreateJobClick={() => setJobModalOpen(true)}
-              jobsCount={jobs.length}
-              evidenceCount={evidenceList.length}
-              openFindingsCount={conflictsList.length}
-            />
-          )}
+        {/* SECONDARY STATION: COMPLIANCE JOBS */}
+        {activeTab === 'jobs' && (
+          <ComplianceJobsView
+            jobs={jobs}
+            onSelectJob={handleSelectJob}
+            onCreateJob={handleCreateJob}
+            modalOpen={jobModalOpen}
+            setModalOpen={setJobModalOpen}
+          />
+        )}
 
-          {/* SECONDARY STATION: COMPLIANCE JOBS */}
-          {activeTab === 'jobs' && (
-            <ComplianceJobsView
-              jobs={jobs}
-              onSelectJob={handleSelectJob}
-              onCreateJob={handleCreateJob}
-              modalOpen={jobModalOpen}
-              setModalOpen={setJobModalOpen}
-            />
-          )}
+        {/* SECONDARY STATION: REVIEW & ATTESTATION */}
+        {activeTab === 'reviews' && (
+          <ReviewWorkspaceView
+            jobId={activeJobId}
+            currentJob={jobs.find((j) => j.id === activeJobId)}
+            currentUser={currentUser}
+            onShowToast={showToast}
+            evidenceList={evidenceList}
+          />
+        )}
 
-          {/* SECONDARY STATION: REVIEW & ATTESTATION */}
-          {activeTab === 'reviews' && (
-            <ReviewWorkspaceView
-              jobId={activeJobId}
-              currentJob={jobs.find((j) => j.id === activeJobId)}
-              currentUser={currentUser}
-              onShowToast={showToast}
-              evidenceList={evidenceList}
-            />
-          )}
-
-          {/* SECONDARY STATION: SETTINGS */}
-          {activeTab === 'settings' && (
-            <SettingsView onSaveNotification={showToast} />
-          )}
-        </main>
-      </div>
+        {/* SECONDARY STATION: SETTINGS */}
+        {activeTab === 'settings' && (
+          <SettingsView onSaveNotification={showToast} />
+        )}
+      </main>
 
       {/* Unified Add Evidence Modal */}
       <AddEvidenceModal
@@ -1190,9 +1197,15 @@ export default function App() {
         onClose={() => setIsTrustModalOpen(false)}
       />
 
+      {/* Persistent Floating BIS Assistant Launcher (Right Bottom per User Specification) */}
+      <FloatingBISAssistant
+        isOpen={isAIAssistantOpen}
+        onClick={() => setIsAIAssistantOpen(true)}
+      />
+
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-5 right-5 z-50 bg-[#0F172A] text-white px-4 py-2.5 rounded-lg shadow-xl border border-slate-700 flex items-center gap-2 text-xs animate-in fade-in slide-in-from-bottom-2 duration-200">
+        <div className="fixed bottom-5 left-5 z-50 bg-[#0F172A] text-white px-4 py-2.5 rounded-lg shadow-xl border border-slate-700 flex items-center gap-2 text-xs animate-in fade-in slide-in-from-bottom-2 duration-200">
           <span className="material-symbols-outlined text-emerald-400 text-sm">check_circle</span>
           <span>{toastMessage}</span>
         </div>

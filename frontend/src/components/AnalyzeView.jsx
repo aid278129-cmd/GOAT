@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { extractTextFromPDF, parseProductInfoFromText } from '../utils/pdfParser';
+import { MorphingInfinity } from './loading-ui/morphing-infinity';
+import { TextShimmer } from './loading-ui/text-shimmer';
 
 export function AnalyzeView({ onAssessmentCreated, onNavigate }) {
   // Step 1: Input Type
@@ -852,9 +854,11 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                   </div>
                   {isParsingFile ? (
                     <div>
-                      <p className="text-xs font-bold text-indigo-700 flex items-center justify-center gap-1.5">
-                        <span className="w-3 h-3 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></span>
-                        Validating & Extracting PDF Streams...
+                      <p className="text-xs font-bold text-indigo-700 flex items-center justify-center gap-2">
+                        <MorphingInfinity className="w-4 h-4 text-indigo-600 shrink-0" />
+                        <TextShimmer baseColor="#4f46e5" shimmerColor="#818cf8" duration={1.8}>
+                          Validating & Extracting PDF Streams...
+                        </TextShimmer>
                       </p>
                       <p className="text-[11px] text-slate-400 mt-0.5">PyMuPDF structure analysis & rating extraction</p>
                     </div>
@@ -1197,8 +1201,10 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
               >
                 {isLoading ? (
                   <>
-                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                    <span>Compiling to Layer 2 Product DNA...</span>
+                    <MorphingInfinity className="w-4 h-4 text-white shrink-0" />
+                    <TextShimmer baseColor="#ffffff" shimmerColor="#c7d2fe" duration={1.8}>
+                      Compiling to Layer 2 Product DNA...
+                    </TextShimmer>
                   </>
                 ) : (
                   <>

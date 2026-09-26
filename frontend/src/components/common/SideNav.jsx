@@ -34,7 +34,7 @@ export const GOLDEN_PATH_NAV = [
 ];
 
 export const SECONDARY_NAV = [
-  { id: 'assistant', title: 'Assistant', icon: 'smart_toy' },
+  { id: 'assistant', title: 'BIS Assistant', icon: 'shield' },
   { id: 'jobs', title: 'Jobs', icon: 'inventory_2' },
   { id: 'workspace', title: 'Workspace', icon: 'dashboard' },
   { id: 'reviews', title: 'Review', icon: 'rate_review' },
@@ -56,8 +56,9 @@ export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
         <div className="h-14 px-5 flex items-center justify-between border-b border-slate-200 shrink-0">
           <button 
             type="button"
-            onClick={() => onSelectTab('entry')}
+            onClick={() => onSelectTab('home')}
             className="flex items-center gap-2.5 text-left cursor-pointer group"
+            title="Return to 3D Homepage"
           >
             <div className="w-6 h-6 rounded-md bg-blue-600 flex items-center justify-center text-white shadow-2xs group-hover:bg-blue-700 transition-colors">
               <span className="material-symbols-outlined text-[15px]">shield</span>
@@ -74,12 +75,56 @@ export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
         </div>
 
         {/* Primary Compiler Workflow */}
-        <div className="px-3 pt-4 pb-2">
+        <div className="px-3 pt-3 pb-2">
           <div className="px-2 pb-1.5 flex items-center justify-between">
+            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+              Navigation
+            </span>
+          </div>
+
+          {/* 3D Homepage Button */}
+          <button
+            type="button"
+            onClick={() => {
+              onSelectTab('home');
+              if (onCloseMobile) onCloseMobile();
+            }}
+            className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 mb-1.5 rounded-lg text-xs font-medium transition-all text-left cursor-pointer border ${
+              activeTab === 'home'
+                ? 'text-cyan-700 bg-cyan-50/80 border-cyan-300 font-bold shadow-2xs'
+                : 'text-slate-700 bg-slate-50/70 border-slate-200 hover:text-slate-900 hover:bg-slate-100'
+            }`}
+          >
+            <span className="material-symbols-outlined text-[18px] text-cyan-600">
+              home
+            </span>
+            <span className="truncate font-semibold">3D Homepage</span>
+          </button>
+
+          <div className="px-2 pt-2 pb-1 flex items-center justify-between">
             <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
               Compliance Compiler
             </span>
           </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              onSelectTab('dashboard');
+              if (onCloseMobile) onCloseMobile();
+            }}
+            className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 mb-1.5 rounded-lg text-xs font-medium transition-all text-left cursor-pointer border ${
+              activeTab === 'dashboard' || activeTab === 'entry' || activeTab === 'compile'
+                ? 'text-blue-700 bg-blue-50/80 border-blue-200 font-bold shadow-2xs'
+                : 'text-slate-700 bg-slate-50/70 border-slate-200 hover:text-slate-900 hover:bg-slate-100'
+            }`}
+          >
+            <span className="material-symbols-outlined text-[18px] text-blue-600">
+              play_circle
+            </span>
+            <span className="truncate font-semibold">Compile Compliance</span>
+          </button>
+
           <nav className="flex flex-col gap-0.5">
             {GOLDEN_PATH_NAV.map((item) => {
               const isActive = activeTab === item.id || (item.id === 'dna' && activeTab === 'input');

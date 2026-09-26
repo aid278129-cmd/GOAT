@@ -1,0 +1,164 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-unbounded: 'Unbounded', sans-serif;
+    --font-space-grotesk: 'Space Grotesk', sans-serif;
+    --font-chakra: 'Chakra Petch', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: #07040a;
+    color: #ede5f5;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom Typography Families */
+.font-unbounded {
+  font-family: var(--font-unbounded);
+}
+
+.font-space-grotesk {
+  font-family: var(--font-space-grotesk);
+}
+
+.font-chakra {
+  font-family: var(--font-chakra);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-footnote {
+  font-family: var(--font-mono);
+}
+
+/* 1. New Title Colors ("AI Based BIS Compiler") */
+/* Luminous Starlight & Electric Cyan/Violet Opal */
+.text-title-starlight {
+  background: linear-gradient(135deg, #FFFFFF 0%, #E0F2FE 20%, #38BDF8 50%, #818CF8 78%, #C084FC 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.title-glow-starlight {
+  text-shadow: 0 0 40px rgba(56, 189, 248, 0.45), 0 0 85px rgba(129, 140, 248, 0.25);
+}
+
+/* Solar Molten Gold Preset */
+.text-title-solar {
+  background: linear-gradient(135deg, #FFFDE7 0%, #FDE047 28%, #F59E0B 60%, #EA580C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.title-glow-solar {
+  text-shadow: 0 0 40px rgba(245, 158, 11, 0.45), 0 0 85px rgba(234, 88, 12, 0.25);
+}
+
+/* Emerald Cyber Neon Preset */
+.text-title-emerald {
+  background: linear-gradient(135deg, #F0FDF4 0%, #4ADE80 30%, #00F59B 60%, #06B6D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.title-glow-emerald {
+  text-shadow: 0 0 40px rgba(0, 245, 155, 0.45), 0 0 85px rgba(6, 182, 212, 0.25);
+}
+
+
+/* 2. New CTA Text Colors ("Know Your Certifications") */
+/* Signature Electric Cyan & Starlight Blue from page title and atmosphere */
+.text-cta-blue-glow {
+  background: linear-gradient(135deg, #FFFFFF 0%, #E0F2FE 20%, #38BDF8 55%, #60A5FA 85%, #818CF8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.45));
+}
+
+.text-cta-blue-glow-hover {
+  background: linear-gradient(135deg, #FFFFFF 0%, #BAE6FD 30%, #38BDF8 70%, #93C5FD 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.85));
+}
+
+/* Vivid Liquid Sun-Gold with Coral Core */
+.text-cta-sungold {
+  background: linear-gradient(135deg, #FFFBEB 0%, #FDE047 30%, #F59E0B 70%, #FB923C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Hyper-Neon Emerald & Mint on Hover */
+.text-cta-neon-emerald {
+  background: linear-gradient(135deg, #ECFDF5 0%, #34D399 40%, #00F59B 75%, #38BDF8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Electric Cyan Prism */
+.text-cta-cyan {
+  background: linear-gradient(135deg, #F0FDFA 0%, #67E8F9 40%, #06B6D4 80%, #3B82F6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* Specialized CTA Box styling */
+.cta-glass-box {
+  background: linear-gradient(135deg, rgba(20, 11, 31, 0.85) 0%, rgba(11, 6, 18, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  box-shadow: 0 12px 36px -6px rgba(0, 0, 0, 0.75),
+              0 0 28px -4px rgba(56, 189, 248, 0.18),
+              inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.cta-glass-box:hover {
+  border-color: rgba(0, 245, 155, 0.7);
+  box-shadow: 0 16px 48px -8px rgba(0, 0, 0, 0.85),
+              0 0 36px 0px rgba(0, 245, 155, 0.3),
+              0 0 24px 0px rgba(56, 189, 248, 0.25),
+              inset 0 1px 0 rgba(0, 245, 155, 0.4);
+}
+
+/* Footnote Box with Micro-Grid Texture */
+.footnote-glass-box {
+  background: linear-gradient(135deg, rgba(16, 8, 24, 0.78) 0%, rgba(10, 5, 15, 0.88) 100%);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(56, 189, 248, 0.12);
+}
+
+/* Shimmer pulse animation */
+@keyframes ambientFlux {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+.animate-flux {
+  animation: ambientFlux 6s ease-in-out infinite;
+}
+
+/* Cybernetic Scanline Sweep */
+@keyframes scanlineSweep {
+  0% { top: 0%; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.animate-scanline {
+  animation: scanlineSweep 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}

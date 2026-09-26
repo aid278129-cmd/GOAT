@@ -10,6 +10,8 @@ import {
   ArtifactIntegrityStatus,
 } from '../../types/evidenceTypes';
 import { computeFileSHA256, formatBytes, formatTimestamp } from '../../utils/evidenceCrypto';
+import { MorphingInfinity } from '../loading-ui/morphing-infinity';
+import { TextShimmer } from '../loading-ui/text-shimmer';
 
 export function AddEvidenceModal({ isOpen, onClose, onAddEvidence }) {
   const [activeTab, setActiveTab] = useState('universal');
@@ -545,8 +547,10 @@ export function AddEvidenceModal({ isOpen, onClose, onAddEvidence }) {
               >
                 {isProcessing ? (
                   <>
-                    <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                    Computing Hash...
+                    <MorphingInfinity className="w-3.5 h-3.5 text-white shrink-0" />
+                    <TextShimmer baseColor="#ffffff" shimmerColor="#bfdbfe" duration={1.5}>
+                      Computing Hash...
+                    </TextShimmer>
                   </>
                 ) : (
                   <>

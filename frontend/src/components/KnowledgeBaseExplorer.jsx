@@ -21,6 +21,8 @@ import {
   Filter,
 } from 'lucide-react';
 import { StatusBadge } from './StatusBadge';
+import { MorphingInfinity } from './loading-ui/morphing-infinity';
+import { TextShimmer } from './loading-ui/text-shimmer';
 
 export function KnowledgeBaseExplorer() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -640,8 +642,10 @@ export function KnowledgeBaseExplorer() {
           <div className="lg:col-span-8 space-y-5">
             {loadingPackage ? (
               <div className="bg-white border border-slate-200 rounded-xl p-12 text-center text-slate-500 space-y-3 shadow-xs">
-                <RefreshCw className="w-6 h-6 animate-spin mx-auto text-indigo-600" />
-                <p className="text-xs">Loading authentic BIS knowledge package...</p>
+                <MorphingInfinity className="w-8 h-8 mx-auto text-indigo-600" />
+                <TextShimmer baseColor="#4f46e5" shimmerColor="#818cf8" duration={2} className="text-xs font-semibold">
+                  Loading authentic BIS knowledge package...
+                </TextShimmer>
               </div>
             ) : selectedPackage ? (
               <div className="space-y-5">

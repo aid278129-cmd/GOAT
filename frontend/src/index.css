@@ -70,3 +70,130 @@ canvas {
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
+
+/* ------------------------------------------------------------- */
+/* AI Based BIS Compiler Homepage Styles & Shimmer Animations   */
+/* ------------------------------------------------------------- */
+
+:root {
+  --font-unbounded: 'Unbounded', sans-serif;
+  --font-space-grotesk: 'Space Grotesk', sans-serif;
+  --font-chakra: 'Chakra Petch', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+}
+
+.font-unbounded {
+  font-family: var(--font-unbounded);
+}
+
+.font-space-grotesk {
+  font-family: var(--font-space-grotesk);
+}
+
+.font-chakra {
+  font-family: var(--font-chakra);
+}
+
+.font-footnote {
+  font-family: var(--font-mono);
+}
+
+/* Title Themes ("AI Based BIS Compiler") */
+.text-title-starlight {
+  background: linear-gradient(135deg, #FFFFFF 0%, #E0F2FE 20%, #38BDF8 50%, #818CF8 78%, #C084FC 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.title-glow-starlight {
+  text-shadow: 0 0 40px rgba(56, 189, 248, 0.45), 0 0 85px rgba(129, 140, 248, 0.25);
+}
+
+.text-title-solar {
+  background: linear-gradient(135deg, #FFFDE7 0%, #FDE047 28%, #F59E0B 60%, #EA580C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.title-glow-solar {
+  text-shadow: 0 0 40px rgba(245, 158, 11, 0.45), 0 0 85px rgba(234, 88, 12, 0.25);
+}
+
+.text-title-emerald {
+  background: linear-gradient(135deg, #F0FDF4 0%, #4ADE80 30%, #00F59B 60%, #06B6D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.title-glow-emerald {
+  text-shadow: 0 0 40px rgba(0, 245, 155, 0.45), 0 0 85px rgba(6, 182, 212, 0.25);
+}
+
+/* CTA Clean Gradient Text ("Know Your Certifications") */
+.text-cta-blue-glow {
+  background: linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 35%, #BAE6FD 70%, #60A5FA 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+
+.text-cta-blue-glow-hover {
+  background: linear-gradient(135deg, #FFFFFF 0%, #E0F2FE 30%, #7DD3FC 65%, #38BDF8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
+}
+
+/* Specialized CTA Box styling */
+.cta-glass-box {
+  background: linear-gradient(135deg, rgba(20, 11, 31, 0.85) 0%, rgba(11, 6, 18, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  box-shadow: 0 12px 36px -6px rgba(0, 0, 0, 0.75),
+              0 0 28px -4px rgba(56, 189, 248, 0.18),
+              inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.cta-glass-box:hover {
+  border-color: rgba(0, 245, 155, 0.7);
+  box-shadow: 0 16px 48px -8px rgba(0, 0, 0, 0.85),
+              0 0 36px 0px rgba(0, 245, 155, 0.3),
+              0 0 24px 0px rgba(56, 189, 248, 0.25),
+              inset 0 1px 0 rgba(0, 245, 155, 0.4);
+}
+
+/* Footnote Box with Micro-Grid Texture */
+.footnote-glass-box {
+  background: linear-gradient(135deg, rgba(16, 8, 24, 0.78) 0%, rgba(10, 5, 15, 0.88) 100%);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(56, 189, 248, 0.12);
+}
+
+/* Ambient Pulse Flux */
+@keyframes ambientFlux {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+.animate-flux {
+  animation: ambientFlux 6s ease-in-out infinite;
+}
+
+/* Text Shimmer Sweep Animation (Thinking.md) */
+@keyframes textShimmerSweep {
+  0% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: 0% center;
+  }
+}
+
+.animate-text-shimmer {
+  animation: textShimmerSweep 2s linear infinite;
+}
+

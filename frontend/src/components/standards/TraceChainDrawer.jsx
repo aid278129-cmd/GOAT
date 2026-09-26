@@ -286,9 +286,9 @@ export function TraceChainDrawer({ isOpen, onClose, result, requirement, onSpati
           {/* Spatial CAD Action if Applicable */}
           {isSpatialApplicable && onSpatialInspect && (
             <div className="p-3 bg-indigo-50/50 border border-indigo-200 rounded-lg flex items-center justify-between">
-              <div className="flex items-center gap-2 text-xs text-indigo-950">
-                <span className="material-symbols-outlined text-indigo-600">view_in_ar</span>
-                <span>Spatial CAD dimension verification available on Digital Twin</span>
+              <div className="flex items-center gap-2 text-xs text-blue-950">
+                <span className="material-symbols-outlined text-blue-600">view_in_ar</span>
+                <span>Spatial CAD dimension verification available on Compile Compliance Workstation</span>
               </div>
               <button
                 type="button"
@@ -296,9 +296,9 @@ export function TraceChainDrawer({ isOpen, onClose, result, requirement, onSpati
                   onSpatialInspect(requirement);
                   onClose();
                 }}
-                className="px-2.5 py-1 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded transition cursor-pointer"
+                className="px-2.5 py-1 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded transition cursor-pointer"
               >
-                Inspect in 3D CAD Twin
+                Inspect Compliance Geometry
               </button>
             </div>
           )}

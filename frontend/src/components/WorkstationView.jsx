@@ -119,12 +119,45 @@ export function WorkstationView({
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-base text-[#1D4ED8]">view_in_ar</span>
                 <h2 className="text-xs font-bold uppercase tracking-wider text-[#0F172A] font-mono">
-                  Digital Twin CAD Coordinate Viewport
+                  Compile Compliance
                 </h2>
               </div>
               <span className="font-mono text-[11px] text-[#64748B]">
                 Engine: Babylon.js v9.27
               </span>
+            </div>
+
+            {/* Document Specification Intake Console */}
+            <div className="bg-white border border-[#E2E8F0] rounded-lg p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-2xs">
+              <div className="flex items-center gap-2.5 w-full sm:w-auto">
+                <div className="w-8 h-8 rounded-md bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 shrink-0">
+                  <span className="material-symbols-outlined text-[18px]">description</span>
+                </div>
+                <div className="text-xs">
+                  <div className="font-semibold text-[#0F172A]">Document Technical Specifications</div>
+                  <div className="text-[11px] text-[#64748B]">
+                    Provide document specifications to extract Product DNA, detect applicable BIS standards, and identify compliance gaps.
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 w-full sm:w-auto justify-end shrink-0">
+                <button
+                  type="button"
+                  onClick={onUploadClick}
+                  className="px-3 py-1.5 text-xs font-medium text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-md flex items-center gap-1.5 cursor-pointer transition-colors"
+                >
+                  <span className="material-symbols-outlined text-[15px]">upload_file</span>
+                  <span>Upload Document</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onNavigateDNA && onNavigateDNA()}
+                  className="px-3.5 py-1.5 text-xs font-semibold text-white bg-[#1D4ED8] hover:bg-[#1E40AF] rounded-md flex items-center gap-1.5 shadow-2xs cursor-pointer transition-colors"
+                >
+                  <span>Compile Compliance &rarr;</span>
+                </button>
+              </div>
             </div>
 
             <DigitalTwinViewport

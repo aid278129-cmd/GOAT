@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { cadApi } from '../api/cad';
+import { MorphingInfinity } from './loading-ui/morphing-infinity';
+import { TextShimmer } from './loading-ui/text-shimmer';
 
 let babylonLoadPromise = null;
 function ensureBabylon() {
@@ -461,7 +463,7 @@ export function DigitalTwinViewport({
               <span className="material-symbols-outlined text-2xl">view_in_ar</span>
             </div>
             <h3 className="font-semibold text-white text-sm tracking-tight mb-1">
-              Spatial Digital Twin Ready
+              Compile Compliance Viewport Ready
             </h3>
             <p className="text-xs text-slate-300 leading-relaxed mb-4">
               Coordinate datum grid active. Upload a standard STEP CAD file (.stp, .step) to extract
@@ -484,12 +486,14 @@ export function DigitalTwinViewport({
       {/* CAD Processing State */}
       {viewerState === 'CAD_PROCESSING' && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-          <div className="bg-[#0B132B]/95 backdrop-blur-md border border-amber-700/60 rounded-lg p-6 max-w-sm text-center shadow-2xl">
-            <div className="w-10 h-10 mx-auto mb-3 rounded-full bg-amber-950/60 border border-amber-600/40 flex items-center justify-center text-amber-400 animate-spin">
-              <span className="material-symbols-outlined text-xl">progress_activity</span>
+          <div className="bg-[#0B132B]/95 backdrop-blur-md border border-amber-700/60 rounded-xl p-6 max-w-sm text-center shadow-2xl">
+            <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-amber-950/60 border border-amber-600/40 flex items-center justify-center text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+              <MorphingInfinity className="w-6 h-6 text-amber-400" />
             </div>
             <h3 className="font-semibold text-white text-sm tracking-tight mb-1">
-              Parsing CAD Geometry...
+              <TextShimmer baseColor="#f59e0b" shimmerColor="#fef08a" duration={2}>
+                Parsing CAD Geometry...
+              </TextShimmer>
             </h3>
             <p className="text-xs text-slate-300 leading-relaxed">
               Extracting ISO 10303-21 B-Rep topology, computing bounding extents, and calculating
