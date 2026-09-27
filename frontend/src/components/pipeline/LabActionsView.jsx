@@ -1,44 +1,31 @@
 import React from 'react';
 
 /**
- * LabActionsView (Step 6 — ACTIONS)
+ * LabActionsView (Step 6 — LAB & ACTIONS)
  * 
  * Header: LAB & ACTIONS
- * Subtitle: "Complete the work required to resolve open requirements."
- * 
- * Columns:
- * Action | Requirement | Reason | Evidence Required
- * 
- * Examples:
- * - LAB TEST REQUIRED
- * - DOCUMENT REQUIRED
- * - DECLARATION REQUIRED
- * - MARKING EVIDENCE REQUIRED
- * - CORRECTIVE ACTION REQUIRED
- * - EXPERT REVIEW REQUIRED
- * 
- * Factual only — no fake booking, pricing, rankings, or guarantees.
- * Primary button: VIEW ASSESSMENT →
+ * Subtitle: "Complete the testing and laboratory actions required to resolve open requirements."
+ * Dark precision workstation aesthetic matching homepage.
  */
 export function LabActionsView({ assessment, onNavigate, onInspectSource }) {
   if (!assessment) {
     return (
-      <div className="flex-1 p-8 flex items-center justify-center font-sans">
-        <div className="max-w-md w-full bg-white border border-slate-200 rounded-xl p-8 text-center space-y-4 shadow-xs">
-          <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mx-auto text-slate-500">
-            <span className="material-symbols-outlined text-xl">science</span>
+      <div className="flex-1 p-8 flex items-center justify-center font-sans text-slate-200">
+        <div className="max-w-md w-full bg-[#0f1422] border border-slate-800 rounded-2xl p-8 text-center space-y-4 shadow-xl">
+          <div className="w-12 h-12 bg-cyan-500/10 border border-cyan-400/30 rounded-xl flex items-center justify-center mx-auto text-cyan-400 shadow-[0_0_15px_rgba(56,189,248,0.2)]">
+            <span className="material-symbols-outlined text-2xl">science</span>
           </div>
           <div>
-            <h3 className="text-sm font-bold text-slate-900">No Actions Loaded</h3>
-            <p className="text-xs text-slate-500 mt-1">
+            <h3 className="font-space-grotesk text-sm font-bold text-white">No Actions Loaded</h3>
+            <p className="text-xs text-slate-400 mt-1">
               Select or initialize an assessment to view remediation actions.
             </p>
           </div>
           <button
             onClick={() => onNavigate('dna')}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition cursor-pointer"
+            className="px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-xs transition shadow-[0_0_15px_rgba(56,189,248,0.3)] cursor-pointer"
           >
-            Go to Product
+            Go to Product DNA
           </button>
         </div>
       </div>
@@ -88,49 +75,49 @@ export function LabActionsView({ assessment, onNavigate, onInspectSource }) {
     switch (action) {
       case 'LAB TEST REQUIRED':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-200">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-            LAB TEST REQUIRED
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-cyan-950/60 text-cyan-300 border border-cyan-500/40 shadow-[0_0_8px_rgba(56,189,248,0.2)]">
+            <span className="material-symbols-outlined text-[13px] text-cyan-400">science</span>
+            <span>LAB TEST REQUIRED</span>
           </span>
         );
       case 'DOCUMENT REQUIRED':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[11px] font-semibold bg-amber-50 text-amber-800 border border-amber-300">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-            DOCUMENT REQUIRED
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-amber-950/60 text-amber-300 border border-amber-500/40">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+            <span>DOCUMENT REQUIRED</span>
           </span>
         );
       case 'MARKING EVIDENCE REQUIRED':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[11px] font-semibold bg-purple-50 text-purple-700 border border-purple-200">
-            <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
-            MARKING EVIDENCE REQUIRED
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-purple-950/60 text-purple-300 border border-purple-500/40">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+            <span>MARKING EVIDENCE REQUIRED</span>
           </span>
         );
       case 'DECLARATION REQUIRED':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[11px] font-semibold bg-amber-50 text-amber-800 border border-amber-300">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-            DECLARATION REQUIRED
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-amber-950/60 text-amber-300 border border-amber-500/40">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+            <span>DECLARATION REQUIRED</span>
           </span>
         );
       case 'CORRECTIVE ACTION REQUIRED':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[11px] font-semibold bg-rose-50 text-rose-700 border border-rose-200">
-            <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
-            CORRECTIVE ACTION REQUIRED
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-rose-950/60 text-rose-300 border border-rose-500/40">
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
+            <span>CORRECTIVE ACTION REQUIRED</span>
           </span>
         );
       case 'EXPERT REVIEW REQUIRED':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[11px] font-semibold bg-purple-50 text-purple-700 border border-purple-200">
-            <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
-            EXPERT REVIEW REQUIRED
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-indigo-950/60 text-indigo-300 border border-indigo-500/40">
+            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
+            <span>EXPERT REVIEW REQUIRED</span>
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[11px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-slate-900 text-slate-300 border border-slate-700">
             {action}
           </span>
         );
@@ -138,49 +125,49 @@ export function LabActionsView({ assessment, onNavigate, onInspectSource }) {
   };
 
   return (
-    <div className="p-6 sm:p-8 space-y-6 max-w-5xl mx-auto font-sans">
+    <div className="p-6 sm:p-8 space-y-6 max-w-6xl mx-auto font-sans text-slate-100">
       {/* Step Header */}
-      <div className="border-b border-slate-200 pb-5">
-        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-          Step 6 of 7
+      <div className="border-b border-slate-800 pb-5">
+        <span className="text-[10px] font-mono font-bold text-cyan-400 uppercase tracking-wider block mb-1">
+          Step 6 of 7 &bull; Golden Path
         </span>
-        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-          LAB & ACTIONS
+        <h1 className="font-space-grotesk text-2xl font-bold text-white tracking-tight">
+          LAB & REMEDIATION ACTIONS
         </h1>
-        <p className="text-sm text-slate-500 mt-1">
-          Complete the work required to resolve open requirements.
+        <p className="text-sm text-slate-400 mt-1">
+          Complete the testing and documentation required to resolve open statutory requirements.
         </p>
       </div>
 
       {/* Advisory Guidance Notice */}
-      <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3 text-xs text-slate-700">
-        <span className="material-symbols-outlined text-blue-600 text-lg mt-0.5 shrink-0">info</span>
+      <div className="p-4 sm:p-5 rounded-2xl bg-[#0f1422] border border-slate-800 flex items-start gap-3.5 text-xs text-slate-300 shadow-md">
+        <span className="material-symbols-outlined text-cyan-400 text-xl mt-0.5 shrink-0">info</span>
         <div>
-          <p className="font-semibold text-slate-900">
+          <p className="font-space-grotesk font-semibold text-white text-sm">
             Factual Remediation Requirements ({standardNum})
           </p>
-          <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
-            The items listed below are technical requirements extracted from the standard. Complete each testing and documentation step to achieve an evidence-backed compliance assessment.
+          <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+            The items listed below are technical requirements extracted from statutory Indian Standards. Complete each testing and documentation step to achieve an evidence-backed compliance assessment.
           </p>
         </div>
       </div>
 
       {/* Main Table */}
-      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
+      <div className="bg-[#0f1422] border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase text-[10px] tracking-wider">
+            <thead className="bg-[#0b0f19] border-b border-slate-800 text-slate-400 font-mono font-semibold uppercase text-[10px] tracking-wider">
               <tr>
-                <th className="py-3 px-4 w-52">Action</th>
-                <th className="py-3 px-4 w-48">Requirement</th>
-                <th className="py-3 px-4">Reason</th>
-                <th className="py-3 px-4 w-60">Evidence Required</th>
-                <th className="py-3 px-4 w-16 text-right">Inspect</th>
+                <th className="py-3.5 px-4 w-52">Action Required</th>
+                <th className="py-3.5 px-4 w-52">Requirement</th>
+                <th className="py-3.5 px-4">Reason</th>
+                <th className="py-3.5 px-4 w-60">Evidence Required</th>
+                <th className="py-3.5 px-4 w-16 text-right">Inspect</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-800/80">
               {actions.map((item) => (
-                <tr key={item.id} className="hover:bg-slate-50/60 transition-colors">
+                <tr key={item.id} className="hover:bg-[#13192a] transition-colors">
                   {/* Action */}
                   <td className="py-3.5 px-4">
                     {renderActionBadge(item.action)}
@@ -188,18 +175,18 @@ export function LabActionsView({ assessment, onNavigate, onInspectSource }) {
 
                   {/* Requirement */}
                   <td className="py-3.5 px-4">
-                    <span className="font-mono text-xs font-semibold text-slate-900">
+                    <span className="font-mono text-xs font-semibold text-white">
                       {item.requirement}
                     </span>
                   </td>
 
                   {/* Reason */}
-                  <td className="py-3.5 px-4 text-slate-700 leading-relaxed">
+                  <td className="py-3.5 px-4 text-slate-300 leading-relaxed">
                     {item.reason}
                   </td>
 
                   {/* Evidence Required */}
-                  <td className="py-3.5 px-4 text-slate-800 font-medium">
+                  <td className="py-3.5 px-4 text-slate-200 font-medium">
                     {item.evidenceRequired}
                   </td>
 
@@ -221,7 +208,7 @@ export function LabActionsView({ assessment, onNavigate, onInspectSource }) {
                           });
                         }
                       }}
-                      className="p-1 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors cursor-pointer"
+                      className="p-1.5 text-slate-400 hover:text-cyan-300 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
                       title="Inspect Action Details"
                     >
                       <span className="material-symbols-outlined text-[18px]">open_in_new</span>
@@ -239,9 +226,9 @@ export function LabActionsView({ assessment, onNavigate, onInspectSource }) {
         <button
           type="button"
           onClick={() => onNavigate('passport')}
-          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-lg shadow-sm hover:shadow transition-all flex items-center gap-2 cursor-pointer"
+          className="px-7 py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-xs rounded-xl shadow-[0_0_20px_rgba(56,189,248,0.35)] transition-all flex items-center gap-2 cursor-pointer"
         >
-          <span>VIEW ASSESSMENT</span>
+          <span>VIEW COMPLIANCE PASSPORT</span>
           <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
         </button>
       </div>

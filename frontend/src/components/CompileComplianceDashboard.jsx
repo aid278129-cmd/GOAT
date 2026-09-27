@@ -2,16 +2,14 @@ import React, { useState } from 'react';
 import { extractTextFromPDF, parseProductInfoFromText } from '../utils/pdfParser';
 import { MorphingInfinity } from './loading-ui/morphing-infinity';
 import { TextShimmer } from './loading-ui/text-shimmer';
+import GlideSelect from './loading-ui/GlideSelect';
 
 /**
  * CompileComplianceDashboard
  * 
- * The primary dashboard landing view for GOAT.
- * Centers around "Compile Compliance":
- * 1. User inputs or uploads product specifications / document
- * 2. Compiles deterministically through:
- *    Product DNA -> BIS Applicability -> Requirements -> Evidence -> Gaps -> Actions -> Assessment Passport
- * 3. Shows exactly what BIS requirements apply, open gaps, and compliance verdict.
+ * The primary dashboard landing view for GOAT BIS Compliance Compiler.
+ * Dark precision engineering workstation aesthetic matching 3D Homepage.
+ * Integrates GlideSelect for standards selection.
  */
 export function CompileComplianceDashboard({
   onCompileCompliance,
@@ -39,6 +37,13 @@ export function CompileComplianceDashboard({
   const [isParsing, setIsParsing] = useState(false);
   const [fileSha256, setFileSha256] = useState(null);
   const [dragActive, setDragActive] = useState(false);
+
+  const standardOptions = [
+    { value: 'IS 17526:2021', label: 'IS 17526:2021 (Vacuum Flasks)', tag: 'Scheme I' },
+    { value: 'IS 16221 (Part 2):2015', label: 'IS 16221:2015 (Solar PV Inverter)', tag: 'CRS' },
+    { value: 'IS 13252 (Part 1):2010', label: 'IS 13252:2010 (IT Equipment)', tag: 'CRS' },
+    { value: 'IS 302 (Part 1):2024', label: 'IS 302:2024 (Electric Appliances)', tag: 'Scheme I' },
+  ];
 
   // Pre-configured Statutory Presets
   const presets = [
@@ -119,23 +124,16 @@ export function CompileComplianceDashboard({
           const parsed = parseProductInfoFromText(text, file.name);
           if (parsed.productName) setProductName(parsed.productName);
           if (parsed.category) setCategory(parsed.category);
+          if (parsed.targetStandard) setTargetStandard(parsed.targetStandard);
+          if (parsed.capacity) setCapacity(parsed.capacity);
+          if (parsed.material) setMaterial(parsed.material);
+          if (parsed.insulationType) setInsulationType(parsed.insulationType);
+          if (parsed.intendedUse) setIntendedUse(parsed.intendedUse);
           if (parsed.description) setDescription(parsed.description);
         }
-      } else {
-        // Plain text / JSON parsing
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const content = e.target?.result;
-          if (typeof content === 'string') {
-            const parsed = parseProductInfoFromText(content, file.name);
-            if (parsed.productName) setProductName(parsed.productName);
-            if (parsed.description) setDescription(parsed.description);
-          }
-        };
-        reader.readAsText(file);
       }
     } catch (err) {
-      console.warn('File inspection notice:', err);
+      console.warn('File processing notice:', err);
     } finally {
       setIsParsing(false);
     }
@@ -173,27 +171,27 @@ export function CompileComplianceDashboard({
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-sans">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-sans text-slate-100">
       {/* ------------------------------------------------------------- */}
       {/* 1. Header: Enterprise Statutory Compiler Identity             */}
       {/* ------------------------------------------------------------- */}
-      <div className="border-b border-slate-200 pb-6 mb-8">
+      <div className="border-b border-slate-800 pb-6 mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="w-2 h-2 rounded-full bg-blue-600"></span>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+              <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-cyan-300 bg-cyan-950/60 border border-cyan-500/30 px-2.5 py-0.5 rounded shadow-[0_0_10px_rgba(56,189,248,0.2)]">
                 Bureau of Indian Standards Statutory Compiler
               </span>
               <span className="text-[11px] font-mono text-slate-500 hidden sm:inline">
                 SIH Problem Statement 26107
               </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+            <h1 className="font-space-grotesk text-2xl sm:text-3xl font-bold tracking-tight text-white">
               Compile Compliance
             </h1>
-            <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
-              Input technical product specifications or upload documentation to deterministically evaluate applicable Indian Standards, extract Product DNA, audit evidence, detect gaps, and compile a compliance passport.
+            <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl leading-relaxed">
+              Input technical product specifications or upload documentation to deterministically evaluate applicable Indian Standards, extract Product DNA, audit evidence, detect gaps, and compile a certified compliance passport.
             </p>
           </div>
 
@@ -203,19 +201,19 @@ export function CompileComplianceDashboard({
               type="button"
               onClick={() => onResetGoldenDemo && onResetGoldenDemo()}
               disabled={isResettingDemo}
-              className="px-3.5 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 hover:border-slate-400 rounded-lg transition-colors shadow-2xs flex items-center gap-2 cursor-pointer disabled:opacity-50"
+              className="px-4 py-2.5 text-xs font-semibold text-cyan-200 bg-cyan-950/50 border border-cyan-500/40 hover:border-cyan-400 hover:bg-cyan-900/60 rounded-xl transition-all shadow-[0_0_15px_rgba(56,189,248,0.15)] flex items-center gap-2 cursor-pointer disabled:opacity-50"
               title="Load IS 17526:2021 Stainless Steel Vacuum Flask Golden Demo"
             >
               {isResettingDemo ? (
                 <>
-                  <MorphingInfinity className="w-4 h-4 text-blue-600" />
-                  <TextShimmer baseColor="#3b82f6" shimmerColor="#1e3a8a" duration={1.5} className="font-semibold text-xs">
+                  <MorphingInfinity className="w-4 h-4 text-cyan-400" />
+                  <TextShimmer baseColor="#38bdf8" shimmerColor="#a5f3fc" duration={1.5} className="font-semibold text-xs">
                     Loading Golden Demo...
                   </TextShimmer>
                 </>
               ) : (
                 <>
-                  <span className="material-symbols-outlined text-[16px] text-blue-600">
+                  <span className="material-symbols-outlined text-[16px] text-cyan-400">
                     auto_awesome
                   </span>
                   <span>Load Golden Demo (IS 17526)</span>
@@ -229,12 +227,12 @@ export function CompileComplianceDashboard({
       {/* ------------------------------------------------------------- */}
       {/* 2. Main Console: "Compile Compliance" Specification Intake    */}
       {/* ------------------------------------------------------------- */}
-      <div className="bg-white border border-slate-200 rounded-xl shadow-xs overflow-hidden mb-8">
+      <div className="bg-[#0f1422]/90 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl overflow-hidden mb-8">
         {/* Mode Selector Navigation */}
-        <div className="flex items-center justify-between border-b border-slate-200 px-4 sm:px-6 bg-slate-50/70">
+        <div className="flex items-center justify-between border-b border-slate-800 px-4 sm:px-6 bg-[#0a0d16]">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5 py-3">
-              <span className="material-symbols-outlined text-blue-600 text-lg">fact_check</span>
+            <span className="text-xs font-space-grotesk font-bold uppercase tracking-wider text-slate-200 flex items-center gap-1.5 py-3.5">
+              <span className="material-symbols-outlined text-cyan-400 text-lg">fact_check</span>
               <span>Specification Intake</span>
             </span>
           </div>
@@ -243,10 +241,10 @@ export function CompileComplianceDashboard({
             <button
               type="button"
               onClick={() => setIntakeMode('upload')}
-              className={`px-3 py-2 text-xs font-medium border-b-2 transition-colors cursor-pointer ${
+              className={`px-3.5 py-3 text-xs font-medium border-b-2 transition-all cursor-pointer ${
                 intakeMode === 'upload'
-                  ? 'border-blue-600 text-blue-700 font-semibold'
-                  : 'border-transparent text-slate-500 hover:text-slate-900'
+                  ? 'border-cyan-400 text-cyan-300 font-semibold bg-cyan-950/20'
+                  : 'border-transparent text-slate-400 hover:text-slate-200'
               }`}
             >
               Upload Document / Datasheet
@@ -254,10 +252,10 @@ export function CompileComplianceDashboard({
             <button
               type="button"
               onClick={() => setIntakeMode('manual')}
-              className={`px-3 py-2 text-xs font-medium border-b-2 transition-colors cursor-pointer ${
+              className={`px-3.5 py-3 text-xs font-medium border-b-2 transition-all cursor-pointer ${
                 intakeMode === 'manual'
-                  ? 'border-blue-600 text-blue-700 font-semibold'
-                  : 'border-transparent text-slate-500 hover:text-slate-900'
+                  ? 'border-cyan-400 text-cyan-300 font-semibold bg-cyan-950/20'
+                  : 'border-transparent text-slate-400 hover:text-slate-200'
               }`}
             >
               Manual Specification Form
@@ -265,10 +263,10 @@ export function CompileComplianceDashboard({
             <button
               type="button"
               onClick={() => setIntakeMode('preset')}
-              className={`px-3 py-2 text-xs font-medium border-b-2 transition-colors cursor-pointer ${
+              className={`px-3.5 py-3 text-xs font-medium border-b-2 transition-all cursor-pointer ${
                 intakeMode === 'preset'
-                  ? 'border-blue-600 text-blue-700 font-semibold'
-                  : 'border-transparent text-slate-500 hover:text-slate-900'
+                  ? 'border-cyan-400 text-cyan-300 font-semibold bg-cyan-950/20'
+                  : 'border-transparent text-slate-400 hover:text-slate-200'
               }`}
             >
               Statutory Presets
@@ -294,10 +292,10 @@ export function CompileComplianceDashboard({
                     handleFileChange(e.dataTransfer.files[0]);
                   }
                 }}
-                className={`border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer ${
+                className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all cursor-pointer ${
                   dragActive
-                    ? 'border-blue-500 bg-blue-50/50'
-                    : 'border-slate-300 hover:border-blue-400 bg-slate-50/50'
+                    ? 'border-cyan-400 bg-cyan-950/30'
+                    : 'border-slate-700/80 hover:border-cyan-500/50 bg-[#0b0f19]/70'
                 }`}
                 onClick={() => document.getElementById('spec-file-input')?.click()}
               >
@@ -313,19 +311,19 @@ export function CompileComplianceDashboard({
                   className="hidden"
                 />
 
-                <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 text-blue-600 flex items-center justify-center mx-auto mb-3">
-                  <span className="material-symbols-outlined text-2xl">upload_file</span>
+                <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 flex items-center justify-center mx-auto mb-3 shadow-[0_0_15px_rgba(56,189,248,0.2)]">
+                  <span className="material-symbols-outlined text-3xl">upload_file</span>
                 </div>
 
-                <div className="text-sm font-bold text-slate-900">
+                <div className="font-space-grotesk text-sm font-bold text-white">
                   {uploadedFile ? uploadedFile.name : 'Upload Product Specification Document'}
                 </div>
 
-                <p className="text-xs text-slate-500 mt-1 max-w-md mx-auto">
+                <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto">
                   Drag and drop technical specification sheet, test report, product manual, or Bill of Materials (PDF, JSON, TXT).
                 </p>
 
-                <div className="flex items-center justify-center gap-2 mt-4 text-[11px] text-slate-400 font-mono">
+                <div className="flex items-center justify-center gap-2 mt-4 text-[11px] text-slate-500 font-mono">
                   <span>Accepted: PDF &bull; JSON &bull; CSV &bull; TXT</span>
                   <span>&bull;</span>
                   <span>Max 25 MB</span>
@@ -334,25 +332,25 @@ export function CompileComplianceDashboard({
 
               {/* Uploaded File Integrity Card */}
               {uploadedFile && (
-                <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg text-xs space-y-2">
+                <div className="p-4 bg-[#0b0f19] border border-slate-800 rounded-xl text-xs space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-slate-700 flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-emerald-600 text-sm">check_circle</span>
+                    <span className="font-semibold text-slate-200 flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-emerald-400 text-sm">check_circle</span>
                       <span>Document Received & Parsed</span>
                     </span>
-                    <span className="font-mono text-[11px] text-slate-500">
+                    <span className="font-mono text-[11px] text-slate-400">
                       {(uploadedFile.size / 1024).toFixed(1)} KB
                     </span>
                   </div>
 
                   {fileSha256 && (
-                    <div className="font-mono text-[10px] text-slate-500 break-all bg-white p-2 rounded border border-slate-200">
+                    <div className="font-mono text-[10px] text-cyan-300/80 break-all bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
                       SHA-256: {fileSha256}
                     </div>
                   )}
 
-                  <div className="pt-2 text-slate-600 text-xs">
-                    Target detected: <strong>{productName}</strong> ({category})
+                  <div className="pt-2 text-slate-300 text-xs">
+                    Target detected: <strong className="text-white">{productName}</strong> ({category})
                   </div>
                 </div>
               )}
@@ -363,79 +361,87 @@ export function CompileComplianceDashboard({
           {intakeMode === 'manual' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block mb-1">
+                <label className="text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider block mb-1">
                   Product Commercial Name / Model
                 </label>
                 <input
                   type="text"
                   value={productName}
                   onChange={(e) => setProductName(e.target.value)}
-                  className="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-600 focus:bg-white transition-colors"
+                  className="w-full text-xs bg-[#0b0f19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/30 transition-colors"
                   placeholder="e.g. ThermoSteel Vacuum Flask 1000ml"
                 />
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block mb-1">
+                <label className="text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider block mb-1">
                   Product Category
                 </label>
                 <input
                   type="text"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-600 focus:bg-white transition-colors"
+                  className="w-full text-xs bg-[#0b0f19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/30 transition-colors"
                   placeholder="e.g. Domestic Vacuum Ware & Food-Contact Containers"
                 />
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block mb-1">
-                  Applicable Indian Standard (or Auto-Detect)
+                <label className="text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider block mb-1.5">
+                  Target Statutory Standard
                 </label>
-                <input
-                  type="text"
-                  value={targetStandard}
-                  onChange={(e) => setTargetStandard(e.target.value)}
-                  className="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-900 font-mono focus:outline-none focus:border-blue-600 focus:bg-white transition-colors"
-                  placeholder="e.g. IS 17526:2021"
-                />
+                <div className="w-full">
+                  <GlideSelect
+                    options={standardOptions}
+                    value={targetStandard}
+                    onChange={(val) => setTargetStandard(val)}
+                    size="md"
+                    menuWidth={280}
+                    surfaceColor="#0b0f19"
+                    highlightColor="#1e293b"
+                    accentColor="#38bdf8"
+                    textColor="#f1f5f9"
+                    radius={10}
+                    className="w-full"
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block mb-1">
+                <label className="text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider block mb-1">
                   Capacity / Rating
                 </label>
                 <input
                   type="text"
                   value={capacity}
                   onChange={(e) => setCapacity(e.target.value)}
-                  className="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-600 focus:bg-white transition-colors"
+                  className="w-full text-xs bg-[#0b0f19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/30 transition-colors"
                   placeholder="e.g. 1000 mL or 5000 W"
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block mb-1">
+                <label className="text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider block mb-1">
                   Materials & Construction
                 </label>
                 <input
                   type="text"
                   value={material}
                   onChange={(e) => setMaterial(e.target.value)}
-                  className="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-600 focus:bg-white transition-colors"
+                  className="w-full text-xs bg-[#0b0f19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/30 transition-colors"
                   placeholder="e.g. Austenitic Stainless Steel 304 (SS 304) for food-contact inner/outer walls"
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block mb-1">
+                <label className="text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider block mb-1">
                   Technical Description & Insulation Mechanism
                 </label>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={3}
-                  className="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-600 focus:bg-white transition-colors leading-relaxed"
+                  className="w-full text-xs bg-[#0b0f19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/30 transition-colors leading-relaxed"
                   placeholder="Describe dimensions, wall thickness, thermal performance claim, closures, and test parameters..."
                 />
               </div>
@@ -445,32 +451,32 @@ export function CompileComplianceDashboard({
           {/* TAB 3: Statutory Presets */}
           {intakeMode === 'preset' && (
             <div className="space-y-3">
-              <div className="text-xs text-slate-500 mb-2">
+              <div className="text-xs text-slate-400 mb-2">
                 Select an official statutory benchmark to immediately load verified product characteristics and Quality Control Order requirements:
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {presets.map((p) => (
                   <div
                     key={p.id}
-                    className="p-4 bg-slate-50 hover:bg-blue-50/50 border border-slate-200 hover:border-blue-300 rounded-xl transition-all cursor-pointer flex flex-col justify-between"
+                    className="p-4 bg-[#0b0f19] hover:bg-slate-900 border border-slate-800 hover:border-cyan-500/50 rounded-xl transition-all cursor-pointer flex flex-col justify-between group shadow-md"
                     onClick={() => handleApplyPreset(p)}
                   >
                     <div>
                       <div className="flex items-center justify-between gap-1 mb-2">
-                        <span className="font-mono text-xs font-bold text-blue-700 bg-white px-2 py-0.5 rounded border border-blue-200">
+                        <span className="font-mono text-xs font-bold text-cyan-300 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-500/30">
                           {p.standard}
                         </span>
-                        <span className="text-[10px] font-medium text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
+                        <span className="text-[10px] font-medium text-emerald-400 bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-500/30">
                           {p.qco.split(' ')[0]}
                         </span>
                       </div>
-                      <h4 className="font-bold text-slate-900 text-xs mb-1">{p.title}</h4>
-                      <p className="text-[11px] text-slate-600 leading-relaxed">{p.desc}</p>
+                      <h4 className="font-space-grotesk font-bold text-white text-xs mb-1 group-hover:text-cyan-200 transition-colors">{p.title}</h4>
+                      <p className="text-[11px] text-slate-400 leading-relaxed">{p.desc}</p>
                     </div>
 
-                    <div className="mt-3 pt-2 border-t border-slate-200 flex items-center justify-between text-[11px] font-semibold text-blue-700">
+                    <div className="mt-3 pt-2.5 border-t border-slate-800 flex items-center justify-between text-[11px] font-semibold text-cyan-400 group-hover:text-cyan-300">
                       <span>Load Specification</span>
-                      <span className="material-symbols-outlined text-[15px]">arrow_forward</span>
+                      <span className="material-symbols-outlined text-[15px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
                     </div>
                   </div>
                 ))}
@@ -479,15 +485,15 @@ export function CompileComplianceDashboard({
           )}
 
           {/* Compilation Execution Action Bar */}
-          <div className="mt-6 pt-5 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div className="text-[11px] text-slate-500 leading-relaxed text-center sm:text-left">
-              Deterministic evaluation executes: <strong>Product DNA &rarr; Applicability &rarr; Requirements &rarr; Evidence &rarr; Gaps &rarr; Actions &rarr; Passport</strong>.
+          <div className="mt-6 pt-5 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="text-[11px] text-slate-400 leading-relaxed text-center sm:text-left">
+              Deterministic evaluation executes: <strong className="text-slate-200">Product DNA &rarr; Applicability &rarr; Requirements &rarr; Evidence &rarr; Gaps &rarr; Actions &rarr; Passport</strong>.
             </div>
 
             <button
               type="button"
               onClick={handleCompile}
-              className="w-full sm:w-auto px-7 py-3 bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white font-semibold text-xs rounded-lg shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
+              className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 active:scale-[0.99] text-slate-950 font-bold text-xs rounded-xl shadow-[0_0_20px_rgba(56,189,248,0.35)] transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
             >
               <span>COMPILE COMPLIANCE</span>
               <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
@@ -501,10 +507,10 @@ export function CompileComplianceDashboard({
       {/* ------------------------------------------------------------- */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-700 font-mono">
+          <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
             Mandatory Statutory Quality Control Orders (QCO)
           </h2>
-          <span className="text-[11px] text-slate-400 font-mono">
+          <span className="text-[11px] text-slate-500 font-mono">
             Gazette of India Published Orders
           </span>
         </div>
@@ -542,30 +548,30 @@ export function CompileComplianceDashboard({
           ].map((item, idx) => (
             <div
               key={idx}
-              className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs space-y-2 flex flex-col justify-between"
+              className="bg-[#0f1422] border border-slate-800 hover:border-slate-700 rounded-xl p-4 shadow-md space-y-2 flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="font-mono text-xs font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                  <span className="font-mono text-xs font-bold text-cyan-300 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-500/30">
                     {item.standard}
                   </span>
-                  <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
+                  <span className="text-[10px] font-semibold text-emerald-400 bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-500/30">
                     {item.status}
                   </span>
                 </div>
-                <h4 className="text-xs font-bold text-slate-900 mt-2">{item.title}</h4>
-                <p className="text-[11px] text-slate-600 mt-1 leading-relaxed">{item.scope}</p>
+                <h4 className="text-xs font-bold text-white mt-2 font-space-grotesk">{item.title}</h4>
+                <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">{item.scope}</p>
               </div>
 
-              <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                <span className="text-slate-500 font-medium">{item.scheme}</span>
+              <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px]">
+                <span className="text-slate-400 font-medium">{item.scheme}</span>
                 <button
                   type="button"
                   onClick={() => {
                     setTargetStandard(item.standard);
                     setIntakeMode('manual');
                   }}
-                  className="text-blue-600 hover:text-blue-800 font-semibold cursor-pointer"
+                  className="text-cyan-400 hover:text-cyan-300 font-semibold cursor-pointer"
                 >
                   Select &rarr;
                 </button>
@@ -578,11 +584,11 @@ export function CompileComplianceDashboard({
       {/* ------------------------------------------------------------- */}
       {/* 4. The 7-Stage Compliance Pipeline Overview                   */}
       {/* ------------------------------------------------------------- */}
-      <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 shadow-2xs">
-        <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-3">
+      <div className="bg-[#0b0f19] border border-slate-800 rounded-2xl p-5 shadow-lg">
+        <div className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-500 mb-3">
           GOAT Deterministic Regulatory Execution Pipeline
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 text-xs font-sans">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 text-xs font-sans">
           {[
             { step: '01', title: 'Product DNA', desc: 'Facts & attributes extraction' },
             { step: '02', title: 'Applicability', desc: 'Statutory standard & QCO scoping' },
@@ -592,12 +598,12 @@ export function CompileComplianceDashboard({
             { step: '06', title: 'Lab Actions', desc: 'Testing orders & dispatch' },
             { step: '07', title: 'Passport', desc: 'Cryptographic compliance attestation' },
           ].map((st) => (
-            <div key={st.step} className="bg-white p-2.5 rounded-lg border border-slate-200">
-              <span className="font-mono text-[10px] font-bold text-blue-700 block">
+            <div key={st.step} className="bg-[#0f1422] p-3 rounded-xl border border-slate-800 hover:border-cyan-500/30 transition-colors">
+              <span className="font-mono text-[10px] font-bold text-cyan-400 block">
                 {st.step}
               </span>
-              <div className="font-semibold text-slate-900 mt-0.5">{st.title}</div>
-              <div className="text-[10px] text-slate-500 mt-0.5 leading-tight">{st.desc}</div>
+              <div className="font-space-grotesk font-semibold text-slate-100 mt-1">{st.title}</div>
+              <div className="text-[10px] text-slate-400 mt-0.5 leading-tight">{st.desc}</div>
             </div>
           ))}
         </div>

@@ -41,19 +41,21 @@ export function UploadModal({ isOpen, onClose, onFileIngested }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
-        className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm"
+        className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="relative bg-white border border-[#E2E8F0] rounded-xl max-w-md w-full shadow-2xl z-10 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-        <div className="px-6 py-4 border-b border-[#E2E8F0] flex items-center justify-between bg-[#F8F9FA]">
-          <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#1D4ED8]">upload_file</span>
-            <h3 className="font-bold text-sm text-[#0F172A]">Multimodal Technical Ingestion</h3>
+      <div className="relative bg-[#0d121f] border border-slate-800 rounded-2xl max-w-md w-full shadow-2xl z-10 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+        <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/60">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-lg bg-cyan-950/60 border border-cyan-800/60 flex items-center justify-center text-cyan-400">
+              <span className="material-symbols-outlined text-[16px]">upload_file</span>
+            </div>
+            <h3 className="font-bold text-sm text-slate-100 font-['Space_Grotesk']">Multimodal Technical Ingestion</h3>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="text-[#64748B] hover:text-[#0F172A] p-1 rounded"
+            className="text-slate-400 hover:text-slate-200 p-1 rounded-lg hover:bg-slate-800 transition-colors"
           >
             <span className="material-symbols-outlined text-base">close</span>
           </button>
@@ -65,10 +67,10 @@ export function UploadModal({ isOpen, onClose, onFileIngested }) {
             onDragLeave={handleDrag}
             onDragOver={handleDrag}
             onDrop={handleDrop}
-            className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors cursor-pointer ${
+            className={`border-2 border-dashed rounded-xl p-6 text-center transition-all cursor-pointer ${
               dragActive
-                ? 'border-blue-500 bg-blue-50/50'
-                : 'border-[#E2E8F0] bg-[#F8F9FA] hover:bg-slate-50'
+                ? 'border-cyan-400 bg-cyan-950/30'
+                : 'border-slate-700 bg-slate-900/50 hover:bg-slate-900/80 hover:border-slate-600'
             }`}
           >
             <input
@@ -78,41 +80,41 @@ export function UploadModal({ isOpen, onClose, onFileIngested }) {
               onChange={handleChange}
               accept=".step,.stp,.stl,.pdf,.docx,.zip"
             />
-            <label htmlFor="file-upload" className="cursor-pointer">
-              <span className="material-symbols-outlined text-3xl text-[#94A3B8] block mb-2">
+            <label htmlFor="file-upload" className="cursor-pointer block">
+              <span className="material-symbols-outlined text-3xl text-cyan-400 block mb-2">
                 drive_folder_upload
               </span>
-              <span className="text-xs font-semibold text-[#0F172A] block">
+              <span className="text-xs font-semibold text-slate-200 block font-['Space_Grotesk']">
                 {selectedFile ? selectedFile.name : 'Select or drop technical files here'}
               </span>
-              <span className="text-[11px] text-[#64748B] block mt-1">
+              <span className="text-[11px] text-slate-400 block mt-1 font-mono">
                 STEP, STL, Gerber, schematic PDFs, and test reports
               </span>
             </label>
           </div>
 
-          <div className="p-3 bg-blue-50/60 rounded border border-blue-100 flex items-start gap-2">
-            <span className="material-symbols-outlined text-blue-600 text-sm mt-0.5">info</span>
-            <div className="text-[11px] text-blue-900 leading-relaxed">
+          <div className="p-3 bg-cyan-950/40 rounded-lg border border-cyan-800/50 flex items-start gap-2">
+            <span className="material-symbols-outlined text-cyan-400 text-sm mt-0.5">info</span>
+            <div className="text-[11px] text-cyan-200 leading-relaxed">
               Files are processed locally for spatial geometry extraction and statutory clause alignment.
             </div>
           </div>
 
-          <div className="mt-2 flex items-center justify-end gap-2.5">
+          <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-slate-800">
             <button
               type="button"
               onClick={onClose}
-              className="px-3 py-1.5 text-xs text-[#64748B] hover:text-[#0F172A]"
+              className="px-3 py-1.5 text-xs text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="button"
-              disabled={!selectedFile}
               onClick={handleIngest}
-              className="px-4 py-2 bg-[#1D4ED8] hover:bg-[#1E40AF] disabled:bg-slate-200 disabled:text-slate-400 text-white rounded text-xs font-semibold transition-colors shadow-sm"
+              disabled={!selectedFile}
+              className="px-4 py-2 bg-gradient-to-r from-cyan-400 to-sky-400 hover:from-cyan-300 hover:to-sky-300 disabled:opacity-40 text-slate-950 rounded-lg text-xs font-semibold transition-all shadow-md shadow-cyan-500/20 cursor-pointer"
             >
-              Ingest &amp; Extract
+              Ingest &amp; Process
             </button>
           </div>
         </div>

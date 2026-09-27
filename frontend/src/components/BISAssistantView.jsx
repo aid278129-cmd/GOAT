@@ -8,6 +8,8 @@ import { ContextualHallmarkingCard } from './assistant/ContextualHallmarkingCard
 import { ContextualConsumerCard } from './assistant/ContextualConsumerCard';
 import { TextShimmer } from './loading-ui/text-shimmer';
 import { MorphingInfinity } from './loading-ui/morphing-infinity';
+import GlideSelect from './loading-ui/GlideSelect';
+import { AudioInputButton, TextToSpeechButton } from './common/AudioInputButton';
 
 export default function BISAssistantView({
   onStartComplianceAssessment,
@@ -22,6 +24,12 @@ export default function BISAssistantView({
   const [loading, setLoading] = useState(false);
   const chatBottomRef = useRef(null);
   const inputRef = useRef(null);
+
+  const languageOptions = [
+    { value: 'en', label: 'English', tag: 'EN' },
+    { value: 'hi', label: 'हिन्दी', tag: 'HI' },
+    { value: 'ta', label: 'தமிழ்', tag: 'TA' },
+  ];
 
   // 4 Canonical Compact Examples (per M27.2 Section 1)
   const homeExamples = [
@@ -98,9 +106,10 @@ export default function BISAssistantView({
       i === 'CERTIFICATION_PROCESS' ||
       i === 'BIS_SCHEME_GUIDANCE' ||
       t.includes('certification') ||
+      t.includes('how do i get bis') ||
       t.includes('scheme i') ||
       t.includes('scheme ii') ||
-      t.includes('how do i get bis')
+      t.includes('licensing')
     ) {
       return 'certification';
     }
@@ -108,29 +117,31 @@ export default function BISAssistantView({
     if (
       i === 'LABORATORY_DISCOVERY' ||
       t.includes('laboratory') ||
-      t.includes('lab') ||
-      t.includes('test facility') ||
-      t.includes('testing center')
+      t.includes('find a lab') ||
+      t.includes('testing lab') ||
+      t.includes('where can i test') ||
+      t.includes('nabl')
     ) {
       return 'laboratory';
     }
 
     if (
-      i === 'HALLMARKING' ||
+      i === 'HALLMARKING_VERIFICATION' ||
       t.includes('hallmark') ||
       t.includes('huid') ||
-      t.includes('gold') ||
-      t.includes('jewel')
+      t.includes('gold purity') ||
+      t.includes('22k') ||
+      t.includes('bis care')
     ) {
       return 'hallmarking';
     }
 
     if (
-      i === 'CONSUMER_QUERY' ||
-      t.includes('consumer') ||
-      t.includes('counterfeit') ||
-      t.includes('fake') ||
-      t.includes('bis care')
+      i === 'CONSUMER_COMPLAINT' ||
+      t.includes('complaint') ||
+      t.includes('fake isi') ||
+      t.includes('substandard') ||
+      t.includes('report misuse')
     ) {
       return 'consumer';
     }
@@ -138,8 +149,8 @@ export default function BISAssistantView({
     return null;
   };
 
-  const handleSendMessage = async (queryText = null) => {
-    const textToSend = queryText || inputMessage;
+  const handleSendMessage = async (customText) => {
+    const textToSend = customText || inputMessage;
     if (!textToSend.trim() || loading) return;
 
     const userMsg = {
@@ -232,10 +243,17 @@ export default function BISAssistantView({
     }
   };
 
+  const handleAudioTranscript = (transcriptText) => {
+    setInputMessage((prev) => {
+      const clean = prev.trim();
+      return clean ? `${clean} ${transcriptText}` : transcriptText;
+    });
+  };
+
   const isHomeScreen = messages.length === 0;
 
   return (
-    <div className="flex flex-col h-[calc(100vh-3.5rem)] bg-[#F8F9FA] overflow-hidden font-sans">
+    <div className="flex flex-col h-[calc(100vh-3.5rem)] bg-[#090d16] text-slate-100 overflow-hidden font-sans">
       {/* ============================================================== */}
       {/* 1. HOME SCREEN (Clean, spacious, single input, 4 examples)    */}
       {/* ============================================================== */}
@@ -244,27 +262,27 @@ export default function BISAssistantView({
           <div className="max-w-2xl w-full text-center space-y-6 my-auto">
             {/* Brand icon & title */}
             <div className="space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center mx-auto shadow-sm">
-                <span className="material-symbols-outlined text-2xl">shield</span>
+              <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 flex items-center justify-center mx-auto shadow-[0_0_20px_rgba(56,189,248,0.25)]">
+                <span className="material-symbols-outlined text-3xl">smart_toy</span>
               </div>
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-blue-700 block mb-1">
+                <span className="font-space-grotesk text-xs font-bold uppercase tracking-wider text-cyan-400 block mb-1">
                   GOAT
                 </span>
-                <span className="text-xs font-medium text-slate-500 uppercase tracking-widest block">
-                  Compliance Assistant
+                <span className="text-[11px] font-mono text-slate-400 uppercase tracking-widest block">
+                  Intelligent BIS Compliance Assistant
                 </span>
-                <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mt-2">
-                  What can we help you with?
+                <h1 className="font-space-grotesk text-2xl sm:text-3xl font-bold text-white tracking-tight mt-2">
+                  What regulatory guidance do you need?
                 </h1>
-                <p className="text-xs sm:text-sm text-slate-600 mt-2 max-w-md mx-auto leading-relaxed">
-                  Search Indian Standards, understand certification schemes, find laboratories, verify hallmarking, or assess your product with source-backed references.
+                <p className="text-xs sm:text-sm text-slate-400 mt-2 max-w-md mx-auto leading-relaxed">
+                  Search Indian Standards, understand certification schemes, find laboratories, verify hallmarking, or speak directly with audio input support.
                 </p>
               </div>
             </div>
 
-            {/* Large Conversational Input */}
-            <div className="w-full bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow p-3 sm:p-4 text-left">
+            {/* Large Conversational Input with Audio Support & GlideSelect */}
+            <div className="w-full bg-[#0f1422]/90 backdrop-blur-xl rounded-2xl border border-slate-800 shadow-2xl p-3 sm:p-4 text-left">
               <textarea
                 ref={inputRef}
                 value={inputMessage}
@@ -276,66 +294,69 @@ export default function BISAssistantView({
                   }
                 }}
                 rows={3}
-                placeholder="Ask about a BIS standard, certification, testing, hallmarking, or your product..."
-                className="w-full text-xs sm:text-sm text-slate-900 placeholder-slate-400 bg-transparent resize-none focus:outline-none leading-relaxed"
+                placeholder="Ask or speak about a BIS standard, certification, testing, hallmarking, or your product..."
+                className="w-full text-xs sm:text-sm text-slate-100 placeholder-slate-500 bg-transparent resize-none focus:outline-none leading-relaxed"
                 autoFocus
               />
 
-              <div className="flex items-center justify-between pt-2 border-t border-slate-100 mt-2">
-                {/* Language switcher */}
-                <div className="flex items-center gap-1">
-                  <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mr-1 hidden sm:inline">
+              <div className="flex items-center justify-between pt-3 border-t border-slate-800/80 mt-2">
+                {/* GlideSelect Language switcher */}
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider hidden sm:inline">
                     Language:
                   </span>
-                  {[
-                    { id: 'en', label: 'English' },
-                    { id: 'hi', label: 'हिन्दी' },
-                    { id: 'ta', label: 'தமிழ்' },
-                  ].map((lang) => (
-                    <button
-                      key={lang.id}
-                      type="button"
-                      onClick={() => onSelectLanguage && onSelectLanguage(lang.id)}
-                      className={`px-2 py-0.5 rounded text-[11px] font-medium transition-colors cursor-pointer ${
-                        selectedLanguage === lang.id
-                          ? 'bg-blue-50 text-blue-700 font-semibold border border-blue-200'
-                          : 'text-slate-500 hover:text-slate-800'
-                      }`}
-                    >
-                      {lang.label}
-                    </button>
-                  ))}
+                  <GlideSelect
+                    options={languageOptions}
+                    value={selectedLanguage}
+                    onChange={(val) => onSelectLanguage && onSelectLanguage(val)}
+                    size="sm"
+                    menuWidth={130}
+                    surfaceColor="#0b0f19"
+                    highlightColor="#1e293b"
+                    accentColor="#38bdf8"
+                    textColor="#f1f5f9"
+                    radius={8}
+                    ariaLabel="Assistant Language"
+                  />
                 </div>
 
-                {/* Submit button */}
-                <button
-                  type="button"
-                  onClick={() => handleSendMessage()}
-                  disabled={!inputMessage.trim() || loading}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white rounded-lg text-xs font-semibold shadow-xs hover:shadow transition-all flex items-center gap-1.5 cursor-pointer disabled:cursor-not-allowed"
-                >
-                  <span>Ask</span>
-                  <span className="material-symbols-outlined text-[15px]">arrow_forward</span>
-                </button>
+                {/* Right controls: Audio Input Mic & Submit button */}
+                <div className="flex items-center gap-2">
+                  <AudioInputButton
+                    onTranscript={handleAudioTranscript}
+                    language={selectedLanguage}
+                    disabled={loading}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => handleSendMessage()}
+                    disabled={!inputMessage.trim() || loading}
+                    className="px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 disabled:opacity-30 text-slate-950 font-bold rounded-xl text-xs shadow-[0_0_15px_rgba(56,189,248,0.3)] transition-all flex items-center gap-1.5 cursor-pointer disabled:cursor-not-allowed"
+                  >
+                    <span>Ask</span>
+                    <span className="material-symbols-outlined text-[15px]">arrow_forward</span>
+                  </button>
+                </div>
               </div>
             </div>
 
-            {/* Below it, only 3-4 compact examples (M27.2 Section 1) */}
+            {/* Compact example queries */}
             <div className="space-y-2 pt-2">
-              <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+              <div className="text-[11px] font-mono font-semibold text-slate-500 uppercase tracking-wider">
                 Or choose an example query:
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-xl mx-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-w-xl mx-auto">
                 {homeExamples.map((ex, idx) => (
                   <button
                     key={idx}
                     type="button"
                     onClick={() => handleSendMessage(ex.query)}
-                    className="p-3 text-left bg-white hover:bg-slate-50 border border-slate-200 hover:border-blue-300 rounded-xl transition-all shadow-2xs hover:shadow-xs group cursor-pointer"
+                    className="p-3.5 text-left bg-[#0f1422] hover:bg-[#151c2f] border border-slate-800 hover:border-cyan-500/40 rounded-xl transition-all shadow-md group cursor-pointer"
                   >
-                    <div className="text-xs font-semibold text-slate-800 group-hover:text-blue-700 transition-colors flex items-center justify-between">
+                    <div className="text-xs font-semibold text-slate-200 group-hover:text-cyan-300 transition-colors flex items-center justify-between">
                       <span>{ex.label}</span>
-                      <span className="material-symbols-outlined text-[15px] text-slate-400 group-hover:text-blue-600 transition-transform group-hover:translate-x-0.5">
+                      <span className="material-symbols-outlined text-[15px] text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all">
                         arrow_forward
                       </span>
                     </div>
@@ -344,8 +365,8 @@ export default function BISAssistantView({
               </div>
             </div>
 
-            <div className="text-[11px] text-slate-400 pt-4">
-              AI-assisted regulatory intelligence. Compliance determinations require deterministic evaluation &bull; 0% LLM Compliance Authority.
+            <div className="text-[11px] font-mono text-slate-500 pt-4">
+              AI-assisted regulatory intelligence &bull; Statutory determinations are deterministic &bull; 0% LLM Compliance Authority.
             </div>
           </div>
         </div>
@@ -355,14 +376,14 @@ export default function BISAssistantView({
         /* ============================================================== */
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Chat Stream Header */}
-          <div className="h-12 bg-white border-b border-slate-200 px-4 sm:px-6 flex items-center justify-between shrink-0">
+          <div className="h-12 bg-[#0b0f19] border-b border-slate-800 px-4 sm:px-6 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              <span className="text-xs font-bold text-slate-900">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="font-space-grotesk text-xs font-bold text-white">
                 Compliance Assistant
               </span>
-              <span className="text-[11px] text-slate-400 hidden sm:inline">
-                &bull; Source-Backed Intelligence
+              <span className="text-[11px] font-mono text-slate-500 hidden sm:inline">
+                &bull; Source-Backed Regulatory Intelligence
               </span>
             </div>
 
@@ -370,7 +391,7 @@ export default function BISAssistantView({
               <button
                 type="button"
                 onClick={handleStartNewConversation}
-                className="px-2.5 py-1 text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md border border-slate-200 transition-colors cursor-pointer flex items-center gap-1"
+                className="px-2.5 py-1 text-xs font-medium text-slate-300 hover:text-cyan-200 hover:bg-slate-800/80 rounded-lg border border-slate-800 transition-colors cursor-pointer flex items-center gap-1"
                 title="Start a fresh conversation"
               >
                 <span className="material-symbols-outlined text-[15px]">add</span>
@@ -379,74 +400,76 @@ export default function BISAssistantView({
             </div>
           </div>
 
-          {/* Messages Container */}
+          {/* Messages Stream */}
           <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5">
-            <div className="max-w-3xl mx-auto space-y-5">
-              {messages.map((m, idx) => (
+            <div className="max-w-3xl mx-auto space-y-4">
+              {messages.map((m) => (
                 <div
-                  key={m.id || idx}
-                  className={`flex flex-col ${m.role === 'user' ? 'items-end' : 'items-start'}`}
+                  key={m.id}
+                  className={`flex flex-col ${
+                    m.role === 'user' ? 'items-end' : 'items-start'
+                  } space-y-2`}
                 >
-                  {/* Message Bubble */}
                   <div
-                    className={`rounded-2xl p-4 sm:p-5 text-xs sm:text-sm leading-relaxed max-w-2xl ${
+                    className={`max-w-[85%] p-4 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-md ${
                       m.role === 'user'
-                        ? 'bg-slate-900 text-white shadow-xs ml-auto'
-                        : 'bg-white text-slate-800 border border-slate-200 shadow-2xs mr-auto w-full'
+                        ? 'bg-cyan-950/40 text-cyan-100 border border-cyan-500/30'
+                        : 'bg-[#0f1422] text-slate-100 border border-slate-800'
                     }`}
                   >
-                    {/* Role header for assistant */}
-                    {m.role === 'assistant' && (
-                      <div className="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-slate-100">
-                        <div className="flex items-center gap-1.5">
-                          <div className="w-5 h-5 rounded bg-blue-600 text-white flex items-center justify-center">
+                    <div className="flex items-center justify-between gap-3 mb-1.5">
+                      <div className="flex items-center gap-2">
+                        {m.role === 'assistant' ? (
+                          <span className="font-mono text-[10px] font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1">
                             <span className="material-symbols-outlined text-[13px]">shield</span>
-                          </div>
-                          <span className="text-xs font-bold text-slate-900">GOAT Assistant</span>
-                        </div>
-                        <span className="text-[10px] text-slate-400 font-mono">
-                          0% LLM Compliance Authority
-                        </span>
+                            <span>BIS Assistant</span>
+                          </span>
+                        ) : (
+                          <span className="font-mono text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                            You
+                          </span>
+                        )}
                       </div>
-                    )}
 
-                    {/* Content */}
-                    <div className="whitespace-pre-wrap font-sans leading-relaxed">
-                      {m.content}
+                      {/* Text to Speech Read Aloud for Assistant Messages */}
+                      {m.role === 'assistant' && (
+                        <TextToSpeechButton
+                          text={m.content}
+                          language={selectedLanguage}
+                        />
+                      )}
                     </div>
 
-                    {/* Citations as clickable pills */}
+                    <div className="whitespace-pre-wrap">{m.content}</div>
+
+                    {/* Citations block */}
                     {m.citations && m.citations.length > 0 && (
-                      <div className="mt-3.5 pt-2.5 border-t border-slate-100">
-                        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                          <span className="material-symbols-outlined text-[13px]">library_books</span>
-                          <span>Statutory Citations (Click to inspect provenance):</span>
+                      <div className="mt-3 pt-2.5 border-t border-slate-800/80 space-y-1">
+                        <div className="font-mono text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
+                          Authoritative Statutory Citations:
                         </div>
                         <div className="flex flex-wrap gap-1.5">
-                          {m.citations.map((cite, cIdx) => (
+                          {m.citations.map((c, i) => (
                             <button
-                              key={cIdx}
+                              key={i}
                               type="button"
-                              onClick={() => handleCitationClick(cite)}
-                              className="px-2 py-1 rounded bg-slate-50 hover:bg-blue-50 text-blue-700 text-[11px] font-mono font-medium border border-slate-200 hover:border-blue-300 transition-colors flex items-center gap-1 cursor-pointer"
-                              title="Inspect document, authority, clause, and SHA-256 hash"
+                              onClick={() => handleCitationClick(c)}
+                              className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 hover:border-cyan-500/50 text-cyan-300 text-[11px] font-mono flex items-center gap-1 cursor-pointer transition-colors"
+                              title="Inspect statutory clause snapshot"
                             >
-                              <span>📜</span>
-                              <span>{cite.label || cite.standard_number || 'Citation'}</span>
+                              <span className="material-symbols-outlined text-[12px] text-cyan-400">menu_book</span>
+                              <span>{c.label || c.document || 'Citation'}</span>
                             </button>
                           ))}
                         </div>
                       </div>
                     )}
 
-                    {/* Contextual Action Cards */}
+                    {/* Contextual cards */}
                     {m.cardType === 'assessment' && (
                       <ContextualAssessmentCard
-                        productName="ThermoSteel Vacuum Flask (1000ml)"
-                        standardNumber="IS 17526:2021"
-                        standardTitle="Vacuum Insulated Stainless Steel Domestic Containers"
                         onStartAssessment={onStartComplianceAssessment}
-                        onInspectStandard={() => handleCitationClick(m.citations?.[0] || {})}
+                        onInspectSource={onInspectSource}
                       />
                     )}
 
@@ -477,21 +500,21 @@ export default function BISAssistantView({
                 </div>
               ))}
 
-              {/* Thinking & Loading Indicator (Thinking.md & loading.md) */}
+              {/* Thinking & Loading Indicator */}
               {loading && (
                 <div className="flex items-start gap-3 max-w-2xl mr-auto animate-in fade-in duration-200">
-                  <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <div className="w-8 h-8 rounded-lg bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 flex items-center justify-center shrink-0 shadow-xs">
                     <span className="material-symbols-outlined text-base">shield</span>
                   </div>
-                  <div className="p-4 bg-white border border-slate-200 rounded-2xl shadow-2xs text-xs flex items-center gap-3">
-                    <MorphingInfinity className="w-5 h-5 text-blue-600 shrink-0" />
+                  <div className="p-4 bg-[#0f1422] border border-slate-800 rounded-2xl shadow-md text-xs flex items-center gap-3">
+                    <MorphingInfinity className="w-5 h-5 text-cyan-400 shrink-0" />
                     <div className="space-y-0.5">
-                      <div className="font-semibold text-blue-700 text-[11px] uppercase tracking-wider flex items-center gap-1.5">
-                        <TextShimmer baseColor="#1d4ed8" shimmerColor="#60a5fa" duration={1.8}>
+                      <div className="font-semibold text-cyan-300 text-[11px] uppercase tracking-wider flex items-center gap-1.5">
+                        <TextShimmer baseColor="#38bdf8" shimmerColor="#a5f3fc" duration={1.8}>
                           Thinking...
                         </TextShimmer>
                       </div>
-                      <TextShimmer baseColor="#64748b" shimmerColor="#0f172a" duration={2.5}>
+                      <TextShimmer baseColor="#64748b" shimmerColor="#cbd5e1" duration={2.5}>
                         Consulting authoritative BIS standards, QCO orders, and laboratory repositories...
                       </TextShimmer>
                     </div>
@@ -503,8 +526,8 @@ export default function BISAssistantView({
             </div>
           </div>
 
-          {/* Sticky Bottom Conversational Input */}
-          <div className="p-3 sm:p-4 bg-white border-t border-slate-200 shrink-0">
+          {/* Sticky Bottom Conversational Input with Audio Support */}
+          <div className="p-3 sm:p-4 bg-[#0b0f19] border-t border-slate-800 shrink-0">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -512,7 +535,7 @@ export default function BISAssistantView({
               }}
               className="max-w-3xl mx-auto flex items-end gap-2"
             >
-              <div className="flex-1 relative bg-slate-50 border border-slate-200 rounded-xl focus-within:border-blue-600 focus-within:bg-white transition-colors p-2">
+              <div className="flex-1 relative bg-[#080c14] border border-slate-700/80 rounded-xl focus-within:border-cyan-400 focus-within:ring-1 focus-within:ring-cyan-400/30 transition-colors p-2">
                 <textarea
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
@@ -523,19 +546,26 @@ export default function BISAssistantView({
                     }
                   }}
                   rows={2}
-                  placeholder="Ask a follow-up about Indian Standards, schemes, testing, or your product..."
-                  className="w-full text-xs sm:text-sm text-slate-900 placeholder-slate-400 bg-transparent resize-none focus:outline-none leading-relaxed"
+                  placeholder="Ask or speak a follow-up about Indian Standards, schemes, testing, or your product..."
+                  className="w-full text-xs sm:text-sm text-slate-100 placeholder-slate-500 bg-transparent resize-none focus:outline-none leading-relaxed"
                 />
               </div>
+
+              {/* Audio Microphone Input Button */}
+              <AudioInputButton
+                onTranscript={handleAudioTranscript}
+                language={selectedLanguage}
+                disabled={loading}
+              />
 
               <button
                 type="submit"
                 disabled={loading || !inputMessage.trim()}
-                className="px-4 py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white rounded-xl text-xs font-semibold shadow-xs hover:shadow transition-all flex items-center gap-1.5 cursor-pointer disabled:cursor-not-allowed shrink-0"
+                className="px-4 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 disabled:opacity-40 text-slate-950 rounded-xl text-xs font-bold shadow-[0_0_15px_rgba(56,189,248,0.25)] transition-all flex items-center gap-1.5 cursor-pointer disabled:cursor-not-allowed shrink-0"
               >
                 {loading ? (
                   <>
-                    <MorphingInfinity className="w-4 h-4 text-white" />
+                    <MorphingInfinity className="w-4 h-4 text-slate-950" />
                     <span className="font-mono text-[11px]">Thinking...</span>
                   </>
                 ) : (
@@ -546,7 +576,7 @@ export default function BISAssistantView({
                 )}
               </button>
             </form>
-            <div className="text-center text-[10px] text-slate-400 mt-2">
+            <div className="text-center text-[10px] font-mono text-slate-500 mt-2">
               Source-backed assistant &bull; Official Indian Standards &bull; Zero LLM Compliance Authority
             </div>
           </div>

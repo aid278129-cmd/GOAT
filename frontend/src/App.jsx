@@ -32,7 +32,7 @@ import { AddStandardModal } from './components/standards/AddStandardModal';
 import { AddRequirementModal } from './components/standards/AddRequirementModal';
 import { TraceChainDrawer } from './components/standards/TraceChainDrawer';
 import { SourceInspectorDrawer } from './components/common/SourceInspectorDrawer';
-import { AIAssistantDrawer } from './components/common/AIAssistantDrawer';
+import { FloatingAIBotScreen } from './components/common/FloatingAIBotScreen';
 import { TrustGovernanceModal } from './components/common/TrustGovernanceModal';
 import { ViewSkeleton } from './components/common/ViewSkeleton';
 import { triggerEntrance } from './utils/useAnimeMotion';
@@ -194,6 +194,10 @@ export default function App() {
 
   // Sync activeTab to localStorage
   const handleSelectTab = (newTab) => {
+    if (newTab === 'assistant' || newTab === 'copilot') {
+      setIsAIAssistantOpen(true);
+      return;
+    }
     setActiveTab(newTab);
     localStorage.setItem('goat_active_tab', newTab);
   };
@@ -861,7 +865,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] text-[#0F172A] flex flex-col font-sans">
+    <div className="min-h-screen bg-[#090d16] text-[#f1f5f9] flex flex-col font-sans">
       <TopBar
         isAssessmentMode={isAssessmentMode || isSecondaryMode}
         onBackToAssistant={() => handleSelectTab('dashboard')}
@@ -892,23 +896,13 @@ export default function App() {
       {/* Page View Container */}
       <main className={`flex-1 flex flex-col min-w-0 animate-view-stage ${!isAssessmentMode || activeTab === 'input' ? 'pt-14' : ''}`}>
         {/* PRIMARY DASHBOARD: COMPILE COMPLIANCE (FIRST THING THAT COMES PER USER SPECIFICATION) */}
-        {(activeTab === 'dashboard' || activeTab === 'compile' || activeTab === 'entry') && (
+        {(activeTab === 'dashboard' || activeTab === 'compile' || activeTab === 'entry' || activeTab === 'assistant') && (
           <CompileComplianceDashboard
             onCompileCompliance={handleCompileCompliance}
             onResetGoldenDemo={handleResetDemo}
             isResettingDemo={isResettingDemo}
             onOpenAssistant={() => setIsAIAssistantOpen(true)}
             onInspectSource={handleOpenSourceInspector}
-          />
-        )}
-
-        {/* BIS CONVERSATIONAL ASSISTANT VIEW (ACCESSIBLE VIA SECONDARY TAB / FLOATING LAUNCHER) */}
-        {activeTab === 'assistant' && (
-          <BISAssistantView
-            onStartComplianceAssessment={handleStartComplianceAssessment}
-            onInspectSource={handleOpenSourceInspector}
-            selectedLanguage={selectedLanguage}
-            onSelectLanguage={setSelectedLanguage}
           />
         )}
 
@@ -1048,8 +1042,8 @@ export default function App() {
             <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto w-full">
               <CompliancePassportView
                 passport={passportData}
-                onClose={() => handleSelectTab('assistant')}
-                onNewAssessment={() => handleSelectTab('assistant')}
+                onClose={() => handleSelectTab('dashboard')}
+                onNewAssessment={() => handleSelectTab('dashboard')}
                 onReviewClick={() => handleSelectTab('reviews')}
                 onInspectSource={handleOpenSourceInspector}
               />
@@ -1183,12 +1177,13 @@ export default function App() {
         data={activeSourceData}
       />
 
-      {/* Responsive AI Assistant Guidance Drawer */}
-      <AIAssistantDrawer
+      {/* Floating GOAT AI Copilot Screen (Right Side Workstation Companion) */}
+      <FloatingAIBotScreen
         isOpen={isAIAssistantOpen}
         onClose={() => setIsAIAssistantOpen(false)}
         assessment={activeAssessment}
         onInspectSource={handleOpenSourceInspector}
+        activeTab={activeTab}
       />
 
       {/* Regulatory Governance & Jury FAQ Modal */}

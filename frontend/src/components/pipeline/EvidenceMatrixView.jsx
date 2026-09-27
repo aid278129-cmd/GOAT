@@ -1,21 +1,11 @@
 import React, { useState } from 'react';
 
 /**
- * EvidenceMatrixView (Step 4 — EVIDENCE)
+ * EvidenceMatrixView (Step 4 — EVIDENCE MATRIX)
  * 
- * Header: EVIDENCE
- * Subtitle: "Review the evidence available for each requirement."
- * 
- * Clean table/list:
- * Columns: Evidence | Type | Source | Verification | Requirement | Status
- * 
- * Evidence classes:
- * USER CLAIM | DOCUMENT | VERIFIED EVIDENCE | COMPLIANCE RESULT
- * 
- * Click VIEW PROVENANCE to open right-side drawer.
- * Does not show SHA-256 everywhere.
- * 
- * Primary button: REVIEW GAPS →
+ * Header: EVIDENCE MATRIX
+ * Subtitle: "Review the evidence available for each statutory requirement."
+ * Dark precision workstation aesthetic matching homepage.
  */
 export function EvidenceMatrixView({ assessment, onUploadEvidence, onNavigate, onInspectSource }) {
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -27,22 +17,22 @@ export function EvidenceMatrixView({ assessment, onUploadEvidence, onNavigate, o
 
   if (!assessment) {
     return (
-      <div className="flex-1 p-8 flex items-center justify-center font-sans">
-        <div className="max-w-md w-full bg-white border border-slate-200 rounded-xl p-8 text-center space-y-4 shadow-xs">
-          <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mx-auto text-slate-500">
-            <span className="material-symbols-outlined text-xl">policy</span>
+      <div className="flex-1 p-8 flex items-center justify-center font-sans text-slate-200">
+        <div className="max-w-md w-full bg-[#0f1422] border border-slate-800 rounded-2xl p-8 text-center space-y-4 shadow-xl">
+          <div className="w-12 h-12 bg-cyan-500/10 border border-cyan-400/30 rounded-xl flex items-center justify-center mx-auto text-cyan-400 shadow-[0_0_15px_rgba(56,189,248,0.2)]">
+            <span className="material-symbols-outlined text-2xl">policy</span>
           </div>
           <div>
-            <h3 className="text-sm font-bold text-slate-900">No Evidence Loaded</h3>
-            <p className="text-xs text-slate-500 mt-1">
+            <h3 className="font-space-grotesk text-sm font-bold text-white">No Evidence Loaded</h3>
+            <p className="text-xs text-slate-400 mt-1">
               Select or initialize an assessment to review evidence items.
             </p>
           </div>
           <button
             onClick={() => onNavigate('dna')}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition cursor-pointer"
+            className="px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-xs transition shadow-[0_0_15px_rgba(56,189,248,0.3)] cursor-pointer"
           >
-            Go to Product
+            Go to Product DNA
           </button>
         </div>
       </div>
@@ -143,99 +133,99 @@ export function EvidenceMatrixView({ assessment, onUploadEvidence, onNavigate, o
   };
 
   return (
-    <div className="p-6 sm:p-8 space-y-6 max-w-5xl mx-auto font-sans">
+    <div className="p-6 sm:p-8 space-y-6 max-w-6xl mx-auto font-sans text-slate-100">
       {/* Step Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
         <div>
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-            Step 4 of 7
+          <span className="text-[10px] font-mono font-bold text-cyan-400 uppercase tracking-wider block mb-1">
+            Step 4 of 7 &bull; Golden Path
           </span>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-            EVIDENCE
+          <h1 className="font-space-grotesk text-2xl font-bold text-white tracking-tight">
+            EVIDENCE MATRIX
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
-            Review the evidence available for each requirement.
+          <p className="text-sm text-slate-400 mt-1">
+            Verified empirical test reports, mill certificates, and cryptographic proof anchors.
           </p>
         </div>
 
         <button
           type="button"
           onClick={() => setShowUploadModal(true)}
-          className="self-start sm:self-auto px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-2xs cursor-pointer"
+          className="self-start sm:self-auto px-4 py-2.5 bg-[#0f1422] hover:bg-slate-800 text-cyan-300 border border-cyan-500/30 hover:border-cyan-400 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all shadow-[0_0_12px_rgba(56,189,248,0.15)] cursor-pointer"
         >
-          <span className="material-symbols-outlined text-[16px]">upload_file</span>
+          <span className="material-symbols-outlined text-[16px] text-cyan-400">upload_file</span>
           <span>Register Evidence</span>
         </button>
       </div>
 
       {/* Distinct Evidence Classes Bar */}
-      <div className="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs flex items-center justify-between gap-3 text-xs overflow-x-auto no-scrollbar">
-        <div className="flex items-center gap-3 font-medium text-slate-600 shrink-0">
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+      <div className="bg-[#0f1422] border border-slate-800 rounded-xl p-3.5 shadow-md flex items-center justify-between gap-3 text-xs overflow-x-auto no-scrollbar">
+        <div className="flex items-center gap-3 font-medium text-slate-400 shrink-0 font-mono">
+          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
             Evidence Hierarchy:
           </span>
-          <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px]">USER CLAIM</span>
-          <span className="text-slate-300">&rarr;</span>
-          <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px]">DOCUMENT</span>
-          <span className="text-slate-300">&rarr;</span>
-          <span className="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-semibold text-[11px]">VERIFIED EVIDENCE</span>
-          <span className="text-slate-300">&rarr;</span>
-          <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold text-[11px]">COMPLIANCE RESULT</span>
+          <span className="px-2 py-0.5 rounded bg-slate-900 text-slate-400 text-[11px] border border-slate-800">USER CLAIM</span>
+          <span className="text-slate-600">&rarr;</span>
+          <span className="px-2 py-0.5 rounded bg-slate-900 text-slate-300 text-[11px] border border-slate-800">DOCUMENT</span>
+          <span className="text-slate-600">&rarr;</span>
+          <span className="px-2 py-0.5 rounded bg-cyan-950/60 text-cyan-300 font-semibold text-[11px] border border-cyan-500/40">VERIFIED EVIDENCE</span>
+          <span className="text-slate-600">&rarr;</span>
+          <span className="px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 font-semibold text-[11px] border border-emerald-500/40">COMPLIANCE RESULT</span>
         </div>
       </div>
 
       {/* Clean Evidence Table */}
-      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
+      <div className="bg-[#0f1422] border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase text-[10px] tracking-wider">
+            <thead className="bg-[#0b0f19] border-b border-slate-800 text-slate-400 font-mono font-semibold uppercase text-[10px] tracking-wider">
               <tr>
-                <th className="py-3 px-4">Evidence</th>
-                <th className="py-3 px-4">Type</th>
-                <th className="py-3 px-4">Source</th>
-                <th className="py-3 px-4">Verification</th>
-                <th className="py-3 px-4">Requirement</th>
-                <th className="py-3 px-4 w-28">Status</th>
-                <th className="py-3 px-4 w-36 text-right">Provenance</th>
+                <th className="py-3.5 px-4">Evidence Artifact</th>
+                <th className="py-3.5 px-4">Type</th>
+                <th className="py-3.5 px-4">Source</th>
+                <th className="py-3.5 px-4">Verification</th>
+                <th className="py-3.5 px-4">Requirement</th>
+                <th className="py-3.5 px-4 w-28">Status</th>
+                <th className="py-3.5 px-4 w-36 text-right">Provenance</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-800/80">
               {evidenceItems.map((item) => (
-                <tr key={item.id} className="hover:bg-slate-50/60 transition-colors">
+                <tr key={item.id} className="hover:bg-[#13192a] transition-colors">
                   {/* Evidence Artifact */}
-                  <td className="py-3.5 px-4 font-semibold text-slate-900">
+                  <td className="py-3.5 px-4 font-semibold text-white">
                     <div className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-slate-400 text-[18px]">
+                      <span className="material-symbols-outlined text-cyan-400 text-[18px]">
                         description
                       </span>
-                      <span className="truncate max-w-[180px]" title={item.evidence}>
+                      <span className="truncate max-w-[180px] font-space-grotesk" title={item.evidence}>
                         {item.evidence}
                       </span>
                     </div>
                   </td>
 
                   {/* Type */}
-                  <td className="py-3.5 px-4 text-slate-600 font-mono text-[11px]">
+                  <td className="py-3.5 px-4 text-slate-400 font-mono text-[11px]">
                     {item.type}
                   </td>
 
                   {/* Source */}
-                  <td className="py-3.5 px-4 text-slate-700">
+                  <td className="py-3.5 px-4 text-slate-300">
                     <span className="truncate block max-w-[150px]" title={item.source}>
                       {item.source}
                     </span>
                   </td>
 
                   {/* Verification */}
-                  <td className="py-3.5 px-4 text-slate-700">
-                    <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  <td className="py-3.5 px-4 text-slate-300">
+                    <span className="inline-flex items-center gap-1.5 text-[11px] font-mono font-medium text-emerald-400">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                       {item.verification}
                     </span>
                   </td>
 
                   {/* Requirement */}
-                  <td className="py-3.5 px-4 text-slate-800 font-medium">
+                  <td className="py-3.5 px-4 text-slate-200 font-medium">
                     <span className="truncate block max-w-[160px]" title={item.requirement}>
                       {item.requirement}
                     </span>
@@ -243,13 +233,13 @@ export function EvidenceMatrixView({ assessment, onUploadEvidence, onNavigate, o
 
                   {/* Status */}
                   <td className="py-3.5 px-4">
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-emerald-950/60 text-emerald-300 border border-emerald-500/40">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
                       {item.status}
                     </span>
                   </td>
 
-                  {/* View Provenance Action per Section 10 */}
+                  {/* View Provenance Action */}
                   <td className="py-3.5 px-4 text-right">
                     <button
                       type="button"
@@ -268,7 +258,7 @@ export function EvidenceMatrixView({ assessment, onUploadEvidence, onNavigate, o
                           });
                         }
                       }}
-                      className="px-2.5 py-1 text-[11px] font-semibold text-blue-700 hover:text-blue-900 bg-blue-50/60 hover:bg-blue-100 rounded border border-blue-200 transition-colors cursor-pointer whitespace-nowrap"
+                      className="px-2.5 py-1 text-[11px] font-mono font-semibold text-cyan-300 hover:text-white bg-cyan-950/50 hover:bg-cyan-900/60 rounded-lg border border-cyan-500/30 transition-colors cursor-pointer whitespace-nowrap"
                     >
                       VIEW PROVENANCE
                     </button>
@@ -280,18 +270,18 @@ export function EvidenceMatrixView({ assessment, onUploadEvidence, onNavigate, o
         </div>
       </div>
 
-      {/* Upload Modal */}
+      {/* Upload Modal with Dark Styling */}
       {showUploadModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
-          <div className="bg-white border border-slate-200 rounded-xl shadow-2xl max-w-lg w-full p-6 space-y-4 animate-in fade-in zoom-in-95 duration-150">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-              <h3 className="text-sm font-bold text-slate-900">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 font-sans">
+          <div className="bg-[#0f1422] border border-slate-800 rounded-2xl shadow-2xl max-w-lg w-full p-6 space-y-4 animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+              <h3 className="font-space-grotesk text-sm font-bold text-white">
                 Register Verified Evidence Artifact
               </h3>
               <button
                 type="button"
                 onClick={() => setShowUploadModal(false)}
-                className="text-slate-400 hover:text-slate-600"
+                className="text-slate-400 hover:text-slate-200"
               >
                 <span className="material-symbols-outlined text-lg">close</span>
               </button>
@@ -299,7 +289,7 @@ export function EvidenceMatrixView({ assessment, onUploadEvidence, onNavigate, o
 
             <form onSubmit={handleUploadSubmit} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="font-semibold text-slate-700 block">
+                <label className="font-mono font-semibold text-slate-300 block">
                   Document Excerpt / Specification Text
                 </label>
                 <textarea
@@ -308,17 +298,17 @@ export function EvidenceMatrixView({ assessment, onUploadEvidence, onNavigate, o
                   onChange={(e) => setSnippetText(e.target.value)}
                   placeholder="Paste excerpt from official lab certificate or material test report..."
                   required
-                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 focus:bg-white focus:outline-none focus:border-blue-600"
+                  className="w-full p-3 bg-[#080c14] border border-slate-700/80 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-400 leading-relaxed"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="font-semibold text-slate-700 block">Artifact Type</label>
+                  <label className="font-mono font-semibold text-slate-300 block">Artifact Type</label>
                   <select
                     value={docType}
                     onChange={(e) => setDocType(e.target.value)}
-                    className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 focus:bg-white focus:outline-none focus:border-blue-600"
+                    className="w-full p-2.5 bg-[#080c14] border border-slate-700/80 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-400"
                   >
                     <option value="TEST_REPORT">NABL Test Report</option>
                     <option value="SPEC_SHEET">Specification Sheet</option>
@@ -328,29 +318,29 @@ export function EvidenceMatrixView({ assessment, onUploadEvidence, onNavigate, o
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-semibold text-slate-700 block">Page Number</label>
+                  <label className="font-mono font-semibold text-slate-300 block">Page Number</label>
                   <input
                     type="number"
                     min="1"
                     value={pageNumber}
                     onChange={(e) => setPageNumber(parseInt(e.target.value) || 1)}
-                    className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 focus:bg-white focus:outline-none focus:border-blue-600"
+                    className="w-full p-2.5 bg-[#080c14] border border-slate-700/80 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-400"
                   />
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
                 <button
                   type="button"
                   onClick={() => setShowUploadModal(false)}
-                  className="px-3.5 py-1.5 border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-lg font-medium"
+                  className="px-4 py-2 border border-slate-700 text-slate-300 hover:bg-slate-800 rounded-xl font-medium"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting || !snippetText.trim()}
-                  className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-lg font-semibold"
+                  className="px-5 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 disabled:opacity-40 text-slate-950 font-bold rounded-xl"
                 >
                   {isSubmitting ? 'Registering...' : 'Register Artifact'}
                 </button>
@@ -365,7 +355,7 @@ export function EvidenceMatrixView({ assessment, onUploadEvidence, onNavigate, o
         <button
           type="button"
           onClick={() => onNavigate('gaps')}
-          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-lg shadow-sm hover:shadow transition-all flex items-center gap-2 cursor-pointer"
+          className="px-7 py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-xs rounded-xl shadow-[0_0_20px_rgba(56,189,248,0.35)] transition-all flex items-center gap-2 cursor-pointer"
         >
           <span>REVIEW GAPS</span>
           <span className="material-symbols-outlined text-[16px]">arrow_forward</span>

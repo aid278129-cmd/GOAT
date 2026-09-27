@@ -42,10 +42,10 @@ export function WorkstationView({
   };
 
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-col bg-[#090d16] text-slate-100 min-h-screen">
       {/* 8-Stage Workflow Sub-Navigation */}
-      <div className="bg-white border-b border-[#E2E8F0] px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center overflow-x-auto no-scrollbar gap-1 py-1">
+      <div className="bg-[#0b0f19] border-b border-slate-800/80 px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center overflow-x-auto no-scrollbar gap-1 py-1 max-w-7xl mx-auto">
           {WORKFLOW_STAGES.map((s) => {
             const isActive = activeStage === s.id;
             return (
@@ -53,16 +53,16 @@ export function WorkstationView({
                 key={s.id}
                 type="button"
                 onClick={() => handleStageClick(s.id)}
-                className={`flex items-center gap-1.5 px-3 py-2 border-b-2 text-xs whitespace-nowrap transition-colors ${
+                className={`flex items-center gap-1.5 px-3 py-2 border-b-2 text-xs whitespace-nowrap transition-all cursor-pointer ${
                   isActive
-                    ? 'border-[#1D4ED8] text-[#1D4ED8] font-semibold'
-                    : 'border-transparent text-[#64748B] hover:text-[#0F172A] hover:border-slate-300'
+                    ? 'border-cyan-400 text-cyan-400 font-semibold bg-cyan-950/20'
+                    : 'border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700'
                 }`}
               >
                 <span className="font-mono text-[11px] opacity-70">{s.step}</span>
                 <span>{s.title}</span>
                 {s.id === 'evidence' && evidenceCount > 0 && (
-                  <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-blue-100 text-blue-800">
+                  <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-cyan-950 text-cyan-300 border border-cyan-800/60">
                     {evidenceCount}
                   </span>
                 )}
@@ -73,17 +73,17 @@ export function WorkstationView({
       </div>
 
       {/* Hero Section */}
-      <section className="w-full px-4 sm:px-6 lg:px-8 py-6 bg-white border-b border-[#E2E8F0]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <section className="w-full px-4 sm:px-6 lg:px-8 py-6 bg-[#0b0f19]/60 border-b border-slate-800/80">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-blue-50 border border-blue-200 text-blue-700 text-[11px] font-mono font-medium mb-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-cyan-950/60 border border-cyan-800/60 text-cyan-300 text-[11px] font-mono font-medium mb-2.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
               DETERMINISTIC STATUTORY COMPILER
             </div>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#0F172A]">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-100 font-['Space_Grotesk']">
               Compile compliance with confidence.
             </h1>
-            <p className="text-xs sm:text-sm text-[#475569] mt-1 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-400 mt-1 leading-relaxed">
               Automated statutory regulatory compilation against official BIS Gazette standards, multimodal technical files, and spatial CAD engineering geometry.
             </p>
           </div>
@@ -93,7 +93,7 @@ export function WorkstationView({
             <button
               type="button"
               onClick={onUploadClick}
-              className="px-3.5 py-2 text-xs font-medium text-[#0F172A] bg-white border border-[#E2E8F0] hover:bg-[#F8F9FA] rounded transition-colors flex items-center gap-1.5 shadow-sm"
+              className="px-3.5 py-2 text-xs font-medium text-slate-300 bg-slate-900/90 border border-slate-700/80 hover:bg-slate-800 hover:text-slate-100 rounded-lg transition-colors flex items-center gap-1.5 shadow-sm cursor-pointer"
             >
               <span className="material-symbols-outlined text-sm">upload_file</span>
               Add Evidence
@@ -101,9 +101,9 @@ export function WorkstationView({
             <button
               type="button"
               onClick={onCreateJobClick}
-              className="px-3.5 py-2 text-xs font-medium text-white bg-[#1D4ED8] hover:bg-[#1E40AF] rounded transition-colors flex items-center gap-1.5 shadow-sm"
+              className="px-4 py-2 text-xs font-semibold text-slate-950 bg-gradient-to-r from-cyan-400 to-sky-400 hover:from-cyan-300 hover:to-sky-300 rounded-lg transition-all flex items-center gap-1.5 shadow-lg shadow-cyan-500/10 cursor-pointer"
             >
-              <span className="material-symbols-outlined text-sm">add</span>
+              <span className="material-symbols-outlined text-sm font-bold">add</span>
               Create Compliance Job
             </button>
           </div>
@@ -111,31 +111,31 @@ export function WorkstationView({
       </section>
 
       {/* Workstation Main: 3D CAD Twin & Spatial Vector Telemetry */}
-      <section className="w-full px-4 sm:px-6 lg:px-8 py-6 bg-[#F8F9FA]">
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <section className="w-full px-4 sm:px-6 lg:px-8 py-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 xl:grid-cols-3 gap-6">
           {/* Left / Center 2 Cols: Babylon.js Viewport */}
           <div className="xl:col-span-2 flex flex-col gap-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-base text-[#1D4ED8]">view_in_ar</span>
-                <h2 className="text-xs font-bold uppercase tracking-wider text-[#0F172A] font-mono">
-                  Compile Compliance
+                <span className="material-symbols-outlined text-base text-cyan-400">view_in_ar</span>
+                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-200 font-mono">
+                  Spatial CAD Workstation
                 </h2>
               </div>
-              <span className="font-mono text-[11px] text-[#64748B]">
+              <span className="font-mono text-[11px] text-slate-500">
                 Engine: Babylon.js v9.27
               </span>
             </div>
 
             {/* Document Specification Intake Console */}
-            <div className="bg-white border border-[#E2E8F0] rounded-lg p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-2xs">
-              <div className="flex items-center gap-2.5 w-full sm:w-auto">
-                <div className="w-8 h-8 rounded-md bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 shrink-0">
+            <div className="bg-[#0f1422]/90 backdrop-blur-md border border-slate-800/80 rounded-xl p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-lg">
+              <div className="flex items-center gap-3 w-full sm:w-auto">
+                <div className="w-8 h-8 rounded-lg bg-cyan-950/60 border border-cyan-800/60 flex items-center justify-center text-cyan-400 shrink-0">
                   <span className="material-symbols-outlined text-[18px]">description</span>
                 </div>
                 <div className="text-xs">
-                  <div className="font-semibold text-[#0F172A]">Document Technical Specifications</div>
-                  <div className="text-[11px] text-[#64748B]">
+                  <div className="font-semibold text-slate-200 font-['Space_Grotesk']">Document Technical Specifications</div>
+                  <div className="text-[11px] text-slate-400">
                     Provide document specifications to extract Product DNA, detect applicable BIS standards, and identify compliance gaps.
                   </div>
                 </div>
@@ -145,7 +145,7 @@ export function WorkstationView({
                 <button
                   type="button"
                   onClick={onUploadClick}
-                  className="px-3 py-1.5 text-xs font-medium text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-md flex items-center gap-1.5 cursor-pointer transition-colors"
+                  className="px-3 py-1.5 text-xs font-medium text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-lg flex items-center gap-1.5 cursor-pointer transition-colors"
                 >
                   <span className="material-symbols-outlined text-[15px]">upload_file</span>
                   <span>Upload Document</span>
@@ -153,7 +153,7 @@ export function WorkstationView({
                 <button
                   type="button"
                   onClick={() => onNavigateDNA && onNavigateDNA()}
-                  className="px-3.5 py-1.5 text-xs font-semibold text-white bg-[#1D4ED8] hover:bg-[#1E40AF] rounded-md flex items-center gap-1.5 shadow-2xs cursor-pointer transition-colors"
+                  className="px-3.5 py-1.5 text-xs font-semibold text-slate-950 bg-gradient-to-r from-cyan-400 to-sky-400 hover:from-cyan-300 hover:to-sky-300 rounded-lg flex items-center gap-1.5 shadow-md shadow-cyan-500/20 cursor-pointer transition-all"
                 >
                   <span>Compile Compliance &rarr;</span>
                 </button>
@@ -172,33 +172,33 @@ export function WorkstationView({
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-base text-[#1D4ED8]">straighten</span>
-                <h2 className="text-xs font-bold uppercase tracking-wider text-[#0F172A] font-mono">
+                <span className="material-symbols-outlined text-base text-cyan-400">straighten</span>
+                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-200 font-mono">
                   Spatial Vector Telemetry
                 </h2>
               </div>
               <span
-                className={`font-mono text-[10px] px-2 py-0.5 rounded border ${
+                className={`font-mono text-[10px] px-2.5 py-0.5 rounded-full border ${
                   cadMeasurements.length > 0
-                    ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
-                    : 'text-amber-700 bg-amber-50 border-amber-200'
+                    ? 'text-emerald-300 bg-emerald-950/60 border-emerald-800/60'
+                    : 'text-amber-300 bg-amber-950/60 border-amber-800/60'
                 }`}
               >
                 {cadMeasurements.length > 0 ? `${cadMeasurements.length} Vectors Measured` : 'Awaiting Data'}
               </span>
             </div>
 
-            <div className="bg-white border border-[#E2E8F0] rounded-lg p-5 flex flex-col gap-4 shadow-sm">
-              <div className="border-b border-[#E2E8F0] pb-3">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-[#64748B] block mb-1">
+            <div className="bg-[#0f1422]/90 backdrop-blur-md border border-slate-800/80 rounded-xl p-5 flex flex-col gap-4 shadow-xl">
+              <div className="border-b border-slate-800 pb-3">
+                <span className="font-mono text-[10px] uppercase tracking-wider text-slate-400 block mb-1">
                   Active Model Geometry
                 </span>
-                <h3 className="font-bold text-sm text-[#0F172A]">
+                <h3 className="font-bold text-sm text-slate-100 font-['Space_Grotesk']">
                   {cadMeasurements.length > 0
                     ? 'Deterministic CAD Features Established'
                     : 'No active inspection vector'}
                 </h3>
-                <p className="text-xs text-[#64748B] mt-1 leading-relaxed">
+                <p className="text-xs text-slate-400 mt-1 leading-relaxed">
                   {cadMeasurements.length > 0
                     ? 'ISO 10303-21 B-Rep topology parsed. Spatial dimensions, wall profiles, and clearance vectors derived authoritatively.'
                     : 'Select or initiate a compliance job to visualize spatial creepage, clearance, and enclosure dimension verifications.'}
@@ -207,27 +207,27 @@ export function WorkstationView({
 
               {/* Technical Telemetry Slots */}
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-[#F8F9FA] p-2.5 rounded border border-[#E2E8F0]">
-                  <span className="font-mono text-[10px] text-[#64748B] block">Clearance / Wall</span>
-                  <span className="font-mono text-sm font-semibold text-[#0F172A] mt-0.5 block">
+                <div className="bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">
+                  <span className="font-mono text-[10px] text-slate-400 block">Clearance / Wall</span>
+                  <span className="font-mono text-sm font-semibold text-cyan-400 mt-0.5 block">
                     {(() => {
                       const m = cadMeasurements.find((x) => x.measurement_type === 'WALL_THICKNESS' || x.measurement_type === 'CLEARANCE');
                       return m ? `${m.value} ${m.unit}` : '-- mm';
                     })()}
                   </span>
                 </div>
-                <div className="bg-[#F8F9FA] p-2.5 rounded border border-[#E2E8F0]">
-                  <span className="font-mono text-[10px] text-[#64748B] block">Bounding Extents (Z)</span>
-                  <span className="font-mono text-sm font-semibold text-[#0F172A] mt-0.5 block">
+                <div className="bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">
+                  <span className="font-mono text-[10px] text-slate-400 block">Bounding Extents (Z)</span>
+                  <span className="font-mono text-sm font-semibold text-cyan-400 mt-0.5 block">
                     {(() => {
                       const m = cadMeasurements.find((x) => x.measurement_type === 'BOUNDING_BOX_Z');
                       return m ? `${m.value} ${m.unit}` : '-- mm';
                     })()}
                   </span>
                 </div>
-                <div className="bg-[#F8F9FA] p-2.5 rounded border border-[#E2E8F0]">
-                  <span className="font-mono text-[10px] text-[#64748B] block">Envelope Dimensions</span>
-                  <span className="font-mono text-xs font-semibold text-[#0F172A] mt-0.5 block">
+                <div className="bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">
+                  <span className="font-mono text-[10px] text-slate-400 block">Envelope Dimensions</span>
+                  <span className="font-mono text-xs font-semibold text-slate-200 mt-0.5 block">
                     {(() => {
                       const mx = cadMeasurements.find((x) => x.measurement_type === 'BOUNDING_BOX_X');
                       const my = cadMeasurements.find((x) => x.measurement_type === 'BOUNDING_BOX_Y');
@@ -235,11 +235,13 @@ export function WorkstationView({
                     })()}
                   </span>
                 </div>
-                <div className="bg-[#F8F9FA] p-2.5 rounded border border-[#E2E8F0]">
-                  <span className="font-mono text-[10px] text-[#64748B] block">CAD Status</span>
+                <div className="bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">
+                  <span className="font-mono text-[10px] text-slate-400 block">CAD Status</span>
                   <span
-                    className={`font-mono text-sm font-semibold mt-0.5 block ${
-                      cadMeasurements.length > 0 ? 'text-emerald-600' : 'text-slate-400'
+                    className={`font-mono text-xs font-semibold mt-1 inline-block px-1.5 py-0.5 rounded border ${
+                      cadMeasurements.length > 0
+                        ? 'text-emerald-400 bg-emerald-950/60 border-emerald-800/60'
+                        : 'text-slate-500 bg-slate-800/50 border-slate-700/50'
                     }`}
                   >
                     {cadMeasurements.length > 0 ? 'VERIFIED' : 'UNTESTED'}
@@ -247,39 +249,39 @@ export function WorkstationView({
                 </div>
               </div>
 
-              <div className="p-3 bg-blue-50/60 rounded border border-blue-100 flex items-start gap-2.5">
-                <span className="material-symbols-outlined text-blue-600 text-sm mt-0.5">info</span>
-                <div className="text-[11px] text-blue-900 leading-relaxed">
+              <div className="p-3 bg-cyan-950/40 rounded-lg border border-cyan-800/50 flex items-start gap-2.5">
+                <span className="material-symbols-outlined text-cyan-400 text-sm mt-0.5">info</span>
+                <div className="text-[11px] text-cyan-200 leading-relaxed">
                   Deterministic clearance calculations follow BIS standard clause requirements and geometric contours once technical files are uploaded.
                 </div>
               </div>
             </div>
 
             {/* Multimodal Ingestion Card */}
-            <div className="bg-white border border-[#E2E8F0] rounded-lg p-5 flex flex-col items-center text-center shadow-sm">
-              <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-[#64748B] mb-2">
+            <div className="bg-[#0f1422]/90 backdrop-blur-md border border-slate-800/80 rounded-xl p-5 flex flex-col items-center text-center shadow-xl">
+              <div className="w-10 h-10 rounded-xl bg-cyan-950/60 border border-cyan-800/60 flex items-center justify-center text-cyan-400 mb-2">
                 <span className="material-symbols-outlined text-lg">drive_folder_upload</span>
               </div>
-              <h4 className="text-xs font-semibold text-[#0F172A]">
+              <h4 className="text-xs font-semibold text-slate-100 font-['Space_Grotesk']">
                 Multimodal Evidence Ingestion
               </h4>
-              <p className="text-[11px] text-[#64748B] mt-1 max-w-xs">
+              <p className="text-[11px] text-slate-400 mt-1 max-w-xs">
                 Supports PDF standards, acoustic recordings, visual photos, and STEP/CAD geometry.
               </p>
-              <div className="flex items-center gap-2 mt-3 w-full">
+              <div className="flex items-center gap-2 mt-4 w-full">
                 <button
                   type="button"
                   onClick={onUploadClick}
-                  className="flex-1 py-1.5 bg-[#1D4ED8] hover:bg-[#1E40AF] text-white rounded text-xs font-medium transition-colors flex items-center justify-center gap-1 shadow-sm"
+                  className="flex-1 py-2 bg-gradient-to-r from-cyan-400 to-sky-400 hover:from-cyan-300 hover:to-sky-300 text-slate-950 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1.5 shadow-md shadow-cyan-500/20 cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-sm">add_circle</span>
+                  <span className="material-symbols-outlined text-sm font-bold">add_circle</span>
                   Add Evidence
                 </button>
                 {evidenceCount > 0 && onNavigateEvidence && (
                   <button
                     type="button"
                     onClick={onNavigateEvidence}
-                    className="py-1.5 px-3 bg-[#F8F9FA] hover:bg-slate-100 border border-[#E2E8F0] text-[#0F172A] rounded text-xs font-medium transition-colors"
+                    className="py-2 px-3 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 rounded-lg text-xs font-medium transition-colors cursor-pointer"
                   >
                     View ({evidenceCount})
                   </button>
@@ -291,167 +293,185 @@ export function WorkstationView({
       </section>
 
       {/* Framework Architecture Cards */}
-      <section className="w-full px-4 sm:px-6 lg:px-8 py-6 bg-white border-y border-[#E2E8F0]">
-        <div className="mb-4">
-          <span className="font-mono text-[10px] text-[#64748B] uppercase tracking-wider font-semibold">
-            ENGINEERING ARCHITECTURE
-          </span>
-          <h2 className="text-sm font-bold text-[#0F172A]">
-            The BIS Compliance Compiler Framework
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div className="p-4 rounded-lg bg-[#F8F9FA] border border-[#E2E8F0] flex flex-col justify-between">
-            <div>
-              <div className="w-8 h-8 rounded bg-blue-100 text-[#1D4ED8] flex items-center justify-center mb-3">
-                <span className="material-symbols-outlined text-base">sync</span>
-              </div>
-              <h3 className="text-xs font-bold text-[#0F172A] mb-1">
-                BIS Standards &amp; Gazette Sync
-              </h3>
-              <p className="text-xs text-[#475569] leading-relaxed">
-                Direct synchronization with official BIS Gazette notifications and gazetted standard schedules for live regulatory accuracy.
-              </p>
-            </div>
-            <div className="mt-4 pt-3 border-t border-[#E2E8F0] flex items-center justify-between text-[11px] font-mono text-[#64748B]">
-              <span>Sync Protocol</span>
-              <span className="text-emerald-700 font-semibold">ACTIVE</span>
-            </div>
+      <section className="w-full px-4 sm:px-6 lg:px-8 py-8 bg-[#0b0f19]/60 border-y border-slate-800/80">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-4">
+            <span className="font-mono text-[10px] text-cyan-400 uppercase tracking-widest font-semibold">
+              ENGINEERING ARCHITECTURE
+            </span>
+            <h2 className="text-sm font-bold text-slate-100 font-['Space_Grotesk'] mt-0.5">
+              The BIS Compliance Compiler Framework
+            </h2>
           </div>
 
-          <div className="p-4 rounded-lg bg-[#F8F9FA] border border-[#E2E8F0] flex flex-col justify-between">
-            <div>
-              <div className="w-8 h-8 rounded bg-blue-100 text-[#1D4ED8] flex items-center justify-center mb-3">
-                <span className="material-symbols-outlined text-base">hub</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div className="p-5 rounded-xl bg-[#0f1422]/90 border border-slate-800 flex flex-col justify-between hover:border-cyan-500/40 transition-colors shadow-lg">
+              <div>
+                <div className="w-8 h-8 rounded-lg bg-cyan-950/60 border border-cyan-800/60 text-cyan-400 flex items-center justify-center mb-3">
+                  <span className="material-symbols-outlined text-base">sync</span>
+                </div>
+                <h3 className="text-xs font-bold text-slate-100 font-['Space_Grotesk'] mb-1">
+                  BIS Standards &amp; Gazette Sync
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Direct synchronization with official BIS Gazette notifications and gazetted standard schedules for live regulatory accuracy.
+                </p>
               </div>
-              <h3 className="text-xs font-bold text-[#0F172A] mb-1">
-                Tri-Tier Evidentiary Traceability
-              </h3>
-              <p className="text-xs text-[#475569] leading-relaxed">
-                Every clause determination links directly to spatial 3D measurements, physical laboratory reports, and engineering attestations.
-              </p>
+              <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-400">
+                <span>Sync Protocol</span>
+                <span className="text-emerald-400 font-semibold flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  ACTIVE
+                </span>
+              </div>
             </div>
-            <div className="mt-4 pt-3 border-t border-[#E2E8F0] flex items-center justify-between text-[11px] font-mono text-[#64748B]">
-              <span>Citation Chain</span>
-              <span className="text-blue-700 font-semibold">STRICT</span>
-            </div>
-          </div>
 
-          <div className="p-4 rounded-lg bg-[#F8F9FA] border border-[#E2E8F0] flex flex-col justify-between">
-            <div>
-              <div className="w-8 h-8 rounded bg-blue-100 text-[#1D4ED8] flex items-center justify-center mb-3">
-                <span className="material-symbols-outlined text-base">terminal</span>
+            <div className="p-5 rounded-xl bg-[#0f1422]/90 border border-slate-800 flex flex-col justify-between hover:border-cyan-500/40 transition-colors shadow-lg">
+              <div>
+                <div className="w-8 h-8 rounded-lg bg-cyan-950/60 border border-cyan-800/60 text-cyan-400 flex items-center justify-center mb-3">
+                  <span className="material-symbols-outlined text-base">hub</span>
+                </div>
+                <h3 className="text-xs font-bold text-slate-100 font-['Space_Grotesk'] mb-1">
+                  Tri-Tier Evidentiary Traceability
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Every clause determination links directly to spatial 3D measurements, physical laboratory reports, and engineering attestations.
+                </p>
               </div>
-              <h3 className="text-xs font-bold text-[#0F172A] mb-1">
-                Deterministic Compliance Compiler
-              </h3>
-              <p className="text-xs text-[#475569] leading-relaxed">
-                Eliminates LLM hallucinations through formal statutory predicate logic, gap analysis matrices, and reproducible artifact trees.
-              </p>
+              <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-400">
+                <span>Citation Chain</span>
+                <span className="text-cyan-400 font-semibold flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                  STRICT
+                </span>
+              </div>
             </div>
-            <div className="mt-4 pt-3 border-t border-[#E2E8F0] flex items-center justify-between text-[11px] font-mono text-[#64748B]">
-              <span>Verification</span>
-              <span className="text-purple-700 font-semibold">PROVABLE</span>
+
+            <div className="p-5 rounded-xl bg-[#0f1422]/90 border border-slate-800 flex flex-col justify-between hover:border-cyan-500/40 transition-colors shadow-lg">
+              <div>
+                <div className="w-8 h-8 rounded-lg bg-cyan-950/60 border border-cyan-800/60 text-cyan-400 flex items-center justify-center mb-3">
+                  <span className="material-symbols-outlined text-base">terminal</span>
+                </div>
+                <h3 className="text-xs font-bold text-slate-100 font-['Space_Grotesk'] mb-1">
+                  Deterministic Compliance Compiler
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Eliminates LLM hallucinations through formal statutory predicate logic, gap analysis matrices, and reproducible artifact trees.
+                </p>
+              </div>
+              <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-400">
+                <span>Verification</span>
+                <span className="text-purple-400 font-semibold flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+                  PROVABLE
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Active Compliance Register (Table with Pure Empty State) */}
-      <section className="w-full px-4 sm:px-6 lg:px-8 py-6 bg-[#F8F9FA]">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h2 className="text-sm font-bold text-[#0F172A]">
-              Active Compliance Register
-            </h2>
-            <p className="text-xs text-[#64748B] mt-0.5">
-              Live tracking of statutory audits, clause bindings, and dossier compilation progress.
-            </p>
+      <section className="w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-sm font-bold text-slate-100 font-['Space_Grotesk']">
+                Active Compliance Register
+              </h2>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Live tracking of statutory audits, clause bindings, and dossier compilation progress.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={onCreateJobClick}
+              className="px-3.5 py-1.5 text-xs font-semibold text-slate-950 bg-gradient-to-r from-cyan-400 to-sky-400 hover:from-cyan-300 hover:to-sky-300 rounded-lg transition-all flex items-center gap-1.5 shadow-md shadow-cyan-500/20 cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-sm font-bold">add</span>
+              New Job
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={onCreateJobClick}
-            className="px-3 py-1.5 text-xs font-medium text-white bg-[#1D4ED8] hover:bg-[#1E40AF] rounded transition-colors flex items-center gap-1.5 shadow-sm"
-          >
-            <span className="material-symbols-outlined text-sm">add</span>
-            New Job
-          </button>
-        </div>
 
-        {/* Table Container */}
-        <div className="bg-white border border-[#E2E8F0] rounded-lg overflow-hidden shadow-sm">
-          <table className="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr className="bg-[#F8F9FA] border-b border-[#E2E8F0] font-mono text-[11px] text-[#64748B]">
-                <th className="py-2.5 px-4 font-semibold">JOB IDENTIFIER</th>
-                <th className="py-2.5 px-4 font-semibold">PRODUCT &amp; SKU</th>
-                <th className="py-2.5 px-4 font-semibold">STATUTORY STANDARD</th>
-                <th className="py-2.5 px-4 font-semibold">EVIDENTIARY STATUS</th>
-                <th className="py-2.5 px-4 font-semibold">ATTESTATION</th>
-                <th className="py-2.5 px-4 font-semibold text-right">ACTION</th>
-              </tr>
-            </thead>
-            <tbody>
-              {jobs && jobs.length > 0 ? (
-                jobs.map((job) => (
-                  <tr key={job.id} className="border-b border-[#E2E8F0] hover:bg-[#F8F9FA] transition-colors">
-                    <td className="py-3 px-4 font-mono font-semibold text-[#1D4ED8]">
-                      {job.jobNumber || job.id}
-                    </td>
-                    <td className="py-3 px-4 font-medium text-[#0F172A]">
-                      {job.productName || job.title}
-                    </td>
-                    <td className="py-3 px-4 font-mono text-[11px] text-[#0F172A]">
-                      {job.standard || 'IS 17526:2021'}
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className="inline-block px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        {job.stage || 'STAGE_EVALUATED'}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className="inline-block px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-                        {job.status || 'ACTIVE'}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-right">
-                      <button
-                        type="button"
-                        onClick={() => onSelectJob?.(job.id)}
-                        className="px-2.5 py-1 text-xs font-semibold text-[#1D4ED8] hover:bg-blue-50 rounded border border-blue-200 transition-colors cursor-pointer"
-                      >
-                        Open Job
-                      </button>
-                    </td>
+          {/* Table Container */}
+          <div className="bg-[#0f1422]/90 backdrop-blur-md border border-slate-800/80 rounded-xl overflow-hidden shadow-xl">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="bg-slate-900/60 border-b border-slate-800 font-mono text-[11px] text-slate-400 uppercase tracking-wider">
+                    <th className="py-3 px-4 font-semibold">JOB IDENTIFIER</th>
+                    <th className="py-3 px-4 font-semibold">PRODUCT &amp; SKU</th>
+                    <th className="py-3 px-4 font-semibold">STATUTORY STANDARD</th>
+                    <th className="py-3 px-4 font-semibold">EVIDENTIARY STATUS</th>
+                    <th className="py-3 px-4 font-semibold">ATTESTATION</th>
+                    <th className="py-3 px-4 font-semibold text-right">ACTION</th>
                   </tr>
-                ))
-              ) : (
-                /* Clean Empty State */
-                <tr>
-                  <td colSpan={6} className="py-12 px-4 text-center">
-                    <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-[#94A3B8] mx-auto mb-3">
-                      <span className="material-symbols-outlined text-2xl">rule_folder</span>
-                    </div>
-                    <h3 className="text-sm font-semibold text-[#0F172A] mb-1">
-                      No compliance jobs registered yet
-                    </h3>
-                    <p className="text-xs text-[#64748B] max-w-sm mx-auto mb-4">
-                      Initiate your first compliance job or upload product documentation to begin deterministic statutory evaluation.
-                    </p>
-                    <button
-                      type="button"
-                      onClick={onCreateJobClick}
-                      className="px-3.5 py-2 text-xs font-medium text-white bg-[#1D4ED8] hover:bg-[#1E40AF] rounded transition-colors inline-flex items-center gap-1.5 shadow-sm"
-                    >
-                      <span className="material-symbols-outlined text-sm">add</span>
-                      Create Your First Compliance Job
-                    </button>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60">
+                  {jobs && jobs.length > 0 ? (
+                    jobs.map((job) => (
+                      <tr key={job.id} className="hover:bg-slate-800/40 transition-colors">
+                        <td className="py-3.5 px-4 font-mono font-semibold text-cyan-400">
+                          {job.jobNumber || job.id}
+                        </td>
+                        <td className="py-3.5 px-4 font-medium text-slate-200">
+                          {job.productName || job.title}
+                        </td>
+                        <td className="py-3.5 px-4 font-mono text-[11px] text-slate-300">
+                          <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-cyan-300">
+                            {job.standard || 'IS 16221-2:2015'}
+                          </span>
+                        </td>
+                        <td className="py-3.5 px-4">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-emerald-950/60 text-emerald-300 border border-emerald-800/60">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                            {job.stage || 'STAGE_EVALUATED'}
+                          </span>
+                        </td>
+                        <td className="py-3.5 px-4">
+                          <span className="inline-block px-2.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-slate-800 text-slate-300 border border-slate-700">
+                            {job.status || 'ACTIVE'}
+                          </span>
+                        </td>
+                        <td className="py-3.5 px-4 text-right">
+                          <button
+                            type="button"
+                            onClick={() => onSelectJob?.(job.id)}
+                            className="px-2.5 py-1 text-xs font-medium text-cyan-300 hover:text-cyan-200 bg-cyan-950/60 hover:bg-cyan-900/60 rounded-md border border-cyan-800/60 transition-colors cursor-pointer"
+                          >
+                            Open Job
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    /* Clean Empty State */
+                    <tr>
+                      <td colSpan={6} className="py-16 px-4 text-center">
+                        <div className="w-12 h-12 rounded-xl bg-cyan-950/60 border border-cyan-800/60 flex items-center justify-center text-cyan-400 mx-auto mb-3">
+                          <span className="material-symbols-outlined text-2xl">rule_folder</span>
+                        </div>
+                        <h3 className="text-sm font-semibold text-slate-200 font-['Space_Grotesk'] mb-1">
+                          No compliance jobs registered yet
+                        </h3>
+                        <p className="text-xs text-slate-400 max-w-sm mx-auto mb-4">
+                          Initiate your first compliance job or upload product documentation to begin deterministic statutory evaluation.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={onCreateJobClick}
+                          className="px-3.5 py-2 text-xs font-semibold text-slate-950 bg-gradient-to-r from-cyan-400 to-sky-400 hover:from-cyan-300 hover:to-sky-300 rounded-lg transition-all inline-flex items-center gap-1.5 shadow-md shadow-cyan-500/20 cursor-pointer"
+                        >
+                          <span className="material-symbols-outlined text-sm font-bold">add</span>
+                          Create Your First Compliance Job
+                        </button>
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </section>
     </div>

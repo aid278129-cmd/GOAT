@@ -39,19 +39,19 @@ export function ConflictResolutionModal({ conflict, isOpen, onClose, onResolve }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white border border-[#E2E8F0] rounded-xl max-w-2xl w-full shadow-2xl z-10 overflow-hidden animate-in fade-in zoom-in-95 duration-150 flex flex-col max-h-[90vh]">
+      <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative bg-[#0d121f] text-slate-100 border border-slate-800 rounded-2xl max-w-2xl w-full shadow-2xl z-10 overflow-hidden animate-in fade-in zoom-in-95 duration-150 flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-[#E2E8F0] flex items-center justify-between bg-amber-50">
+        <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-amber-950/30">
           <div className="flex items-center gap-2.5">
-            <span className="w-8 h-8 rounded bg-amber-600 text-white flex items-center justify-center shadow-sm">
+            <span className="w-8 h-8 rounded-lg bg-amber-950/80 border border-amber-800/80 text-amber-400 flex items-center justify-center shadow-sm">
               <span className="material-symbols-outlined text-base">warning</span>
             </span>
             <div>
-              <h3 className="font-bold text-sm text-[#0F172A]">
+              <h3 className="font-bold text-sm text-slate-100 font-['Space_Grotesk']">
                 Parameter Conflict Resolution
               </h3>
-              <span className="text-[10px] font-mono text-amber-800 font-medium block">
+              <span className="text-[10px] font-mono text-amber-400 font-semibold block tracking-wider uppercase">
                 MANDATORY HUMAN ENGINEERING REVIEW // AUDITABLE RESOLUTION
               </span>
             </div>
@@ -59,7 +59,7 @@ export function ConflictResolutionModal({ conflict, isOpen, onClose, onResolve }
           <button
             type="button"
             onClick={onClose}
-            className="text-[#64748B] hover:text-[#0F172A] p-1 rounded"
+            className="text-slate-400 hover:text-slate-200 p-1 rounded-lg hover:bg-slate-800 transition-colors"
           >
             <span className="material-symbols-outlined text-base">close</span>
           </button>
@@ -68,9 +68,9 @@ export function ConflictResolutionModal({ conflict, isOpen, onClose, onResolve }
         {/* Body */}
         <form onSubmit={handleResolveSubmit} className="p-6 flex flex-col gap-5 overflow-y-auto">
           <div>
-            <span className="text-xs text-[#64748B] block font-mono">Discrepancy Detected for:</span>
-            <h4 className="text-base font-bold text-[#0F172A]">{conflict.parameterName}</h4>
-            <p className="text-xs text-[#475569] mt-0.5 leading-relaxed">
+            <span className="text-xs text-slate-400 block font-mono">Discrepancy Detected for:</span>
+            <h4 className="text-base font-bold text-slate-100 font-['Space_Grotesk'] mt-0.5">{conflict.parameterName}</h4>
+            <p className="text-xs text-slate-400 mt-1 leading-relaxed">
               Two accepted evidence artifacts specify differing values. Under regulatory integrity rules, the system will not automatically select a value. Affirmative engineering resolution is required.
             </p>
           </div>
@@ -80,14 +80,14 @@ export function ConflictResolutionModal({ conflict, isOpen, onClose, onResolve }
             {/* Candidate A */}
             <div
               onClick={() => setSelectedChoice('candidateA')}
-              className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+              className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
                 selectedChoice === 'candidateA'
-                  ? 'border-[#1D4ED8] bg-blue-50/50 shadow-sm'
-                  : 'border-[#E2E8F0] bg-[#F8F9FA] hover:bg-slate-100'
+                  ? 'border-cyan-400 bg-cyan-950/40 shadow-inner'
+                  : 'border-slate-800 bg-slate-900/60 hover:bg-slate-900/90'
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-blue-800">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-cyan-300">
                   Candidate A
                 </span>
                 <input
@@ -95,30 +95,30 @@ export function ConflictResolutionModal({ conflict, isOpen, onClose, onResolve }
                   name="candidateChoice"
                   checked={selectedChoice === 'candidateA'}
                   onChange={() => setSelectedChoice('candidateA')}
-                  className="text-blue-600"
+                  className="text-cyan-500 focus:ring-cyan-500"
                 />
               </div>
 
-              <div className="font-mono text-lg font-bold text-[#0F172A] mb-2">
+              <div className="font-mono text-lg font-bold text-slate-100 mb-2">
                 {conflict.candidateA.value} {conflict.candidateA.unit || ''}
               </div>
 
-              <div className="space-y-1 text-xs text-[#64748B]">
+              <div className="space-y-1 text-xs text-slate-400">
                 <div>
-                  <span className="font-semibold text-[#0F172A]">Evidence ID: </span>
-                  <span className="font-mono">{conflict.candidateA.sourceEvidenceId}</span>
+                  <span className="font-semibold text-slate-300">Evidence ID: </span>
+                  <span className="font-mono text-cyan-400">{conflict.candidateA.sourceEvidenceId}</span>
                 </div>
                 <div className="truncate" title={conflict.candidateA.sourceFileName}>
-                  <span className="font-semibold text-[#0F172A]">Source: </span>
+                  <span className="font-semibold text-slate-300">Source: </span>
                   {conflict.candidateA.sourceFileName}
                 </div>
                 <div>
-                  <span className="font-semibold text-[#0F172A]">Location: </span>
+                  <span className="font-semibold text-slate-300">Location: </span>
                   {conflict.candidateA.sourceLocation}
                 </div>
                 <div>
-                  <span className="font-semibold text-[#0F172A]">SHA-256: </span>
-                  <span className="font-mono text-[10px]">{truncateHash(conflict.candidateA.evidenceSha256)}</span>
+                  <span className="font-semibold text-slate-300">SHA-256: </span>
+                  <span className="font-mono text-[10px] text-slate-500">{truncateHash(conflict.candidateA.evidenceSha256)}</span>
                 </div>
               </div>
             </div>
@@ -126,14 +126,14 @@ export function ConflictResolutionModal({ conflict, isOpen, onClose, onResolve }
             {/* Candidate B */}
             <div
               onClick={() => setSelectedChoice('candidateB')}
-              className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+              className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
                 selectedChoice === 'candidateB'
-                  ? 'border-[#1D4ED8] bg-blue-50/50 shadow-sm'
-                  : 'border-[#E2E8F0] bg-[#F8F9FA] hover:bg-slate-100'
+                  ? 'border-purple-400 bg-purple-950/40 shadow-inner'
+                  : 'border-slate-800 bg-slate-900/60 hover:bg-slate-900/90'
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-purple-800">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-purple-300">
                   Candidate B
                 </span>
                 <input
@@ -141,30 +141,30 @@ export function ConflictResolutionModal({ conflict, isOpen, onClose, onResolve }
                   name="candidateChoice"
                   checked={selectedChoice === 'candidateB'}
                   onChange={() => setSelectedChoice('candidateB')}
-                  className="text-blue-600"
+                  className="text-purple-500 focus:ring-purple-500"
                 />
               </div>
 
-              <div className="font-mono text-lg font-bold text-[#0F172A] mb-2">
+              <div className="font-mono text-lg font-bold text-slate-100 mb-2">
                 {conflict.candidateB.value} {conflict.candidateB.unit || ''}
               </div>
 
-              <div className="space-y-1 text-xs text-[#64748B]">
+              <div className="space-y-1 text-xs text-slate-400">
                 <div>
-                  <span className="font-semibold text-[#0F172A]">Evidence ID: </span>
-                  <span className="font-mono">{conflict.candidateB.sourceEvidenceId}</span>
+                  <span className="font-semibold text-slate-300">Evidence ID: </span>
+                  <span className="font-mono text-purple-400">{conflict.candidateB.sourceEvidenceId}</span>
                 </div>
                 <div className="truncate" title={conflict.candidateB.sourceFileName}>
-                  <span className="font-semibold text-[#0F172A]">Source: </span>
+                  <span className="font-semibold text-slate-300">Source: </span>
                   {conflict.candidateB.sourceFileName}
                 </div>
                 <div>
-                  <span className="font-semibold text-[#0F172A]">Location: </span>
+                  <span className="font-semibold text-slate-300">Location: </span>
                   {conflict.candidateB.sourceLocation}
                 </div>
                 <div>
-                  <span className="font-semibold text-[#0F172A]">SHA-256: </span>
-                  <span className="font-mono text-[10px]">{truncateHash(conflict.candidateB.evidenceSha256)}</span>
+                  <span className="font-semibold text-slate-300">SHA-256: </span>
+                  <span className="font-mono text-[10px] text-slate-500">{truncateHash(conflict.candidateB.evidenceSha256)}</span>
                 </div>
               </div>
             </div>
@@ -173,19 +173,19 @@ export function ConflictResolutionModal({ conflict, isOpen, onClose, onResolve }
           {/* Option for Reconciled / Custom Value */}
           <div
             onClick={() => setSelectedChoice('custom')}
-            className={`p-3 rounded-lg border transition-colors cursor-pointer ${
+            className={`p-3.5 rounded-xl border transition-all cursor-pointer ${
               selectedChoice === 'custom'
-                ? 'border-[#1D4ED8] bg-blue-50/30'
-                : 'border-[#E2E8F0] bg-white'
+                ? 'border-cyan-400 bg-cyan-950/30'
+                : 'border-slate-800 bg-slate-900/40 hover:bg-slate-900/70'
             }`}
           >
-            <label className="flex items-center gap-2 text-xs font-semibold text-[#0F172A] mb-1.5 cursor-pointer">
+            <label className="flex items-center gap-2 text-xs font-semibold text-slate-200 mb-1.5 cursor-pointer">
               <input
                 type="radio"
                 name="candidateChoice"
                 checked={selectedChoice === 'custom'}
                 onChange={() => setSelectedChoice('custom')}
-                className="text-blue-600"
+                className="text-cyan-500 focus:ring-cyan-500"
               />
               <span>Enter Reconciled Technical Value</span>
             </label>
@@ -195,15 +195,15 @@ export function ConflictResolutionModal({ conflict, isOpen, onClose, onResolve }
                 value={customValue}
                 onChange={(e) => setCustomValue(e.target.value)}
                 placeholder="e.g. 230 V (Nominal rating reconciled between operating limits)"
-                className="w-full px-3 py-1.5 text-xs bg-white border border-[#E2E8F0] rounded text-[#0F172A] focus:outline-none focus:border-[#1D4ED8]"
+                className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 font-mono mt-2"
               />
             )}
           </div>
 
           {/* Mandatory Resolution Rationale */}
           <div>
-            <label className="block text-xs font-semibold text-[#0F172A] mb-1">
-              Mandatory Engineering Resolution Rationale <span className="text-red-500">*</span>
+            <label className="block text-xs font-semibold text-slate-300 mb-1">
+              Mandatory Engineering Resolution Rationale <span className="text-rose-400">*</span>
             </label>
             <textarea
               rows={3}
@@ -214,31 +214,31 @@ export function ConflictResolutionModal({ conflict, isOpen, onClose, onResolve }
                 setError(null);
               }}
               placeholder="Provide technical justification (e.g., Laboratory test report takes precedence over preliminary marketing datasheet per BIS Clause 4.1 hierarchy)..."
-              className="w-full px-3 py-2 text-xs bg-[#F8F9FA] border border-[#E2E8F0] rounded text-[#0F172A] focus:outline-none focus:border-[#1D4ED8] focus:bg-white resize-none"
+              className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 resize-none"
             />
-            {error && <span className="text-[11px] text-red-600 mt-1 block font-medium">{error}</span>}
+            {error && <span className="text-[11px] text-rose-400 mt-1 block font-medium">{error}</span>}
           </div>
 
           {/* Footer Note */}
-          <div className="p-3 bg-slate-100 rounded text-[11px] text-[#64748B] flex items-center gap-2 font-mono">
-            <span className="material-symbols-outlined text-sm text-slate-500">lock</span>
+          <div className="p-3 bg-slate-900/80 border border-slate-800 rounded-xl text-[11px] text-slate-400 flex items-center gap-2 font-mono">
+            <span className="material-symbols-outlined text-sm text-cyan-400">lock</span>
             Both Candidate A &amp; B source hashes and locations are permanently archived in the immutable audit log.
           </div>
 
           {/* Submit Action Bar */}
-          <div className="pt-3 border-t border-[#E2E8F0] flex items-center justify-end gap-2.5">
+          <div className="pt-3 border-t border-slate-800 flex items-center justify-end gap-2.5">
             <button
               type="button"
               onClick={onClose}
-              className="px-3 py-1.5 text-xs text-[#64748B] hover:text-[#0F172A]"
+              className="px-3 py-1.5 text-xs text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded text-xs font-semibold transition-colors shadow-sm flex items-center gap-1.5"
+              className="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 rounded-lg text-xs font-semibold transition-all shadow-md shadow-amber-500/20 flex items-center gap-1.5 cursor-pointer"
             >
-              <span className="material-symbols-outlined text-sm">how_to_reg</span>
+              <span className="material-symbols-outlined text-sm font-bold">how_to_reg</span>
               Commit Conflict Resolution
             </button>
           </div>

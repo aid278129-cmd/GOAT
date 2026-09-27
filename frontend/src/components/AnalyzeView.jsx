@@ -541,22 +541,22 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
   };
 
   return (
-    <div className="flex-1 p-4 md:p-6 lg:p-8 bg-[#F3F4F6] overflow-y-auto font-sans">
+    <div className="flex-1 p-4 md:p-6 lg:p-8 bg-[#090d16] text-slate-100 overflow-y-auto font-sans min-h-screen">
       <div className="max-w-[1100px] mx-auto space-y-6">
         {/* Page Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
           <div>
             <div className="flex items-center gap-2 text-xs text-slate-400 mb-1">
-              <span className="font-bold uppercase tracking-wider text-[10px] text-slate-500 bg-slate-200/70 px-2 py-0.5 rounded font-mono">
+              <span className="font-bold uppercase tracking-wider text-[10px] text-cyan-400 bg-cyan-950/60 border border-cyan-800/60 px-2.5 py-0.5 rounded-full font-mono">
                 Step 01 / 08 &bull; Layer 1 Ingestion
               </span>
-              <span className="text-xs text-slate-500">Multi-Modal Product Intake</span>
+              <span className="text-xs text-slate-400 font-mono">Multi-Modal Product Intake</span>
             </div>
-            <h1 className="text-xl font-bold text-slate-900 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-100 font-['Space_Grotesk'] tracking-tight">
               Product Information Input
             </h1>
-            <p className="text-xs text-slate-600 mt-0.5">
-              Provide product information. GOAT extracts Product DNA and determines which BIS standards and requirements may apply.
+            <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
+              Provide product technical specifications. GOAT extracts Product DNA and determines which BIS standards and clauses apply.
             </p>
           </div>
 
@@ -565,7 +565,7 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
             <button
               type="button"
               onClick={handleLoadSampleReport}
-              className="px-3 py-1.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer shadow-2xs"
+              className="px-3.5 py-2 rounded-lg bg-cyan-950/60 hover:bg-cyan-900/60 text-cyan-300 border border-cyan-800/60 text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer shadow-sm"
               title="Auto-fill with sample Electric Immersion Water Heater lab test report"
             >
               <span className="material-symbols-outlined text-[15px]">bolt</span>
@@ -575,35 +575,35 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
         </div>
 
         {/* SIH Slide 2 & 3: UI Workflow Step Indicator */}
-        <div className="bg-white border border-slate-200 rounded-xl p-3 shadow-2xs">
+        <div className="bg-[#0f1422]/90 border border-slate-800 rounded-xl p-3 shadow-xl">
           <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono">
-            <span className="text-indigo-600 font-bold flex items-center gap-1">
-              <span className="w-4 h-4 rounded-full bg-indigo-600 text-white text-[9px] flex items-center justify-center font-bold">1</span>
+            <span className="text-cyan-400 font-bold flex items-center gap-1">
+              <span className="w-4 h-4 rounded-full bg-cyan-500 text-slate-950 text-[9px] flex items-center justify-center font-bold">1</span>
               INPUT TYPE
             </span>
-            <span className="text-slate-300">&rarr;</span>
-            <span className="text-slate-700 font-semibold flex items-center gap-1">
-              <span className="w-4 h-4 rounded-full bg-slate-200 text-slate-700 text-[9px] flex items-center justify-center font-bold">2</span>
+            <span className="text-slate-600">&rarr;</span>
+            <span className="text-slate-300 font-semibold flex items-center gap-1">
+              <span className="w-4 h-4 rounded-full bg-slate-800 text-slate-300 text-[9px] flex items-center justify-center font-bold">2</span>
               REQUIRED INFO
             </span>
-            <span className="text-slate-300">&rarr;</span>
-            <span className="text-slate-700 font-semibold flex items-center gap-1">
-              <span className="w-4 h-4 rounded-full bg-slate-200 text-slate-700 text-[9px] flex items-center justify-center font-bold">3</span>
+            <span className="text-slate-600">&rarr;</span>
+            <span className="text-slate-300 font-semibold flex items-center gap-1">
+              <span className="w-4 h-4 rounded-full bg-slate-800 text-slate-300 text-[9px] flex items-center justify-center font-bold">3</span>
               TEMPLATE / INPUT
             </span>
-            <span className="text-slate-300">&rarr;</span>
-            <span className="text-slate-700 font-semibold flex items-center gap-1">
-              <span className="w-4 h-4 rounded-full bg-slate-200 text-slate-700 text-[9px] flex items-center justify-center font-bold">4</span>
+            <span className="text-slate-600">&rarr;</span>
+            <span className="text-slate-300 font-semibold flex items-center gap-1">
+              <span className="w-4 h-4 rounded-full bg-slate-800 text-slate-300 text-[9px] flex items-center justify-center font-bold">4</span>
               VALIDATION
             </span>
-            <span className="text-slate-300">&rarr;</span>
-            <span className="text-slate-700 font-semibold flex items-center gap-1">
-              <span className="w-4 h-4 rounded-full bg-slate-200 text-slate-700 text-[9px] flex items-center justify-center font-bold">5</span>
+            <span className="text-slate-600">&rarr;</span>
+            <span className="text-slate-300 font-semibold flex items-center gap-1">
+              <span className="w-4 h-4 rounded-full bg-slate-800 text-slate-300 text-[9px] flex items-center justify-center font-bold">5</span>
               EXTRACTION
             </span>
-            <span className="text-slate-300">&rarr;</span>
-            <span className="text-indigo-700 font-bold flex items-center gap-1">
-              <span className="w-4 h-4 rounded-full bg-indigo-100 text-indigo-700 text-[9px] flex items-center justify-center font-bold">6</span>
+            <span className="text-slate-600">&rarr;</span>
+            <span className="text-cyan-400 font-bold flex items-center gap-1">
+              <span className="w-4 h-4 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800 text-[9px] flex items-center justify-center font-bold">6</span>
               LAYER 2 DNA
             </span>
           </div>
@@ -666,11 +666,11 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
         </div>
 
         {/* Regulatory Guidance Banner */}
-        <div className="p-4 rounded-xl bg-indigo-50/80 border border-indigo-100 text-xs text-indigo-950 flex items-start gap-3 shadow-2xs">
-          <span className="material-symbols-outlined text-indigo-600 text-[20px] shrink-0 mt-0.5">verified_user</span>
+        <div className="p-4 rounded-xl bg-cyan-950/40 border border-cyan-800/60 text-xs text-cyan-200 flex items-start gap-3 shadow-lg">
+          <span className="material-symbols-outlined text-cyan-400 text-[20px] shrink-0 mt-0.5">verified_user</span>
           <div>
-            <strong className="block font-bold text-indigo-900 mb-0.5">
-              Document Readiness & Evidence Policy
+            <strong className="block font-bold text-cyan-300 mb-0.5 font-['Space_Grotesk']">
+              Document Readiness &amp; Evidence Policy
             </strong>
             Document readiness evaluates input completeness. User inputs establish declared product claims (USER_CLAIM); regulatory compliance requires accredited laboratory test reports or verified documentary proof.
           </div>
@@ -678,16 +678,16 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
 
         {/* Actionable Validation Errors Banner */}
         {validationIssues.length > 0 && (
-          <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-950 space-y-2 shadow-2xs animate-in fade-in duration-200">
-            <div className="flex items-center gap-2 font-bold text-rose-900">
-              <span className="material-symbols-outlined text-rose-600 text-[18px]">error</span>
+          <div className="p-4 rounded-xl bg-rose-950/40 border border-rose-800/80 text-xs text-rose-200 space-y-2 shadow-lg animate-in fade-in duration-200">
+            <div className="flex items-center gap-2 font-bold text-rose-300 font-['Space_Grotesk']">
+              <span className="material-symbols-outlined text-rose-400 text-[18px]">error</span>
               <span>Pre-Flight Validation Notice ({validationIssues.length} issue(s) detected)</span>
             </div>
             <div className="space-y-1.5 pl-6">
               {validationIssues.map((iss, i) => (
                 <div key={i}>
-                  <div className="font-semibold text-rose-800">• {iss.message}</div>
-                  <div className="text-[11px] text-rose-600 font-mono pl-3">Action: {iss.remediation}</div>
+                  <div className="font-semibold text-rose-300">• {iss.message}</div>
+                  <div className="text-[11px] text-rose-400 font-mono pl-3">Action: {iss.remediation}</div>
                 </div>
               ))}
             </div>
@@ -696,33 +696,33 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
 
         {/* Extraction Success Notice */}
         {extractedNotice && (
-          <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 flex items-center gap-2.5 animate-in fade-in duration-300">
-            <span className="material-symbols-outlined text-emerald-600 text-[20px] shrink-0">check_circle</span>
+          <div className="p-3.5 rounded-xl bg-emerald-950/60 border border-emerald-800/60 text-xs text-emerald-300 flex items-center gap-2.5 animate-in fade-in duration-300">
+            <span className="material-symbols-outlined text-emerald-400 text-[20px] shrink-0">check_circle</span>
             <div className="font-medium">{extractedNotice}</div>
           </div>
         )}
 
         {/* Step 2: Dynamic Document Readiness & Requirements Checklist */}
         {readinessChecklist && (
-          <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+          <div className="bg-[#0f1422]/90 border border-slate-800 rounded-xl p-5 shadow-xl space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
               <div>
-                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-indigo-600 text-[18px]">fact_check</span>
-                  Document Readiness & Completeness Checklist (Target: {targetStandard})
+                <h3 className="text-xs font-bold text-slate-100 uppercase tracking-wider flex items-center gap-1.5 font-['Space_Grotesk']">
+                  <span className="material-symbols-outlined text-cyan-400 text-[18px]">fact_check</span>
+                  Document Readiness &amp; Completeness Checklist (Target: {targetStandard})
                 </h3>
-                <p className="text-[11px] text-slate-500">
+                <p className="text-[11px] text-slate-400">
                   Derived from verified BIS standard requirements. Separates REQUIRED, OPTIONAL, and MISSING data.
                 </p>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-xs font-mono font-bold text-slate-700">
-                  Completeness: <strong className={readinessChecklist.is_ready ? 'text-emerald-600' : 'text-amber-600'}>{readinessChecklist.percentage}%</strong>
+                <span className="text-xs font-mono font-bold text-slate-300">
+                  Completeness: <strong className={readinessChecklist.is_ready ? 'text-emerald-400' : 'text-amber-400'}>{readinessChecklist.percentage}%</strong>
                 </span>
-                <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
+                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold ${
                   readinessChecklist.is_ready
-                    ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                    : 'bg-amber-50 text-amber-700 border border-amber-200'
+                    ? 'bg-emerald-950/60 text-emerald-300 border border-emerald-800/60'
+                    : 'bg-amber-950/60 text-amber-300 border border-amber-800/60'
                 }`}>
                   {readinessChecklist.is_ready ? 'READY FOR LAYER 2 DNA' : 'INCOMPLETE INPUT'}
                 </span>
@@ -730,10 +730,10 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
             </div>
 
             {/* Progress bar */}
-            <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+            <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-slate-800">
               <div
                 className={`h-full transition-all duration-500 rounded-full ${
-                  readinessChecklist.is_ready ? 'bg-emerald-600' : 'bg-amber-500'
+                  readinessChecklist.is_ready ? 'bg-emerald-400' : 'bg-amber-400'
                 }`}
                 style={{ width: `${readinessChecklist.percentage}%` }}
               ></div>
@@ -750,23 +750,23 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                     key={ev.field_id}
                     className={`p-2.5 rounded-lg border text-xs space-y-1 ${
                       isPresent
-                        ? 'bg-emerald-50/50 border-emerald-200'
+                        ? 'bg-emerald-950/30 border-emerald-800/50'
                         : isRequired
-                        ? 'bg-rose-50/40 border-rose-200'
-                        : 'bg-slate-50 border-slate-200'
+                        ? 'bg-rose-950/30 border-rose-800/50'
+                        : 'bg-slate-900/60 border-slate-800'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded font-mono ${
-                        isRequired ? 'bg-rose-100 text-rose-800' : 'bg-slate-200 text-slate-700'
+                        isRequired ? 'bg-rose-950 text-rose-300 border border-rose-800/60' : 'bg-slate-800 text-slate-400'
                       }`}>
                         {ev.level}
                       </span>
-                      <span className={`text-[10px] font-bold ${isPresent ? 'text-emerald-700' : 'text-rose-600'}`}>
+                      <span className={`text-[10px] font-bold ${isPresent ? 'text-emerald-400' : 'text-rose-400'}`}>
                         {isPresent ? '✓ PRESENT' : '✗ MISSING'}
                       </span>
                     </div>
-                    <div className="font-semibold text-slate-800 text-[11px] leading-snug">{ev.field_name}</div>
+                    <div className="font-semibold text-slate-200 text-[11px] leading-snug">{ev.field_name}</div>
                     <div className="text-[10px] text-slate-400 font-mono">e.g. {ev.sample}</div>
                   </div>
                 );
@@ -774,17 +774,17 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
             </div>
 
             {/* Invariant Note */}
-            <div className="text-[10px] text-slate-500 italic pt-1">
+            <div className="text-[10px] text-slate-500 italic pt-1 font-mono">
               * Note: Document Readiness reflects <strong>Input Completeness only</strong> and does not constitute compliance evidence or BIS ISI certification.
             </div>
           </div>
         )}
 
         {/* Step 3: Input Processing Card */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-xs space-y-6">
+        <div className="bg-[#0f1422]/90 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-xl space-y-6">
           {/* Step 1: Input Mode Selector */}
           <div>
-            <label className="text-xs font-bold text-slate-700 block mb-2">
+            <label className="text-xs font-bold text-slate-300 block mb-2 font-['Space_Grotesk']">
               Select Multi-Modal Input Mode:
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
@@ -801,8 +801,8 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                   onClick={() => setInputMode(m.mode)}
                   className={`px-3 py-2.5 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition cursor-pointer ${
                     inputMode === m.mode
-                      ? 'bg-indigo-600 text-white shadow-xs'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+                      ? 'bg-cyan-500 text-slate-950 shadow-md font-bold'
+                      : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-850'
                   }`}
                 >
                   <span className="material-symbols-outlined text-[16px]">{m.icon}</span>
@@ -816,10 +816,10 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
           {inputMode === 'pdf' && (
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="text-xs font-bold text-slate-700 block">
+                <label className="text-xs font-semibold text-slate-300 block">
                   Upload Lab Report / Spec Sheet (PyMuPDF Layout Parsing)
                 </label>
-                <span className="text-[11px] text-indigo-600 font-medium">Pre-Flight Validation Active</span>
+                <span className="text-[11px] text-cyan-400 font-mono">Pre-Flight Validation Active</span>
               </div>
 
               <div
@@ -831,12 +831,12 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                 onDrop={handleFileDrop}
                 className={`border-2 border-dashed rounded-xl p-6 text-center transition cursor-pointer ${
                   isDragOver
-                    ? 'border-indigo-500 bg-indigo-50/50'
+                    ? 'border-cyan-500 bg-cyan-950/30'
                     : isParsingFile
-                    ? 'border-indigo-400 bg-indigo-50/30'
+                    ? 'border-cyan-500/60 bg-cyan-950/20'
                     : uploadedFileName
-                    ? 'border-emerald-300 bg-emerald-50/30'
-                    : 'border-slate-200 bg-slate-50 hover:border-slate-300'
+                    ? 'border-emerald-500/50 bg-emerald-950/20'
+                    : 'border-slate-800 bg-slate-950/50 hover:border-slate-700'
                 }`}
               >
                 <input
@@ -847,37 +847,37 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                   accept=".pdf,.png,.jpg,.jpeg,.json,.csv,.txt"
                 />
                 <label htmlFor="bomUpload" className="cursor-pointer block">
-                  <div className="w-10 h-10 rounded-full bg-white shadow-2xs border border-slate-200 text-indigo-600 flex items-center justify-center mx-auto mb-2">
+                  <div className="w-10 h-10 rounded-full bg-slate-900 border border-slate-700 text-cyan-400 flex items-center justify-center mx-auto mb-2 shadow-inner">
                     <span className="material-symbols-outlined text-[20px]">
                       {isParsingFile ? 'sync' : uploadedFileName ? 'task' : 'cloud_upload'}
                     </span>
                   </div>
                   {isParsingFile ? (
                     <div>
-                      <p className="text-xs font-bold text-indigo-700 flex items-center justify-center gap-2">
-                        <MorphingInfinity className="w-4 h-4 text-indigo-600 shrink-0" />
-                        <TextShimmer baseColor="#4f46e5" shimmerColor="#818cf8" duration={1.8}>
+                      <p className="text-xs font-bold text-cyan-300 flex items-center justify-center gap-2">
+                        <MorphingInfinity className="w-4 h-4 text-cyan-400 shrink-0" />
+                        <TextShimmer baseColor="#38bdf8" shimmerColor="#bae6fd" duration={1.8}>
                           Validating & Extracting PDF Streams...
                         </TextShimmer>
                       </p>
-                      <p className="text-[11px] text-slate-400 mt-0.5">PyMuPDF structure analysis & rating extraction</p>
+                      <p className="text-[11px] text-slate-400 mt-0.5 font-mono">PyMuPDF structure analysis & rating extraction</p>
                     </div>
                   ) : uploadedFileName ? (
                     <div>
-                      <p className="text-xs font-bold text-emerald-800 flex items-center justify-center gap-1">
+                      <p className="text-xs font-bold text-emerald-400 flex items-center justify-center gap-1 font-mono">
                         <span className="material-symbols-outlined text-[16px]">check</span>
                         {uploadedFileName}
                       </p>
-                      <p className="text-[11px] text-slate-500 mt-0.5">
+                      <p className="text-[11px] text-slate-400 mt-0.5">
                         Extracted into form below. Drop another file to re-parse.
                       </p>
                     </div>
                   ) : (
                     <div>
-                      <p className="text-xs font-bold text-slate-700">
-                        Drag and drop test report PDF (e.g. <span className="font-mono text-indigo-600">Electric_Immersion_Water_Heater_Lab_Report.pdf</span>) or <span className="text-indigo-600">browse file</span>
+                      <p className="text-xs font-medium text-slate-300">
+                        Drag and drop test report PDF (e.g. <span className="font-mono text-cyan-400">Electric_Immersion_Water_Heater_Lab_Report.pdf</span>) or <span className="text-cyan-400 underline">browse file</span>
                       </p>
-                      <p className="text-[10px] text-slate-400 mt-0.5">
+                      <p className="text-[10px] text-slate-500 mt-0.5 font-mono">
                         Multi-layer validation checks: size limit, magic bytes, empty/malformed files & duplicate hashes
                       </p>
                     </div>
@@ -888,29 +888,29 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
           )}
 
           {inputMode === 'voice' && (
-            <div className="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-4">
+            <div className="p-5 rounded-xl bg-slate-950/60 border border-slate-800 space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-indigo-600 text-[18px]">mic</span>
+                  <h4 className="text-xs font-bold text-slate-200 flex items-center gap-1.5 font-display">
+                    <span className="material-symbols-outlined text-cyan-400 text-[18px]">mic</span>
                     Voice Query Ingestion (Sarvam AI Indic STT)
                   </h4>
-                  <p className="text-[11px] text-slate-500">
+                  <p className="text-[11px] text-slate-400">
                     Capture verbal product specs in Indic languages or test with a simulated acoustic sample.
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border ${
                     layer1Status.voiceFunctional
-                      ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
-                      : 'bg-amber-100 text-amber-800 border-amber-200'
+                      ? 'bg-emerald-950/50 text-emerald-400 border-emerald-800/60'
+                      : 'bg-amber-950/50 text-amber-400 border-amber-800/60'
                   }`}>
                     {layer1Status.voiceFunctional ? '✓ Sarvam AI Connected' : '⚠ API Key Unset'}
                   </span>
                   <button
                     type="button"
                     onClick={handleSampleVoiceQuery}
-                    className="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-indigo-700 text-xs font-semibold hover:bg-indigo-50 transition cursor-pointer shadow-2xs"
+                    className="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-cyan-300 text-xs font-medium hover:bg-slate-800 transition cursor-pointer"
                   >
                     Test Sample Voice Query
                   </button>
@@ -918,21 +918,21 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
               </div>
 
               {!layer1Status.voiceFunctional && (
-                <div className="p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-[11px] text-amber-900 flex items-start gap-2">
-                  <span className="material-symbols-outlined text-amber-600 text-[16px] shrink-0 mt-0.5">info</span>
+                <div className="p-2.5 rounded-lg bg-amber-950/40 border border-amber-900/60 text-[11px] text-amber-300 flex items-start gap-2">
+                  <span className="material-symbols-outlined text-amber-400 text-[16px] shrink-0 mt-0.5">info</span>
                   <div>
-                    <strong>Sarvam AI STT unconfigured:</strong> For live microphone STT, set <code className="font-mono bg-amber-100 px-1 rounded">SARVAM_API_KEY</code> in <code className="font-mono bg-amber-100 px-1 rounded">.env</code>. Click <strong>Test Sample Voice Query</strong> to test with a verified domestic appliance sample.
+                    <strong>Sarvam AI STT unconfigured:</strong> For live microphone STT, set <code className="font-mono bg-amber-950 px-1 rounded text-amber-200">SARVAM_API_KEY</code> in <code className="font-mono bg-amber-950 px-1 rounded text-amber-200">.env</code>. Click <strong>Test Sample Voice Query</strong> to test with a verified domestic appliance sample.
                   </div>
                 </div>
               )}
 
-              <div className="flex flex-col items-center justify-center py-6 bg-white rounded-xl border border-slate-200 gap-3">
+              <div className="flex flex-col items-center justify-center py-6 bg-slate-900/80 rounded-xl border border-slate-800 gap-3">
                 <div
                   onClick={isRecording ? stopRecording : startRecording}
-                  className={`w-16 h-16 rounded-full flex items-center justify-center cursor-pointer transition shadow-md ${
+                  className={`w-16 h-16 rounded-full flex items-center justify-center cursor-pointer transition shadow-lg ${
                     isRecording
                       ? 'bg-rose-600 text-white animate-pulse'
-                      : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                      : 'bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-slate-950 font-bold'
                   }`}
                   title={isRecording ? 'Click to Stop Recording' : 'Click to Speak'}
                 >
@@ -941,7 +941,7 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                   </span>
                 </div>
                 <div className="text-center">
-                  <div className="text-xs font-bold text-slate-800">
+                  <div className="text-xs font-bold text-slate-200">
                     {isRecording ? `Recording Audio... (${recordingSeconds}s)` : 'Click Microphone to Speak Query'}
                   </div>
                   <div className="text-[11px] text-slate-400">
@@ -953,14 +953,14 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
           )}
 
           {inputMode === 'bom' && (
-            <div className="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+            <div className="p-5 rounded-xl bg-slate-950/60 border border-slate-800 space-y-3">
               <div className="flex items-center justify-between flex-wrap gap-2">
                 <div>
-                  <h4 className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-indigo-600 text-[18px]">table_chart</span>
+                  <h4 className="text-xs font-bold text-slate-200 flex items-center gap-1.5 font-display">
+                    <span className="material-symbols-outlined text-cyan-400 text-[18px]">table_chart</span>
                     Bill of Materials (BOM) Tabular Parser
                   </h4>
-                  <p className="text-[11px] text-slate-500">
+                  <p className="text-[11px] text-slate-400">
                     Upload a CSV file or paste BOM data manually. Multi-component tabular parsing with placeholder validation.
                   </p>
                 </div>
@@ -968,14 +968,14 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                   <button
                     type="button"
                     onClick={() => handleDownloadTemplate('bom_csv')}
-                    className="px-2.5 py-1 rounded bg-white border border-slate-200 text-slate-700 text-xs font-semibold hover:bg-slate-50 transition cursor-pointer shadow-2xs"
+                    className="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-slate-300 text-xs font-medium hover:bg-slate-800 transition cursor-pointer"
                   >
                     Download BOM Template
                   </button>
                   <button
                     type="button"
                     onClick={handleLoadSampleBOM}
-                    className="px-3 py-1 rounded bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-semibold hover:bg-indigo-100 transition cursor-pointer shadow-2xs"
+                    className="px-3 py-1 rounded bg-cyan-950/50 border border-cyan-800/60 text-cyan-300 text-xs font-semibold hover:bg-cyan-900/40 transition cursor-pointer"
                   >
                     Load Sample BOM
                   </button>
@@ -987,8 +987,8 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                 onClick={() => bomFileInputRef.current?.click()}
                 className={`relative border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all ${
                   bomCsvFile
-                    ? 'border-emerald-400 bg-emerald-50/40'
-                    : 'border-indigo-300 bg-white hover:border-indigo-500 hover:bg-indigo-50/30'
+                    ? 'border-emerald-500/60 bg-emerald-950/20'
+                    : 'border-slate-800 bg-slate-900/60 hover:border-cyan-500/50 hover:bg-slate-900'
                 }`}
               >
                 <input
@@ -998,29 +998,29 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                   className="hidden"
                   onChange={handleBomCsvUpload}
                 />
-                <span className={`material-symbols-outlined text-[28px] ${bomCsvFile ? 'text-emerald-600' : 'text-indigo-500'}`}>
+                <span className={`material-symbols-outlined text-[28px] ${bomCsvFile ? 'text-emerald-400' : 'text-cyan-400'}`}>
                   {bomCsvFile ? 'task_alt' : 'upload_file'}
                 </span>
                 {bomCsvFile ? (
                   <div className="text-center">
-                    <p className="text-xs font-bold text-emerald-800 flex items-center gap-1 justify-center">
+                    <p className="text-xs font-bold text-emerald-400 flex items-center gap-1 justify-center font-mono">
                       <span className="material-symbols-outlined text-[14px]">check</span>
                       {bomCsvFile.name}
                     </p>
-                    <p className="text-[10px] text-slate-500 mt-0.5">CSV loaded into editor below. Click to replace.</p>
+                    <p className="text-[10px] text-slate-400 mt-0.5 font-mono">CSV loaded into editor below. Click to replace.</p>
                   </div>
                 ) : (
                   <div className="text-center">
-                    <p className="text-xs font-semibold text-indigo-700">Click to upload BOM CSV file</p>
-                    <p className="text-[10px] text-slate-400 mt-0.5">Accepts .csv or .txt • Columns: Part No, Component, Material, Specification, Quantity</p>
+                    <p className="text-xs font-medium text-cyan-300">Click to upload BOM CSV file</p>
+                    <p className="text-[10px] text-slate-500 mt-0.5 font-mono">Accepts .csv or .txt • Columns: Part No, Component, Material, Specification, Quantity</p>
                   </div>
                 )}
               </div>
 
-              <div className="flex items-center gap-2 text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
-                <div className="flex-1 h-px bg-slate-200" />
+              <div className="flex items-center gap-2 text-[10px] text-slate-500 font-semibold uppercase tracking-wider font-mono">
+                <div className="flex-1 h-px bg-slate-800" />
                 or paste BOM text manually
-                <div className="flex-1 h-px bg-slate-200" />
+                <div className="flex-1 h-px bg-slate-800" />
               </div>
 
               <textarea
@@ -1028,34 +1028,33 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                 value={bomText}
                 onChange={(e) => setBomText(e.target.value)}
                 placeholder="Part Number, Component, Material, Specification, Quantity..."
-                className="w-full bg-white border border-slate-300 rounded-lg p-3 text-xs font-mono text-slate-800 focus:outline-none focus:border-indigo-500"
+                className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs font-mono text-slate-200 placeholder-slate-600 focus:outline-none focus:border-cyan-500"
               />
 
               <button
                 type="button"
                 onClick={handleParseBOM}
                 disabled={!bomText.trim() || isParsingFile}
-                className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition disabled:opacity-50 shadow-xs cursor-pointer"
+                className="px-4 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold transition disabled:opacity-50 cursor-pointer"
               >
                 {isParsingFile ? 'Parsing BOM Chunks...' : 'Parse BOM into Product DNA'}
               </button>
             </div>
           )}
 
-
           {inputMode === 'image' && (
-            <div className="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-              <h4 className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-indigo-600 text-[18px]">photo_camera</span>
+            <div className="p-5 rounded-xl bg-slate-950/60 border border-slate-800 space-y-3">
+              <h4 className="text-xs font-bold text-slate-200 flex items-center gap-1.5 font-display">
+                <span className="material-symbols-outlined text-cyan-400 text-[18px]">photo_camera</span>
                 Product Rating Plate & Label Image OCR
               </h4>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[11px] text-slate-400">
                 Upload a photo of the product nameplate, marking, or certificate for OCR extraction.
               </p>
 
               {!layer1Status.ocrFunctional && (
-                <div className="p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-[11px] text-amber-900 flex items-start gap-2">
-                  <span className="material-symbols-outlined text-amber-600 text-[16px] shrink-0 mt-0.5">warning</span>
+                <div className="p-2.5 rounded-lg bg-amber-950/40 border border-amber-900/60 text-[11px] text-amber-300 flex items-start gap-2">
+                  <span className="material-symbols-outlined text-amber-400 text-[16px] shrink-0 mt-0.5">warning</span>
                   <div>
                     <strong>OpenDataLoader engine offline:</strong> High-contrast fallback active. OpenDataLoader requires Java 11+ runtime for document extraction.
                   </div>
@@ -1066,27 +1065,27 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                 type="file"
                 accept="image/*"
                 onChange={handleFileSelect}
-                className="text-xs text-slate-700 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer"
+                className="text-xs text-slate-300 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-900 file:text-cyan-400 hover:file:bg-slate-800 cursor-pointer"
               />
             </div>
           )}
 
           {/* Extracted Attributes with Immutable Provenance Chips */}
           {extractedAttributes.length > 0 && (
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
-              <h4 className="text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+            <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-2">
+              <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider font-mono">
                 Extracted Parameters & Provenance (USER TEXT &ne; EVIDENCE)
               </h4>
               <div className="flex flex-wrap gap-2">
                 {extractedAttributes.map((attr, idx) => (
-                  <div key={idx} className="p-2 rounded-lg bg-white border border-slate-200 text-xs shadow-2xs space-y-0.5">
+                  <div key={idx} className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-xs space-y-0.5">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-semibold text-slate-800">{attr.name}:</span>
-                      <span className="px-1.5 py-0.2 rounded text-[9px] font-mono font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                      <span className="font-semibold text-slate-200">{attr.name}:</span>
+                      <span className="px-1.5 py-0.2 rounded text-[9px] font-mono font-bold bg-cyan-950/60 text-cyan-300 border border-cyan-800/60">
                         {attr.provenance}
                       </span>
                     </div>
-                    <div className="text-[11px] text-slate-600">{attr.value}</div>
+                    <div className="text-[11px] text-slate-400 font-mono">{attr.value}</div>
                   </div>
                 ))}
               </div>
@@ -1098,13 +1097,13 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
             {/* Target Standard Selector */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1.5">
+                <label className="text-xs font-semibold text-slate-300 block mb-1.5">
                   Target Indian Standard (IS Code)
                 </label>
                 <select
                   value={targetStandard}
                   onChange={(e) => setTargetStandard(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs md:text-sm text-slate-900 focus:outline-none focus:border-indigo-500 font-mono"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs md:text-sm text-slate-200 focus:outline-none focus:border-cyan-500 font-mono"
                 >
                   <option value="">Select Indian Standard (Optional)...</option>
                   <option value="IS 302-2-201:2008">IS 302-2-201:2008 (Electric Immersion Water Heaters)</option>
@@ -1119,8 +1118,8 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
               </div>
 
               <div>
-                <label htmlFor="category" className="text-xs font-bold text-slate-700 block mb-1.5">
-                  Product Category / Industry Sector <span className="text-rose-500">*</span>
+                <label htmlFor="category" className="text-xs font-semibold text-slate-300 block mb-1.5">
+                  Product Category / Industry Sector <span className="text-rose-400">*</span>
                 </label>
                 <input
                   type="text"
@@ -1129,15 +1128,15 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                   onChange={(e) => setCategory(e.target.value)}
                   placeholder="e.g. Kitchen & Domestic Appliances"
                   required
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs md:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-500 transition"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs md:text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-cyan-500 transition"
                 />
               </div>
             </div>
 
             {/* Product Trade Name */}
             <div>
-              <label htmlFor="productName" className="text-xs font-bold text-slate-700 block mb-1.5">
-                Product Trade Name / Model Number <span className="text-rose-500">*</span>
+              <label htmlFor="productName" className="text-xs font-semibold text-slate-300 block mb-1.5">
+                Product Trade Name / Model Number <span className="text-rose-400">*</span>
               </label>
               <input
                 type="text"
@@ -1146,17 +1145,17 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                 onChange={(e) => setProductName(e.target.value)}
                 placeholder="e.g. Electric Immersion Water Heater (EWH-1500)"
                 required
-                className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs md:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-500 transition"
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs md:text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-cyan-500 transition"
               />
             </div>
 
             {/* Description & Technical Specifications */}
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label htmlFor="description" className="text-xs font-bold text-slate-700 block">
-                  Technical Specifications, Operating Ratings & Materials <span className="text-rose-500">*</span>
+                <label htmlFor="description" className="text-xs font-semibold text-slate-300 block">
+                  Technical Specifications, Operating Ratings & Materials <span className="text-rose-400">*</span>
                 </label>
-                <span className="text-[11px] text-slate-400">
+                <span className="text-[11px] text-slate-500 font-mono">
                   Include voltage, wattage, frequency, materials & test reports
                 </span>
               </div>
@@ -1167,21 +1166,21 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Describe product construction, materials (e.g. stainless steel 304 heating tube, polypropylene handle), electrical ratings (230V AC, 1500W, 50Hz), and any test measurements from lab reports..."
                 required
-                className="w-full bg-slate-50 border border-slate-300 rounded-xl p-4 text-xs font-mono text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-500 transition leading-relaxed"
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-200 placeholder-slate-600 focus:outline-none focus:border-cyan-500 transition leading-relaxed"
               />
             </div>
 
             {/* Authoritative Gate Checkbox */}
-            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3">
+            <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 flex items-start gap-3">
               <input
                 type="checkbox"
                 id="authoritativeMode"
                 checked={isAuthoritative}
                 onChange={(e) => setIsAuthoritative(e.target.checked)}
-                className="mt-0.5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                className="mt-0.5 rounded border-slate-700 bg-slate-900 text-cyan-500 focus:ring-cyan-500/20"
               />
-              <label htmlFor="authoritativeMode" className="text-xs text-slate-700 cursor-pointer">
-                <strong className="block text-slate-900 font-semibold mb-0.5">
+              <label htmlFor="authoritativeMode" className="text-xs text-slate-300 cursor-pointer">
+                <strong className="block text-slate-100 font-semibold mb-0.5">
                   Authoritative Mode (Production Gate)
                 </strong>
                 Restrict applicability and gap detection strictly to verified BIS Gazette-indexed standards (IS 302-2-201, IS 302-1, IS 17526, etc.). Suppresses draft or unverified external rules.
@@ -1189,20 +1188,20 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
             </div>
 
             {/* Submit Action */}
-            <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-slate-100">
-              <div className="text-xs text-slate-500">
+            <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-slate-800">
+              <div className="text-xs text-slate-400 font-mono">
                 Transforms inputs into structured Product DNA AST & matches BIS standards.
               </div>
 
               <button
                 type="submit"
                 disabled={isLoading || !productName.trim() || !category.trim() || !description.trim()}
-                className="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs md:text-sm transition disabled:opacity-50 shadow-xs flex items-center justify-center gap-2 cursor-pointer shrink-0"
+                className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-slate-950 font-bold text-xs md:text-sm transition disabled:opacity-50 shadow-lg shadow-cyan-500/10 flex items-center justify-center gap-2 cursor-pointer shrink-0"
               >
                 {isLoading ? (
                   <>
-                    <MorphingInfinity className="w-4 h-4 text-white shrink-0" />
-                    <TextShimmer baseColor="#ffffff" shimmerColor="#c7d2fe" duration={1.8}>
+                    <MorphingInfinity className="w-4 h-4 text-slate-950 shrink-0" />
+                    <TextShimmer baseColor="#090d16" shimmerColor="#38bdf8" duration={1.8}>
                       Compiling to Layer 2 Product DNA...
                     </TextShimmer>
                   </>
@@ -1219,58 +1218,58 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
 
         {/* Template Modal */}
         {showTemplateModal && (
-          <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-            <div className="bg-white border border-slate-200 rounded-2xl max-w-lg w-full p-6 shadow-xl space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-indigo-600 text-[20px]">description</span>
+          <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <div className="bg-[#0b0f19] border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
+                <h3 className="text-sm font-bold text-slate-100 flex items-center gap-2 font-display">
+                  <span className="material-symbols-outlined text-cyan-400 text-[20px]">description</span>
                   Download Fillable Document Preparation Templates
                 </h3>
                 <button
                   type="button"
                   onClick={() => setShowTemplateModal(false)}
-                  className="text-slate-400 hover:text-slate-600 cursor-pointer"
+                  className="text-slate-400 hover:text-slate-200 cursor-pointer"
                 >
                   <span className="material-symbols-outlined">close</span>
                 </button>
               </div>
 
-              <p className="text-xs text-slate-600">
+              <p className="text-xs text-slate-400">
                 If you do not have a formal laboratory test report, download one of our verified BIS templates to prepare compliant technical specifications:
               </p>
 
               <div className="space-y-2">
                 <div
                   onClick={() => handleDownloadTemplate('spec_csv')}
-                  className="p-3 rounded-xl bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/50 cursor-pointer transition flex items-center justify-between"
+                  className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-cyan-500/50 hover:bg-slate-900 cursor-pointer transition flex items-center justify-between"
                 >
                   <div>
-                    <div className="text-xs font-bold text-slate-900">Technical Specifications Template (.CSV)</div>
-                    <div className="text-[11px] text-slate-500">Includes all required ratings, materials & standards reference columns</div>
+                    <div className="text-xs font-bold text-slate-200">Technical Specifications Template (.CSV)</div>
+                    <div className="text-[11px] text-slate-400 font-mono">Includes all required ratings, materials & standards reference columns</div>
                   </div>
-                  <span className="material-symbols-outlined text-indigo-600 text-[20px]">download</span>
+                  <span className="material-symbols-outlined text-cyan-400 text-[20px]">download</span>
                 </div>
 
                 <div
                   onClick={() => handleDownloadTemplate('bom_csv')}
-                  className="p-3 rounded-xl bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/50 cursor-pointer transition flex items-center justify-between"
+                  className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-cyan-500/50 hover:bg-slate-900 cursor-pointer transition flex items-center justify-between"
                 >
                   <div>
-                    <div className="text-xs font-bold text-slate-900">Bill of Materials (BOM) Template (.CSV)</div>
-                    <div className="text-[11px] text-slate-500">Sub-assembly parts, materials, specifications & quantity columns</div>
+                    <div className="text-xs font-bold text-slate-200">Bill of Materials (BOM) Template (.CSV)</div>
+                    <div className="text-[11px] text-slate-400 font-mono">Sub-assembly parts, materials, specifications & quantity columns</div>
                   </div>
-                  <span className="material-symbols-outlined text-indigo-600 text-[20px]">download</span>
+                  <span className="material-symbols-outlined text-cyan-400 text-[20px]">download</span>
                 </div>
 
                 <div
                   onClick={() => handleDownloadTemplate('spec_json')}
-                  className="p-3 rounded-xl bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/50 cursor-pointer transition flex items-center justify-between"
+                  className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-cyan-500/50 hover:bg-slate-900 cursor-pointer transition flex items-center justify-between"
                 >
                   <div>
-                    <div className="text-xs font-bold text-slate-900">JSON Schema Specification Template (.JSON)</div>
-                    <div className="text-[11px] text-slate-500">Programmatic JSON schema for enterprise ERP / CAD pipelines</div>
+                    <div className="text-xs font-bold text-slate-200">JSON Schema Specification Template (.JSON)</div>
+                    <div className="text-[11px] text-slate-400 font-mono">Programmatic JSON schema for enterprise ERP / CAD pipelines</div>
                   </div>
-                  <span className="material-symbols-outlined text-indigo-600 text-[20px]">code</span>
+                  <span className="material-symbols-outlined text-cyan-400 text-[20px]">code</span>
                 </div>
               </div>
 
@@ -1278,7 +1277,7 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
                 <button
                   type="button"
                   onClick={() => setShowTemplateModal(false)}
-                  className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition cursor-pointer"
+                  className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition cursor-pointer"
                 >
                   Close
                 </button>

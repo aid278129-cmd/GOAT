@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hugeicons/core-free-icons": "^4.3.5",
+    "@hugeicons/react": "^1.1.10",
     "@rollup/rollup-win32-x64-msvc": "^4.63.1",
     "@xyflow/react": "^12.11.6",
     "animejs": "^4.5.0",

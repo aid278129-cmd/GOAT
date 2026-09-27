@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { dossierApi, jobsApi } from '../api';
+import { GlideSelect } from './loading-ui';
 
 export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
   const [jobs, setJobs] = useState([]);
@@ -100,14 +101,14 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
     } catch (err) {
       setFeedback({
         type: 'error',
-        message: err?.data?.detail || err.message || 'Failed to generate dossier.',
+        message: `Failed to compile dossier: ${err.message}`,
       });
     } finally {
       setGenerating(false);
     }
   };
 
-  // Handle selecting a specific dossier version to inspect
+  // Handle selecting a specific dossier version from list
   const handleSelectDossier = async (dossierId) => {
     if (!selectedJobId || !dossierId) return;
     try {
@@ -115,7 +116,7 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
       setSelectedDossier(detail);
       setActiveSectionNum(1);
     } catch (err) {
-      console.error('Failed to load dossier details:', err);
+      alert(`Failed to load dossier details: ${err.message}`);
     }
   };
 
@@ -143,48 +144,50 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
 
   const states = passportData?.passport_states || {};
 
+  const jobSelectItems = jobs.map((j) => ({
+    value: j.id,
+    label: `${j.job_number || j.id} — ${j.product_name || j.title || 'Untitled'}`,
+  }));
+
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-6 font-sans">
+    <div className="w-full px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-6 max-w-7xl mx-auto">
       {/* Top Header & Job Switcher */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E2E8F0]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#0F172A]">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-100 font-['Space_Grotesk']">
               Regulatory Dossier &amp; Compliance Passport Center
             </h1>
-            <span className="font-mono text-xs px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-semibold border border-blue-200">
+            <span className="font-mono text-[10px] px-2.5 py-0.5 rounded-full bg-cyan-950/60 text-cyan-300 font-semibold border border-cyan-800/60">
               Phase 5 Production
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-[#64748B] mt-0.5">
+          <p className="text-xs sm:text-sm text-slate-400 mt-1">
             Immutable snapshot dossiers, deterministic traceability, and honest multi-dimensional regulatory passports.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          {/* Job Selection Dropdown */}
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-mono text-[#64748B] font-semibold">Active Job:</span>
-            <select
-              value={selectedJobId}
-              onChange={(e) => setSelectedJobId(e.target.value)}
-              className="text-xs font-medium bg-white border border-[#CBD5E1] rounded px-2.5 py-1.5 text-[#0F172A] focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-xs"
-            >
-              {jobs.map((j) => (
-                <option key={j.id} value={j.id}>
-                  {j.job_number} — {j.product_name || j.title}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Job Selection Dropdown with GlideSelect */}
+          {jobSelectItems.length > 0 && (
+            <div className="w-64 sm:w-72">
+              <GlideSelect
+                items={jobSelectItems}
+                value={selectedJobId}
+                onChange={(val) => setSelectedJobId(val)}
+                placeholder="Select Job"
+                width="100%"
+              />
+            </div>
+          )}
 
           <button
             type="button"
             onClick={handleGenerateDossier}
             disabled={generating || !selectedJobId}
-            className="px-3.5 py-2 text-xs font-semibold text-white bg-[#1D4ED8] hover:bg-[#1E40AF] disabled:bg-slate-300 rounded transition-colors flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="px-4 py-2 text-xs font-semibold text-slate-950 bg-gradient-to-r from-cyan-400 to-sky-400 hover:from-cyan-300 hover:to-sky-300 disabled:opacity-40 rounded-lg transition-all flex items-center gap-1.5 shadow-lg shadow-cyan-500/10 cursor-pointer"
           >
-            <span className="material-symbols-outlined text-sm">
+            <span className="material-symbols-outlined text-sm font-bold">
               {generating ? 'hourglass_top' : 'verified'}
             </span>
             {generating ? 'Compiling Dossier...' : 'Compile New Dossier'}
@@ -193,15 +196,15 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
       </div>
 
       {/* Statutory Disclaimer Banner */}
-      <div className="p-3.5 rounded-lg bg-amber-50/80 border border-amber-200 flex items-start gap-2.5 text-xs text-amber-900">
-        <span className="material-symbols-outlined text-base text-amber-700 shrink-0 mt-0.5">
+      <div className="p-3.5 rounded-xl bg-amber-950/30 border border-amber-800/50 flex items-start gap-3 text-xs text-amber-200">
+        <span className="material-symbols-outlined text-base text-amber-400 shrink-0 mt-0.5">
           policy
         </span>
         <div className="space-y-0.5">
-          <span className="font-bold uppercase tracking-wider text-[11px] text-amber-800">
+          <span className="font-bold uppercase tracking-wider text-[11px] text-amber-300 font-mono">
             Statutory Regulatory Notice
           </span>
-          <p className="text-amber-950/80 leading-relaxed text-[11px]">
+          <p className="text-amber-200/80 leading-relaxed text-[11px]">
             GOAT provides deterministic engineering assessment, evidence traceability, and technical documentation.
             This workstation does <strong>NOT</strong> grant BIS certification, statutory licenses, or laboratory approvals.
             Conformity must be submitted directly to the Bureau of Indian Standards through official statutory channels.
@@ -212,19 +215,19 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
       {/* Alert / Feedback Notification */}
       {feedback && (
         <div
-          className={`p-3 rounded-md text-xs font-medium flex items-center justify-between border ${
+          className={`p-3 rounded-lg text-xs font-medium flex items-center justify-between border ${
             feedback.type === 'success'
-              ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+              ? 'bg-emerald-950/60 text-emerald-300 border-emerald-800/60'
               : feedback.type === 'info'
-              ? 'bg-blue-50 text-blue-800 border-blue-200'
-              : 'bg-rose-50 text-rose-800 border-rose-200'
+              ? 'bg-cyan-950/60 text-cyan-300 border-cyan-800/60'
+              : 'bg-rose-950/60 text-rose-300 border-rose-800/60'
           }`}
         >
           <span>{feedback.message}</span>
           <button
             type="button"
             onClick={() => setFeedback(null)}
-            className="text-xs font-bold px-1 text-slate-500 hover:text-slate-800"
+            className="text-xs font-bold px-1 text-slate-400 hover:text-slate-200 cursor-pointer"
           >
             &times;
           </button>
@@ -232,7 +235,7 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
       )}
 
       {/* Sub-Navigation Tabs */}
-      <div className="flex items-center gap-2 border-b border-[#E2E8F0]">
+      <div className="flex items-center gap-2 border-b border-slate-800">
         {[
           { id: 'passport', label: 'Compliance Passport', icon: 'badge' },
           { id: 'dossiers', label: 'Dossier Snapshots & Viewer', icon: 'menu_book' },
@@ -247,14 +250,14 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-semibold border-b-2 transition-colors cursor-pointer ${
                 isActive
-                  ? 'border-[#1D4ED8] text-[#1D4ED8]'
-                  : 'border-transparent text-[#64748B] hover:text-[#0F172A]'
+                  ? 'border-cyan-400 text-cyan-400'
+                  : 'border-transparent text-slate-400 hover:text-slate-200'
               }`}
             >
               <span className="material-symbols-outlined text-sm">{tab.icon}</span>
               {tab.label}
               {tab.id === 'dossiers' && dossiersList.length > 0 && (
-                <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-slate-100 text-slate-600 font-mono">
+                <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-cyan-950 text-cyan-300 border border-cyan-800/60 font-mono">
                   {dossiersList.length}
                 </span>
               )}
@@ -267,33 +270,33 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
       {activeTab === 'passport' && (
         <div className="flex flex-col gap-6">
           {/* Passport Header Card */}
-          <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 sm:p-6 shadow-xs space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E2E8F0] pb-4">
+          <div className="bg-[#0f1422]/90 backdrop-blur-md border border-slate-800/80 rounded-xl p-5 sm:p-6 shadow-xl space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
               <div>
-                <span className="font-mono text-[10px] text-[#64748B] uppercase tracking-wider font-semibold">
+                <span className="font-mono text-[10px] text-cyan-400 uppercase tracking-widest font-semibold">
                   Official Technical Evaluation Passport
                 </span>
-                <h2 className="text-lg sm:text-xl font-bold text-[#0F172A] mt-0.5">
+                <h2 className="text-lg sm:text-xl font-bold text-slate-100 font-['Space_Grotesk'] mt-0.5">
                   {passportData?.product_name || 'Selected Product'}
                 </h2>
-                <div className="flex flex-wrap items-center gap-3 text-xs text-[#64748B] mt-1">
-                  <span>Model: <strong>{passportData?.model_number || 'N/A'}</strong></span>
+                <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400 mt-1 font-mono">
+                  <span>Model: <strong className="text-slate-200">{passportData?.model_number || 'N/A'}</strong></span>
                   <span>&bull;</span>
-                  <span>Manufacturer: <strong>{passportData?.manufacturer || 'N/A'}</strong></span>
+                  <span>Manufacturer: <strong className="text-slate-200">{passportData?.manufacturer || 'N/A'}</strong></span>
                   <span>&bull;</span>
-                  <span>Job Number: <strong>{passportData?.job_number}</strong></span>
+                  <span>Job Number: <strong className="text-cyan-400">{passportData?.job_number}</strong></span>
                 </div>
               </div>
 
               <div className="text-right font-mono text-xs space-y-1 self-start sm:self-auto">
-                <div className="text-[11px] text-[#64748B]">
+                <div className="text-[11px] text-slate-400">
                   Latest Dossier:{' '}
-                  <strong className="text-blue-700 font-semibold">
+                  <strong className="text-cyan-300 font-semibold">
                     {passportData?.latest_dossier_version ? `v${passportData.latest_dossier_version}` : 'None compiled'}
                   </strong>
                 </div>
                 {passportData?.latest_dossier_digest && (
-                  <div className="text-[10px] text-slate-400 truncate max-w-xs" title={passportData.latest_dossier_digest}>
+                  <div className="text-[10px] text-cyan-400/80 truncate max-w-xs" title={passportData.latest_dossier_digest}>
                     SHA: {passportData.latest_dossier_digest.slice(0, 18)}...
                   </div>
                 )}
@@ -303,10 +306,10 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
             {/* 8-Dimensional Honest State Breakdown */}
             <div>
               <div className="flex items-center justify-between mb-3">
-                <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-[#0F172A]">
+                <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-slate-200">
                   Multi-Dimensional Regulatory &amp; Engineering State
                 </h3>
-                <span className="text-[11px] text-[#64748B] font-mono">
+                <span className="text-[11px] text-slate-400 font-mono">
                   Independently Evaluated
                 </span>
               </div>
@@ -324,15 +327,15 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
             </div>
 
             {/* Metrics Counters Grid */}
-            <div className="pt-3 border-t border-[#E2E8F0] grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 text-center">
+            <div className="pt-3 border-t border-slate-800 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 text-center">
               <CounterBox label="Standards" val={states.counts?.standards_count ?? 0} />
               <CounterBox label="Clauses" val={states.counts?.requirements_count ?? 0} />
               <CounterBox label="Accepted Ev" val={states.counts?.accepted_evidence ?? 0} />
               <CounterBox label="Verified DNA" val={states.counts?.verified_dna_parameters ?? 0} />
-              <CounterBox label="Passes" val={states.counts?.engineering_pass_count ?? 0} textClass="text-emerald-700" />
-              <CounterBox label="Gaps" val={states.counts?.engineering_gap_count ?? 0} textClass="text-rose-700" />
-              <CounterBox label="Pending Rev" val={states.counts?.pending_reviews ?? 0} textClass="text-amber-700" />
-              <CounterBox label="Attestations" val={states.counts?.active_attestations_count ?? 0} textClass="text-blue-700" />
+              <CounterBox label="Passes" val={states.counts?.engineering_pass_count ?? 0} textClass="text-emerald-400" />
+              <CounterBox label="Gaps" val={states.counts?.engineering_gap_count ?? 0} textClass="text-rose-400" />
+              <CounterBox label="Pending Rev" val={states.counts?.pending_reviews ?? 0} textClass="text-amber-400" />
+              <CounterBox label="Attestations" val={states.counts?.active_attestations_count ?? 0} textClass="text-cyan-400" />
             </div>
           </div>
         </div>
@@ -342,18 +345,18 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
       {activeTab === 'dossiers' && (
         <div className="flex flex-col lg:flex-row gap-6 items-start">
           {/* Left Column: Version History */}
-          <div className="w-full lg:w-72 bg-white border border-[#E2E8F0] rounded-xl p-4 shadow-xs shrink-0 flex flex-col gap-3">
-            <div className="flex items-center justify-between pb-2 border-b border-[#E2E8F0]">
-              <span className="font-mono text-xs font-bold text-[#0F172A] uppercase tracking-wider">
+          <div className="w-full lg:w-72 bg-[#0f1422]/90 backdrop-blur-md border border-slate-800 rounded-xl p-4 shadow-xl shrink-0 flex flex-col gap-3">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+              <span className="font-mono text-xs font-bold text-slate-200 uppercase tracking-wider">
                 Dossier Versions
               </span>
-              <span className="text-[11px] font-mono text-[#64748B]">
+              <span className="text-[11px] font-mono text-slate-400">
                 {dossiersList.length} Archived
               </span>
             </div>
 
             {dossiersList.length === 0 ? (
-              <div className="py-6 text-center text-xs text-[#64748B]">
+              <div className="py-6 text-center text-xs text-slate-400">
                 No dossiers compiled yet. Click "Compile New Dossier" to create v1.
               </div>
             ) : (
@@ -365,20 +368,20 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
                       key={dos.id}
                       type="button"
                       onClick={() => handleSelectDossier(dos.id)}
-                      className={`w-full text-left p-3 rounded-lg border transition-colors cursor-pointer ${
+                      className={`w-full text-left p-3 rounded-lg border transition-all cursor-pointer ${
                         isSelected
-                          ? 'bg-blue-50 border-blue-300 text-blue-900'
-                          : 'bg-white border-[#E2E8F0] hover:bg-slate-50 text-[#0F172A]'
+                          ? 'bg-cyan-950/60 border-cyan-800 text-cyan-200 shadow-inner'
+                          : 'bg-slate-900/60 border-slate-800 hover:bg-slate-850 text-slate-300'
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-xs">v{dos.version}</span>
-                        <span className="font-mono text-[10px] text-[#64748B]">
+                        <span className="font-bold text-xs text-cyan-300 font-mono">v{dos.version}</span>
+                        <span className="font-mono text-[10px] text-slate-400">
                           {dos.generated_at ? new Date(dos.generated_at).toLocaleDateString() : ''}
                         </span>
                       </div>
-                      <div className="text-[11px] truncate text-[#64748B] mt-0.5">{dos.title}</div>
-                      <div className="font-mono text-[9px] text-slate-400 mt-1 truncate">
+                      <div className="text-[11px] truncate text-slate-300 mt-0.5">{dos.title}</div>
+                      <div className="font-mono text-[9px] text-slate-500 mt-1 truncate">
                         SHA: {dos.dossier_digest ? dos.dossier_digest.slice(0, 16) : ''}...
                       </div>
                     </button>
@@ -389,21 +392,21 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
           </div>
 
           {/* Right Column: 20-Section Document Viewer */}
-          <div className="flex-1 w-full bg-white border border-[#E2E8F0] rounded-xl p-5 sm:p-6 shadow-xs flex flex-col gap-5">
+          <div className="flex-1 w-full bg-[#0f1422]/90 backdrop-blur-md border border-slate-800 rounded-xl p-5 sm:p-6 shadow-xl flex flex-col gap-5">
             {selectedDossier ? (
               <>
                 {/* Dossier Control Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E2E8F0]">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-800">
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold">
+                      <span className="font-mono text-xs px-2.5 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-800 font-bold">
                         v{selectedDossier.version}
                       </span>
-                      <h2 className="text-base sm:text-lg font-bold text-[#0F172A]">
+                      <h2 className="text-base sm:text-lg font-bold text-slate-100 font-['Space_Grotesk']">
                         {selectedDossier.title}
                       </h2>
                     </div>
-                    <div className="font-mono text-[11px] text-[#64748B] mt-1 space-x-3">
+                    <div className="font-mono text-[11px] text-slate-400 mt-1 space-x-3">
                       <span>ID: {selectedDossier.id}</span>
                       <span>&bull;</span>
                       <span>Engine: {selectedDossier.assessment_engine_version}</span>
@@ -415,24 +418,24 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
                   <button
                     type="button"
                     onClick={() => handleDownloadPdf(selectedDossier.id, selectedDossier.title)}
-                    className="px-3.5 py-2 text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded transition-colors flex items-center gap-1.5 shadow-sm self-start sm:self-auto cursor-pointer"
+                    className="px-4 py-2 text-xs font-semibold text-slate-950 bg-gradient-to-r from-cyan-400 to-sky-400 hover:from-cyan-300 hover:to-sky-300 rounded-lg transition-all flex items-center gap-1.5 shadow-md shadow-cyan-500/20 self-start sm:self-auto cursor-pointer"
                   >
-                    <span className="material-symbols-outlined text-sm">download</span>
+                    <span className="material-symbols-outlined text-sm font-bold">download</span>
                     Download Authoritative PDF
                   </button>
                 </div>
 
                 {/* 20-Section Selector Tabs / Pills */}
-                <div className="flex items-center gap-1 overflow-x-auto pb-2 border-b border-slate-100 text-xs">
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-2 border-b border-slate-800 text-xs">
                   {selectedDossier.sections?.map((sec) => (
                     <button
                       key={sec.section_number}
                       type="button"
                       onClick={() => setActiveSectionNum(sec.section_number)}
-                      className={`px-2.5 py-1 rounded text-[11px] font-mono whitespace-nowrap transition-colors cursor-pointer ${
+                      className={`px-3 py-1.5 rounded-lg text-[11px] font-mono whitespace-nowrap transition-colors cursor-pointer ${
                         activeSectionNum === sec.section_number
-                          ? 'bg-[#1D4ED8] text-white font-bold'
-                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                          ? 'bg-cyan-500 text-slate-950 font-bold'
+                          : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200'
                       }`}
                     >
                       {sec.section_number}. {sec.title.split('/')[0]}
@@ -445,10 +448,10 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
                   {selectedDossier.sections?.filter((s) => s.section_number === activeSectionNum).map((s) => (
                     <div key={s.section_number} className="space-y-4">
                       <div className="flex items-center justify-between">
-                        <h3 className="text-sm font-bold text-[#0F172A]">
+                        <h3 className="text-sm font-bold text-slate-100 font-['Space_Grotesk']">
                           {s.section_number}. {s.title}
                         </h3>
-                        <span className="font-mono text-[11px] text-[#64748B]">
+                        <span className="font-mono text-[11px] text-cyan-400">
                           Key: {s.section_key}
                         </span>
                       </div>
@@ -469,13 +472,13 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
 
       {/* TAB 3: TRACEABILITY MATRIX */}
       {activeTab === 'traceability' && (
-        <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 shadow-xs flex flex-col gap-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E2E8F0]">
+        <div className="bg-[#0f1422]/90 backdrop-blur-md border border-slate-800 rounded-xl p-5 shadow-xl flex flex-col gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
             <div>
-              <h2 className="text-sm font-bold uppercase tracking-wider text-[#0F172A] font-mono">
+              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-200 font-mono">
                 Statutory Traceability Matrix
               </h2>
-              <p className="text-xs text-[#64748B] mt-0.5">
+              <p className="text-xs text-slate-400 mt-0.5">
                 Deterministic lineage: Requirement &rarr; Product DNA &rarr; Evidence &rarr; CAD &rarr; Assessment &rarr; Finding &rarr; Review &rarr; Attestation.
               </p>
             </div>
@@ -485,80 +488,80 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
               placeholder="Filter by clause, parameter, or status..."
               value={traceFilter}
               onChange={(e) => setTraceFilter(e.target.value)}
-              className="text-xs font-mono px-3 py-1.5 border border-[#CBD5E1] rounded bg-[#F8FAFC] text-[#0F172A] w-full sm:w-72 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="text-xs font-mono px-3 py-1.5 border border-slate-700 rounded-lg bg-slate-900 text-slate-100 placeholder-slate-500 w-full sm:w-72 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/20"
             />
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border border-[#E2E8F0] rounded">
-              <thead className="bg-[#F8FAFC] border-b border-[#E2E8F0] font-mono text-[11px] text-[#64748B] uppercase">
+            <table className="w-full text-left text-xs border border-slate-800 rounded-lg">
+              <thead className="bg-slate-900/60 border-b border-slate-800 font-mono text-[11px] text-slate-400 uppercase tracking-wider">
                 <tr>
-                  <th className="p-2.5">Requirement / Clause</th>
-                  <th className="p-2.5">Product DNA Fact</th>
-                  <th className="p-2.5">Supporting Evidence</th>
-                  <th className="p-2.5">CAD Telemetry</th>
-                  <th className="p-2.5">Assessment Result</th>
-                  <th className="p-2.5">Review Decision</th>
-                  <th className="p-2.5">Attestation</th>
+                  <th className="p-3">Requirement / Clause</th>
+                  <th className="p-3">Product DNA Fact</th>
+                  <th className="p-3">Supporting Evidence</th>
+                  <th className="p-3">CAD Telemetry</th>
+                  <th className="p-3">Assessment Result</th>
+                  <th className="p-3">Review Decision</th>
+                  <th className="p-3">Attestation</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E2E8F0]">
+              <tbody className="divide-y divide-slate-800/60">
                 {filteredTraceRows.length === 0 ? (
                   <tr>
-                    <td colSpan="7" className="p-4 text-center text-slate-400 font-mono text-xs">
+                    <td colSpan="7" className="p-6 text-center text-slate-500 font-mono text-xs">
                       No matching traceability records found.
                     </td>
                   </tr>
                 ) : (
                   filteredTraceRows.map((r, idx) => (
-                    <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
-                      <td className="p-2.5 font-medium">
-                        <div className="font-bold text-[#0F172A]">{r.requirement_id}</div>
-                        <div className="font-mono text-[11px] text-[#64748B]">Clause {r.clause}</div>
+                    <tr key={idx} className="hover:bg-slate-800/40 transition-colors">
+                      <td className="p-3 font-medium">
+                        <div className="font-bold text-slate-200">{r.requirement_id}</div>
+                        <div className="font-mono text-[11px] text-cyan-400">Clause {r.clause}</div>
                       </td>
-                      <td className="p-2.5">
-                        <div className="font-mono text-[11px] font-semibold text-slate-800">{r.parameter_key}</div>
-                        <div className="text-[11px] text-slate-600">{r.dna_value}</div>
+                      <td className="p-3">
+                        <div className="font-mono text-[11px] font-semibold text-slate-200">{r.parameter_key}</div>
+                        <div className="text-[11px] text-slate-400">{r.dna_value}</div>
                       </td>
-                      <td className="p-2.5 font-mono text-[10px]">
-                        <div>ID: {r.evidence_id}</div>
-                        <div className="text-slate-500">Status: <strong>{r.evidence_acceptance}</strong></div>
+                      <td className="p-3 font-mono text-[10px]">
+                        <div className="text-slate-300">ID: {r.evidence_id}</div>
+                        <div className="text-slate-400">Status: <strong className="text-cyan-300">{r.evidence_acceptance}</strong></div>
                       </td>
-                      <td className="p-2.5 font-mono text-[10px]">
+                      <td className="p-3 font-mono text-[10px]">
                         {r.cad_measurement_id !== 'N/A' ? (
                           <>
-                            <div className="text-blue-700 font-semibold">{r.cad_measurement_value}</div>
-                            <div className="text-slate-400">{r.cad_measurement_id}</div>
+                            <div className="text-cyan-400 font-semibold">{r.cad_measurement_value}</div>
+                            <div className="text-slate-500">{r.cad_measurement_id}</div>
                           </>
                         ) : (
-                          <span className="text-slate-400">N/A</span>
+                          <span className="text-slate-500">N/A</span>
                         )}
                       </td>
-                      <td className="p-2.5">
+                      <td className="p-3">
                         <span
-                          className={`font-mono text-[10px] px-1.5 py-0.5 rounded font-bold ${
+                          className={`font-mono text-[10px] px-2 py-0.5 rounded border font-bold ${
                             r.assessment_state === 'ENGINEERING_PASS'
-                              ? 'bg-emerald-100 text-emerald-800'
+                              ? 'bg-emerald-950/60 text-emerald-300 border-emerald-800/60'
                               : r.assessment_state === 'ENGINEERING_GAP'
-                              ? 'bg-rose-100 text-rose-800'
-                              : 'bg-amber-100 text-amber-800'
+                              ? 'bg-rose-950/60 text-rose-300 border-rose-800/60'
+                              : 'bg-amber-950/60 text-amber-300 border-amber-800/60'
                           }`}
                         >
                           {r.assessment_state}
                         </span>
                       </td>
-                      <td className="p-2.5 font-mono text-[11px]">
+                      <td className="p-3 font-mono text-[11px]">
                         {r.review_decision !== 'NONE' ? (
-                          <span className="font-semibold text-slate-700">{r.review_decision}</span>
+                          <span className="font-semibold text-slate-200">{r.review_decision}</span>
                         ) : (
-                          <span className="text-slate-400">NONE</span>
+                          <span className="text-slate-500">NONE</span>
                         )}
                       </td>
-                      <td className="p-2.5 font-mono text-[11px]">
+                      <td className="p-3 font-mono text-[11px]">
                         {r.attestation_id !== 'NONE' ? (
-                          <span className="text-blue-700 font-semibold">ATT-{r.attestation_id.slice(0, 8)}</span>
+                          <span className="text-cyan-400 font-semibold">ATT-{r.attestation_id.slice(0, 8)}</span>
                         ) : (
-                          <span className="text-slate-400">NONE</span>
+                          <span className="text-slate-500">NONE</span>
                         )}
                       </td>
                     </tr>
@@ -572,22 +575,22 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
 
       {/* TAB 4: CRYPTOGRAPHIC INTEGRITY PANEL */}
       {activeTab === 'integrity' && (
-        <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 shadow-xs space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0]">
+        <div className="bg-[#0f1422]/90 backdrop-blur-md border border-slate-800 rounded-xl p-5 shadow-xl space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-800">
             <div>
-              <h2 className="text-sm font-bold uppercase tracking-wider text-[#0F172A] font-mono">
+              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-200 font-mono">
                 Cryptographic Integrity Verification
               </h2>
-              <p className="text-xs text-[#64748B] mt-0.5">
+              <p className="text-xs text-slate-400 mt-0.5">
                 Verifies byte-level SHA-256 integrity of all dossier artifacts against database digests.
               </p>
             </div>
 
             <span
-              className={`px-2.5 py-1 rounded text-xs font-mono font-bold flex items-center gap-1 ${
+              className={`px-3 py-1 rounded-full text-xs font-mono font-bold flex items-center gap-1.5 border ${
                 integrityData?.is_intact
-                  ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
-                  : 'bg-rose-100 text-rose-800 border border-rose-200'
+                  ? 'bg-emerald-950/60 text-emerald-300 border-emerald-800/60'
+                  : 'bg-rose-950/60 text-rose-300 border-rose-800/60'
               }`}
             >
               <span className="material-symbols-outlined text-sm">
@@ -599,32 +602,32 @@ export function DossiersReportsView({ jobId: propJobId, onNavigateJobs }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {integrityData?.dossiers?.map((d) => (
-              <div key={d.dossier_id} className="p-4 rounded-lg border border-[#E2E8F0] bg-slate-50/60 space-y-2">
+              <div key={d.dossier_id} className="p-4 rounded-xl border border-slate-800 bg-slate-900/60 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-xs text-[#0F172A]">Dossier v{d.version}</span>
+                  <span className="font-bold text-xs text-slate-200 font-mono">Dossier v{d.version}</span>
                   <span
-                    className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${
-                      d.is_tamper_free ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+                    className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${
+                      d.is_tamper_free ? 'bg-emerald-950/60 text-emerald-300 border-emerald-800/60' : 'bg-rose-950/60 text-rose-300 border-rose-800/60'
                     }`}
                   >
                     {d.is_tamper_free ? 'TAMPER-FREE' : 'INVALID'}
                   </span>
                 </div>
-                <div className="font-mono text-[10px] text-slate-500 break-all">
-                  Canonical Digest: <strong>{d.stored_dossier_digest}</strong>
+                <div className="font-mono text-[10px] text-slate-400 break-all">
+                  Canonical Digest: <strong className="text-cyan-400">{d.stored_dossier_digest}</strong>
                 </div>
 
-                <div className="pt-2 border-t border-slate-200 space-y-1">
-                  <div className="text-[10px] font-mono font-bold text-slate-600 uppercase">Artifacts:</div>
+                <div className="pt-2 border-t border-slate-800 space-y-1.5">
+                  <div className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider">Artifacts:</div>
                   {d.artifacts_verified?.map((art) => (
-                    <div key={art.artifact_id} className="text-[10px] font-mono bg-white p-2 rounded border border-slate-200">
+                    <div key={art.artifact_id} className="text-[10px] font-mono bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-slate-800">{art.artifact_type}</span>
-                        <span className={art.hash_valid ? 'text-emerald-700 font-bold' : 'text-rose-700 font-bold'}>
+                        <span className="font-bold text-slate-200">{art.artifact_type}</span>
+                        <span className={art.hash_valid ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'}>
                           {art.hash_valid ? 'HASH MATCH' : 'MISMATCH'}
                         </span>
                       </div>
-                      <div className="text-slate-500 truncate mt-0.5">Stored: {art.stored_hash}</div>
+                      <div className="text-slate-400 truncate mt-0.5">Stored: {art.stored_hash}</div>
                     </div>
                   ))}
                 </div>
@@ -649,51 +652,51 @@ function StateBadge({ title, state }) {
       case 'ACTIVE':
       case 'RESOLVED':
       case 'GENERATED':
-        return 'bg-emerald-50 text-emerald-800 border-emerald-200';
+        return 'bg-emerald-950/60 text-emerald-300 border-emerald-800/60';
       case 'ENGINEERING_GAP':
       case 'REJECTED_PRESENT':
       case 'CONFLICT_DETECTED':
       case 'REJECTED_ITEMS':
       case 'REVOKED':
       case 'OPEN':
-        return 'bg-rose-50 text-rose-800 border-rose-200';
+        return 'bg-rose-950/60 text-rose-300 border-rose-800/60';
       case 'PARTIALLY_ACCEPTED':
       case 'PARTIALLY_VERIFIED':
       case 'DATA_REQUIRED':
       case 'PENDING':
       case 'WAIVED':
       case 'NEEDS_UPDATE':
-        return 'bg-amber-50 text-amber-800 border-amber-200';
+        return 'bg-amber-950/60 text-amber-300 border-amber-800/60';
       default:
-        return 'bg-slate-50 text-slate-700 border-slate-200';
+        return 'bg-slate-900 text-slate-300 border-slate-800';
     }
   };
 
   return (
-    <div className={`p-2.5 rounded-lg border flex flex-col justify-between ${getStyle(state)}`}>
+    <div className={`p-2.5 rounded-xl border flex flex-col justify-between ${getStyle(state)}`}>
       <span className="text-[10px] font-mono uppercase font-semibold opacity-75">{title}</span>
       <span className="font-mono text-xs font-bold mt-1 tracking-tight truncate">{state || 'NONE'}</span>
     </div>
   );
 }
 
-function CounterBox({ label, val, textClass = 'text-[#0F172A]' }) {
+function CounterBox({ label, val, textClass = 'text-slate-200' }) {
   return (
-    <div className="p-2 rounded bg-slate-50 border border-slate-100">
+    <div className="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
       <div className={`text-base font-bold font-mono ${textClass}`}>{val}</div>
-      <div className="text-[10px] text-[#64748B] font-medium truncate">{label}</div>
+      <div className="text-[10px] text-slate-400 font-medium truncate mt-0.5">{label}</div>
     </div>
   );
 }
 
 function SectionContentDisplay({ sectionKey, content }) {
   if (!content) {
-    return <div className="text-xs text-slate-400">Empty section.</div>;
+    return <div className="text-xs text-slate-500 font-mono">Empty section.</div>;
   }
 
   return (
-    <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 text-xs font-mono overflow-x-auto max-h-96">
-      <pre className="whitespace-pre-wrap text-[11px] text-slate-800 leading-relaxed">
+    <div className="bg-slate-900/90 rounded-xl p-4 border border-slate-800 text-xs font-mono overflow-x-auto max-h-96">
+      <pre className="whitespace-pre-wrap text-[11px] text-cyan-300 leading-relaxed">
         {JSON.stringify(content, null, 2)}
       </pre>
     </div>

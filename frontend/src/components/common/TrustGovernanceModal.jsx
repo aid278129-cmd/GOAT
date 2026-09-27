@@ -12,72 +12,72 @@ export function TrustGovernanceModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4 font-sans animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 font-sans animate-in fade-in duration-150">
       <div 
         className="fixed inset-0" 
         onClick={onClose} 
         aria-hidden="true" 
       />
       <div 
-        className="relative bg-white border border-slate-200 rounded-xl shadow-2xl max-w-2xl w-full flex flex-col max-h-[85vh] z-10 animate-in zoom-in-95 duration-150"
+        className="relative bg-[#0d121f] text-slate-100 border border-slate-800 rounded-2xl shadow-2xl max-w-2xl w-full flex flex-col max-h-[85vh] z-10 animate-in zoom-in-95 duration-150 overflow-hidden"
         role="dialog"
         aria-label="Statutory Governance & Jury FAQ"
       >
         {/* Modal Header */}
-        <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50/70 shrink-0">
+        <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/60 shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600">
+            <div className="w-8 h-8 rounded-lg bg-cyan-950/60 border border-cyan-800/60 flex items-center justify-center text-cyan-400">
               <span className="material-symbols-outlined text-[18px]">verified_user</span>
             </div>
             <div>
-              <h2 className="text-sm font-bold text-slate-900">
-                Regulatory Governance & Jury FAQ
+              <h2 className="text-sm font-bold text-slate-100 font-['Space_Grotesk']">
+                Regulatory Governance &amp; Jury FAQ
               </h2>
-              <p className="text-[11px] text-slate-500">
-                0% LLM compliance authority & deterministic enforcement
+              <p className="text-[11px] text-slate-400 font-mono">
+                0% LLM compliance authority &amp; deterministic enforcement
               </p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+            className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
           >
             <span className="material-symbols-outlined text-lg">close</span>
           </button>
         </div>
 
         {/* Navigation Tabs */}
-        <div className="px-6 pt-3 border-b border-slate-200 flex gap-4 text-xs font-medium shrink-0">
+        <div className="px-6 pt-3 border-b border-slate-800 flex gap-4 text-xs font-medium shrink-0">
           <button
             type="button"
             onClick={() => setActiveTab('authority')}
             className={`pb-2.5 border-b-2 transition-colors cursor-pointer ${
               activeTab === 'authority'
-                ? 'border-blue-600 text-blue-700 font-semibold'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                ? 'border-cyan-400 text-cyan-400 font-semibold'
+                : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
           >
-            Authority & Trust Model
+            Authority &amp; Trust Model
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('faq')}
             className={`pb-2.5 border-b-2 transition-colors cursor-pointer ${
               activeTab === 'faq'
-                ? 'border-blue-600 text-blue-700 font-semibold'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                ? 'border-cyan-400 text-cyan-400 font-semibold'
+                : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
           >
-            Jury Q&A
+            Jury Q&amp;A
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('architecture')}
             className={`pb-2.5 border-b-2 transition-colors cursor-pointer ${
               activeTab === 'architecture'
-                ? 'border-blue-600 text-blue-700 font-semibold'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                ? 'border-cyan-400 text-cyan-400 font-semibold'
+                : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
           >
             9-Layer Architecture
@@ -85,23 +85,23 @@ export function TrustGovernanceModal({ isOpen, onClose }) {
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 overflow-y-auto space-y-4 text-xs text-slate-700 leading-relaxed">
+        <div className="p-6 overflow-y-auto space-y-4 text-xs text-slate-300 leading-relaxed">
           {activeTab === 'authority' && (
             <div className="space-y-4">
-              <div className="p-3.5 bg-blue-50/70 border border-blue-200 rounded-lg text-blue-900 space-y-1">
-                <span className="font-bold block">Absolute Invariant: 0% LLM Compliance Authority</span>
-                <p className="text-[11px] text-blue-800">
+              <div className="p-4 bg-cyan-950/40 border border-cyan-800/60 rounded-xl text-cyan-200 space-y-1">
+                <span className="font-bold block font-['Space_Grotesk'] text-cyan-300">Absolute Invariant: 0% LLM Compliance Authority</span>
+                <p className="text-[11px] text-cyan-200 leading-relaxed">
                   Large language models in GOAT are strictly confined to information extraction and natural language assistance. No compliance verdict, applicability determination, or passport authorization is ever generated by probabilistic inference.
                 </p>
               </div>
 
               <div className="space-y-2">
-                <h4 className="font-bold text-slate-900">Deterministic Enforcement Pipeline</h4>
-                <ul className="list-disc pl-5 space-y-1 text-slate-600 text-[11px]">
-                  <li><strong>Layer 5 Applicability Engine</strong> matches confirmed product DNA against the official BIS product catalog and gazette QCOs using Boolean logic.</li>
-                  <li><strong>Layer 7 Compliance Authority</strong> mathematically evaluates requirement limits against verified test values.</li>
-                  <li><strong>Layer 8 Evidence Authority</strong> enforces SHA-256 cryptographic immutability and provenance gating.</li>
-                  <li><strong>Layer 9 Passport Authority</strong> compiles auditable, tamper-evident pre-certification dossiers.</li>
+                <h4 className="font-bold text-slate-100 font-['Space_Grotesk']">Deterministic Enforcement Pipeline</h4>
+                <ul className="list-disc pl-5 space-y-1 text-slate-400 text-[11px]">
+                  <li><strong className="text-slate-200">Layer 5 Applicability Engine</strong> matches confirmed product DNA against the official BIS product catalog and gazette QCOs using Boolean logic.</li>
+                  <li><strong className="text-slate-200">Layer 7 Compliance Authority</strong> mathematically evaluates requirement limits against verified test values.</li>
+                  <li><strong className="text-slate-200">Layer 8 Evidence Authority</strong> enforces SHA-256 cryptographic immutability and provenance gating.</li>
+                  <li><strong className="text-slate-200">Layer 9 Passport Authority</strong> compiles auditable, tamper-evident pre-certification dossiers.</li>
                 </ul>
               </div>
             </div>
@@ -109,23 +109,23 @@ export function TrustGovernanceModal({ isOpen, onClose }) {
 
           {activeTab === 'faq' && (
             <div className="space-y-3">
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-1">
-                <h5 className="font-bold text-slate-900">Q: Does GOAT replace official BIS certification?</h5>
-                <p className="text-[11px] text-slate-600">
+              <div className="p-3.5 bg-slate-900/80 border border-slate-800 rounded-xl space-y-1">
+                <h5 className="font-bold text-slate-100 font-['Space_Grotesk']">Q: Does GOAT replace official BIS certification?</h5>
+                <p className="text-[11px] text-slate-400 leading-relaxed">
                   No. GOAT generates an auditable pre-certification compliance passport that maps product facts to Indian Standard requirements and highlights gaps. Official license grant remains exclusively under the statutory authority of the Bureau of Indian Standards.
                 </p>
               </div>
 
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-1">
-                <h5 className="font-bold text-slate-900">Q: What happens if required evidence is missing?</h5>
-                <p className="text-[11px] text-slate-600">
+              <div className="p-3.5 bg-slate-900/80 border border-slate-800 rounded-xl space-y-1">
+                <h5 className="font-bold text-slate-100 font-['Space_Grotesk']">Q: What happens if required evidence is missing?</h5>
+                <p className="text-[11px] text-slate-400 leading-relaxed">
                   The system deterministically transitions the requirement state to MISSING_EVIDENCE and generates an actionable remediation item (e.g. LAB_TEST_REQUIRED). It safely abstains from declaring compliance.
                 </p>
               </div>
 
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-1">
-                <h5 className="font-bold text-slate-900">Q: How is source authenticity verified?</h5>
-                <p className="text-[11px] text-slate-600">
+              <div className="p-3.5 bg-slate-900/80 border border-slate-800 rounded-xl space-y-1">
+                <h5 className="font-bold text-slate-100 font-['Space_Grotesk']">Q: How is source authenticity verified?</h5>
+                <p className="text-[11px] text-slate-400 leading-relaxed">
                   Every evidence document and gazette standard is hashed with SHA-256 upon ingestion. Tampering with any byte invalidates the integrity seal.
                 </p>
               </div>
@@ -134,21 +134,21 @@ export function TrustGovernanceModal({ isOpen, onClose }) {
 
           {activeTab === 'architecture' && (
             <div className="space-y-3">
-              <p className="text-[11px] text-slate-600">
+              <p className="text-[11px] text-slate-400">
                 The GOAT 9-Layer Architecture strictly separates probabilistic processing from statutory evaluation:
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px]">
-                <div className="p-2.5 bg-slate-50 border border-slate-200 rounded">
-                  <span className="font-bold text-slate-900 block">L1–L4: Processing</span>
-                  <span className="text-slate-500 text-[10px]">Ingestion, OCR, CAD, & Extraction</span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-[11px]">
+                <div className="p-3 bg-slate-900/80 border border-slate-800 rounded-xl">
+                  <span className="font-bold text-slate-100 block font-['Space_Grotesk']">L1–L4: Processing</span>
+                  <span className="text-slate-400 text-[10px]">Ingestion, OCR, CAD, &amp; Extraction</span>
                 </div>
-                <div className="p-2.5 bg-blue-50 border border-blue-200 rounded">
-                  <span className="font-bold text-blue-900 block">L5: Applicability</span>
-                  <span className="text-blue-700 text-[10px]">Deterministic Gazette & QCO Scoping</span>
+                <div className="p-3 bg-cyan-950/40 border border-cyan-800/60 rounded-xl">
+                  <span className="font-bold text-cyan-300 block font-['Space_Grotesk']">L5: Applicability</span>
+                  <span className="text-cyan-400 text-[10px]">Deterministic Gazette &amp; QCO Scoping</span>
                 </div>
-                <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded">
-                  <span className="font-bold text-emerald-900 block">L6–L9: Authority</span>
-                  <span className="text-emerald-700 text-[10px]">Deterministic Evaluation, Evidence & Passport</span>
+                <div className="p-3 bg-emerald-950/40 border border-emerald-800/60 rounded-xl">
+                  <span className="font-bold text-emerald-300 block font-['Space_Grotesk']">L6–L9: Authority</span>
+                  <span className="text-emerald-400 text-[10px]">Deterministic Evaluation, Evidence &amp; Passport</span>
                 </div>
               </div>
             </div>
@@ -156,11 +156,11 @@ export function TrustGovernanceModal({ isOpen, onClose }) {
         </div>
 
         {/* Modal Footer */}
-        <div className="px-6 py-3 border-t border-slate-200 bg-slate-50/50 flex justify-end shrink-0">
+        <div className="px-6 py-3 border-t border-slate-800 bg-slate-900/60 flex justify-end shrink-0">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold transition cursor-pointer"
+            className="px-4 py-1.5 bg-gradient-to-r from-cyan-400 to-sky-400 hover:from-cyan-300 hover:to-sky-300 text-slate-950 rounded-lg text-xs font-semibold transition cursor-pointer shadow-md shadow-cyan-500/20"
           >
             Close
           </button>

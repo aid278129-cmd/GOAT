@@ -1,13 +1,13 @@
 import React from 'react';
 
 export const GOLDEN_PATH_STEPS = [
-  { id: 'dna', step: '01', title: 'Product', stage: 'dna' },
+  { id: 'dna', step: '01', title: 'Product DNA', stage: 'dna' },
   { id: 'applicability', step: '02', title: 'Applicability', stage: 'applicability' },
   { id: 'standards', step: '03', title: 'Requirements', stage: 'standards' },
-  { id: 'evidence', step: '04', title: 'Evidence', stage: 'evidence' },
-  { id: 'gaps', step: '05', title: 'Gaps', stage: 'gaps' },
-  { id: 'lab', step: '06', title: 'Actions', stage: 'lab' },
-  { id: 'passport', step: '07', title: 'Assessment', stage: 'passport' },
+  { id: 'evidence', step: '04', title: 'Evidence Matrix', stage: 'evidence' },
+  { id: 'gaps', step: '05', title: 'Gap Engine', stage: 'gaps' },
+  { id: 'lab', step: '06', title: 'Lab Dispatch', stage: 'lab' },
+  { id: 'passport', step: '07', title: 'Passport', stage: 'passport' },
 ];
 
 /**
@@ -16,8 +16,7 @@ export const GOLDEN_PATH_STEPS = [
  * Subtle, restrained workflow progress indicator:
  * Product -> Applicability -> Requirements -> Evidence -> Gaps -> Actions -> Assessment
  * 
- * Current step is highlighted. Future steps are muted. Previous steps are subtle.
- * Completed workflow stages do NOT use green (completion != compliance approval).
+ * Dark precision workstation styling matching homepage.
  */
 export function GoldenPathStepper({
   activeTab,
@@ -54,7 +53,7 @@ export function GoldenPathStepper({
   };
 
   return (
-    <div className="bg-white border-b border-slate-200 px-4 sm:px-6 py-2.5 font-sans">
+    <div className="bg-[#0b0f19] border-b border-slate-800/80 px-4 sm:px-6 py-2 font-sans">
       <div className="flex items-center justify-between gap-4 max-w-7xl mx-auto">
         {/* Step Progression Indicators */}
         <nav aria-label="Workflow progress" className="flex items-center gap-1 sm:gap-2 overflow-x-auto py-0.5 no-scrollbar">
@@ -66,7 +65,7 @@ export function GoldenPathStepper({
             return (
               <React.Fragment key={step.id}>
                 {idx > 0 && (
-                  <span className={`text-[12px] px-0.5 select-none ${isPrevious ? 'text-slate-400' : 'text-slate-200'}`}>
+                  <span className={`text-[12px] px-0.5 select-none ${isPrevious ? 'text-cyan-500/60' : 'text-slate-700'}`}>
                     &rarr;
                   </span>
                 )}
@@ -75,13 +74,13 @@ export function GoldenPathStepper({
                   onClick={() => onSelectStep(step.stage)}
                   className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs transition-all whitespace-nowrap cursor-pointer ${
                     isActive
-                      ? 'bg-blue-50 text-blue-700 font-semibold border border-blue-200 shadow-2xs'
+                      ? 'bg-cyan-950/60 text-cyan-300 font-semibold border border-cyan-500/40 shadow-[0_0_12px_rgba(56,189,248,0.2)]'
                       : isPrevious
-                      ? 'text-slate-700 hover:text-slate-900 hover:bg-slate-50 font-medium'
-                      : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50 font-normal'
+                      ? 'text-slate-300 hover:text-cyan-200 hover:bg-slate-800/60 font-medium'
+                      : 'text-slate-500 hover:text-slate-300 hover:bg-slate-800/40 font-normal'
                   }`}
                 >
-                  <span className={`font-mono text-[10px] ${isActive ? 'text-blue-700 font-bold' : isPrevious ? 'text-slate-600 font-medium' : 'text-slate-300'}`}>
+                  <span className={`font-mono text-[10px] ${isActive ? 'text-cyan-400 font-bold' : isPrevious ? 'text-cyan-500/80 font-medium' : 'text-slate-600'}`}>
                     {step.step}
                   </span>
                   <span>{step.title}</span>
@@ -91,28 +90,37 @@ export function GoldenPathStepper({
           })}
         </nav>
 
-        {/* Step Navigation Controls */}
-        <div className="hidden sm:flex items-center gap-1.5 shrink-0">
+        {/* Step Navigation Controls & Trust Modal Button */}
+        <div className="hidden sm:flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={onOpenTrustModal}
+            className="flex items-center gap-1 text-[11px] font-mono text-cyan-400/80 hover:text-cyan-300 bg-cyan-950/30 hover:bg-cyan-950/50 border border-cyan-500/20 px-2 py-0.5 rounded cursor-pointer transition-colors"
+            title="Inspect 9-Layer Regulatory Trust Architecture"
+          >
+            <span className="material-symbols-outlined text-[13px]">shield</span>
+            <span>Trust Architecture</span>
+          </button>
+
+          <div className="h-3 w-px bg-slate-800" />
+
           <button
             type="button"
             onClick={handlePrev}
             disabled={currentStepIdx <= 0}
-            className="p-1 text-slate-500 hover:text-slate-800 hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none rounded transition-colors cursor-pointer"
+            className="p-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800 disabled:opacity-20 disabled:pointer-events-none rounded transition-colors cursor-pointer"
             title="Previous Step"
           >
-            <span className="material-symbols-outlined text-[18px]">chevron_left</span>
+            <span className="material-symbols-outlined text-[16px]">chevron_left</span>
           </button>
-          <span className="text-[11px] font-mono text-slate-400">
-            {currentStepIdx + 1} / {GOLDEN_PATH_STEPS.length}
-          </span>
           <button
             type="button"
             onClick={handleNext}
             disabled={currentStepIdx >= GOLDEN_PATH_STEPS.length - 1}
-            className="p-1 text-slate-500 hover:text-slate-800 hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none rounded transition-colors cursor-pointer"
+            className="p-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800 disabled:opacity-20 disabled:pointer-events-none rounded transition-colors cursor-pointer"
             title="Next Step"
           >
-            <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+            <span className="material-symbols-outlined text-[16px]">chevron_right</span>
           </button>
         </div>
       </div>

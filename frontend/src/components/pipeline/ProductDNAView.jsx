@@ -1,25 +1,11 @@
 import React, { useState } from 'react';
 
 /**
- * ProductDNAView (Step 1 — PRODUCT)
+ * ProductDNAView (Step 1 — PRODUCT DNA)
  * 
- * Header: PRODUCT
- * Subtitle: "Tell us about the product being assessed."
- * 
- * Groups:
- * - Product Identity
- * - Technical Characteristics
- * - Materials
- * - Intended Use
- * - Regulatory Information
- * 
- * Verification states:
- * - ✓ Evidence-backed
- * - AI-assisted / Proposed
- * - Missing information
- * 
- * Single primary action button:
- * CONTINUE TO APPLICABILITY →
+ * Header: PRODUCT DNA
+ * Subtitle: "Authoritative product facts & verified parameters."
+ * Dark precision workstation aesthetic matching homepage.
  */
 export function ProductDNAView({ assessment, onClarify, onNavigate, onInspectSource }) {
   const [clarifyValues, setClarifyValues] = useState({});
@@ -27,20 +13,20 @@ export function ProductDNAView({ assessment, onClarify, onNavigate, onInspectSou
 
   if (!assessment) {
     return (
-      <div className="flex-1 p-8 flex items-center justify-center font-sans">
-        <div className="max-w-md w-full bg-white border border-slate-200 rounded-xl p-8 text-center space-y-4 shadow-xs">
-          <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mx-auto text-slate-500">
-            <span className="material-symbols-outlined text-xl">fingerprint</span>
+      <div className="flex-1 p-8 flex items-center justify-center font-sans text-slate-200">
+        <div className="max-w-md w-full bg-[#0f1422] border border-slate-800 rounded-2xl p-8 text-center space-y-4 shadow-xl">
+          <div className="w-12 h-12 bg-cyan-500/10 border border-cyan-400/30 rounded-xl flex items-center justify-center mx-auto text-cyan-400 shadow-[0_0_15px_rgba(56,189,248,0.2)]">
+            <span className="material-symbols-outlined text-2xl">fingerprint</span>
           </div>
           <div>
-            <h3 className="text-sm font-bold text-slate-900">No Product Loaded</h3>
-            <p className="text-xs text-slate-500 mt-1">
+            <h3 className="font-space-grotesk text-sm font-bold text-white">No Product Loaded</h3>
+            <p className="text-xs text-slate-400 mt-1">
               Select or initialize an assessment to begin the compliance journey.
             </p>
           </div>
           <button
             onClick={() => onNavigate('input')}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition cursor-pointer"
+            className="px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 rounded-xl text-xs font-bold transition shadow-[0_0_15px_rgba(56,189,248,0.3)] cursor-pointer"
           >
             Start Assessment
           </button>
@@ -100,73 +86,59 @@ export function ProductDNAView({ assessment, onClarify, onNavigate, onInspectSou
       title: 'Technical Characteristics',
       fields: [
         {
-          key: 'capacity_ml',
-          label: 'Nominal Capacity / Volume',
-          value: dna.capacity_ml || attributes.capacity_ml ? `${dna.capacity_ml || attributes.capacity_ml} mL` : '1000 mL',
+          key: 'nominal_capacity_ml',
+          label: 'Nominal Volume Capacity',
+          value: attributes.nominal_capacity_ml ? `${attributes.nominal_capacity_ml} mL` : (dna.capacity ? `${dna.capacity} mL` : '1000 mL'),
           state: 'EVIDENCE_BACKED',
-          source: 'CAD Specification / Spec Sheet',
-          doc: 'ThermoSteel_CAD_Spec.pdf',
+          source: 'Engineering Drawing',
+          doc: 'CAD_Flask_Assembly.dwg',
+          clause: 'Cl. 4.2',
+        },
+        {
+          key: 'thermal_insulation_mechanism',
+          label: 'Thermal Insulation Mechanism',
+          value: attributes.thermal_insulation_mechanism || dna.insulation_type || 'Double-wall hermetic vacuum sealed cavity',
+          state: 'EVIDENCE_BACKED',
+          source: 'Lab Test Report (Cl 5.3)',
+          doc: 'NABL_Thermal_Test_0924.pdf',
+          clause: 'Cl. 5.3',
+        },
+        {
+          key: 'closure_mechanism',
+          label: 'Stopper Closure Mechanism',
+          value: attributes.closure_mechanism || 'Food-grade polypropylene threaded stopper with silicone seal',
+          state: 'PROPOSED',
+          source: 'Bill of Materials',
+          doc: 'BOM_ThermoSteel_v2.xlsx',
+          clause: 'Cl. 5.1',
+        },
+      ],
+    },
+    {
+      title: 'Materials & Metallurgy',
+      fields: [
+        {
+          key: 'body_material',
+          label: 'Food Contact Inner Liner',
+          value: attributes.body_material || dna.material || 'Austenitic Stainless Steel Grade 304 (SS 304 / 04Cr18Ni10)',
+          state: 'EVIDENCE_BACKED',
+          source: 'Spectroscopy Mill Certificate',
+          doc: 'Mill_Test_Cert_SS304.pdf',
           clause: 'Cl. 5.1',
         },
         {
-          key: 'insulation',
-          label: 'Insulation Type',
-          value: dna.insulated !== undefined ? (dna.insulated ? 'Vacuum Double Wall Insulation' : 'Non-Insulated') : 'Vacuum Double Wall Insulation',
+          key: 'outer_wall_material',
+          label: 'External Shell Construction',
+          value: attributes.outer_wall_material || 'Austenitic SS 304 (Powder-coated protective exterior)',
           state: 'EVIDENCE_BACKED',
-          source: 'Engineering Cross-Section Drawing',
-          doc: 'Assembly_Drawing_DWG-002',
-          clause: 'Cl. 5.2',
-        },
-        {
-          key: 'thermal_retention',
-          label: 'Thermal Retention (6 Hr)',
-          value: attributes.thermal_retention ? `${attributes.thermal_retention} °C` : 'Pending Empirical Test (>= 65°C required)',
-          state: attributes.thermal_retention ? 'EVIDENCE_BACKED' : 'MISSING',
-          source: attributes.thermal_retention ? 'Test Certificate' : 'Missing Information',
-          doc: 'NABL Test Report Required',
-          clause: 'Cl. 5.3',
+          source: 'Material Inspection',
+          doc: 'Certificate_of_Analysis.pdf',
+          clause: 'Cl. 5.1',
         },
       ],
     },
     {
-      title: 'Materials',
-      fields: [
-        {
-          key: 'material',
-          label: 'Primary Alloy Grades',
-          value: Array.isArray(dna.materials) ? dna.materials.join(', ') : (dna.material || attributes.material || 'SS 304 (Grade 304S1 to IS 6911)'),
-          state: 'EVIDENCE_BACKED',
-          source: 'Material Mill Test Certificate',
-          doc: 'Mill_Cert_Jindal_SS304.pdf',
-          clause: 'Cl. 4.1',
-        },
-        {
-          key: 'food_contact',
-          label: 'Food Contact Surface Conformance',
-          value: 'Confirmed — Austenitic Stainless Steel (Non-Toxic)',
-          state: 'EVIDENCE_BACKED',
-          source: 'Declaration of Food Contact Safety',
-          doc: 'Declaration_IS6911.pdf',
-          clause: 'Cl. 4.2',
-        },
-      ],
-    },
-    {
-      title: 'Intended Use',
-      fields: [
-        {
-          key: 'intended_use',
-          label: 'Intended Use & Operational Envelope',
-          value: dna.intended_use || 'Storage and transport of hot and cold potable beverages',
-          state: 'EVIDENCE_BACKED',
-          source: 'User Specification Sheet',
-          doc: 'Spec_Sheet_v1.pdf',
-          clause: 'Cl. 1.1',
-        },
-      ],
-    },
-    {
-      title: 'Regulatory Information',
+      title: 'Regulatory & Gazette Scope',
       fields: [
         {
           key: 'target_standard',
@@ -194,23 +166,23 @@ export function ProductDNAView({ assessment, onClarify, onNavigate, onInspectSou
     switch (state) {
       case 'EVIDENCE_BACKED':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
-            <span className="material-symbols-outlined text-[13px] text-emerald-600">check</span>
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-emerald-950/60 text-emerald-300 border border-emerald-500/40 shadow-[0_0_8px_rgba(16,185,129,0.2)]">
+            <span className="material-symbols-outlined text-[13px] text-emerald-400">check</span>
             <span>Evidence-backed</span>
           </span>
         );
       case 'PROPOSED':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[11px] font-medium bg-amber-50 text-amber-800 border border-amber-300 border-dashed">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-amber-950/60 text-amber-300 border border-amber-500/40">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
             <span>AI-assisted / Proposed</span>
           </span>
         );
       case 'MISSING':
       default:
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-600 border border-slate-200">
-            <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-rose-950/60 text-rose-300 border border-rose-500/40">
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
             <span>Missing information</span>
           </span>
         );
@@ -218,31 +190,31 @@ export function ProductDNAView({ assessment, onClarify, onNavigate, onInspectSou
   };
 
   return (
-    <div className="p-6 sm:p-8 space-y-6 max-w-5xl mx-auto font-sans">
+    <div className="p-6 sm:p-8 space-y-6 max-w-5xl mx-auto font-sans text-slate-100">
       {/* Step Header */}
-      <div className="border-b border-slate-200 pb-5">
-        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-          Step 1 of 7
+      <div className="border-b border-slate-800 pb-5">
+        <span className="text-[10px] font-mono font-bold text-cyan-400 uppercase tracking-wider block mb-1">
+          Step 1 of 7 &bull; Golden Path
         </span>
-        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-          PRODUCT
+        <h1 className="font-space-grotesk text-2xl font-bold text-white tracking-tight">
+          PRODUCT DNA
         </h1>
-        <p className="text-sm text-slate-500 mt-1">
-          Tell us about the product being assessed.
+        <p className="text-sm text-slate-400 mt-1">
+          Deterministic extraction of technical product characteristics, materials, and verifiable evidence anchors.
         </p>
       </div>
 
       {/* Pending Clarifications (if any) */}
       {clarifications.length > 0 && (
-        <div className="bg-amber-50/70 border border-amber-200 rounded-xl p-4 space-y-3">
-          <div className="flex items-center gap-2 text-xs font-semibold text-amber-900">
-            <span className="material-symbols-outlined text-amber-600 text-base">help</span>
+        <div className="bg-amber-950/40 border border-amber-500/40 rounded-2xl p-4 space-y-3 shadow-lg">
+          <div className="flex items-center gap-2 text-xs font-semibold text-amber-300">
+            <span className="material-symbols-outlined text-amber-400 text-base">help</span>
             <span>Pending Technical Clarifications</span>
           </div>
           <div className="space-y-2">
             {clarifications.map((item, idx) => (
-              <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-2.5 bg-white rounded-lg border border-amber-200/80 text-xs">
-                <span className="text-slate-800 font-medium">
+              <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-[#0b0f19] rounded-xl border border-amber-500/30 text-xs">
+                <span className="text-slate-200 font-medium">
                   {item.question || `Clarification required for ${item.attribute}`}
                 </span>
                 <div className="flex items-center gap-2">
@@ -251,13 +223,13 @@ export function ProductDNAView({ assessment, onClarify, onNavigate, onInspectSou
                     placeholder="Enter confirmed value..."
                     value={clarifyValues[item.attribute] || ''}
                     onChange={(e) => setClarifyValues({ ...clarifyValues, [item.attribute]: e.target.value })}
-                    className="px-2.5 py-1 text-xs border border-slate-300 rounded bg-slate-50 focus:bg-white focus:outline-none focus:border-blue-600 w-48"
+                    className="px-3 py-1.5 text-xs border border-slate-700 rounded-lg bg-[#080c14] text-slate-100 focus:outline-none focus:border-cyan-400 w-48"
                   />
                   <button
                     type="button"
                     onClick={() => handleClarifySubmit(item.attribute)}
                     disabled={submittingAttr === item.attribute}
-                    className="px-3 py-1 bg-slate-900 hover:bg-slate-800 text-white rounded text-xs font-semibold transition cursor-pointer"
+                    className="px-3.5 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-lg text-xs transition cursor-pointer"
                   >
                     {submittingAttr === item.attribute ? 'Saving...' : 'Confirm'}
                   </button>
@@ -271,24 +243,24 @@ export function ProductDNAView({ assessment, onClarify, onNavigate, onInspectSou
       {/* Clean Field Groups */}
       <div className="space-y-5">
         {groups.map((group, gIdx) => (
-          <div key={gIdx} className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
-            <div className="px-5 py-3 bg-slate-50/70 border-b border-slate-200">
-              <h2 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+          <div key={gIdx} className="bg-[#0f1422] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+            <div className="px-5 py-3.5 bg-[#0b0f19] border-b border-slate-800">
+              <h2 className="font-space-grotesk text-xs font-bold text-white uppercase tracking-wider">
                 {group.title}
               </h2>
             </div>
 
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-slate-800/80">
               {group.fields.map((field) => (
                 <div
                   key={field.key}
-                  className="p-4 sm:px-5 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-slate-50/40 transition-colors"
+                  className="p-4 sm:px-5 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-[#13192a] transition-colors"
                 >
-                  <div className="space-y-0.5 flex-1 min-w-0">
-                    <span className="text-[11px] font-medium text-slate-500 block">
+                  <div className="space-y-1 flex-1 min-w-0">
+                    <span className="text-[11px] font-mono font-medium text-slate-400 block">
                       {field.label}
                     </span>
-                    <span className={`text-xs font-semibold text-slate-900 block ${field.state === 'PROPOSED' ? 'italic text-amber-900' : ''}`}>
+                    <span className={`text-xs font-semibold text-slate-100 block ${field.state === 'PROPOSED' ? 'italic text-amber-300' : ''}`}>
                       {field.value}
                     </span>
                   </div>
@@ -312,7 +284,7 @@ export function ProductDNAView({ assessment, onClarify, onNavigate, onInspectSou
                           });
                         }
                       }}
-                      className="text-[11px] text-blue-600 hover:text-blue-800 flex items-center gap-1 cursor-pointer"
+                      className="text-[11px] font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1 cursor-pointer transition-colors"
                       title="Inspect Provenance"
                     >
                       <span className="truncate max-w-[140px]">{field.source}</span>
@@ -331,7 +303,7 @@ export function ProductDNAView({ assessment, onClarify, onNavigate, onInspectSou
         <button
           type="button"
           onClick={() => onNavigate('applicability')}
-          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-lg shadow-sm hover:shadow transition-all flex items-center gap-2 cursor-pointer"
+          className="px-7 py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-xs rounded-xl shadow-[0_0_20px_rgba(56,189,248,0.35)] transition-all flex items-center gap-2 cursor-pointer"
         >
           <span>CONTINUE TO APPLICABILITY</span>
           <span className="material-symbols-outlined text-[16px]">arrow_forward</span>

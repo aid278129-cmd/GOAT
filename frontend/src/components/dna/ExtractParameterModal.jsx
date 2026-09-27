@@ -52,19 +52,19 @@ export function ExtractParameterModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white border border-[#E2E8F0] rounded-xl max-w-lg w-full shadow-2xl z-10 overflow-hidden animate-in fade-in zoom-in-95 duration-150 flex flex-col max-h-[90vh]">
+      <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative bg-[#0d121f] text-slate-100 border border-slate-800 rounded-2xl max-w-lg w-full shadow-2xl z-10 overflow-hidden animate-in fade-in zoom-in-95 duration-150 flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-[#E2E8F0] flex items-center justify-between bg-[#F8F9FA]">
+        <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/60">
           <div className="flex items-center gap-2.5">
-            <span className="w-8 h-8 rounded bg-[#1D4ED8] text-white flex items-center justify-center shadow-sm">
+            <span className="w-8 h-8 rounded-lg bg-cyan-950/60 border border-cyan-800/60 text-cyan-400 flex items-center justify-center shadow-sm">
               <span className="material-symbols-outlined text-base">fingerprint</span>
             </span>
             <div>
-              <h3 className="font-bold text-sm text-[#0F172A]">
+              <h3 className="font-bold text-sm text-slate-100 font-['Space_Grotesk']">
                 Extract Verified Parameter into Product DNA
               </h3>
-              <span className="text-[10px] font-mono text-[#64748B] block">
+              <span className="text-[10px] font-mono text-cyan-400 block tracking-widest uppercase font-semibold">
                 ACCEPTED EVIDENCE GATED // PROVENANCE BINDING
               </span>
             </div>
@@ -72,7 +72,7 @@ export function ExtractParameterModal({
           <button
             type="button"
             onClick={onClose}
-            className="text-[#64748B] hover:text-[#0F172A] p-1 rounded"
+            className="text-slate-400 hover:text-slate-200 p-1 rounded-lg hover:bg-slate-800 transition-colors"
           >
             <span className="material-symbols-outlined text-base">close</span>
           </button>
@@ -81,19 +81,19 @@ export function ExtractParameterModal({
         {/* Content */}
         {acceptedEvidence.length === 0 ? (
           <div className="p-8 text-center space-y-3">
-            <div className="w-12 h-12 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mx-auto">
+            <div className="w-12 h-12 rounded-xl bg-amber-950/40 border border-amber-800/60 text-amber-400 flex items-center justify-center mx-auto shadow-inner">
               <span className="material-symbols-outlined text-2xl">gavel</span>
             </div>
-            <h4 className="text-sm font-bold text-[#0F172A]">
+            <h4 className="text-sm font-bold text-slate-100 font-['Space_Grotesk']">
               No Accepted Evidence Available
             </h4>
-            <p className="text-xs text-[#64748B] max-w-sm mx-auto leading-relaxed">
-              Under strict evidence gating rules, parameters can only be derived from artifacts that have been reviewed and affirmatively <span className="font-semibold text-emerald-700">ACCEPTED</span> by an engineer.
+            <p className="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
+              Under strict evidence gating rules, parameters can only be derived from artifacts that have been reviewed and affirmatively <span className="font-semibold text-emerald-400">ACCEPTED</span> by an engineer.
             </p>
             <button
               type="button"
               onClick={onClose}
-              className="mt-2 px-4 py-2 bg-slate-900 text-white rounded text-xs font-semibold hover:bg-black"
+              className="mt-2 px-4 py-2 bg-gradient-to-r from-cyan-400 to-sky-400 hover:from-cyan-300 hover:to-sky-300 text-slate-950 rounded-lg text-xs font-semibold shadow-md shadow-cyan-500/20 cursor-pointer"
             >
               Go to Evidence Ingestion &amp; Review
             </button>
@@ -102,13 +102,13 @@ export function ExtractParameterModal({
           <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-4 overflow-y-auto">
             {/* Accepted Evidence Selector */}
             <div>
-              <label className="block text-xs font-semibold text-[#0F172A] mb-1">
-                Source Accepted Evidence Artifact <span className="text-red-500">*</span>
+              <label className="block text-xs font-semibold text-slate-300 mb-1">
+                Source Accepted Evidence Artifact <span className="text-rose-400">*</span>
               </label>
               <select
                 value={selectedEvidenceId}
                 onChange={(e) => setSelectedEvidenceId(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-[#F8F9FA] border border-[#E2E8F0] rounded text-[#0F172A] focus:outline-none focus:border-[#1D4ED8]"
+                className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:border-cyan-500 font-mono"
               >
                 {acceptedEvidence.map((ev) => (
                   <option key={ev.id} value={ev.id}>
@@ -117,8 +117,8 @@ export function ExtractParameterModal({
                 ))}
               </select>
               {currentEvidence && (
-                <div className="mt-1.5 flex items-center gap-2 text-[10px] font-mono text-[#64748B]">
-                  <span className="text-emerald-700 font-semibold flex items-center gap-1">
+                <div className="mt-1.5 flex items-center gap-2 text-[10px] font-mono text-slate-400">
+                  <span className="text-emerald-400 font-semibold flex items-center gap-1">
                     <span className="material-symbols-outlined text-xs">verified</span>
                     ACCEPTED
                   </span>
@@ -130,8 +130,8 @@ export function ExtractParameterModal({
 
             {/* Target Parameter Selector */}
             <div>
-              <label className="block text-xs font-semibold text-[#0F172A] mb-1">
-                Target Product DNA Parameter <span className="text-red-500">*</span>
+              <label className="block text-xs font-semibold text-slate-300 mb-1">
+                Target Product DNA Parameter <span className="text-rose-400">*</span>
               </label>
               <select
                 value={selectedParamId}
@@ -140,10 +140,10 @@ export function ExtractParameterModal({
                   const p = CANONICAL_PARAMETERS.find((param) => param.id === e.target.value);
                   if (p?.defaultUnit) setCustomUnit(p.defaultUnit);
                 }}
-                className="w-full px-3 py-2 text-xs bg-[#F8F9FA] border border-[#E2E8F0] rounded text-[#0F172A] focus:outline-none focus:border-[#1D4ED8]"
+                className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:border-cyan-500 font-mono"
               >
                 {Object.values(DNASection).map((sec) => (
-                  <optgroup key={sec.id} label={sec.title}>
+                  <optgroup key={sec.id} label={sec.title} className="bg-slate-950 text-slate-300">
                     {CANONICAL_PARAMETERS.filter((p) => p.section === sec.id).map((p) => (
                       <option key={p.id} value={p.id}>
                         {p.name} {p.defaultUnit ? `(${p.defaultUnit})` : ''}
@@ -157,8 +157,8 @@ export function ExtractParameterModal({
             {/* Extracted Value & Unit */}
             <div className="grid grid-cols-3 gap-3">
               <div className="col-span-2">
-                <label className="block text-xs font-semibold text-[#0F172A] mb-1">
-                  Extracted Parameter Value <span className="text-red-500">*</span>
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  Extracted Parameter Value <span className="text-rose-400">*</span>
                 </label>
                 <input
                   type="text"
@@ -166,12 +166,12 @@ export function ExtractParameterModal({
                   value={extractedValue}
                   onChange={(e) => setExtractedValue(e.target.value)}
                   placeholder="e.g. 230 or 5000 or IP65"
-                  className="w-full px-3 py-2 text-xs bg-[#F8F9FA] border border-[#E2E8F0] rounded text-[#0F172A] font-mono focus:outline-none focus:border-[#1D4ED8]"
+                  className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-slate-100 font-mono focus:outline-none focus:border-cyan-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#0F172A] mb-1">
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
                   Physical Unit
                 </label>
                 <input
@@ -179,15 +179,15 @@ export function ExtractParameterModal({
                   value={customUnit || currentParam?.defaultUnit || ''}
                   onChange={(e) => setCustomUnit(e.target.value)}
                   placeholder="e.g. V, W, mm"
-                  className="w-full px-3 py-2 text-xs bg-[#F8F9FA] border border-[#E2E8F0] rounded text-[#0F172A] font-mono focus:outline-none focus:border-[#1D4ED8]"
+                  className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-slate-100 font-mono focus:outline-none focus:border-cyan-500"
                 />
               </div>
             </div>
 
             {/* Source Location Reference */}
             <div>
-              <label className="block text-xs font-semibold text-[#0F172A] mb-1">
-                Source Location / Citation in Artifact <span className="text-red-500">*</span>
+              <label className="block text-xs font-semibold text-slate-300 mb-1">
+                Source Location / Citation in Artifact <span className="text-rose-400">*</span>
               </label>
               <input
                 type="text"
@@ -195,20 +195,20 @@ export function ExtractParameterModal({
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="e.g. Page 4, Section 3.2, Table 1 or 00:02:15 audio observation"
-                className="w-full px-3 py-2 text-xs bg-[#F8F9FA] border border-[#E2E8F0] rounded text-[#0F172A] focus:outline-none focus:border-[#1D4ED8]"
+                className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:border-cyan-500"
               />
             </div>
 
             {/* Extraction Method */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-[#0F172A] mb-1">
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
                   Extraction Method
                 </label>
                 <select
                   value={extractionMethod}
                   onChange={(e) => setExtractionMethod(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-[#F8F9FA] border border-[#E2E8F0] rounded text-[#0F172A] focus:outline-none focus:border-[#1D4ED8]"
+                  className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:border-cyan-500 font-mono"
                 >
                   <option value="DIRECT_DOCUMENT_EXTRACTION">Document Text Extraction</option>
                   <option value="OPENDATALOADER_PDF">PDF Structural Parser</option>
@@ -220,7 +220,7 @@ export function ExtractParameterModal({
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#0F172A] mb-1">
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
                   Confidence Score
                 </label>
                 <input
@@ -230,29 +230,29 @@ export function ExtractParameterModal({
                   max="1"
                   value={confidence}
                   onChange={(e) => setConfidence(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-[#F8F9FA] border border-[#E2E8F0] rounded text-[#0F172A] font-mono focus:outline-none focus:border-[#1D4ED8]"
+                  className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-slate-100 font-mono focus:outline-none focus:border-cyan-500"
                 />
               </div>
             </div>
 
             {/* Footer */}
-            <div className="pt-3 border-t border-[#E2E8F0] flex items-center justify-between">
-              <span className="text-[10px] font-mono text-[#64748B]">
+            <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
+              <span className="text-[10px] font-mono text-slate-400">
                 Conflict detection runs automatically on commit.
               </span>
               <div className="flex items-center gap-2.5">
                 <button
                   type="button"
                   onClick={onClose}
-                  className="px-3 py-1.5 text-xs text-[#64748B] hover:text-[#0F172A]"
+                  className="px-3 py-1.5 text-xs text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#1D4ED8] hover:bg-[#1E40AF] text-white rounded text-xs font-semibold transition-colors shadow-sm flex items-center gap-1.5"
+                  className="px-4 py-2 bg-gradient-to-r from-cyan-400 to-sky-400 hover:from-cyan-300 hover:to-sky-300 text-slate-950 rounded-lg text-xs font-semibold transition-all shadow-md shadow-cyan-500/20 flex items-center gap-1.5 cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-sm">save</span>
+                  <span className="material-symbols-outlined text-sm font-bold">save</span>
                   Commit Parameter to DNA
                 </button>
               </div>

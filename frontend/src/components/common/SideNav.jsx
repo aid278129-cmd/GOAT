@@ -3,7 +3,7 @@ import React from 'react';
 /**
  * SideNav
  * 
- * Compact vertical workstation navigation for M27.1.
+ * Compact vertical workstation navigation for GOAT BIS Compliance Compiler.
  * Primary:
  *   COMPLIANCE COMPILER
  *   01 Product
@@ -24,22 +24,22 @@ import React from 'react';
  */
 
 export const GOLDEN_PATH_NAV = [
-  { id: 'dna', step: '01', title: 'Product', icon: 'fingerprint' },
+  { id: 'dna', step: '01', title: 'Product DNA', icon: 'fingerprint' },
   { id: 'applicability', step: '02', title: 'Applicability', icon: 'verified' },
   { id: 'standards', step: '03', title: 'Requirements', icon: 'rule' },
-  { id: 'evidence', step: '04', title: 'Evidence', icon: 'policy' },
-  { id: 'gaps', step: '05', title: 'Gaps', icon: 'rule_folder' },
-  { id: 'lab', step: '06', title: 'Actions', icon: 'science' },
-  { id: 'passport', step: '07', title: 'Assessment', icon: 'verified_user' },
+  { id: 'evidence', step: '04', title: 'Evidence Matrix', icon: 'policy' },
+  { id: 'gaps', step: '05', title: 'Gap Engine', icon: 'rule_folder' },
+  { id: 'lab', step: '06', title: 'Lab Dispatch', icon: 'science' },
+  { id: 'passport', step: '07', title: 'Passport', icon: 'verified_user' },
 ];
 
 export const SECONDARY_NAV = [
-  { id: 'assistant', title: 'BIS Assistant', icon: 'shield' },
-  { id: 'jobs', title: 'Jobs', icon: 'inventory_2' },
+  { id: 'copilot', title: 'GOAT Copilot', icon: 'smart_toy', isAction: true },
+  { id: 'jobs', title: 'Jobs Directory', icon: 'inventory_2' },
   { id: 'workspace', title: 'Workspace', icon: 'dashboard' },
-  { id: 'reviews', title: 'Review', icon: 'rate_review' },
+  { id: 'reviews', title: 'Attestation & Review', icon: 'rate_review' },
   { id: 'workstation', title: 'Knowledge Base', icon: 'auto_stories' },
-  { id: 'settings', title: 'Settings', icon: 'settings' },
+  { id: 'settings', title: 'System Settings', icon: 'settings' },
 ];
 
 export const NAV_ITEMS = [
@@ -47,28 +47,35 @@ export const NAV_ITEMS = [
   ...SECONDARY_NAV,
 ];
 
-export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
+export function SideNav({
+  activeTab,
+  onSelectTab,
+  onToggleCopilot,
+  isCopilotOpen = false,
+  mobileOpen,
+  onCloseMobile
+}) {
   const navContent = (
-    <div className="flex flex-col justify-between h-full bg-white font-sans overflow-y-auto">
+    <div className="flex flex-col justify-between h-full bg-[#0b0f19] text-slate-200 font-sans overflow-y-auto border-r border-slate-800/80">
       {/* Brand & Navigation */}
       <div className="flex flex-col">
         {/* Top Brand Block */}
-        <div className="h-14 px-5 flex items-center justify-between border-b border-slate-200 shrink-0">
+        <div className="h-14 px-5 flex items-center justify-between border-b border-slate-800/80 shrink-0 bg-[#080c15]">
           <button 
             type="button"
             onClick={() => onSelectTab('home')}
             className="flex items-center gap-2.5 text-left cursor-pointer group"
             title="Return to 3D Homepage"
           >
-            <div className="w-6 h-6 rounded-md bg-blue-600 flex items-center justify-center text-white shadow-2xs group-hover:bg-blue-700 transition-colors">
-              <span className="material-symbols-outlined text-[15px]">shield</span>
+            <div className="w-7 h-7 rounded-lg bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-300 shadow-[0_0_12px_rgba(56,189,248,0.25)] group-hover:border-cyan-300 group-hover:scale-105 transition-all">
+              <span className="material-symbols-outlined text-[16px]">verified</span>
             </div>
             <div>
-              <span className="font-bold text-xs tracking-tight text-slate-900 block leading-tight">
-                GOAT
+              <span className="font-space-grotesk font-bold text-xs tracking-wider text-white uppercase block leading-tight">
+                GOAT <span className="text-cyan-400 font-mono text-[9px]">v2.6</span>
               </span>
-              <span className="text-[10px] text-slate-500 block leading-tight">
-                Compliance Compiler
+              <span className="text-[10px] text-cyan-300/60 block leading-tight font-mono tracking-tight">
+                BIS Compliance Compiler
               </span>
             </div>
           </button>
@@ -76,12 +83,6 @@ export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
 
         {/* Primary Compiler Workflow */}
         <div className="px-3 pt-3 pb-2">
-          <div className="px-2 pb-1.5 flex items-center justify-between">
-            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
-              Navigation
-            </span>
-          </div>
-
           {/* 3D Homepage Button */}
           <button
             type="button"
@@ -89,21 +90,21 @@ export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
               onSelectTab('home');
               if (onCloseMobile) onCloseMobile();
             }}
-            className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 mb-1.5 rounded-lg text-xs font-medium transition-all text-left cursor-pointer border ${
+            className={`w-full flex items-center gap-2.5 px-3 py-2 mb-2 rounded-lg text-xs font-medium transition-all text-left cursor-pointer border ${
               activeTab === 'home'
-                ? 'text-cyan-700 bg-cyan-50/80 border-cyan-300 font-bold shadow-2xs'
-                : 'text-slate-700 bg-slate-50/70 border-slate-200 hover:text-slate-900 hover:bg-slate-100'
+                ? 'text-cyan-300 bg-cyan-950/40 border-cyan-500/40 font-bold shadow-[0_0_12px_rgba(56,189,248,0.2)]'
+                : 'text-slate-400 bg-slate-900/50 border-slate-800/80 hover:text-cyan-200 hover:border-cyan-500/30 hover:bg-slate-800/60'
             }`}
           >
-            <span className="material-symbols-outlined text-[18px] text-cyan-600">
+            <span className="material-symbols-outlined text-[18px] text-cyan-400">
               home
             </span>
-            <span className="truncate font-semibold">3D Homepage</span>
+            <span className="truncate font-space-grotesk font-semibold tracking-wide">3D Homepage</span>
           </button>
 
-          <div className="px-2 pt-2 pb-1 flex items-center justify-between">
-            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
-              Compliance Compiler
+          <div className="px-2 pt-1 pb-1.5 flex items-center justify-between">
+            <span className="text-[10px] font-mono font-semibold text-slate-500 uppercase tracking-wider">
+              Compiler Pipeline
             </span>
           </div>
 
@@ -113,19 +114,19 @@ export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
               onSelectTab('dashboard');
               if (onCloseMobile) onCloseMobile();
             }}
-            className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 mb-1.5 rounded-lg text-xs font-medium transition-all text-left cursor-pointer border ${
+            className={`w-full flex items-center gap-2.5 px-3 py-2 mb-2 rounded-lg text-xs font-medium transition-all text-left cursor-pointer border ${
               activeTab === 'dashboard' || activeTab === 'entry' || activeTab === 'compile'
-                ? 'text-blue-700 bg-blue-50/80 border-blue-200 font-bold shadow-2xs'
-                : 'text-slate-700 bg-slate-50/70 border-slate-200 hover:text-slate-900 hover:bg-slate-100'
+                ? 'text-cyan-300 bg-cyan-950/40 border-cyan-500/40 font-bold shadow-[0_0_12px_rgba(56,189,248,0.2)]'
+                : 'text-slate-400 bg-slate-900/40 border-slate-800/80 hover:text-cyan-200 hover:border-cyan-500/30 hover:bg-slate-800/60'
             }`}
           >
-            <span className="material-symbols-outlined text-[18px] text-blue-600">
+            <span className="material-symbols-outlined text-[18px] text-cyan-400">
               play_circle
             </span>
-            <span className="truncate font-semibold">Compile Compliance</span>
+            <span className="truncate font-space-grotesk font-semibold tracking-wide">Compile Compliance</span>
           </button>
 
-          <nav className="flex flex-col gap-0.5">
+          <nav className="flex flex-col gap-1">
             {GOLDEN_PATH_NAV.map((item) => {
               const isActive = activeTab === item.id || (item.id === 'dna' && activeTab === 'input');
               return (
@@ -136,18 +137,18 @@ export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
                     onSelectTab(item.id);
                     if (onCloseMobile) onCloseMobile();
                   }}
-                  className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all text-left cursor-pointer ${
+                  className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all text-left cursor-pointer border ${
                     isActive
-                      ? 'text-blue-700 bg-blue-50/80 font-semibold'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                      ? 'text-cyan-300 bg-cyan-950/40 border-cyan-500/30 font-semibold shadow-[inset_0_0_10px_rgba(56,189,248,0.15)]'
+                      : 'text-slate-400 border-transparent hover:text-slate-200 hover:bg-slate-800/50'
                   }`}
                 >
-                  <span className={`font-mono text-[11px] w-4 shrink-0 ${isActive ? 'text-blue-700 font-bold' : 'text-slate-400'}`}>
+                  <span className={`font-mono text-[10px] w-4 shrink-0 ${isActive ? 'text-cyan-400 font-bold' : 'text-slate-600'}`}>
                     {item.step}
                   </span>
                   <span
                     className={`material-symbols-outlined text-[17px] shrink-0 ${
-                      isActive ? 'text-blue-700' : 'text-slate-400'
+                      isActive ? 'text-cyan-400' : 'text-slate-500'
                     }`}
                   >
                     {item.icon}
@@ -160,40 +161,50 @@ export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
         </div>
 
         {/* Divider */}
-        <div className="my-2 border-t border-slate-100 mx-3" />
+        <div className="my-2 border-t border-slate-800/80 mx-3" />
 
         {/* Secondary Supporting Navigation */}
         <div className="px-3 pb-3">
           <div className="px-2 pb-1.5">
-            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
-              Secondary
+            <span className="text-[10px] font-mono font-semibold text-slate-500 uppercase tracking-wider">
+              Operations & Audit
             </span>
           </div>
-          <nav className="flex flex-col gap-0.5">
+          <nav className="flex flex-col gap-1">
             {SECONDARY_NAV.map((item) => {
-              const isActive = activeTab === item.id;
+              const isCopilot = item.id === 'copilot';
+              const isActive = isCopilot ? isCopilotOpen : activeTab === item.id;
               return (
                 <button
                   key={item.id}
                   type="button"
                   onClick={() => {
-                    onSelectTab(item.id);
+                    if (isCopilot) {
+                      onToggleCopilot?.();
+                    } else {
+                      onSelectTab(item.id);
+                    }
                     if (onCloseMobile) onCloseMobile();
                   }}
-                  className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all text-left cursor-pointer ${
+                  className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all text-left cursor-pointer border ${
                     isActive
-                      ? 'text-blue-700 bg-blue-50/80 font-semibold'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                      ? 'text-cyan-300 bg-cyan-950/40 border-cyan-500/40 font-semibold shadow-[0_0_12px_rgba(56,189,248,0.2)]'
+                      : 'text-slate-400 border-transparent hover:text-slate-200 hover:bg-slate-800/50'
                   }`}
                 >
-                  <span
-                    className={`material-symbols-outlined text-[17px] shrink-0 ${
-                      isActive ? 'text-blue-700' : 'text-slate-400'
-                    }`}
-                  >
-                    {item.icon}
-                  </span>
-                  <span className="truncate">{item.title}</span>
+                  <div className="flex items-center gap-2.5 truncate">
+                    <span
+                      className={`material-symbols-outlined text-[17px] shrink-0 ${
+                        isActive ? 'text-cyan-400' : 'text-slate-500'
+                      }`}
+                    >
+                      {item.icon}
+                    </span>
+                    <span className="truncate">{item.title}</span>
+                  </div>
+                  {isCopilot && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+                  )}
                 </button>
               );
             })}
@@ -202,13 +213,13 @@ export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
       </div>
 
       {/* Quiet Footnote */}
-      <div className="p-4 border-t border-slate-100 shrink-0 text-slate-400 text-[11px]">
+      <div className="p-3.5 border-t border-slate-800/80 shrink-0 text-slate-400 text-[11px] bg-[#080c15]">
         <div className="flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-          <span className="font-medium text-slate-600">Deterministic Rulebase</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span className="font-mono text-[10px] text-slate-300 font-semibold uppercase tracking-wider">0% LLM Compliance Authority</span>
         </div>
-        <p className="mt-0.5 text-[10px] text-slate-400">
-          GOAT Workstation v2.0
+        <p className="mt-0.5 text-[10px] text-slate-500 font-mono">
+          Deterministic Gazette Engine
         </p>
       </div>
     </div>
@@ -217,7 +228,7 @@ export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
   return (
     <>
       {/* Desktop Fixed Aside */}
-      <aside className="hidden lg:flex fixed left-0 top-0 h-full w-60 bg-white border-r border-slate-200 z-40 flex-col">
+      <aside className="hidden lg:flex fixed left-0 top-0 h-full w-60 bg-[#0b0f19] border-r border-slate-800/80 z-40 flex-col shadow-xl">
         {navContent}
       </aside>
 
@@ -225,10 +236,10 @@ export function SideNav({ activeTab, onSelectTab, mobileOpen, onCloseMobile }) {
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
           <div
-            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm"
             onClick={onCloseMobile}
           />
-          <div className="relative w-64 h-full bg-white z-50 shadow-2xl">
+          <div className="relative w-64 h-full bg-[#0b0f19] z-50 shadow-2xl">
             {navContent}
           </div>
         </div>

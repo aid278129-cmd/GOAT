@@ -4,7 +4,7 @@ import React from 'react';
  * FloatingBISAssistant
  * 
  * Persistent floating launcher widget positioned in the bottom-right corner.
- * Displays the BIS emblem icon, "BIS Assistant" label, and opens the conversational assistant drawer.
+ * Displays the BIS assistant icon, "BIS Assistant" label, mic indicator, and opens the conversational assistant drawer.
  */
 export function FloatingBISAssistant({ onClick, isOpen }) {
   if (isOpen) return null;
@@ -14,30 +14,35 @@ export function FloatingBISAssistant({ onClick, isOpen }) {
       <button
         type="button"
         onClick={onClick}
-        className="group flex items-center gap-2.5 px-4 py-3 bg-slate-900 hover:bg-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer border border-slate-700 hover:border-blue-500 active:scale-[0.98]"
+        className="group flex items-center gap-3 px-4 py-3 bg-[#0f1422]/95 hover:bg-[#161f36] text-white rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.6)] hover:shadow-[0_0_25px_rgba(56,189,248,0.35)] transition-all duration-200 cursor-pointer border border-cyan-500/30 hover:border-cyan-400 active:scale-[0.98] backdrop-blur-xl"
         aria-label="Open BIS Assistant"
-        title="Open BIS Intelligent Assistant (Indian Standards, Schemes, Labs, Hallmarking)"
+        title="Open BIS Intelligent Assistant (Voice & Text supported)"
       >
-        {/* BIS Emblem Logo */}
-        <div className="w-6 h-6 rounded-full bg-blue-600 group-hover:bg-white text-white group-hover:text-blue-700 flex items-center justify-center shadow-xs transition-colors">
-          <span className="material-symbols-outlined text-[16px]">shield</span>
+        {/* Emblem Logo */}
+        <div className="w-7 h-7 rounded-full bg-cyan-500/20 border border-cyan-400/40 group-hover:border-cyan-300 text-cyan-300 flex items-center justify-center shadow-[0_0_10px_rgba(56,189,248,0.3)] transition-colors">
+          <span className="material-symbols-outlined text-[17px]">smart_toy</span>
         </div>
 
         {/* Label */}
         <div className="flex flex-col text-left">
           <div className="flex items-center gap-1.5 leading-none">
-            <span className="text-xs font-bold tracking-tight">BIS Assistant</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            <span className="font-space-grotesk text-xs font-bold tracking-wide text-white group-hover:text-cyan-200 transition-colors">
+              GOAT Copilot
+            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
           </div>
-          <span className="text-[10px] text-slate-300 group-hover:text-blue-100 font-medium leading-none mt-1">
-            Indian Standards & Schemes
+          <span className="text-[10px] text-cyan-300/70 font-mono leading-none mt-1">
+            Voice &amp; Statutory Guidance
           </span>
         </div>
 
-        {/* Arrow / Quick expand indicator */}
-        <span className="material-symbols-outlined text-sm text-slate-400 group-hover:text-white transition-transform group-hover:translate-x-0.5">
-          arrow_upward
-        </span>
+        {/* Mic & arrow indicator */}
+        <div className="flex items-center gap-1 text-cyan-400/80 group-hover:text-cyan-300 pl-1">
+          <span className="material-symbols-outlined text-[16px]">mic</span>
+          <span className="material-symbols-outlined text-sm transition-transform group-hover:-translate-y-0.5">
+            expand_less
+          </span>
+        </div>
       </button>
     </div>
   );

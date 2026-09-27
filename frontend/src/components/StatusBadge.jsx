@@ -3,180 +3,221 @@ import React from 'react';
 const STATUS_CONFIGS = {
   // Compliance statuses
   SATISFIED: {
-    bg: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    dot: 'bg-emerald-500',
+    bg: 'bg-emerald-950/60 text-emerald-300 border-emerald-500/40 shadow-[0_0_8px_rgba(16,185,129,0.2)]',
+    dot: 'bg-emerald-400',
     label: 'SATISFIED',
   },
   POTENTIALLY_SATISFIED: {
-    bg: 'bg-teal-50 text-teal-700 border-teal-200',
-    dot: 'bg-teal-500',
+    bg: 'bg-teal-950/60 text-teal-300 border-teal-500/40',
+    dot: 'bg-teal-400',
     label: 'POTENTIALLY SATISFIED',
   },
   MISSING_EVIDENCE: {
-    bg: 'bg-amber-50 text-amber-700 border-amber-200',
-    dot: 'bg-amber-500',
+    bg: 'bg-amber-950/60 text-amber-300 border-amber-500/40',
+    dot: 'bg-amber-400 animate-pulse',
     label: 'MISSING EVIDENCE',
   },
   MORE_INFORMATION_REQUIRED: {
-    bg: 'bg-blue-50 text-blue-700 border-blue-200',
-    dot: 'bg-blue-500',
+    bg: 'bg-cyan-950/60 text-cyan-300 border-cyan-500/40',
+    dot: 'bg-cyan-400',
     label: 'CLARIFICATION NEEDED',
   },
   POTENTIAL_GAP: {
-    bg: 'bg-rose-50 text-rose-700 border-rose-200',
-    dot: 'bg-rose-500',
+    bg: 'bg-rose-950/60 text-rose-300 border-rose-500/40',
+    dot: 'bg-rose-400',
     label: 'POTENTIAL GAP',
   },
   NOT_APPLICABLE: {
-    bg: 'bg-slate-100 text-slate-600 border-slate-200',
-    dot: 'bg-slate-400',
+    bg: 'bg-slate-900 text-slate-400 border-slate-700',
+    dot: 'bg-slate-500',
     label: 'NOT APPLICABLE',
   },
   CONFLICTING_EVIDENCE: {
-    bg: 'bg-purple-50 text-purple-700 border-purple-200',
-    dot: 'bg-purple-500',
+    bg: 'bg-purple-950/60 text-purple-300 border-purple-500/40',
+    dot: 'bg-purple-400',
     label: 'CONFLICTING EVIDENCE',
   },
   REQUIRES_EXPERT_REVIEW: {
-    bg: 'bg-orange-50 text-orange-700 border-orange-200',
-    dot: 'bg-orange-500',
+    bg: 'bg-orange-950/60 text-orange-300 border-orange-500/40',
+    dot: 'bg-orange-400',
     label: 'EXPERT REVIEW',
   },
   EXPERT_REVIEW_REQUIRED: {
-    bg: 'bg-orange-50 text-orange-700 border-orange-200',
-    dot: 'bg-orange-500',
+    bg: 'bg-orange-950/60 text-orange-300 border-orange-500/40',
+    dot: 'bg-orange-400',
     label: 'EXPERT REVIEW REQUIRED',
   },
   CONFLICTING_RULES: {
-    bg: 'bg-rose-50 text-rose-700 border-rose-200',
-    dot: 'bg-rose-500',
+    bg: 'bg-rose-950/60 text-rose-300 border-rose-500/40',
+    dot: 'bg-rose-400',
     label: 'CONFLICTING RULES',
   },
   COVERAGE_GAP: {
-    bg: 'bg-purple-50 text-purple-700 border-purple-200',
-    dot: 'bg-purple-500',
+    bg: 'bg-purple-950/60 text-purple-300 border-purple-500/40',
+    dot: 'bg-purple-400',
     label: 'COVERAGE GAP',
   },
   // Layer 5 Canonical Applicability statuses
   APPLICABLE: {
-    bg: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    dot: 'bg-emerald-500',
+    bg: 'bg-emerald-950/60 text-emerald-300 border-emerald-500/40 shadow-[0_0_8px_rgba(16,185,129,0.2)]',
+    dot: 'bg-emerald-400',
     label: 'APPLICABLE',
   },
   POTENTIALLY_APPLICABLE: {
-    bg: 'bg-sky-50 text-sky-700 border-sky-200',
-    dot: 'bg-sky-500',
+    bg: 'bg-sky-950/60 text-sky-300 border-sky-500/40',
+    dot: 'bg-sky-400',
     label: 'POTENTIALLY APPLICABLE',
   },
   LIKELY_APPLICABLE: {
-    bg: 'bg-indigo-50 text-indigo-700 border-indigo-200',
-    dot: 'bg-indigo-500',
+    bg: 'bg-indigo-950/60 text-indigo-300 border-indigo-500/40',
+    dot: 'bg-indigo-400',
     label: 'LIKELY APPLICABLE',
   },
   POSSIBLY_APPLICABLE: {
-    bg: 'bg-sky-50 text-sky-700 border-sky-200',
-    dot: 'bg-sky-500',
+    bg: 'bg-sky-950/60 text-sky-300 border-sky-500/40',
+    dot: 'bg-sky-400',
     label: 'POSSIBLY APPLICABLE',
   },
   // Scope states
   IN_SCOPE: {
-    bg: 'bg-teal-50 text-teal-700 border-teal-200',
-    dot: 'bg-teal-500',
+    bg: 'bg-teal-950/60 text-teal-300 border-teal-500/40',
+    dot: 'bg-teal-400',
     label: 'IN SCOPE',
   },
   OUT_OF_SCOPE: {
-    bg: 'bg-slate-100 text-slate-600 border-slate-200',
-    dot: 'bg-slate-400',
+    bg: 'bg-slate-900 text-slate-400 border-slate-700',
+    dot: 'bg-slate-500',
     label: 'OUT OF SCOPE',
   },
   SCOPE_UNCERTAIN: {
-    bg: 'bg-amber-50 text-amber-700 border-amber-200',
-    dot: 'bg-amber-500',
+    bg: 'bg-amber-950/60 text-amber-300 border-amber-500/40',
+    dot: 'bg-amber-400',
     label: 'SCOPE UNCERTAIN',
   },
   // QCO Mandate states
   MANDATORY_QCO: {
-    bg: 'bg-emerald-50 text-emerald-700 border-emerald-200 font-bold',
-    dot: 'bg-emerald-500',
+    bg: 'bg-emerald-950/60 text-emerald-300 border-emerald-500/40 font-bold shadow-[0_0_8px_rgba(16,185,129,0.2)]',
+    dot: 'bg-emerald-400',
     label: 'MANDATORY QCO',
   },
-  VERIFIED_MANDATORY_QCO: {
-    bg: 'bg-emerald-50 text-emerald-700 border-emerald-200 font-bold',
-    dot: 'bg-emerald-500',
-    label: 'VERIFIED MANDATORY QCO',
-  },
   VOLUNTARY: {
-    bg: 'bg-blue-50 text-blue-700 border-blue-200',
-    dot: 'bg-blue-500',
+    bg: 'bg-slate-900 text-slate-300 border-slate-700',
+    dot: 'bg-slate-500',
     label: 'VOLUNTARY STANDARD',
   },
-  NOT_GOVERNED_BY_QCO: {
-    bg: 'bg-slate-100 text-slate-600 border-slate-200',
-    dot: 'bg-slate-400',
-    label: 'NOT GOVERNED BY QCO',
+  // Evidence statuses
+  ACCEPTED: {
+    bg: 'bg-emerald-950/60 text-emerald-300 border-emerald-500/40',
+    dot: 'bg-emerald-400',
+    label: 'ACCEPTED',
   },
-  COVERAGE_NOT_ESTABLISHED: {
-    bg: 'bg-purple-50 text-purple-700 border-purple-200',
-    dot: 'bg-purple-500',
-    label: 'COVERAGE NOT ESTABLISHED',
+  PENDING: {
+    bg: 'bg-amber-950/60 text-amber-300 border-amber-500/40',
+    dot: 'bg-amber-400',
+    label: 'PENDING',
   },
-  // Layer 6 Retrieval Confidence Badges
-  STRONG_MATCH: {
-    bg: 'bg-emerald-50 text-emerald-700 border-emerald-200 font-bold',
-    dot: 'bg-emerald-500',
-    label: 'STRONG MATCH',
+  REJECTED: {
+    bg: 'bg-rose-950/60 text-rose-300 border-rose-500/40',
+    dot: 'bg-rose-400',
+    label: 'REJECTED',
   },
-  UNCERTAIN_MATCH: {
-    bg: 'bg-amber-50 text-amber-700 border-amber-200 font-medium',
-    dot: 'bg-amber-500',
-    label: 'UNCERTAIN MATCH',
+  SUPERSEDED: {
+    bg: 'bg-slate-900 text-slate-400 border-slate-700',
+    dot: 'bg-slate-500',
+    label: 'SUPERSEDED',
   },
-  NO_RELIABLE_MATCH: {
-    bg: 'bg-rose-50 text-rose-700 border-rose-200',
-    dot: 'bg-rose-500',
-    label: 'NO RELIABLE MATCH',
+  // Verification states
+  SELF_DECLARED: {
+    bg: 'bg-slate-900 text-slate-300 border-slate-700',
+    dot: 'bg-slate-500',
+    label: 'SELF DECLARED',
   },
-  INSUFFICIENT_VERIFIED_EVIDENCE: {
-    bg: 'bg-slate-100 text-slate-700 border-slate-300',
-    dot: 'bg-slate-400',
-    label: 'INSUFFICIENT VERIFIED EVIDENCE',
+  LAB_VERIFIED: {
+    bg: 'bg-cyan-950/60 text-cyan-300 border-cyan-500/40',
+    dot: 'bg-cyan-400',
+    label: 'LAB VERIFIED',
   },
-  CLAUSE_TEXT_UNAVAILABLE: {
-    bg: 'bg-amber-50 text-amber-700 border-amber-300 font-semibold',
-    dot: 'bg-amber-500',
-    label: 'CLAUSE TEXT UNAVAILABLE',
+  AUDITOR_APPROVED: {
+    bg: 'bg-emerald-950/60 text-emerald-300 border-emerald-500/40',
+    dot: 'bg-emerald-400',
+    label: 'AUDITOR APPROVED',
   },
-  NOT_IN_KNOWLEDGE_BASE: {
-    bg: 'bg-rose-50 text-rose-700 border-rose-300 font-semibold',
-    dot: 'bg-rose-500',
-    label: 'NOT IN KNOWLEDGE BASE',
+  // CAD / Spatial verification states
+  BOUNDS_VERIFIED: {
+    bg: 'bg-emerald-950/60 text-emerald-300 border-emerald-500/40',
+    dot: 'bg-emerald-400',
+    label: 'BOUNDS VERIFIED',
   },
-  // General
-  READY: {
-    bg: 'bg-blue-50 text-blue-700 border-blue-200',
-    dot: 'bg-blue-500',
-    label: 'FOUNDATION READY',
+  GEOMETRY_CONFIRMED: {
+    bg: 'bg-cyan-950/60 text-cyan-300 border-cyan-500/40',
+    dot: 'bg-cyan-400',
+    label: 'GEOMETRY CONFIRMED',
   },
-  PLANNED_FOR_M1: {
-    bg: 'bg-slate-100 text-slate-600 border-slate-200',
-    dot: 'bg-slate-400',
-    label: 'PLANNED FOR M1',
+  DIMENSION_MISMATCH: {
+    bg: 'bg-rose-950/60 text-rose-300 border-rose-500/40',
+    dot: 'bg-rose-400',
+    label: 'DIMENSION MISMATCH',
+  },
+  // Job statuses
+  IN_PROGRESS: {
+    bg: 'bg-sky-950/60 text-sky-300 border-sky-500/40',
+    dot: 'bg-sky-400 animate-pulse',
+    label: 'IN PROGRESS',
+  },
+  COMPLETED: {
+    bg: 'bg-emerald-950/60 text-emerald-300 border-emerald-500/40',
+    dot: 'bg-emerald-400',
+    label: 'COMPLETED',
+  },
+  UNDER_REVIEW: {
+    bg: 'bg-amber-950/60 text-amber-300 border-amber-500/40',
+    dot: 'bg-amber-400',
+    label: 'UNDER REVIEW',
+  },
+  DISPATCHED: {
+    bg: 'bg-purple-950/60 text-purple-300 border-purple-500/40',
+    dot: 'bg-purple-400',
+    label: 'LAB DISPATCHED',
   },
 };
 
-export function StatusBadge({ status, customLabel }) {
-  const config = STATUS_CONFIGS[status] || {
-    bg: 'bg-slate-100 text-slate-700 border-slate-200',
+export function StatusBadge({
+  status,
+  label: customLabel,
+  size = 'md',
+  showDot = true,
+  className = '',
+}) {
+  const normKey = (status || '').toUpperCase().replace(/[\s-]/g, '_');
+  const cfg = STATUS_CONFIGS[normKey] || {
+    bg: 'bg-slate-900 text-slate-300 border-slate-700',
     dot: 'bg-slate-400',
-    label: status || 'UNKNOWN',
+    label: status ? status.replace(/_/g, ' ') : 'UNKNOWN',
   };
+
+  const displayText = customLabel || cfg.label;
+
+  const sizeClasses = {
+    sm: 'text-[10px] px-2 py-0.5 gap-1',
+    md: 'text-[11px] px-2.5 py-0.5 gap-1.5',
+    lg: 'text-xs px-3 py-1 gap-2 font-bold',
+  }[size] || 'text-[11px] px-2.5 py-0.5 gap-1.5';
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold border ${config.bg}`}
+      className={`inline-flex items-center font-mono font-semibold rounded-full border ${cfg.bg} ${sizeClasses} ${className} shrink-0`}
     >
-      <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`}></span>
-      {customLabel || config.label}
+      {showDot && (
+        <span
+          className={`rounded-full shrink-0 ${cfg.dot} ${
+            size === 'sm' ? 'w-1.5 h-1.5' : size === 'lg' ? 'w-2 h-2' : 'w-1.5 h-1.5'
+          }`}
+          aria-hidden="true"
+        />
+      )}
+      <span className="truncate leading-none">{displayText}</span>
     </span>
   );
 }
+
+export default StatusBadge;
