@@ -67,6 +67,7 @@ class StartWorkstationJobRequest(BaseModel):
 
 
 @router.post("/chat", response_model=Dict[str, Any])
+@router.post("/query", response_model=Dict[str, Any])
 async def assistant_chat(
     req: AssistantChatRequest,
     current_user: User = Depends(get_current_user),
@@ -232,14 +233,38 @@ async def compare_standards(
             detail="One or both standards could not be verified in the authorized BIS repository.",
         )
 
+    comparison_summary = (
+        f"Comparison between {std_a['standard_number']} ({std_a['product_category']}) and "
+        f"{std_b['standard_number']} ({std_b['product_category']}). "
+        f"Both standards apply under separate statutory regulatory quality control orders."
+    )
+
+    try:
+        from backend.app.services.ai.provider import get_llm_provider, TestConfigurableProvider
+        provider = get_llm_provider()
+        if not isinstance(provider, TestConfigurableProvider):
+            prompt = (
+                f"Compare Indian Standard {std_a['standard_number']} ({std_a.get('title')}) "
+                f"with {std_b['standard_number']} ({std_b.get('title')}).\n"
+                f"Scope A: {std_a.get('scope_summary')}\n"
+                f"Scope B: {std_b.get('scope_summary')}\n"
+                f"Highlight key differences in scope, testing requirements, safety thresholds, and applicability."
+            )
+            llm_summary = await provider.generate(
+                prompt=prompt,
+                system_prompt="You are a BIS regulatory standards analyst. Provide a clear, technical comparison in 3-4 concise paragraphs with bullet points.",
+                max_tokens=600,
+                temperature=0.1,
+            )
+            if llm_summary and len(llm_summary.strip()) > 50:
+                comparison_summary = llm_summary.strip()
+    except Exception:
+        pass
+
     return {
         "standard_a": std_a,
         "standard_b": std_b,
-        "comparison_summary": (
-            f"Comparison between {std_a['standard_number']} ({std_a['product_category']}) and "
-            f"{std_b['standard_number']} ({std_b['product_category']}). "
-            f"Both standards apply under separate statutory regulatory quality control orders."
-        ),
+        "comparison_summary": comparison_summary,
         "source": "Bureau of Indian Standards Official Catalogue",
     }
 
@@ -335,6 +360,27 @@ async def explain_clause(
         f"Non-conformance to Clause {clause_num} results in test report failure, denial or suspension of BIS licence/CRS registration, "
         f"and statutory recall of non-compliant batches under the Bureau of Indian Standards Act, 2016."
     )
+
+    try:
+        from backend.app.services.ai.provider import get_llm_provider, TestConfigurableProvider
+        provider = get_llm_provider()
+        if not isinstance(provider, TestConfigurableProvider):
+            prompt = (
+                f"Explain Clause {clause_num} ('{clause_title}') of Indian Standard {std_num}.\n"
+                f"Statutory text: \"{original_text}\"\n"
+                f"Threshold/Parameter: {threshold_desc}\n"
+                f"Provide a plain-language summary, why this requirement matters for public safety, the typical lab testing procedure, and consequences of test failure."
+            )
+            llm_exp = await provider.generate(
+                prompt=prompt,
+                system_prompt="You are an expert electrical and safety compliance engineer. Explain this BIS standard clause clearly and practically.",
+                max_tokens=600,
+                temperature=0.1,
+            )
+            if llm_exp and len(llm_exp.strip()) > 50:
+                plain_summary = llm_exp.strip()
+    except Exception:
+        pass
 
     return {
         "standard_number": std_num,

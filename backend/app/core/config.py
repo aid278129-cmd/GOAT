@@ -30,6 +30,10 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: Optional[str] = None
     GEMINI_API_KEY: Optional[str] = None
     SARVAM_API_KEY: Optional[str] = None
+    LLM_API_KEY: Optional[str] = None
+    LLM_PROVIDER: Optional[str] = "gemini"
+    LLM_MODEL: Optional[str] = "gemini-1.5-flash"
+    LLM_BASE_URL: Optional[str] = "https://generativelanguage.googleapis.com/v1beta/openai/"
 
     # M23 ML/DL Intelligence Layer Feature Flags
     ML_ENABLED: bool = True
@@ -119,8 +123,14 @@ class Settings(BaseSettings):
                 return raw.replace("postgresql://", "postgresql+psycopg://", 1)
             elif raw.startswith("postgres://"):
                 return raw.replace("postgres://", "postgresql+psycopg://", 1)
-            elif raw.startswith("sqlite://"):
-                return raw.replace("sqlite://", "sqlite+aiosqlite://", 1)
+            elif "sqlite" in raw:
+                clean = raw.replace("sqlite+aiosqlite:///", "").replace("sqlite:///", "")
+                if clean.startswith("./") or not os.path.isabs(clean):
+                    clean_rel = clean.lstrip("./")
+                    abs_path = (BASE_DIR / clean_rel).resolve()
+                    abs_path.parent.mkdir(parents=True, exist_ok=True)
+                    return f"sqlite+aiosqlite:///{abs_path.as_posix()}"
+                return f"sqlite+aiosqlite:///{clean}"
             return raw
 
         auth_part = f"{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@" if self.POSTGRES_PASSWORD else f"{self.POSTGRES_USER}@"
@@ -136,8 +146,14 @@ class Settings(BaseSettings):
             raw = self.DATABASE_URL
             if raw.startswith("postgresql+psycopg://"):
                 return raw.replace("postgresql+psycopg://", "postgresql://", 1)
-            elif raw.startswith("sqlite+aiosqlite://"):
-                return raw.replace("sqlite+aiosqlite://", "sqlite://", 1)
+            elif "sqlite" in raw:
+                clean = raw.replace("sqlite+aiosqlite:///", "").replace("sqlite:///", "")
+                if clean.startswith("./") or not os.path.isabs(clean):
+                    clean_rel = clean.lstrip("./")
+                    abs_path = (BASE_DIR / clean_rel).resolve()
+                    abs_path.parent.mkdir(parents=True, exist_ok=True)
+                    return f"sqlite:///{abs_path.as_posix()}"
+                return f"sqlite:///{clean}"
             return raw
 
         auth_part = f"{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@" if self.POSTGRES_PASSWORD else f"{self.POSTGRES_USER}@"

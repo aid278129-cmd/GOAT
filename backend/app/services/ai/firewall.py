@@ -71,7 +71,7 @@ class PromptInjectionDefense:
     """Encapsulates untrusted evidence text and instruments system defenses."""
 
     SYSTEM_SECURITY_PROMPT = """[SECURITY INVARIANT - ZERO COMPLIANCE AUTHORITY]
-You are the Zyntrix AI Engineering Copilot.
+You are the GOAT AI Engineering Copilot.
 You are an engineering assistant operating strictly BELOW all statutory regulatory layers:
 Accepted Evidence > Product DNA > CAD Measurements > Codified Standards > Deterministic Assessment Engine > Human Review/Attestation > AI Assistant.
 
@@ -104,11 +104,12 @@ class AIAuthorityFirewall:
     FORBIDDEN_QUERY_PATTERNS = [
         # Evidence acceptance — "accept this evidence", "approve this evidence"
         (r"\b(approve|accept)\s+this\s+evidence\b", ForbiddenAIAction.EVIDENCE_ACCEPTANCE),
-        # Statutory certification — "certify" anywhere in a query about BIS/compliance/certificate
-        # Also catches: "certify this product for BIS", "grant BIS compliance", "certify compliance"
-        (r"\bcertif(y|ied|ication|icate|ying)\b", ForbiddenAIAction.STATUTORY_CERTIFICATION),
+        # Statutory certification command — "certify this product for BIS", "grant BIS compliance", "certify compliance"
+        # Specifically targeting commands to certify/grant, while allowing informational questions like "what certification do I need"
+        (r"\bcertify\s+(this|my|the|our)?\s*(product|bottle|flask|inverter|device|sample|item|compliance|for\s+bis)\b", ForbiddenAIAction.STATUTORY_CERTIFICATION),
+        (r"\b(please\s+|ai\s+|can\s+you\s+)?certify\b", ForbiddenAIAction.STATUTORY_CERTIFICATION),
         (r"\b(modify|mutate|alter|change|edit)\s+.*dossier\b", ForbiddenAIAction.OVERRIDE_DETERMINISTIC_RESULT),
-        (r"\bgrant\s+(bis|compliance|certificate)\b", ForbiddenAIAction.STATUTORY_CERTIFICATION),
+        (r"\bgrant\s+(bis|compliance|certificate|license)\b", ForbiddenAIAction.STATUTORY_CERTIFICATION),
         # Attestation — "issue attestation", "sign attestation", "attest", "issue an attestation"
         (r"\b(issue|sign|create)\s+(an?\s+)?attestation\b", ForbiddenAIAction.AUTOMATIC_ATTESTATION),
         (r"\battest(ation)?\b.*\bfor\b", ForbiddenAIAction.AUTOMATIC_ATTESTATION),

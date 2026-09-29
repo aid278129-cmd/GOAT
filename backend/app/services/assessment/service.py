@@ -713,6 +713,22 @@ class AssessmentService:
                     "citations": [{"source": "BIS Official Knowledge Catalog"}],
                 }
 
+        # Check for greeting or introductory question
+        if any(re.search(rf"\b{re.escape(g)}\b", q_lower) for g in ["hi", "hello", "hey", "heya", "namaste", "vanakkam", "greetings", "good morning", "good afternoon", "good evening", "howdy"]):
+            std_num = comp.get("standard_number") or getattr(assessment, "target_standard", "Indian Standards")
+            p_name = dna.get("product_name") or getattr(assessment, "product_name", "Product")
+            return {
+                "answer": f"Hello! I am your AI compliance companion for Assessment {assessment.assessment_number} ({p_name} — {std_num}). How can I assist you with clause requirements, test evidence, laboratory discovery, or compliance gaps?",
+                "assessment_id": assessment.id,
+                "context_used": {
+                    "assessment_number": assessment.assessment_number,
+                    "target_standard": std_num,
+                    "mode": assessment.mode,
+                },
+                "citations": [],
+                "disclaimer": "AI assistant operates strictly in an explanatory capacity.",
+            }
+
         # Search matching clause or requirement
         matched_eval = None
         for ev in evals:

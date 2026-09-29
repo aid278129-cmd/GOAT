@@ -54,6 +54,10 @@ class BISProductStandardRecommender:
         "ELECTRICAL_ACCESSORIES": [
             "plug", "socket", "switch", "cable", "cord", "conduit", "connector", "outlet"
         ],
+        "DOMESTIC_CONTAINERS": [
+            "bottle", "flask", "thermosteel", "steel bottle", "vacuum flask", "water bottle",
+            "container", "insulated", "cookware", "utensil", "stainless steel"
+        ],
     }
 
     @classmethod
@@ -160,6 +164,10 @@ class BISProductStandardRecommender:
             elif "ELECTRICAL_ACCESSORIES" in context["detected_categories"] and "1293" in std_num:
                 match_basis = "Mandatory Indian standard for plugs and socket-outlets up to 16A."
                 confidence = "HIGH_CONFIDENCE"
+            elif ("DOMESTIC_CONTAINERS" in context["detected_categories"] or "bottle" in product_description.lower() or "flask" in product_description.lower()) and "17526" in std_num:
+                match_basis = "Mandatory Indian standard for Vacuum Insulated Stainless Steel Flasks, Bottles, and Domestic Containers under DPIIT QCO Order."
+                confidence = "HIGH_CONFIDENCE"
+                matched_characteristics.append("Double-walled vacuum insulation & food-contact stainless steel (SS 304/316)")
             else:
                 match_basis = f"Retrieved via keyword and title relevance for '{cand['title']}'."
                 confidence = "MODERATE_CONFIDENCE"

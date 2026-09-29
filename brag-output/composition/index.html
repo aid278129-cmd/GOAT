@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Zyntrix BIS Compliance Compiler Launch</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #070a13;
+        color: #f8fafc;
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: radial-gradient(circle at 50% 30%, #0f1c38 0%, #070a13 70%, #04060b 100%);
+      }
+
+      /* Subtle grid background */
+      .grid-overlay {
+        position: absolute;
+        inset: 0;
+        background-size: 60px 60px;
+        background-image: 
+          linear-gradient(to right, rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+        mask-image: radial-gradient(ellipse at 50% 50%, black 40%, transparent 80%);
+        pointer-events: none;
+      }
+
+      /* Top navigation bar persistent */
+      .top-nav {
+        position: absolute;
+        top: 40px;
+        left: 80px;
+        right: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 50;
+      }
+
+      .logo-pill {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 18px;
+        background: rgba(13, 18, 31, 0.85);
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        border-radius: 9999px;
+        backdrop-filter: blur(12px);
+      }
+
+      .logo-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #38bdf8;
+        box-shadow: 0 0 12px #38bdf8;
+      }
+
+      .logo-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        font-size: 18px;
+        letter-spacing: 0.08em;
+        color: #f8fafc;
+      }
+
+      .nav-badge {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 13px;
+        font-weight: 600;
+        color: #38bdf8;
+        background: rgba(56, 189, 248, 0.1);
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        padding: 8px 18px;
+        border-radius: 9999px;
+        letter-spacing: 0.05em;
+      }
+
+      /* Common scene container */
+      .scene {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 80px;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      /* SCENE 1: HOOK */
+      #scene-1 .hook-kicker {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 18px;
+        font-weight: 700;
+        color: #38bdf8;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        margin-bottom: 24px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      #scene-1 .hook-h1 {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 82px;
+        font-weight: 800;
+        line-height: 1.05;
+        text-align: center;
+        color: #f8fafc;
+        letter-spacing: -0.03em;
+        max-width: 1400px;
+        margin-bottom: 28px;
+      }
+
+      #scene-1 .hook-gradient {
+        background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      #scene-1 .hook-sub {
+        font-size: 26px;
+        color: #94a3b8;
+        text-align: center;
+        max-width: 950px;
+        line-height: 1.5;
+      }
+
+      /* SCENE 2: PRODUCT DNA */
+      #scene-2 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .card-wrap {
+        width: 1200px;
+        background: #0d121f;
+        border: 1px solid rgba(56, 189, 248, 0.35);
+        border-radius: 24px;
+        padding: 44px;
+        box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 40px rgba(56, 189, 248, 0.15);
+      }
+
+      .card-header-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        padding-bottom: 20px;
+        margin-bottom: 28px;
+      }
+
+      .step-tag {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px;
+        font-weight: 700;
+        color: #38bdf8;
+        letter-spacing: 0.15em;
+      }
+
+      .card-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 32px;
+        font-weight: 700;
+        color: #f8fafc;
+        margin-top: 4px;
+      }
+
+      .dna-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+
+      .dna-box {
+        background: rgba(15, 23, 42, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 16px;
+        padding: 24px;
+      }
+
+      .dna-lbl {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 13px;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 8px;
+      }
+
+      .dna-val {
+        font-size: 22px;
+        font-weight: 700;
+        color: #f8fafc;
+      }
+
+      .verified-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid rgba(16, 185, 129, 0.4);
+        color: #34d399;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        margin-top: 10px;
+      }
+
+      /* SCENE 3: EVIDENCE GATE */
+      .matrix-table {
+        width: 1300px;
+        background: #0d121f;
+        border: 1px solid rgba(56, 189, 248, 0.35);
+        border-radius: 24px;
+        padding: 36px 44px;
+        box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+      }
+
+      .matrix-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 24px;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 14px;
+        margin-bottom: 14px;
+      }
+
+      .clause-code {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 700;
+        font-size: 18px;
+        color: #38bdf8;
+        width: 140px;
+      }
+
+      .clause-desc {
+        font-size: 20px;
+        font-weight: 600;
+        color: #f8fafc;
+        flex: 1;
+        padding: 0 20px;
+      }
+
+      .clause-evidence {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px;
+        color: #94a3b8;
+        width: 320px;
+        text-align: right;
+      }
+
+      .zero-llm-banner {
+        margin-top: 24px;
+        background: rgba(56, 189, 248, 0.1);
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        border-radius: 14px;
+        padding: 16px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 16px;
+        font-weight: 700;
+        color: #f8fafc;
+        letter-spacing: 0.05em;
+      }
+
+      /* SCENE 4: PASSPORT HERO */
+      .passport-card {
+        width: 1000px;
+        background: linear-gradient(145deg, #0e172a 0%, #070d1a 100%);
+        border: 2px solid rgba(56, 189, 248, 0.5);
+        border-radius: 28px;
+        padding: 48px;
+        text-align: center;
+        box-shadow: 0 0 80px rgba(56, 189, 248, 0.25), 0 30px 60px rgba(0,0,0,0.8);
+      }
+
+      .passport-badge {
+        display: inline-block;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px;
+        font-weight: 700;
+        color: #34d399;
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid rgba(16, 185, 129, 0.4);
+        padding: 8px 24px;
+        border-radius: 9999px;
+        margin-bottom: 20px;
+        letter-spacing: 0.1em;
+      }
+
+      .passport-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 54px;
+        font-weight: 800;
+        color: #f8fafc;
+        margin-bottom: 12px;
+      }
+
+      .passport-sub {
+        font-size: 22px;
+        color: #94a3b8;
+        margin-bottom: 28px;
+      }
+
+      .hash-box {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 15px;
+        color: #38bdf8;
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px dashed rgba(56, 189, 248, 0.4);
+        border-radius: 12px;
+        padding: 14px 20px;
+        display: inline-block;
+        margin-bottom: 30px;
+      }
+
+      .brand-outro {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        color: #f8fafc;
+        letter-spacing: 0.05em;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="20"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div class="grid-overlay"></div>
+
+      <!-- Persistent Header -->
+      <header class="top-nav">
+        <div class="logo-pill">
+          <div class="logo-dot"></div>
+          <span class="logo-title">ZYNTRIX COMPLIANCE COMPILER</span>
+        </div>
+        <div class="nav-badge">SIH 2026 OFFICIAL SOLUTION</div>
+      </header>
+
+      <!-- SCENE 1: The Hook (0 - 4.0s) -->
+      <section id="scene-1" class="scene clip" data-start="0" data-duration="4.2" data-track-index="1">
+        <div class="hook-kicker">01 // REGULATORY GRIDLOCK SOLVED</div>
+        <h1 class="hook-h1">
+          20,000+ Indian Standards.<br/>
+          <span class="hook-gradient">Zero LLM Hallucinations.</span>
+        </h1>
+        <p class="hook-sub">
+          Stop parsing thousands of Gazette PDFs. Zyntrix deterministically compiles product technical specifications into certified BIS compliance pathways.
+        </p>
+      </section>
+
+      <!-- SCENE 2: Product DNA Ingestion (4.0s - 9.0s) -->
+      <section id="scene-2" class="scene clip" data-start="4.0" data-duration="5.2" data-track-index="2">
+        <div class="card-wrap">
+          <div class="card-header-bar">
+            <div>
+              <div class="step-tag">STEP 1 &bull; MULTIMODAL TECHNICAL INGESTION</div>
+              <div class="card-title">ThermoSteel TS-1000V-IND (1000 mL)</div>
+            </div>
+            <div class="verified-badge">
+              <span>&#10003;</span> SPECIFICATION PARSED
+            </div>
+          </div>
+          <div class="dna-grid">
+            <div class="dna-box">
+              <div class="dna-lbl">Food-Contact Metallurgy</div>
+              <div class="dna-val">Austenitic SS 304 (04Cr18Ni10)</div>
+              <div class="verified-badge">IS 6911 Conformance Verified</div>
+            </div>
+            <div class="dna-box">
+              <div class="dna-lbl">Polymer Stopper & Gasket</div>
+              <div class="dna-val">Virgin Polypropylene & Platinum Silicone</div>
+              <div class="verified-badge">IS 9845 BPA-Free Tested</div>
+            </div>
+            <div class="dna-box">
+              <div class="dna-lbl">Statutory Indian Standard</div>
+              <div class="dna-val">IS 17526:2021 (Domestic Vacuum Flasks)</div>
+              <div class="verified-badge">Mandatory Scheme-I (ISI Mark)</div>
+            </div>
+            <div class="dna-box">
+              <div class="dna-lbl">Applicable Regulation</div>
+              <div class="dna-val">DPIIT Domestic Water Bottles Order, 2023</div>
+              <div class="verified-badge">Compulsory Gazette Order</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCENE 3: Evidence Matrix (9.0s - 14.5s) -->
+      <section id="scene-3" class="scene clip" data-start="9.0" data-duration="5.7" data-track-index="3">
+        <div class="matrix-table">
+          <div class="card-header-bar">
+            <div>
+              <div class="step-tag">STEP 4 &bull; DETERMINISTIC EVIDENCE GATE</div>
+              <div class="card-title">Empirical Clause Verification Matrix</div>
+            </div>
+            <div class="verified-badge">ALL 4 STATUTORY CLAUSES SATISFIED</div>
+          </div>
+
+          <div class="matrix-row">
+            <div class="clause-code">Clause 4.2.1</div>
+            <div class="clause-desc">Stainless Steel Chemical Metallurgy (Cr ≥ 17.5%, Ni ≥ 8.0%)</div>
+            <div class="clause-evidence">SAIL Mill Test Cert #MTC-304 &#10003;</div>
+          </div>
+
+          <div class="matrix-row">
+            <div class="clause-code">Clause 5.2</div>
+            <div class="clause-desc">Inversion Leakage Test (180° Inverted for 10 Minutes)</div>
+            <div class="clause-evidence">NABL Lab Report #NTH/044 &#10003;</div>
+          </div>
+
+          <div class="matrix-row">
+            <div class="clause-code">Clause 5.4</div>
+            <div class="clause-desc">Thermal Retention (Initial 95°C &rarr; 65.5°C after 6h ≥ 60.0°C)</div>
+            <div class="clause-evidence">NABL Lab Report #NTH/044 &#10003;</div>
+          </div>
+
+          <div class="matrix-row">
+            <div class="clause-code">Clause 7.1</div>
+            <div class="clause-desc">Statutory Product Markings & Reserved ISI License CM/L</div>
+            <div class="clause-evidence">Artwork Declaration Verified &#10003;</div>
+          </div>
+
+          <div class="zero-llm-banner">
+            <span>&#9889;</span> 0% LLM AUTHORITY ON COMPLIANCE &bull; DETERMINISTIC REGULATORY CERTAINTY
+          </div>
+        </div>
+      </section>
+
+      <!-- SCENE 4: Compliance Passport Outro (14.5s - 20.0s) -->
+      <section id="scene-4" class="scene clip" data-start="14.5" data-duration="5.5" data-track-index="4">
+        <div class="passport-card">
+          <div class="passport-badge">&#9679; CRYPTOGRAPHICALLY ISSUED</div>
+          <h2 class="passport-title">DIGITAL COMPLIANCE PASSPORT</h2>
+          <p class="passport-sub">ThermoSteel 1000ml &bull; Fully Certified for BIS Scheme-I Application</p>
+
+          <div class="hash-box">
+            SHA-256: e8b4f179d6c384a0b271d473489cf8b139265f24ad919421ea34cf640f2f3e82
+          </div>
+
+          <div class="brand-outro">
+            ZYNTRIX &bull; INTELLIGENT STANDARDS FOR MODERN INDUSTRY
+          </div>
+        </div>
+      </section>
+
+      <!-- Audio Elements -->
+      <audio
+        id="music-bed"
+        data-start="0"
+        data-duration="20"
+        data-track-index="10"
+        data-volume="0.5"
+        src="assets/music/happy-beats-business-moves-vol-12-by-ende-dot-app.mp3"
+      ></audio>
+
+      <audio
+        id="sfx-reveal-1"
+        data-start="4.0"
+        data-duration="0.2"
+        data-track-index="11"
+        data-volume="0.7"
+        src="assets/sfx/impact/impactSoft_medium_000.ogg"
+      ></audio>
+
+      <audio
+        id="sfx-switch"
+        data-start="9.0"
+        data-duration="0.7"
+        data-track-index="12"
+        data-volume="0.75"
+        src="assets/sfx/interface/switch_001.ogg"
+      ></audio>
+
+      <audio
+        id="sfx-bell"
+        data-start="14.5"
+        data-duration="1.5"
+        data-track-index="13"
+        data-volume="0.85"
+        src="assets/sfx/impact/impactBell_heavy_000.ogg"
+      ></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // ==========================================
+      // SCENE 1 (0.0s - 4.0s)
+      // ==========================================
+      tl.set("#scene-1", { opacity: 1, pointerEvents: "auto" }, 0);
+      tl.fromTo(
+        "#scene-1 .hook-kicker",
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
+        0.2
+      );
+      tl.fromTo(
+        "#scene-1 .hook-h1",
+        { opacity: 0, scale: 0.94, y: 30 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "power4.out" },
+        0.5
+      );
+      tl.fromTo(
+        "#scene-1 .hook-sub",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" },
+        0.9
+      );
+
+      // Transition out of Scene 1
+      tl.to(
+        "#scene-1",
+        { opacity: 0, scale: 0.96, y: -20, duration: 0.4, ease: "power2.in" },
+        3.7
+      );
+
+      // ==========================================
+      // SCENE 2 (4.0s - 9.0s)
+      // ==========================================
+      tl.set("#scene-2", { opacity: 1, pointerEvents: "auto" }, 4.0);
+      tl.fromTo(
+        "#scene-2 .card-wrap",
+        { opacity: 0, scale: 0.92, y: 40 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: "back.out(1.2)" },
+        4.0
+      );
+      tl.fromTo(
+        "#scene-2 .dna-box",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.12, ease: "power3.out" },
+        4.4
+      );
+
+      // Transition out of Scene 2
+      tl.to(
+        "#scene-2 .card-wrap",
+        { opacity: 0, scale: 0.96, y: -30, duration: 0.4, ease: "power2.in" },
+        8.6
+      );
+      tl.set("#scene-2", { opacity: 0, pointerEvents: "none" }, 9.0);
+
+      // ==========================================
+      // SCENE 3 (9.0s - 14.5s)
+      // ==========================================
+      tl.set("#scene-3", { opacity: 1, pointerEvents: "auto" }, 9.0);
+      tl.fromTo(
+        "#scene-3 .matrix-table",
+        { opacity: 0, y: 30, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out" },
+        9.0
+      );
+      tl.fromTo(
+        "#scene-3 .matrix-row",
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: 0.4, stagger: 0.15, ease: "power2.out" },
+        9.3
+      );
+      tl.fromTo(
+        "#scene-3 .zero-llm-banner",
+        { opacity: 0, scale: 0.95 },
+        { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.5)" },
+        10.4
+      );
+
+      // Transition out of Scene 3
+      tl.to(
+        "#scene-3 .matrix-table",
+        { opacity: 0, scale: 0.96, y: -30, duration: 0.4, ease: "power2.in" },
+        14.1
+      );
+      tl.set("#scene-3", { opacity: 0, pointerEvents: "none" }, 14.5);
+
+      // ==========================================
+      // SCENE 4 (14.5s - 20.0s)
+      // ==========================================
+      tl.set("#scene-4", { opacity: 1, pointerEvents: "auto" }, 14.5);
+      tl.fromTo(
+        "#scene-4 .passport-card",
+        { opacity: 0, scale: 0.88, y: 50 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.9, ease: "elastic.out(1, 0.75)" },
+        14.5
+      );
+      tl.fromTo(
+        "#scene-4 .hash-box",
+        { opacity: 0, scale: 0.95 },
+        { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" },
+        15.2
+      );
+      tl.fromTo(
+        "#scene-4 .brand-outro",
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+        15.6
+      );
+
+      // Soft settle till 20.0s
+      tl.to("#scene-4 .passport-card", {
+        boxShadow: "0 0 100px rgba(56, 189, 248, 0.4), 0 30px 60px rgba(0,0,0,0.8)",
+        duration: 2.0,
+        ease: "sine.inOut"
+      }, 16.0);
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

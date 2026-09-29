@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { extractTextFromPDF, parseProductInfoFromText } from '../utils/pdfParser';
+import { authApi } from '../api/auth';
+import { apiClient } from '../api/client';
 import { MorphingInfinity } from './loading-ui/morphing-infinity';
 import { TextShimmer } from './loading-ui/text-shimmer';
 
@@ -108,18 +110,62 @@ export function AnalyzeView({ onAssessmentCreated, onNavigate }) {
   const evaluateLocalReadiness = (requirementsList) => {
     const cleanDesc = (description || '').toLowerCase();
     const cleanName = (productName || '').trim();
+    const cleanStd = (targetStandard || '').toUpperCase();
+    const cleanCat = (category || '').toLowerCase();
 
-    // Default required fields for domestic heating appliances (IS 302-2-201)
-    const reqDefs = [
-      { id: 'product_trade_name', name: 'Product Trade Name / Model', level: 'REQUIRED', present: cleanName.length > 2, sample: cleanName || 'EWH-1500' },
-      { id: 'rated_voltage', name: 'Rated Voltage (V AC)', level: 'REQUIRED', present: /(?:\d+(?:\.\d+)?)\s*(?:v\b|volt)/i.test(cleanDesc), sample: '230 V AC' },
-      { id: 'rated_power_input', name: 'Rated Power Input (Watts)', level: 'REQUIRED', present: /(?:\d+(?:\.\d+)?)\s*(?:w\b|watt|kw)/i.test(cleanDesc), sample: '1500 W' },
-      { id: 'rated_frequency', name: 'Rated Frequency (Hz)', level: 'REQUIRED', present: /(?:\d+)\s*(?:hz|hertz)/i.test(cleanDesc), sample: '50 Hz' },
-      { id: 'sheath_material', name: 'Heating Sheath Alloy (SS 304 / Copper)', level: 'REQUIRED', present: /(?:stainless steel|copper|ss 304|ss 316)/i.test(cleanDesc), sample: 'Stainless Steel 304' },
-      { id: 'handle_material', name: 'Handle Polymer (Flame Retardant)', level: 'REQUIRED', present: /(?:polypropylene|polymer|plastic|bakelite)/i.test(cleanDesc), sample: 'Polypropylene (UL94 V-0)' },
-      { id: 'power_cord', name: 'Flexible Power Cord & Plug Conformance', level: 'REQUIRED', present: /(?:cord|cable|pvc|plug|3-pin)/i.test(cleanDesc), sample: '3-core PVC cord & 3-pin plug (IS 1293)' },
-      { id: 'lab_report_no', name: 'NABL Laboratory Report Reference', level: 'OPTIONAL', present: /(?:report|ref|certificate|nabl)/i.test(cleanDesc), sample: 'ABC/EWH/2026/001' },
-    ];
+    // Dynamically choose requirement definitions based on product standard / category
+    let reqDefs = [];
+
+    const isBottleOrContainer = cleanStd.includes('17526') || cleanCat.includes('drinkware') || cleanCat.includes('container') || /(?:bottle|flask|thermosteel|vacuum|container)/i.test(cleanName + ' ' + cleanDesc);
+    const isSolarInverter = cleanStd.includes('16221') || cleanCat.includes('solar') || /(?:inverter|photovoltaic|solar)/i.test(cleanName + ' ' + cleanDesc);
+    const isBattery = cleanStd.includes('16046') || cleanCat.includes('battery') || /(?:battery|lithium|cell|pack)/i.test(cleanName + ' ' + cleanDesc);
+
+    if (isBottleOrContainer) {
+      reqDefs = [
+        { id: 'product_trade_name', name: 'Product Trade Name / Model', level: 'REQUIRED', present: cleanName.length > 2, sample: cleanName || 'TECHNICAL SPECIFICATION (ThermoSteel)' },
+        { id: 'nominal_capacity', name: 'Nominal Capacity (ml / Litres)', level: 'REQUIRED', present: /(?:\d+(?:\.\d+)?)\s*(?:ml|l\b|litre|liter|capacity)/i.test(cleanDesc + ' ' + cleanName), sample: '1000 ml' },
+        { id: 'sheath_material', name: 'Food-Contact Alloy (SS 304 / SS 316)', level: 'REQUIRED', present: /(?:stainless steel|ss\s*304|ss\s*316|austenitic|is\s*6911)/i.test(cleanDesc), sample: 'Stainless Steel 304 (IS 6911)' },
+        { id: 'thermal_insulation', name: 'Thermal Retention (Vacuum Insulated)', level: 'REQUIRED', present: /(?:vacuum|thermal|retention|double[- ]walled|65(?:\.0)?\s*°c|insulat)/i.test(cleanDesc), sample: 'Double-Walled Vacuum (>= 65°C / 6h)' },
+        { id: 'handle_material', name: 'Lid Gasket & Seal Material (Food Grade)', level: 'REQUIRED', present: /(?:silicone|gasket|seal|polypropylene|polymer|food[- ]grade|bpa|plastic)/i.test(cleanDesc), sample: 'Food-Grade Silicone Gasket' },
+        { id: 'hydraulic_seal', name: 'Hydraulic Seal Integrity (20 kPa Test)', level: 'REQUIRED', present: /(?:hydraulic|hydrostatic|20\s*kpa|leak|pressure|seal)/i.test(cleanDesc), sample: '20 kPa Hydrostatic (Pass)' },
+        { id: 'drop_impact', name: 'Drop Impact Strength (1.0 m Drop Test)', level: 'REQUIRED', present: /(?:drop|impact|1(?:\.0)?\s*m|hardwood|crack|fracture)/i.test(cleanDesc), sample: '1.0 m Drop Impact (Pass)' },
+        { id: 'lab_report_no', name: 'NABL Laboratory Report Reference', level: 'OPTIONAL', present: /(?:report|ref|certificate|nabl|lab)/i.test(cleanDesc), sample: 'ABC/FLASK/2026/001' },
+      ];
+    } else if (isSolarInverter) {
+      reqDefs = [
+        { id: 'product_trade_name', name: 'Product Trade Name / Model', level: 'REQUIRED', present: cleanName.length > 2, sample: cleanName || 'Solar PV Inverter' },
+        { id: 'rated_voltage', name: 'Rated AC Voltage (V)', level: 'REQUIRED', present: /(?:\d+(?:\.\d+)?)\s*(?:v\b|volt)/i.test(cleanDesc), sample: '230 V AC / 415 V' },
+        { id: 'rated_power_input', name: 'Rated Power Output (kW / kVA)', level: 'REQUIRED', present: /(?:\d+(?:\.\d+)?)\s*(?:w\b|kw|kva)/i.test(cleanDesc), sample: '5.0 kW' },
+        { id: 'anti_islanding', name: 'Anti-Islanding Disconnection (<= 2.0s)', level: 'REQUIRED', present: /(?:islanding|disconnection|62116|trip)/i.test(cleanDesc), sample: 'IS/IEC 62116 <= 2.0s' },
+        { id: 'dielectric_withstand', name: 'Dielectric Voltage Withstand (2500 V)', level: 'REQUIRED', present: /(?:dielectric|hipot|2500|breakdown)/i.test(cleanDesc), sample: '2500 V RMS (Pass)' },
+        { id: 'ingress_protection', name: 'Enclosure Ingress Protection (IP54/IP20)', level: 'REQUIRED', present: /(?:ip\s*54|ip\s*20|ingress|enclosure)/i.test(cleanDesc), sample: 'IP54 Outdoor Rated' },
+        { id: 'rated_frequency', name: 'Nominal Frequency (50 Hz)', level: 'REQUIRED', present: /(?:\d+)\s*(?:hz|hertz)/i.test(cleanDesc), sample: '50 Hz' },
+        { id: 'lab_report_no', name: 'NABL Laboratory Report Reference', level: 'OPTIONAL', present: /(?:report|ref|certificate|nabl)/i.test(cleanDesc), sample: 'ABC/INV/2026/001' },
+      ];
+    } else if (isBattery) {
+      reqDefs = [
+        { id: 'product_trade_name', name: 'Product Trade Name / Model', level: 'REQUIRED', present: cleanName.length > 2, sample: cleanName || 'Lithium Battery Pack' },
+        { id: 'rated_voltage', name: 'Nominal Voltage (V DC)', level: 'REQUIRED', present: /(?:\d+(?:\.\d+)?)\s*(?:v\b|volt)/i.test(cleanDesc), sample: '3.7 V DC' },
+        { id: 'rated_power_input', name: 'Rated Capacity (mAh / Ah)', level: 'REQUIRED', present: /(?:\d+(?:\.\d+)?)\s*(?:mah|ah\b|wh)/i.test(cleanDesc), sample: '5000 mAh' },
+        { id: 'short_circuit_test', name: 'External Short-Circuit Test (55°C)', level: 'REQUIRED', present: /(?:short\s*circuit|55\s*°c|cl\s*7\.3\.2)/i.test(cleanDesc), sample: 'Cl. 7.3.2 (No Fire/Explosion)' },
+        { id: 'thermal_abuse', name: 'Thermal Abuse Test (130°C Chamber)', level: 'REQUIRED', present: /(?:thermal|abuse|130\s*°c|chamber)/i.test(cleanDesc), sample: '130°C for 10 min (Pass)' },
+        { id: 'drop_impact', name: 'Free Fall Drop Test', level: 'REQUIRED', present: /(?:drop|free\s*fall|impact)/i.test(cleanDesc), sample: '1.0 m Drop (Pass)' },
+        { id: 'charging_regime', name: 'Continuous Constant Voltage Safety', level: 'REQUIRED', present: /(?:charging|voltage|continuous|overcharge)/i.test(cleanDesc), sample: 'Cl. 7.2.1 Compliant' },
+        { id: 'lab_report_no', name: 'NABL Laboratory Report Reference', level: 'OPTIONAL', present: /(?:report|ref|certificate|nabl)/i.test(cleanDesc), sample: 'ABC/BAT/2026/001' },
+      ];
+    } else {
+      // Default / Electric Domestic Appliances (IS 302-2-201)
+      reqDefs = [
+        { id: 'product_trade_name', name: 'Product Trade Name / Model', level: 'REQUIRED', present: cleanName.length > 2, sample: cleanName || 'EWH-1500' },
+        { id: 'rated_voltage', name: 'Rated Voltage (V AC)', level: 'REQUIRED', present: /(?:\d+(?:\.\d+)?)\s*(?:v\b|volt)/i.test(cleanDesc), sample: '230 V AC' },
+        { id: 'rated_power_input', name: 'Rated Power Input (Watts)', level: 'REQUIRED', present: /(?:\d+(?:\.\d+)?)\s*(?:w\b|watt|kw)/i.test(cleanDesc), sample: '1500 W' },
+        { id: 'rated_frequency', name: 'Rated Frequency (Hz)', level: 'REQUIRED', present: /(?:\d+)\s*(?:hz|hertz)/i.test(cleanDesc), sample: '50 Hz' },
+        { id: 'sheath_material', name: 'Heating Sheath Alloy (SS 304 / Copper)', level: 'REQUIRED', present: /(?:stainless steel|copper|ss 304|ss 316)/i.test(cleanDesc), sample: 'Stainless Steel 304' },
+        { id: 'handle_material', name: 'Handle Polymer (Flame Retardant)', level: 'REQUIRED', present: /(?:polypropylene|polymer|plastic|bakelite)/i.test(cleanDesc), sample: 'Polypropylene (UL94 V-0)' },
+        { id: 'power_cord', name: 'Flexible Power Cord & Plug Conformance', level: 'REQUIRED', present: /(?:cord|cable|pvc|plug|3-pin)/i.test(cleanDesc), sample: '3-core PVC cord & 3-pin plug (IS 1293)' },
+        { id: 'lab_report_no', name: 'NABL Laboratory Report Reference', level: 'OPTIONAL', present: /(?:report|ref|certificate|nabl)/i.test(cleanDesc), sample: 'ABC/EWH/2026/001' },
+      ];
+    }
 
     let reqCount = 0;
     let presentCount = 0;
@@ -248,6 +294,7 @@ export function AnalyzeView({ onAssessmentCreated, onNavigate }) {
       if (extractedText) {
         const parsed = parseProductInfoFromText(extractedText, file.name);
         if (parsed.productName) setProductName(parsed.productName);
+        if (parsed.targetStandard) setTargetStandard(parsed.targetStandard);
         if (parsed.category) setCategory(parsed.category);
         if (parsed.description) setDescription(parsed.description);
 
@@ -511,30 +558,24 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/v1/assessments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          product_name: productName,
-          category,
-          description,
-          authoritative_mode: isAuthoritative,
-        }),
+      if (!authApi.getToken()) {
+        await authApi.bootstrap();
+      }
+
+      const data = await apiClient.post('/assessments', {
+        product_name: productName,
+        category,
+        description,
+        authoritative_mode: isAuthoritative,
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        setTimeout(() => {
-          onAssessmentCreated(data);
-          onNavigate('dna');
-        }, 300);
-      } else {
-        const errData = await res.json().catch(() => ({}));
-        alert(`Assessment Notice: ${errData.detail || errData.message || 'Error occurred'}`);
-      }
+      setTimeout(() => {
+        onAssessmentCreated(data);
+        onNavigate('dna');
+      }, 300);
     } catch (err) {
       console.warn('Submission error:', err);
-      alert('Could not connect to backend server. Ensure backend is running on port 8000.');
+      alert(`Assessment Notice: ${err.message || 'Could not connect to backend server. Ensure backend is running.'}`);
     } finally {
       setIsLoading(false);
     }
@@ -709,7 +750,7 @@ HK-06,Suspension Hook,Stainless Steel,Corrosion resistant,1`;
               <div>
                 <h3 className="text-xs font-bold text-slate-100 uppercase tracking-wider flex items-center gap-1.5 font-['Space_Grotesk']">
                   <span className="material-symbols-outlined text-cyan-400 text-[18px]">fact_check</span>
-                  Document Readiness &amp; Completeness Checklist (Target: {targetStandard})
+                  Document Readiness &amp; Completeness Checklist (Target: {targetStandard || 'IS 17526:2021'})
                 </h3>
                 <p className="text-[11px] text-slate-400">
                   Derived from verified BIS standard requirements. Separates REQUIRED, OPTIONAL, and MISSING data.

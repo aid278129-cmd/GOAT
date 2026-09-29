@@ -5,6 +5,8 @@ from backend.app.core.logging import logger
 
 async def init_db_extensions() -> None:
     """Initialize essential PostgreSQL extensions if available."""
+    if "sqlite" in str(engine.url):
+        return
     for ext in ['"uuid-ossp"', "vector"]:
         try:
             async with engine.begin() as conn:

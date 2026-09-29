@@ -10,6 +10,7 @@ import { TextShimmer } from './loading-ui/text-shimmer';
 import { MorphingInfinity } from './loading-ui/morphing-infinity';
 import GlideSelect from './loading-ui/GlideSelect';
 import { AudioInputButton, TextToSpeechButton } from './common/AudioInputButton';
+import { FormattedMessage } from './common/FormattedMessage';
 
 export default function BISAssistantView({
   onStartComplianceAssessment,
@@ -149,6 +150,10 @@ export default function BISAssistantView({
     return null;
   };
 
+  const isGreeting = (t) => {
+    return /^(hi|hello|hey|heya|howdy|namaste|vanakkam|greetings|good\s+(morning|afternoon|evening)|who\s+are\s+you|help\b)/i.test((t || '').trim());
+  };
+
   const handleSendMessage = async (customText) => {
     const textToSend = customText || inputMessage;
     if (!textToSend.trim() || loading) return;
@@ -187,26 +192,21 @@ export default function BISAssistantView({
       setMessages((prev) => [...prev, asstMsg]);
     } catch (err) {
       // Clean fallback response
-      const cardType = detectCardType(textToSend, '');
-      let fallbackText = "Based on official Bureau of Indian Standards published records:\n\n";
+      let fallbackText = "";
+      let fallbackCitations = [];
+      const cardType = isGreeting(textToSend) ? null : detectCardType(textToSend, '');
 
-      if (cardType === 'assessment') {
-        fallbackText += "**Let's assess your product.**\n\nFor a double-wall stainless steel vacuum flask up to 2000 ml, the statutory standard is **IS 17526:2021** (Vacuum Insulated Stainless Steel Flasks and Containers). This standard is covered under a mandatory Quality Control Order (QCO) requiring Scheme I (ISI Mark) certification before domestic sale or import.";
-      } else if (cardType === 'certification') {
-        fallbackText += "BIS certification operates primarily under **Scheme I (ISI Mark)** for industrial and domestic goods and **Scheme II (CRS)** for electronic/IT goods. The licensing procedure entails:\n1. Application on the Manak Online portal (Form VI).\n2. Factory audit & sample drawing by BIS officers.\n3. Testing in BIS-recognized NABL laboratories.\n4. Grant of License (CML Number).";
-      } else if (cardType === 'laboratory') {
-        fallbackText += "Testing for BIS certification must be performed in the **BIS Central Laboratory** (Sahibabad) or authorized regional/private NABL-accredited test laboratories recognized under the Laboratory Recognition Scheme (LRS 2020).";
-      } else if (cardType === 'hallmarking') {
-        fallbackText += "Under statutory BIS Hallmarking Regulations, all hallmarked gold jewelry in India must bear the **3 mandatory marks**:\n1. BIS Standard Logo\n2. Purity & Fineness (e.g. 22K916 for 22 Karat Gold)\n3. 6-digit alphanumeric HUID (Hallmark Unique Identification).\nConsumers can verify any HUID code directly on the **BIS CARE** mobile app.";
-      } else {
-        fallbackText += `Regarding "${textToSend}": All Indian Standards and conformity assessment procedures are published under statutory mandate by the Bureau of Indian Standards under the BIS Act 2016.`;
-      }
-
-      const asstMsg = {
-        id: `asst-${Date.now()}`,
-        role: 'assistant',
-        content: fallbackText,
-        citations: [
+      if (isGreeting(textToSend)) {
+        if (selectedLanguage === 'hi') {
+          fallbackText = "नमस्ते! मैं ज़ायंट्रिक्स बीआईएस बौद्धिक अनुपालन सहायक हूँ। मैं भारतीय मानकों (IS), प्रमाणन प्रक्रियाओं (ISI/CRS), प्रयोगशाला खोज और हॉलमार्किंग में आपकी सहायता कर सकता हूँ। कृपया अपना प्रश्न दर्ज करें।";
+        } else if (selectedLanguage === 'ta') {
+          fallbackText = "வணக்கம்! நான் ஜின்ட்ரிக்ஸ் பிஐஎஸ் அறிவார்ந்த இணக்க உதவியாளர். இந்திய தரநிலைகள் (IS), சான்றிதழ் திட்டங்கள் மற்றும் ஆய்வக விவரங்களில் உதவ முடியும். உங்கள் கேள்வியை உள்ளிடவும்.";
+        } else {
+          fallbackText = "Hello! I am the Zyntrix BIS Intelligent Compliance Assistant. How can I assist you today with Indian Standards (IS), BIS certification schemes (ISI Mark, CRS), testing laboratories, or hallmarking requirements?";
+        }
+      } else if (cardType === 'assessment') {
+        fallbackText = "Based on official Bureau of Indian Standards published records:\n\n**Let's assess your product.**\n\nFor a double-wall stainless steel vacuum flask up to 2000 ml, the statutory standard is **IS 17526:2021** (Vacuum Insulated Stainless Steel Flasks and Containers). This standard is covered under a mandatory Quality Control Order (QCO) requiring Scheme I (ISI Mark) certification before domestic sale or import.";
+        fallbackCitations = [
           {
             label: 'IS 17526:2021',
             source: 'Bureau of Indian Standards Specification',
@@ -217,7 +217,22 @@ export default function BISAssistantView({
             claim: 'Statutory requirements for domestic stainless steel vacuum ware.',
             sha256: '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08',
           }
-        ],
+        ];
+      } else if (cardType === 'certification') {
+        fallbackText = "Based on official Bureau of Indian Standards published records:\n\nBIS certification operates primarily under **Scheme I (ISI Mark)** for industrial and domestic goods and **Scheme II (CRS)** for electronic/IT goods. The licensing procedure entails:\n1. Application on the Manak Online portal (Form VI).\n2. Factory audit & sample drawing by BIS officers.\n3. Testing in BIS-recognized NABL laboratories.\n4. Grant of License (CML Number).";
+      } else if (cardType === 'laboratory') {
+        fallbackText = "Based on official Bureau of Indian Standards published records:\n\nTesting for BIS certification must be performed in the **BIS Central Laboratory** (Sahibabad) or authorized regional/private NABL-accredited test laboratories recognized under the Laboratory Recognition Scheme (LRS 2020).";
+      } else if (cardType === 'hallmarking') {
+        fallbackText = "Based on official Bureau of Indian Standards published records:\n\nUnder statutory BIS Hallmarking Regulations, all hallmarked gold jewelry in India must bear the **3 mandatory marks**:\n1. BIS Standard Logo\n2. Purity & Fineness (e.g. 22K916 for 22 Karat Gold)\n3. 6-digit alphanumeric HUID (Hallmark Unique Identification).\nConsumers can verify any HUID code directly on the **BIS CARE** mobile app.";
+      } else {
+        fallbackText = `Regarding "${textToSend}": All Indian Standards and conformity assessment procedures are published under statutory mandate by the Bureau of Indian Standards under the BIS Act 2016.`;
+      }
+
+      const asstMsg = {
+        id: `asst-${Date.now()}`,
+        role: 'assistant',
+        content: fallbackText,
+        citations: fallbackCitations,
         cardType,
       };
 
@@ -422,7 +437,7 @@ export default function BISAssistantView({
                         {m.role === 'assistant' ? (
                           <span className="font-mono text-[10px] font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1">
                             <span className="material-symbols-outlined text-[13px]">shield</span>
-                            <span>BIS Assistant</span>
+                            <span>GOAT BIS Assistant</span>
                           </span>
                         ) : (
                           <span className="font-mono text-[10px] font-bold text-slate-400 uppercase tracking-wider">
@@ -440,7 +455,7 @@ export default function BISAssistantView({
                       )}
                     </div>
 
-                    <div className="whitespace-pre-wrap">{m.content}</div>
+                    <FormattedMessage text={m.content} />
 
                     {/* Citations block */}
                     {m.citations && m.citations.length > 0 && (

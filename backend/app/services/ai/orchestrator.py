@@ -345,7 +345,7 @@ class ZyntrixAIOrchestrator:
         
         if forbidden == ForbiddenAIAction.EVIDENCE_ACCEPTANCE.value:
             answer = (
-                "Under Zyntrix statutory governance, the AI Engineering Copilot has ZERO authority to accept, "
+                "Under GOAT statutory governance, the AI Engineering Copilot has ZERO authority to accept, "
                 "verify, or approve evidence artifacts. Evidence acceptance requires formal human review by an "
                 "authorized engineer or regulatory officer."
             )
@@ -357,7 +357,7 @@ class ZyntrixAIOrchestrator:
             })
         elif forbidden == ForbiddenAIAction.STATUTORY_CERTIFICATION.value:
             answer = (
-                "Under Indian statutory law and Zyntrix architectural invariants, AI cannot grant, certify, or "
+                "Under Indian statutory law and GOAT architectural invariants, AI cannot grant, certify, or "
                 "guarantee BIS compliance. Certification authority rests exclusively with the Bureau of Indian Standards "
                 "following deterministic testing and authorized human attestation."
             )
@@ -379,7 +379,7 @@ class ZyntrixAIOrchestrator:
             )
         else:
             answer = (
-                f"The requested action [{forbidden}] violates Zyntrix AI safety and authority boundaries. "
+                f"The requested action [{forbidden}] violates GOAT AI safety and authority boundaries. "
                 "Statutory mutations require authorized human execution."
             )
 

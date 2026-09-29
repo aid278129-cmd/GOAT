@@ -1,0 +1,1 @@
+Meet Zyntrix: the deterministic Product-to-Clause Compliance Compiler for the Bureau of Indian Standards (BIS). Zero LLM hallucinations in regulatory verdicts. From technical product DNA to a cryptographically sealed compliance passport in seconds.
